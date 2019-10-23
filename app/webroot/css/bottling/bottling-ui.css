@@ -1,0 +1,32 @@
+div.keypad {
+    width: 273px;
+/*    border: 1px solid black;*/
+    display: inline-block;
+}
+
+button.keypad {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    margin: 4px;
+
+    float: right;
+}
+
+button[v2].keypad {
+    height: 205px;
+}
+
+button[h2].keypad {
+    width: 256px;
+    margin-bottom: 5px;
+}
+div.qty-group {
+    margin-top: 5px;
+}
+
+
+.qty-group .btn-default.active, .qty-group  .btn-default:active  {
+    background: #f0ad4e;
+    background-color: #f0ad4e;
+}

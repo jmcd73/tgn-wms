@@ -1,0 +1,12 @@
+# SetEnv CAKEPHP_DEBUG 2
+# see app/Config/configuration.php
+SetEnv CAKEPHP_DEBUG 2
+Header Set X-Forwarded-Host "frontend.toggen.com.au"
+SetEnv ENVIRONMENT TEST
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^(docs)($|/) - [L]
+RewriteRule    ^$    app/webroot/    [L]
+RewriteRule    (.*) app/webroot/$1    [L]
+</IfModule>

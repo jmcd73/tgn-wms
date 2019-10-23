@@ -1,0 +1,6 @@
+[submodule "docker"]
+	path = docker
+	url = https://github.com/jmcd73/docker-ubuntu1804-apache24-php7.git
+[submodule "app/Plugin/FileUpload"]
+	path = app/Plugin/FileUpload
+	url = https://github.com/jmcd73/CakePHP-FileUpload-Plugin.git

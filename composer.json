@@ -1,0 +1,53 @@
+{
+	"name": "jmits/wms",
+	"description": "Warehouse Mangement System",
+	"type": "project",
+	"keywords": [
+		"framework"
+	],
+	"homepage": "http://cakephp.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "CakePHP Community",
+			"homepage": "https://github.com/cakephp/cakephp/graphs/contributors"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/cakephp/cakephp/issues",
+		"forum": "http://stackoverflow.com/tags/cakephp",
+		"irc": "irc://irc.freenode.org/cakephp",
+		"source": "https://github.com/cakephp/cakephp"
+	},
+	"require": {
+		"cakephp/cakephp": "~2.9",
+		"holt59/cakephp-bootstrap3-helpers": "dev-master",
+		"twbs/bootstrap": "~3",
+		"components/jquery": "^3.3",
+		"components/jquery-migrate": "^3.0",
+		"tecnickcom/tcpdf": "^6.2",
+		"components/font-awesome": "^5.4",
+		"erusev/parsedown": "^1.7"
+	},
+	"require-dev": {
+		"cakephp/debug_kit": "^2.2.0",
+		"phpunit/phpunit": "3.7.38",
+		"cakephp/cakephp-codesniffer": "^3.1",
+		"squizlabs/php_codesniffer": "^3.4"
+	},
+	"config": {
+		"vendor-dir": "vendors/"
+	},
+	"bin": [
+		"lib/Cake/Console/cake"
+	],
+	"extra": {
+		"installer-paths": {
+			"app/Plugin/{$name}": [
+				"cakephp/debug_kit",
+				"holt59/cakephp-bootstrap3-helpers",
+				"maurymmarques/markdown-plugin"
+			]
+		}
+	}
+}

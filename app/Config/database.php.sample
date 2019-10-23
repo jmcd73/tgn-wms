@@ -1,0 +1,30 @@
+<?php
+class DATABASE_CONFIG {
+	/* 
+    public $home = array(
+		'datasource' => 'Database/Mysql',
+		'persistent' => false,
+		'host' => 'host.docker.internal',
+		'login' => 'palletsToggen',
+		'password' => 'toggenpw',
+		'database' => 'palletsToggen',
+		'encoding' => 'utf8'
+	);
+	public $pallets3 = array(
+		'datasource' => 'Database/Mysql',
+		'persistent' => false,
+		'host' => 'host.docker.internal',
+		'login' => 'palletsHome',
+		'password' => 'IeChaeyeghielu6eiphu',
+		'database' => 'palletsInstall',
+	);
+	public $palletsTest = array(
+		'datasource' => 'Database/Mysql',
+		'persistent' => false,
+		'host' => 'localhost',
+		'login' => 'palletsTest',
+		'password' => 'IeChaeyeghielu6eiphu',
+		'database' => 'palletsTest',
+	);
+
+}
