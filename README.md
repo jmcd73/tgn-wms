@@ -37,7 +37,8 @@ Presently it assumes that each pallet contains the same products but can be exte
     * Warehouse pallet pick screen
 * GLabels Barcode and Label Printing
 
-
+## Installation
+    See docs/INSTALL.md
 
 
 
