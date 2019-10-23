@@ -38,7 +38,8 @@ Presently it assumes that each pallet contains the same products but can be exte
 * GLabels Barcode and Label Printing
 
 ## Installation
-    See docs/INSTALL.md
+
+See docs/INSTALL.md
 
 
 
