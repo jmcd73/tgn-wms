@@ -19,7 +19,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && rm -rf /Users/jmcd/sites/tgn-wms/app/webroot/shipment-app && cp -rv build /Users/jmcd/sites/tgn-wms/app/webroot/shipment-app",
+    "build": "react-scripts build && rm -rf ../../app/webroot/shipment-app && cp -rv build ../../app/webroot/shipment-app",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

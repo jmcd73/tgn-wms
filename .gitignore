@@ -20,3 +20,4 @@ bin/locations.csv
 bin/items.csv
 bin/test.php
 
+app/Controller/logStatements.txt

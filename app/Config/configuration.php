@@ -66,7 +66,7 @@ $config = [
      * */
     'datasources' => [
         'HOME' => 'home', // my laptop
-         'TEST' => 'pallets3', // test
+         'TEST' => 'default', // test
          'NEWTEST' => 'palletsTest'
     ],
     'navbar' => [
