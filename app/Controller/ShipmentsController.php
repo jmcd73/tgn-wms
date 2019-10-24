@@ -350,7 +350,9 @@ class ShipmentsController extends AppController
         $error = null;
 
         $origin = $this->request->header('Origin');
+
         $allowedOrigins = Configure::read('ALLOWED_ORIGINS');
+
         if (in_array($origin, $allowedOrigins)) {
             $this->response->header('Access-Control-Allow-Origin', $origin);
         }
@@ -372,14 +374,19 @@ class ShipmentsController extends AppController
                     }
 
                     if (!empty($this->request->data['Label'])) {
-                        foreach ($this->request->data['Label'] as $key => $value) {
-                            $update_labels[$key] = [
-                                'Label' => [
-                                    'id' => $value,
-                                    'shipment_id' => $this->Shipment->id
-                                ]
-                            ];
-                        }
+
+                        $update_labels = array_map(
+                            function ($val) {
+                                return [
+                                    'Label' => [
+                                        'id' => $val,
+                                        'shipment_id' => $this->Shipment->id
+                                    ]
+                                ];
+                            },
+                            $this->request->data['Label']
+                        );
+
                         if ($this->Shipment->Label->saveMany($update_labels)) {
                             if (!$this->request->is('ajax')) {
                                 $this->Flash->success('The shipment ' . '<strong>' . h($shipper) . '</strong> has been saved.', [
@@ -503,6 +510,7 @@ class ShipmentsController extends AppController
     public function edit($id = null)
     {
         $error = null;
+
         $origin = $this->request->header('Origin');
         $allowedOrigins = Configure::read('ALLOWED_ORIGINS');
         if (in_array($origin, $allowedOrigins)) {
@@ -514,11 +522,14 @@ class ShipmentsController extends AppController
         }
 
         $this->Shipment->Behaviors->load('Containable');
+
         $options = [
             'conditions' => [
                 'Shipment.' . $this->Shipment->primaryKey => $id
             ],
-            'contain' => ['Label.Location']
+            'contain' => [
+                'Label.Location'
+            ]
         ];
 
         $thisShipment = $this->Shipment->find('first', $options);
@@ -527,43 +538,59 @@ class ShipmentsController extends AppController
 
             $shipper = $this->request->data['Shipment']['shipper'];
 
-            if (!empty($this->request->data['Label'])) {
-
-                $labelsOnShipment = Hash::extract($this->request->data['Label'], '{n}.id');
-
-                $updateLabels = $this->Shipment->Label->find(
-                    'all',
-                    [
-                        'conditions' => [
-                            'Label.shipment_id' => $id,
-                            'Label.picked' => 1,
-                            'NOT' => ['Label.id' => $labelsOnShipment]
-                        ],
-                        'fields' => ['id'],
-                        'contain' => true
-                    ]
-                );
-
-                $ids = Hash::extract($updateLabels, '{n}.Label.id');
-
-                $this->Shipment->Label->updateAll(
-                    ['Label.picked' => 0],
-                    ['Label.id' => $ids]
-                );
-
-            }
-
-            $this->Shipment->Label->updateAll(
-                ['Label.shipment_id' => 0],
-                ['Label.shipment_id' => $id]
-            );
-
             if ($this->Shipment->saveAll($this->request->data)) {
 
-                if (empty($this->request->data['Label'])) {
-                    // counterCache fix when no labels.
+                if (!empty($this->request->data['Label'])) {
+
+                    $requestedLabelIdsOnShipment = Hash::extract($this->request->data['Label'], '{n}.id');
+
+                    $previousLabels = Hash::extract(
+                        $thisShipment,
+                        'Label'
+                    );
+
+                    $previousIds = Hash::extract(
+                        $thisShipment,
+                        'Label.id'
+                    );
+
+                    $previousWithoutRequested = array_filter(
+                        $previousLabels,
+                        function ($val) use ($requestedLabelIdsOnShipment) {
+                            return !in_array(
+                                $val['id'],
+                                $requestedLabelIdsOnShipment
+                            );
+                        }
+                    );
+
+                    $pwor = array_map(
+                        function ($val) {
+                            $val['picked'] = 0;
+                            $val['shipment_id'] = 0;
+                            return $val;
+                        },
+                        $previousWithoutRequested
+                    );
+
+                    // this removes labels that have been deselected
+                    // and removes 'picked'
+                    if ($pwor) {
+                        $this->Shipment->Label->saveAll($pwor);
+                    }
+
+                } else {
+
+                    // if there are no labels then remove them all
+                    $this->Shipment->Label->updateAll(
+                        ['Label.shipment_id' => 0],
+                        ['Label.shipment_id' => $id]
+                    );
+
+                    // and update counterCache to be zero`
                     $this->Shipment->save(
-                        ['id' => $this->Shipment->id,
+                        [
+                            'id' => $id,
                             'label_count' => 0
                         ]
                     );
@@ -605,7 +632,7 @@ class ShipmentsController extends AppController
         $disabled = $this->Shipment->getDisabled($shipment_labels);
         $label_count -= count($disabled);
         $shipment_labels = $this->Shipment->markDisabled($shipment_labels);
-        $this->log(['shlbl' => $shipment_labels, 'options' => $options]);
+
         if (isset($this->request->data['Label'])) {
 
             $selected_label_count = $this->Shipment->labelCount($this->request->data['Label']);

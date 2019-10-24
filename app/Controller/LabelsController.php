@@ -560,15 +560,20 @@ class LabelsController extends AppController
         $this->Label->Behaviors->load("Containable");
 
         $productType = $this->Label->Item->ProductType->find(
-            'first', [
+            'all', [
                 'conditions' => [
                     'ProductType.active' => 1,
                     'ProductType.location_id IS NULL'
-                ]
-            ]
+                ],
+                'contain' => true
+                ],
+
         );
 
-        if (isset($productType['ProductType']['id'])) {
+
+        $productTypeIds = Hash::extract($productType, '{n}.ProductType.id');
+
+        if (!empty($productTypeIds)) {
 
             $last_pallet = $this->Label->find(
                 'first', [
@@ -576,7 +581,7 @@ class LabelsController extends AppController
                     'conditions' => [
                         'Label.location_id !=' => 0,
                         'Label.shipment_id' => 0,
-                        'Label.product_type_id' => $productType['ProductType']['id']
+                        'Label.product_type_id IN' => $productTypeIds
                     ],
                     'contain' => [
                         'Location'
@@ -586,6 +591,7 @@ class LabelsController extends AppController
         }
 
         $this->paginate = $options;
+
         $labels = $this->Paginator->paginate();
 
         if (empty($labels) && isset($last_pallet['Location']['location'])) {
@@ -599,15 +605,7 @@ class LabelsController extends AppController
                     'clear' => true
                 ]
             );
-        } else {
-            $this->Flash->success(
-                __(
-                    'There are no pallets to put away'
-                ),
-                [
-                    'clear' => true
-                ]
-            );
+
         }
 
         $this->set(compact('labels', 'last_pallet'));

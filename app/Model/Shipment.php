@@ -15,24 +15,6 @@ class Shipment extends AppModel
     public $old = null;
 
     /**
-     * @var array
-     */
-    public $difot_info_fields = [
-        'operator_id',
-        //'truck_registration_id',
-        'truck_temp',
-        'dock_temp',
-        'product_temp',
-        'time_start_i',
-        'time_finish_i',
-        'time_total'
-    ];
-    /**
-     * @var array
-     */
-    public $difot_fail = [];
-
-    /**
      * Checks that no pallets have been added or removed
      *
      * @return boolean
@@ -129,12 +111,13 @@ class Shipment extends AppModel
     public function checkLabelsNotChanged($check)
     {
 
-        if ($this->id && isset($this->data[$this->alias]['Label'])) {
+        if ($this->id && isset($this->data['Label'])) {
 
             // is an update
             $this->old = $this->findById($this->id);
 
-            $labels_now = $this->data[$this->alias]['Label'];
+            $labels_now = Hash::extract($this->data['Label'], '{n}.id');
+
             $labels_old = Hash::extract($this->old['Label'], '{n}.id');
 
             $old_shipped = $this->old[$this->alias]['shipped'];
@@ -150,7 +133,6 @@ class Shipment extends AppModel
 
         }
         return true;
-
     }
 
     /**
