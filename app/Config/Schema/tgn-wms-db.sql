@@ -356,7 +356,7 @@ CREATE TABLE `printers` (
   `name` varchar(45) DEFAULT NULL,
   `options` varchar(100) DEFAULT NULL,
   `queue_name` varchar(45) DEFAULT NULL,
-  `set_as_default_on_these_actions` varchar(255) DEFAULT NULL,
+  `set_as_default_on_these_actions` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
