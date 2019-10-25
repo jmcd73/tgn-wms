@@ -99,7 +99,6 @@ class Printer extends AppModel
 
         )*/
         foreach ($results as $key => $val) {
-            $this->log([$key => $val]);
             if (isset($val[$this->alias]['set_as_default_on_these_actions'])) {
                 $defaultActions = $val[$this->alias]['set_as_default_on_these_actions'];
                 $results[$key][$this->alias]['set_as_default_on_these_actions'] = explode("\n", $defaultActions);
@@ -115,9 +114,6 @@ class Printer extends AppModel
      */
     public function isControllerActionDuplicated($check, $options)
     {
-        $this->log(['jmdata' => $this->data]);
-        // $this->log($check);
-
         $soptions = [
             'conditions' => [
                 'Printer.active' => 1
@@ -130,7 +126,6 @@ class Printer extends AppModel
 
         $allFields = $this->find('all', $soptions);
 
-        //$this->log($allFields);
         $matched = [];
 
         foreach ($check['set_as_default_on_these_actions'] as $checkThis) {
@@ -143,11 +138,6 @@ class Printer extends AppModel
                         $field['Printer']['set_as_default_on_these_actions']
                     )
                 ) {
-                    $this->log([
-                        'matched' => true,
-                        'checkThis' => $checkThis,
-                        'field' => $field
-                    ]);
 
                     if (isset($matched[$field['Printer']['id']]['duplicates'])) {
 

@@ -136,14 +136,6 @@ class Label extends AppModel
 
     /**
      * @param $itemId
-     * @return mixed
-     */
-    public function isMarg($itemId)
-    {
-        return $this->isProduct($itemId, 'Margarine');
-    }
-    /**
-     * @param $itemId
      * @param $productName
      * @return mixed
      */
@@ -323,26 +315,7 @@ class Label extends AppModel
         return array_key_exists('floor', $data);
     }
 
-    /**
-     * @param $data
-     * @return mixed
-     */
-    public function isMargLocation($data)
-    {
 
-        $isMarg = false;
-
-        foreach ($this->__fields as $field) {
-            if (array_key_exists($field, $data)) {
-                $isMarg = true;
-            } else {
-                $isMarg = false;
-            }
-        }
-
-        return $isMarg || $this->isFloor($data);
-
-    }
     /**
      * @param $id
      * @return mixed
@@ -359,44 +332,6 @@ class Label extends AppModel
         return $location;
     }
 
-    /**
-     * resolvePutAwayLocation method
-     * @param array $data Array of data that has either availableLocationId or floor, or ( aisle, column, level)
-     * @return string
-     */
-    public function resolvePutAwayLocation($data)
-    {
-        if (!empty($data['floor'])) {
-            //$this->log(['returnedResolveLocationFloor' => $data['floor']]);
-            return $data['floor'];
-        }
-
-        if (!empty($data['availableLocationId'])) {
-
-            $location = $this->findLocationById($data['availableLocationId']);
-            //$this->log(['returnedResolveLocationAvailLocId' => $location]);
-
-            return $location['Location']['location'];
-        }
-
-        /*if (!empty($data['location_id'])) {
-        $location = $this->findLocationById($data['location_id']);
-        $this->log(['returnedResolveLocationLocId' => $location]);
-        return $location['Location']['location'];
-        }*/
-
-        $slug = 'MC';
-
-        $location = $slug;
-
-        foreach ($this->__fields as $field) {
-            if (!empty($data[$field])) {
-                $location .= $data[$field];
-            }
-        }
-
-        return $location === $slug ? '' : $location;
-    }
 
     /**
      * @param $id
@@ -664,10 +599,6 @@ class Label extends AppModel
     public function checkEnableShipLowDate($check)
     {
 
-//            $this->log([
-        //                'check' => $check,
-        //                'data' => $this->data
-        //            ]);
         $dont_ship = (int)$this->data[$this->alias]['dont_ship'];
         $ship_low_date = (int)$check['ship_low_date'];
 
@@ -859,7 +790,7 @@ class Label extends AppModel
                     }
                 }
             }
-            //$this->log($changed_fields);
+
             $this->__recordHasChanged = (bool)count($this->__changed_fields);
         }
     }
@@ -929,8 +860,6 @@ class Label extends AppModel
      */
     public function doNotShip($lookup)
     {
-        // $this->log($lookup);
-
         if ($lookup['Label']['shipment_id'] != 0) {
             return false;
         }

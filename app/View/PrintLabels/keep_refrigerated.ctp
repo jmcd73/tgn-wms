@@ -17,7 +17,6 @@
                     ];
                     if ($default) {
                         $options += ['default' => $default];
-                        $this->log(['myoptions'=> $options ]);
                     }
                     echo $this->Form->input('printer', $options ); ?>
 

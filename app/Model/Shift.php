@@ -21,19 +21,6 @@ class Shift extends AppModel {
 
     function beforeSave($options = []) {
         parent::beforeSave($options);
-
-        /*
-        $this->log([ 'jmdata' => $this->data, 'options' => $options, 'start_time' => CakeTime::toUnix($this->data[$this->alias]['start_time'])]);
-
-        $start_time = CakeTime::toUnix($this->data[$this->alias]['start_time']);
-        $stop_time = CakeTime::toUnix($this->data[$this->alias]['stop_time']);
-
-        $minutes = ($stop_time - $start_time) / 60;
-        if( ((bool) $this->data[$this->alias]['for_prod_dt'] === false ) ) {
-            $this->data[$this->alias]['shift_minutes'] = abs($minutes);
-        }
-        */
-      //  $shift_minutes = Ca
     }
 
     function shift_minutes($report_date_id) {

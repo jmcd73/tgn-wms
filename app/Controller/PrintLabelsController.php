@@ -45,8 +45,6 @@ class PrintLabelsController extends AppController
             $labelData = $this->request->data;
             $this->loadModel('Item');
 
-            $this->log(['LD' => $labelData]);
-
             $templateId = $this->Item->find('first', [
                 'conditions' => [
                     'Item.trade_unit' => $labelData['barcode']
@@ -599,11 +597,6 @@ class PrintLabelsController extends AppController
         $this->set(compact('printer', 'exampleImage', 'glabelsRoot'));
     }
 
-    public function labelSelect()
-    {
-        $this->log($this->request->params);
-        $this->log($this->request->query);
-    }
     public function labelChooser()
     {
 
@@ -746,8 +739,6 @@ class PrintLabelsController extends AppController
 
                 $glabelsData = $dataNoModel + $saveData;
 
-                $this->log(['glabelsd' => $glabelsData]);
-
                 $this->loadModel('Printer');
 
                 $printer = $this->Printer->find(
@@ -759,8 +750,6 @@ class PrintLabelsController extends AppController
                     ]
                 );
 
-                $this->log(['prt' => $printer]);
-
                 $printerFriendlyName = $printer['Printer']['name'];
 
                 $glabelsData['printer'] = $printer['Printer']['queue_name'];
@@ -771,11 +760,11 @@ class PrintLabelsController extends AppController
                     $glabelsTemplateFullPath
                 );
 
-                $this->log(['glabelsData' => $glabelsData, 'printer' => $printer]);
+
                 $this->PrintLogic->formatPrintLine($this->request->action, $glabelsData);
 
                 $result = $this->PrintLogic->glabelsBatchPrint();
-                $this->log(['pqm' => $printer['Printer']['queue_name']]);
+
                 if ($result['return_value'] == 0) {
                     $result = $this->PrintLogic->sendPdfToLpr(
                         $printer['Printer']['queue_name']

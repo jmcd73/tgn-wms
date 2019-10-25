@@ -331,7 +331,6 @@ class AppModel extends Model
      * */
     public function checkBatchNum($batch_no, $context)
     {
-        //$this->log(['cbn' => $batch_no, 'cntxt' => $context]);
         $match = false;
 
         $batch_nos = $this->getBatchNumbers();

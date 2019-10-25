@@ -36,8 +36,7 @@ class ShipmentsController extends AppController
 
         foreach ($shipments as $s) {
             $ids = Hash::extract($s, 'Label.{n}.id');
-            //$this->log($ids);
-            //$this->log($s);
+
             unset($s['Label']);
             $s['Shipment']['Label'] = $ids;
 
@@ -473,8 +472,6 @@ class ShipmentsController extends AppController
                     'Shipment.id' => $id
                 ]
             ]);
-
-            //$this->log($shipment);
 
             $data = [
                 'shipped' => !(bool)$shipment['Shipment']['shipped'],
