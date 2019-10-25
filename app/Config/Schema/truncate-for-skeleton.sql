@@ -1,0 +1,11 @@
+TRUNCATE inventory_statuses;
+TRUNCATE items;
+TRUNCATE labels;
+TRUNCATE locations;
+TRUNCATE pack_sizes;
+TRUNCATE printers;
+TRUNCATE print_log;
+TRUNCATE production_lines;
+TRUNCATE product_types;
+TRUNCATE shifts;
+TRUNCATE shipments;
