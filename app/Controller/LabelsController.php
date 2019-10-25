@@ -566,10 +566,9 @@ class LabelsController extends AppController
                     'ProductType.location_id IS NULL'
                 ],
                 'contain' => true
-                ],
+            ],
 
         );
-
 
         $productTypeIds = Hash::extract($productType, '{n}.ProductType.id');
 
@@ -623,7 +622,7 @@ class LabelsController extends AppController
     /**
      * Print a new pallet label
      *
-     * @param string $print_type Print is marg or oil
+     * @param string $productTypeId Produc Type
      *
      * @return mixed
      */
@@ -966,23 +965,25 @@ class LabelsController extends AppController
             throw new NotFoundException(__('Invalid label'));
         }
 
+        $options = [
+            'conditions' => ['Label.' . $this->Label->primaryKey => $id],
+            'contain' => [
+                'Item' => [
+                    "ProductType",
+                    "PrintTemplate"
+                ]
+            ]];
+
+        $label = $this->Label->find('first', $options);
+
         if ($this->request->is(['post', 'put'])) {
 
             $this->Label->Behaviors->load("Containable");
 
             // handle print post
-            $options = [
-                'conditions' => ['Label.' . $this->Label->primaryKey => $id],
-                'contain' => [
-                    'Item' => [
-                        "ProductType",
-                        "PrintTemplate"
-                    ]
-                ]];
 
-            $reprint_label = $this->Label->find('first', $options);
 
-            $pallet_ref = $reprint_label['Label']['pl_ref'];
+            $pallet_ref = $label['Label']['pl_ref'];
 
             $replaceTokens = json_decode(
                 $this->getSetting(
@@ -991,33 +992,28 @@ class LabelsController extends AppController
                 )
             );
 
-            $template_contents = $reprint_label['Item']['PrintTemplate']['text_template'];
+            $template_contents = $label['Item']['PrintTemplate']['text_template'];
 
             $cabLabel = new CabLabel(
                 [
                     'companyName' => $this->getSetting('companyName'),
-                    'internalProductCode' => $reprint_label['Item']['code'],
-                    'reference' => $reprint_label['Label']['pl_ref'],
-                    'sscc' => $reprint_label['Label']['sscc'],
-                    'description' => $reprint_label['Item']['description'],
-                    'gtin14' => $reprint_label['Label']['gtin14'],
-                    'quantity' => $reprint_label['Label']['qty'],
-                    'bestBeforeHr' => $reprint_label['Label']['best_before'],
-                    'bestBeforeBc' => $this->formatYYMMDD($reprint_label['Label']['bb_date']),
-                    'batch' => $reprint_label['Label']['batch'],
+                    'internalProductCode' => $label['Item']['code'],
+                    'reference' => $label['Label']['pl_ref'],
+                    'sscc' => $label['Label']['sscc'],
+                    'description' => $label['Item']['description'],
+                    'gtin14' => $label['Label']['gtin14'],
+                    'quantity' => $label['Label']['qty'],
+                    'bestBeforeHr' => $label['Label']['best_before'],
+                    'bestBeforeBc' => $this->formatYYMMDD($label['Label']['bb_date']),
+                    'batch' => $label['Label']['batch'],
                     'numLabels' => $this->request->data['Label']['copies']
                 ],
                 $template_contents,
                 $replaceTokens
             );
 
-            // margarine or oil
-            $itemId = $reprint_label['Label']['item_id'];
-            $printType = $this->Label->Item->find('first', [
-                'conditions' => [
-                    'Item.id' => $itemId
-                ]
-            ]);
+            $itemId = $label['Label']['item_id'];
+
 
             // get the printer queue name
             $printerId = $this->request->data['Label']['printer_id'];
@@ -1025,7 +1021,7 @@ class LabelsController extends AppController
             $printer_details = $this->Label->getLabelPrinterById($printerId);
 
             $print_job = $this->PrintLogic->getPrintJobName(
-                $reprint_label['Label']['pl_ref'],
+                $label['Label']['pl_ref'],
                 true
             );
 
@@ -1033,7 +1029,7 @@ class LabelsController extends AppController
                 $printer_details['Printer']['queue_name'],
                 $print_job,
                 $printer_details['Printer']['options'],
-                $printType['ProductType']['name']
+                $label['Item']['ProductType']['name']
             );
 
             $inDebugMode = Configure::read('pallet_print_debug');
@@ -1068,18 +1064,15 @@ class LabelsController extends AppController
             }
         }
 
-        $printers = $this->Label->getLabelPrinters($this->request->controller, $this->request->action);
+        $printers = $this->Label->getLabelPrinters(
+            $this->request->controller,
+            $this->request->action
+        );
 
-        $options = [
-            'conditions' => [
-                'Label.' . $this->Label->primaryKey => $id
-            ]
-        ];
-
-        $label = $this->Label->find('first', $options);
         // unset this as the default printer is configured
         // for the reprint Controller/Action in Printers
         unset($label['Label']['printer_id']);
+
         $this->request->data = $label;
 
         $refer = $this->referer();
@@ -1433,8 +1426,8 @@ class LabelsController extends AppController
         $options = $this->Label->locationSpaceUsageOptions($filter, 'all', $viewOptions);
         $this->paginate = $options;
 
-        $margLocations = $this->Paginator->paginate();
+        $locations = $this->Paginator->paginate();
 
-        $this->set(compact('margLocations', 'filter'));
+        $this->set(compact('locations', 'filter'));
     }
 }
