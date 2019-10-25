@@ -183,9 +183,15 @@ class Label extends AppModel
 
             $stop_time = $shift['Shift']['stop_time'];
 
-            $item_prefix = $shift['ProductType']['code_prefix'];
+            $productTypeId = $shift['ProductType']['id'];
 
-            $shift_report = $this->getShiftReport($date, $start_date_time, $end_date_time, $item_prefix, $shift);
+            $shift_report = $this->getShiftReport(
+                $date,
+                $start_date_time,
+                $end_date_time,
+                $productTypeId,
+                $shift
+            );
 
             $reports[$ctr] = $shift_report;
             $reports[$ctr]['@shift_name'] = $shift['Shift']['name'];
@@ -194,7 +200,10 @@ class Label extends AppModel
             $reports[$ctr]['@start_date_time'] = $start_date_time;
             $reports[$ctr]['@end_date_time'] = $end_date_time;
 
-            $xml_shift_report = array_merge($xml_shift_report, $shift_report['report']);
+            $xml_shift_report = array_merge(
+                $xml_shift_report,
+                $shift_report['report']
+            );
 
             // $this-> log(['ctr' => $ctr, 'reports' => $reports]);
 
@@ -215,8 +224,13 @@ class Label extends AppModel
      * @param $shift
      * @param $request
      */
-    public function getShiftReport($date, $start_date_time, $end_date_time, $item_prefix, $shift, $request = null)
-    {
+    public function getShiftReport(
+        $date,
+        $start_date_time,
+        $end_date_time,
+        $productTypeId,
+        $shift,
+        $request = null) {
 
         $options = [
             'contain' => [
@@ -237,7 +251,7 @@ class Label extends AppModel
             'conditions' => [
                 'Label.created >= "' . $start_date_time . '"',
                 'Label.created <= "' . $end_date_time . '"',
-                'Label.item LIKE "' . $item_prefix . '%"',
+                'Label.product_type_id' => $productTypeId,
                 'Label.qty !=' => 0
             ]
 
@@ -315,7 +329,6 @@ class Label extends AppModel
         return array_key_exists('floor', $data);
     }
 
-
     /**
      * @param $id
      * @return mixed
@@ -331,7 +344,6 @@ class Label extends AppModel
 
         return $location;
     }
-
 
     /**
      * @param $id
@@ -1236,7 +1248,7 @@ class Label extends AppModel
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ],
             'notTooLong' => [
-                'rule' => [ 'maxLength', 19 ],
+                'rule' => ['maxLength', 19],
                 'message' => 'Maximum length for a pallet reference is 19 characters.
                 Please check the Product Type "Serial number format"'
             ]
