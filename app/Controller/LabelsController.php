@@ -759,11 +759,15 @@ class LabelsController extends AppController
                     ]
                 );
 
+                $labelCopies = $item_detail['Item']['pallet_label_copies'] > 0
+                    ? $item_detail['Item']['pallet_label_copies']
+                    : $this->getSetting('sscc_default_label_copies');
+
                 $printTemplateId = $item_detail['Item']['print_template_id'];
 
-                $qty = !empty($this->request->data[$formName]['qty']) ?
-                $this->request->data[$formName]['qty'] :
-                $item_detail['Item']['quantity'];
+                $qty = !empty($this->request->data[$formName]['qty'])
+                    ? $this->request->data[$formName]['qty']
+                    : $item_detail['Item']['quantity'];
 
                 $days_life = $item_detail['Item']['days_life'];
 
@@ -863,7 +867,7 @@ class LabelsController extends AppController
                         'bestBeforeHr' => $bb_hr,
                         'bestBeforeBc' => $bb_bc,
                         'batch' => $this->request->data[$formName]['batch_no'],
-                        'numLabels' => 2
+                        'numLabels' => $labelCopies
                     ],
                     $template_contents,
                     $replaceTokens
@@ -1069,12 +1073,33 @@ class LabelsController extends AppController
         // unset this as the default printer is configured
         // for the reprint Controller/Action in Printers
         unset($label['Label']['printer_id']);
+        $labelCopies = $label['Item']['pallet_label_copies'] > 0
+            ? $label['Item']['pallet_label_copies']
+            : $this->getSetting('sscc_default_label_copies');
+        $tag = "Label";
+        $labelCopiesList = [];
+        for ($i = 1; $i <= $labelCopies; $i++) {
+            if ($i > 1) {
+                $tag = Inflector::pluralize($tag);
+            } else {
+                $tag = Inflector::singularize($tag);
+            }
+            $labelCopiesList[$i] = $i . " " . $tag;
+        }
 
         $this->request->data = $label;
 
         $refer = $this->referer();
-
-        $this->set(compact('label', 'printers', 'refer'));
+        $inputDefaultCopies = $this->getSetting('sscc_default_label_copies');
+        $this->set(
+            compact(
+                'labelCopiesList',
+                'label',
+                'printers',
+                'refer',
+                'inputDefaultCopies'
+            )
+        );
     }
 
     /**
