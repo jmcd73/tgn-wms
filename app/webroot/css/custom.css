@@ -799,3 +799,13 @@ a.btn.add::before {
     color: #2780e3;
 }
 
+.secondary-text {
+ font-weight: normal;
+ font-size: 0.9em;
+
+}
+
+.secondary-text::before {
+
+    content: ' '; display: block;
+}
