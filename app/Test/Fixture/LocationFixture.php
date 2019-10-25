@@ -10,12 +10,15 @@ class LocationFixture extends CakeTestFixture {
  * @var array
  */
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'unsigned' => true, 'key' => 'primary'),
-		'username' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'password' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'role' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 20, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
-		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'primary'),
+		'location' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 20, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
+		'pallet_capacity' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false),
+		'is_hidden' => array('type' => 'boolean', 'null' => false, 'default' => null),
+		'description' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 50, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
+		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
+		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
+		'product_type_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false),
+		'overflow' => array('type' => 'boolean', 'null' => true, 'default' => null),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),
@@ -30,11 +33,14 @@ class LocationFixture extends CakeTestFixture {
 	public $records = array(
 		array(
 			'id' => 1,
-			'username' => 'Lorem ipsum dolor sit amet',
-			'password' => 'Lorem ipsum dolor sit amet',
-			'role' => 'Lorem ipsum dolor ',
-			'created' => '2017-01-25 10:11:07',
-			'modified' => '2017-01-25 10:11:07'
+			'location' => 'Lorem ipsum dolor ',
+			'pallet_capacity' => 1,
+			'is_hidden' => 1,
+			'description' => 'Lorem ipsum dolor sit amet',
+			'created' => '2019-10-25 20:16:45',
+			'modified' => '2019-10-25 20:16:45',
+			'product_type_id' => 1,
+			'overflow' => 1
 		),
 	);
 

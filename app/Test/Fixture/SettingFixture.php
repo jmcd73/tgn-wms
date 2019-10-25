@@ -10,14 +10,13 @@ class SettingFixture extends CakeTestFixture {
  * @var array
  */
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'unsigned' => true, 'key' => 'primary'),
-		'username' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'password' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'role' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 20, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
-		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'primary'),
+		'name' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 100, 'key' => 'unique', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'setting' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 200, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'comment' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 1000, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'indexes' => array(
-			'PRIMARY' => array('column' => 'id', 'unique' => 1)
+			'PRIMARY' => array('column' => 'id', 'unique' => 1),
+			'name' => array('column' => 'name', 'unique' => 1)
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
@@ -30,11 +29,9 @@ class SettingFixture extends CakeTestFixture {
 	public $records = array(
 		array(
 			'id' => 1,
-			'username' => 'Lorem ipsum dolor sit amet',
-			'password' => 'Lorem ipsum dolor sit amet',
-			'role' => 'Lorem ipsum dolor ',
-			'created' => '2017-01-25 10:08:24',
-			'modified' => '2017-01-25 10:08:24'
+			'name' => 'Lorem ipsum dolor sit amet',
+			'setting' => 'Lorem ipsum dolor sit amet',
+			'comment' => 'Lorem ipsum dolor sit amet'
 		),
 	);
 

@@ -5,11 +5,21 @@
 class PackSizeFixture extends CakeTestFixture {
 
 /**
- * Import
+ * Fields
  *
  * @var array
  */
-	public $import = array('model' => 'PackSize', 'connection' => 'test');
+	public $fields = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'primary'),
+		'pack_size' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 30, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'comment' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 100, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
+		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
+		'indexes' => array(
+			'PRIMARY' => array('column' => 'id', 'unique' => 1)
+		),
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
+	);
 
 /**
  * Records
@@ -18,74 +28,11 @@ class PackSizeFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => '35',
-			'pack_size' => 'ROUND3500',
-			'comment' => '',
-			'created' => '2015-03-17 14:43:57',
-			'modified' => '2015-03-27 22:37:00'
-		),
-		array(
-			'id' => '36',
-			'pack_size' => 'ROUND500',
-			'comment' => '',
-			'created' => '2015-03-17 14:43:57',
-			'modified' => '2015-03-17 14:43:57'
-		),
-		array(
-			'id' => '37',
-			'pack_size' => 'ROUND1000',
-			'comment' => '',
-			'created' => '2015-03-17 14:43:57',
-			'modified' => '2015-03-17 14:43:57'
-		),
-		array(
-			'id' => '38',
-			'pack_size' => 'ROUND10000',
-			'comment' => '',
-			'created' => '2015-03-17 14:43:57',
-			'modified' => '2015-03-17 14:43:57'
-		),
-		array(
-			'id' => '39',
-			'pack_size' => 'RECT375(IML)',
-			'comment' => '',
-			'created' => '2015-03-17 14:43:57',
-			'modified' => '2015-03-17 14:43:57'
-		),
-		array(
-			'id' => '40',
-			'pack_size' => 'RECT500',
-			'comment' => '',
-			'created' => '2015-03-17 14:43:57',
-			'modified' => '2015-03-17 14:43:57'
-		),
-		array(
-			'id' => '41',
-			'pack_size' => 'IML500X18',
-			'comment' => '',
-			'created' => '2015-03-17 14:43:57',
-			'modified' => '2015-03-17 14:43:57'
-		),
-		array(
-			'id' => '42',
-			'pack_size' => 'IML250X32',
-			'comment' => '',
-			'created' => '2015-03-17 14:43:57',
-			'modified' => '2015-03-17 14:43:57'
-		),
-		array(
-			'id' => '44',
-			'pack_size' => 'RECT375',
-			'comment' => '',
-			'created' => '2015-03-17 14:43:57',
-			'modified' => '2015-03-17 14:43:57'
-		),
-		array(
-			'id' => '45',
-			'pack_size' => 'ROUND250',
-			'comment' => '',
-			'created' => '2015-03-17 14:43:57',
-			'modified' => '2015-03-17 14:43:57'
+			'id' => 1,
+			'pack_size' => 'Lorem ipsum dolor sit amet',
+			'comment' => 'Lorem ipsum dolor sit amet',
+			'created' => '2019-10-25 20:16:45',
+			'modified' => '2019-10-25 20:16:45'
 		),
 	);
 

@@ -12,6 +12,9 @@ class MenuFixture extends CakeTestFixture {
 	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'primary'),
 		'active' => array('type' => 'boolean', 'null' => false, 'default' => null),
+		'divider' => array('type' => 'boolean', 'null' => false, 'default' => null),
+		'header' => array('type' => 'boolean', 'null' => false, 'default' => null),
+		'admin_menu' => array('type' => 'boolean', 'null' => false, 'default' => null),
 		'name' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 45, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'description' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 45, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'url' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 254, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
@@ -23,8 +26,6 @@ class MenuFixture extends CakeTestFixture {
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'bs_url' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'divider' => array('type' => 'boolean', 'null' => false, 'default' => null),
-		'header' => array('type' => 'boolean', 'null' => false, 'default' => null),
 		'extra_args' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1)
@@ -41,6 +42,9 @@ class MenuFixture extends CakeTestFixture {
 		array(
 			'id' => 1,
 			'active' => 1,
+			'divider' => 1,
+			'header' => 1,
+			'admin_menu' => 1,
 			'name' => 'Lorem ipsum dolor sit amet',
 			'description' => 'Lorem ipsum dolor sit amet',
 			'url' => 'Lorem ipsum dolor sit amet',
@@ -49,11 +53,9 @@ class MenuFixture extends CakeTestFixture {
 			'parent_id' => 1,
 			'lft' => 1,
 			'rght' => 1,
-			'modified' => '2017-01-25 19:11:37',
-			'created' => '2017-01-25 19:11:37',
+			'modified' => '2019-10-25 20:16:45',
+			'created' => '2019-10-25 20:16:45',
 			'bs_url' => 'Lorem ipsum dolor sit amet',
-			'divider' => 1,
-			'header' => 1,
 			'extra_args' => 'Lorem ipsum dolor sit amet'
 		),
 	);
