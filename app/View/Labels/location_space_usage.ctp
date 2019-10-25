@@ -28,12 +28,12 @@
 	</tr>
 </thead>
 <tbody>
-<?php foreach($margLocations as $margLocation): ?>
-	<tr class="<?= $margLocation['Label']['hasSpace'] ? "success" : 'danger';?>">
-		<td><?= $margLocation['Label']['Location']; ?></td>
-		<td><?= $margLocation['Label']['pallet_capacity']; ?></td>
-		<td><?= $margLocation['Label']['Pallets']; ?></td>
-		<td><?= $margLocation['Label']['hasSpace'] ?
+<?php foreach($locations as $location): ?>
+	<tr class="<?= $location['Label']['hasSpace'] ? "success" : 'danger';?>">
+		<td><?= $location['Label']['Location']; ?></td>
+		<td><?= $location['Label']['pallet_capacity']; ?></td>
+		<td><?= $location['Label']['Pallets']; ?></td>
+		<td><?= $location['Label']['hasSpace'] ?
 		$this->Html->tag('span', null, [
 			'aria-hidden' => 'true',
 			'class' => 'glyphicon glyphicon-ok-circle' ] )
