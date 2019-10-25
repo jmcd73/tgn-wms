@@ -1,10 +1,10 @@
 <?php
-App::uses('Location', 'Model');
+App::uses('PackSize', 'Model');
 
 /**
- * Location Test Case
+ * PackSize Test Case
  */
-class LocationTest extends CakeTestCase {
+class PackSizeTest extends CakeTestCase {
 
 /**
  * Fixtures
@@ -12,15 +12,15 @@ class LocationTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.location',
+		'app.pack_size',
+		'app.item',
+		'app.print_template',
 		'app.product_type',
-		'app.inventory_status',
+		'app.location',
 		'app.label',
 		'app.printer',
 		'app.shipment',
-		'app.item',
-		'app.pack_size',
-		'app.print_template',
+		'app.inventory_status',
 		'app.user',
 		'app.production_line',
 		'app.shift'
@@ -33,7 +33,7 @@ class LocationTest extends CakeTestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		$this->Location = ClassRegistry::init('Location');
+		$this->PackSize = ClassRegistry::init('PackSize');
 	}
 
 /**
@@ -42,7 +42,7 @@ class LocationTest extends CakeTestCase {
  * @return void
  */
 	public function tearDown() {
-		unset($this->Location);
+		unset($this->PackSize);
 
 		parent::tearDown();
 	}

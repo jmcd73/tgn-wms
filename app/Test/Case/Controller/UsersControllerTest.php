@@ -17,6 +17,24 @@ class UsersControllerTest extends ControllerTestCase {
 	);
 
 /**
+ * testLogin method
+ *
+ * @return void
+ */
+	public function testLogin() {
+		$this->markTestIncomplete('testLogin not implemented.');
+	}
+
+/**
+ * testLogout method
+ *
+ * @return void
+ */
+	public function testLogout() {
+		$this->markTestIncomplete('testLogout not implemented.');
+	}
+
+/**
  * testIndex method
  *
  * @return void

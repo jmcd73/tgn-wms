@@ -1,10 +1,10 @@
 <?php
-App::uses('PrintTemplatesController', 'Controller');
+App::uses('SettingsController', 'Controller');
 
 /**
- * PrintTemplatesController Test Case
+ * SettingsController Test Case
  */
-class PrintTemplatesControllerTest extends ControllerTestCase {
+class SettingsControllerTest extends ControllerTestCase {
 
 /**
  * Fixtures
@@ -12,18 +12,6 @@ class PrintTemplatesControllerTest extends ControllerTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.print_template',
-		'app.item',
-		'app.pack_size',
-		'app.product_type',
-		'app.location',
-		'app.label',
-		'app.printer',
-		'app.shipment',
-		'app.inventory_status',
-		'app.user',
-		'app.production_line',
-		'app.shift',
 		'app.setting'
 	);
 
@@ -70,24 +58,6 @@ class PrintTemplatesControllerTest extends ControllerTestCase {
  */
 	public function testDelete() {
 		$this->markTestIncomplete('testDelete not implemented.');
-	}
-
-/**
- * testMoveDown method
- *
- * @return void
- */
-	public function testMoveDown() {
-		$this->markTestIncomplete('testMoveDown not implemented.');
-	}
-
-/**
- * testMoveUp method
- *
- * @return void
- */
-	public function testMoveUp() {
-		$this->markTestIncomplete('testMoveUp not implemented.');
 	}
 
 }

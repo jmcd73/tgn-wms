@@ -1,10 +1,10 @@
 <?php
-App::uses('LabelHistoriesController', 'Controller');
+App::uses('ProductTypesController', 'Controller');
 
 /**
- * LabelHistoriesController Test Case
+ * ProductTypesController Test Case
  */
-class LabelHistoriesControllerTest extends ControllerTestCase {
+class ProductTypesControllerTest extends ControllerTestCase {
 
 /**
  * Fixtures
@@ -12,25 +12,18 @@ class LabelHistoriesControllerTest extends ControllerTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.label_history',
-		'app.user',
-		'app.item',
-		'app.pack_size',
-		'app.machines_standard_rate',
-		'app.machine',
-		'app.report',
-		'app.report_date',
-		'app.shift',
 		'app.product_type',
 		'app.location',
 		'app.label',
+		'app.printer',
 		'app.shipment',
-		'app.operator',
-		'app.truck_registration',
+		'app.item',
+		'app.pack_size',
+		'app.print_template',
 		'app.inventory_status',
-		'app.down_time',
-		'app.downtime_type',
-		'app.reason_code',
+		'app.user',
+		'app.production_line',
+		'app.shift',
 		'app.setting'
 	);
 

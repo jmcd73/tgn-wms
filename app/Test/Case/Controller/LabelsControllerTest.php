@@ -13,24 +13,28 @@ class LabelsControllerTest extends ControllerTestCase {
  */
 	public $fixtures = array(
 		'app.label',
-		'app.location',
 		'app.product_type',
+		'app.location',
+		'app.inventory_status',
+		'app.production_line',
+		'app.printer',
 		'app.item',
 		'app.pack_size',
-		'app.machines_standard_rate',
-		'app.machine',
-		'app.report',
-		'app.report_date',
+		'app.print_template',
 		'app.shift',
-		'app.down_time',
-		'app.downtime_type',
-		'app.reason_code',
 		'app.shipment',
-		'app.operator',
-		'app.truck_registration',
-		'app.inventory_status',
+		'app.user',
 		'app.setting'
 	);
+
+/**
+ * testFormatReport method
+ *
+ * @return void
+ */
+	public function testFormatReport() {
+		$this->markTestIncomplete('testFormatReport not implemented.');
+	}
 
 /**
  * testFilterStatus method
@@ -168,6 +172,24 @@ class LabelsControllerTest extends ControllerTestCase {
 	}
 
 /**
+ * testSelectPalletPrintType method
+ *
+ * @return void
+ */
+	public function testSelectPalletPrintType() {
+		$this->markTestIncomplete('testSelectPalletPrintType not implemented.');
+	}
+
+/**
+ * testPalletPrint method
+ *
+ * @return void
+ */
+	public function testPalletPrint() {
+		$this->markTestIncomplete('testPalletPrint not implemented.');
+	}
+
+/**
  * testReprint method
  *
  * @return void
@@ -204,6 +226,15 @@ class LabelsControllerTest extends ControllerTestCase {
 	}
 
 /**
+ * testMultiEdit method
+ *
+ * @return void
+ */
+	public function testMultiEdit() {
+		$this->markTestIncomplete('testMultiEdit not implemented.');
+	}
+
+/**
  * testEdit method
  *
  * @return void
@@ -237,6 +268,15 @@ class LabelsControllerTest extends ControllerTestCase {
  */
 	public function testDelete() {
 		$this->markTestIncomplete('testDelete not implemented.');
+	}
+
+/**
+ * testLocationSpaceUsage method
+ *
+ * @return void
+ */
+	public function testLocationSpaceUsage() {
+		$this->markTestIncomplete('testLocationSpaceUsage not implemented.');
 	}
 
 }

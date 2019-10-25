@@ -36,4 +36,31 @@ class PrinterTest extends CakeTestCase {
 		parent::tearDown();
 	}
 
+/**
+ * testGetCupsURL method
+ *
+ * @return void
+ */
+	public function testGetCupsURL() {
+		$this->markTestIncomplete('testGetCupsURL not implemented.');
+	}
+
+/**
+ * testGetLocalPrinterList method
+ *
+ * @return void
+ */
+	public function testGetLocalPrinterList() {
+		$this->markTestIncomplete('testGetLocalPrinterList not implemented.');
+	}
+
+/**
+ * testIsControllerActionDuplicated method
+ *
+ * @return void
+ */
+	public function testIsControllerActionDuplicated() {
+		$this->markTestIncomplete('testIsControllerActionDuplicated not implemented.');
+	}
+
 }

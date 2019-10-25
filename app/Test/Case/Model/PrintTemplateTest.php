@@ -15,23 +15,15 @@ class PrintTemplateTest extends CakeTestCase {
 		'app.print_template',
 		'app.item',
 		'app.pack_size',
-		'app.machines_standard_rate',
-		'app.machine',
-		'app.report',
-		'app.report_date',
-		'app.shift',
 		'app.product_type',
 		'app.location',
 		'app.label',
+		'app.printer',
 		'app.shipment',
-		'app.operator',
-		'app.truck_registration',
 		'app.inventory_status',
 		'app.user',
-		'app.label_history',
-		'app.down_time',
-		'app.downtime_type',
-		'app.reason_code'
+		'app.production_line',
+		'app.shift'
 	);
 
 /**
@@ -53,6 +45,15 @@ class PrintTemplateTest extends CakeTestCase {
 		unset($this->PrintTemplate);
 
 		parent::tearDown();
+	}
+
+/**
+ * testDeleteFileTemplate method
+ *
+ * @return void
+ */
+	public function testDeleteFileTemplate() {
+		$this->markTestIncomplete('testDeleteFileTemplate not implemented.');
 	}
 
 }

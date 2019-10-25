@@ -1,10 +1,10 @@
 <?php
-App::uses('Location', 'Model');
+App::uses('Shift', 'Model');
 
 /**
- * Location Test Case
+ * Shift Test Case
  */
-class LocationTest extends CakeTestCase {
+class ShiftTest extends CakeTestCase {
 
 /**
  * Fixtures
@@ -12,18 +12,18 @@ class LocationTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.location',
+		'app.shift',
 		'app.product_type',
-		'app.inventory_status',
+		'app.location',
 		'app.label',
 		'app.printer',
 		'app.shipment',
 		'app.item',
 		'app.pack_size',
 		'app.print_template',
+		'app.inventory_status',
 		'app.user',
-		'app.production_line',
-		'app.shift'
+		'app.production_line'
 	);
 
 /**
@@ -33,7 +33,7 @@ class LocationTest extends CakeTestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		$this->Location = ClassRegistry::init('Location');
+		$this->Shift = ClassRegistry::init('Shift');
 	}
 
 /**
@@ -42,9 +42,18 @@ class LocationTest extends CakeTestCase {
  * @return void
  */
 	public function tearDown() {
-		unset($this->Location);
+		unset($this->Shift);
 
 		parent::tearDown();
+	}
+
+/**
+ * testShiftMinutes method
+ *
+ * @return void
+ */
+	public function testShiftMinutes() {
+		$this->markTestIncomplete('testShiftMinutes not implemented.');
 	}
 
 }

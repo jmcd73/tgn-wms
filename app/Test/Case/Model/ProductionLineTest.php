@@ -16,15 +16,13 @@ class ProductionLineTest extends CakeTestCase {
 		'app.product_type',
 		'app.location',
 		'app.label',
+		'app.printer',
 		'app.shipment',
 		'app.item',
 		'app.pack_size',
-		'app.machines_standard_rate',
 		'app.print_template',
-		'app.report',
 		'app.inventory_status',
 		'app.user',
-		'app.label_history',
 		'app.shift'
 	);
 

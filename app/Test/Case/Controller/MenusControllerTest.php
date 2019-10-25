@@ -1,10 +1,10 @@
 <?php
-App::uses('ProductionLinesController', 'Controller');
+App::uses('MenusController', 'Controller');
 
 /**
- * ProductionLinesController Test Case
+ * MenusController Test Case
  */
-class ProductionLinesControllerTest extends ControllerTestCase {
+class MenusControllerTest extends ControllerTestCase {
 
 /**
  * Fixtures
@@ -12,20 +12,18 @@ class ProductionLinesControllerTest extends ControllerTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.production_line',
-		'app.product_type',
-		'app.location',
-		'app.label',
-		'app.printer',
-		'app.shipment',
-		'app.item',
-		'app.pack_size',
-		'app.print_template',
-		'app.inventory_status',
-		'app.user',
-		'app.shift',
+		'app.menu',
 		'app.setting'
 	);
+
+/**
+ * testControllerList method
+ *
+ * @return void
+ */
+	public function testControllerList() {
+		$this->markTestIncomplete('testControllerList not implemented.');
+	}
 
 /**
  * testIndex method
@@ -34,6 +32,33 @@ class ProductionLinesControllerTest extends ControllerTestCase {
  */
 	public function testIndex() {
 		$this->markTestIncomplete('testIndex not implemented.');
+	}
+
+/**
+ * testMoveUp method
+ *
+ * @return void
+ */
+	public function testMoveUp() {
+		$this->markTestIncomplete('testMoveUp not implemented.');
+	}
+
+/**
+ * testMoveDown method
+ *
+ * @return void
+ */
+	public function testMoveDown() {
+		$this->markTestIncomplete('testMoveDown not implemented.');
+	}
+
+/**
+ * testBuildMenu method
+ *
+ * @return void
+ */
+	public function testBuildMenu() {
+		$this->markTestIncomplete('testBuildMenu not implemented.');
 	}
 
 /**

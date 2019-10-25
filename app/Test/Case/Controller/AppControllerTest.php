@@ -16,33 +16,6 @@ class AppControllerTest extends ControllerTestCase {
 	);
 
 /**
- * testGetRoles method
- *
- * @return void
- */
-	public function testGetRoles() {
-		$this->markTestIncomplete('testGetRoles not implemented.');
-	}
-
-/**
- * testGetPrintType method
- *
- * @return void
- */
-	public function testGetPrintType() {
-		$this->markTestIncomplete('testGetPrintType not implemented.');
-	}
-
-/**
- * testFormatHumanReadableBestBefore method
- *
- * @return void
- */
-	public function testFormatHumanReadableBestBefore() {
-		$this->markTestIncomplete('testFormatHumanReadableBestBefore not implemented.');
-	}
-
-/**
  * testFormatYYMMDD method
  *
  * @return void
@@ -52,21 +25,21 @@ class AppControllerTest extends ControllerTestCase {
 	}
 
 /**
- * testValidateDate method
- *
- * @return void
- */
-	public function testValidateDate() {
-		$this->markTestIncomplete('testValidateDate not implemented.');
-	}
-
-/**
  * testIsAuthorized method
  *
  * @return void
  */
 	public function testIsAuthorized() {
 		$this->markTestIncomplete('testIsAuthorized not implemented.');
+	}
+
+/**
+ * testGetSetting method
+ *
+ * @return void
+ */
+	public function testGetSetting() {
+		$this->markTestIncomplete('testGetSetting not implemented.');
 	}
 
 }

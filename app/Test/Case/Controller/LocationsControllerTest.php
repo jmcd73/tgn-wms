@@ -3,7 +3,6 @@ App::uses('LocationsController', 'Controller');
 
 /**
  * LocationsController Test Case
- *
  */
 class LocationsControllerTest extends ControllerTestCase {
 
@@ -14,8 +13,18 @@ class LocationsControllerTest extends ControllerTestCase {
  */
 	public $fixtures = array(
 		'app.location',
+		'app.product_type',
+		'app.inventory_status',
 		'app.label',
-		'app.labels_location'
+		'app.printer',
+		'app.shipment',
+		'app.item',
+		'app.pack_size',
+		'app.print_template',
+		'app.user',
+		'app.production_line',
+		'app.shift',
+		'app.setting'
 	);
 
 /**

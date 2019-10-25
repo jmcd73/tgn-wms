@@ -45,13 +45,4 @@ class SettingTest extends CakeTestCase {
 		$this->markTestIncomplete('testGetReferenceNumber not implemented.');
 	}
 
-/**
- * testGetSetting method
- *
- * @return void
- */
-	public function testGetSetting() {
-		$this->markTestIncomplete('testGetSetting not implemented.');
-	}
-
 }

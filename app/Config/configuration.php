@@ -65,8 +65,8 @@ $config = [
      * SetEnv ENVIRONMENT LIVE|HOME|TEST in .htaccess
      * */
     'datasources' => [
-        'HOME' => 'home', // my laptop
-         'TEST' => 'default', // test
+        'HOME' => 'default', // my laptop
+         'TEST' => 'test', // test
          'NEWTEST' => 'palletsTest'
     ],
     'navbar' => [

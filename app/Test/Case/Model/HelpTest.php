@@ -36,4 +36,31 @@ class HelpTest extends CakeTestCase {
 		parent::tearDown();
 	}
 
+/**
+ * testSetDocumentationRoot method
+ *
+ * @return void
+ */
+	public function testSetDocumentationRoot() {
+		$this->markTestIncomplete('testSetDocumentationRoot not implemented.');
+	}
+
+/**
+ * testGetMarkdown method
+ *
+ * @return void
+ */
+	public function testGetMarkdown() {
+		$this->markTestIncomplete('testGetMarkdown not implemented.');
+	}
+
+/**
+ * testListMdFiles method
+ *
+ * @return void
+ */
+	public function testListMdFiles() {
+		$this->markTestIncomplete('testListMdFiles not implemented.');
+	}
+
 }
