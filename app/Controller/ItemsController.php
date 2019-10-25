@@ -200,6 +200,8 @@ class ItemsController extends AppController
             }
         }
 
+
+
         $printTemplates = $this->Item->PrintTemplate->generateTreeList(
             [
                 'PrintTemplate.active' => true
@@ -213,7 +215,16 @@ class ItemsController extends AppController
 
         $packSizes = $this->Item->PackSize->find('list');
         $global_min_days_life = $this->getSetting('min_days_life');
-        $this->set(compact('packSizes', 'printTemplates', 'global_min_days_life', 'productTypes'));
+        $defaultPalletLabelCopies = $this->getSetting('sscc_default_label_copies');
+        $this->set(
+            compact(
+                'packSizes',
+                'defaultPalletLabelCopies',
+                'printTemplates',
+                'global_min_days_life',
+                'productTypes'
+            )
+        );
     }
 
     /**
@@ -266,8 +277,10 @@ class ItemsController extends AppController
         $productTypes = $this->Item->ProductType->find('list', [
             'recursive' => -1
         ]);
+        $defaultPalletLabelCopies = $this->getSetting('sscc_default_label_copies');
         $this->set(compact(
             'packSizes',
+            'defaultPalletLabelCopies',
             'printTemplates',
             'global_min_days_life',
             'productTypes'

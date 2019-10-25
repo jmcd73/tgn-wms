@@ -77,8 +77,8 @@ $this->Form->input(
     'copies', [
         'type' => 'radio',
         'legend' => false,
-        'options' => [1 => "1 Label", 2 => "2 Labels"],
-        'default' => 2
+        'options' => $labelCopiesList,
+        'default' => $inputDefaultCopies
     ]);
 ?>
 <?php
