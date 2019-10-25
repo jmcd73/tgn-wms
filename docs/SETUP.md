@@ -118,21 +118,23 @@
 1. ### Pack Sizes
     Pack sizes allow you to group items together.
 
-    For operations where you make a variety of SKUs that have similar format you could use weight or volume e.g.:
-        * 250g
-        * 500g
-        * 1KG
-        * 1L
-        * 2L
-        * 4L
+    For operations where you make a variety of SKUs that have similar format you could use weight or volume e.g.
+
+    * 250g
+    * 500g
+    * 1KG
+    * 1L
+    * 2L
+    * 4L
+
     Or define classes of different defining qualities such as shape
-        * 500gROUNDGlass
-        * 250gRect
+    * 500gROUNDGlass
+    * 250gRect
 
     Having these defined allows reporting by pack size. i.e. we made 40,000 1L products this week.
 
     For setup you can just create a default pack size and then assign all items to this e.g.
-        * PackSize1
+    * PackSize1
 
     Later as you start using the system you can revisit
 
@@ -154,14 +156,14 @@
 
 1. ### Printers
     Printers need to be defined in Cups before being configured in `Admin => Printers`
-    Goto http://<yourhost>:{CUPS_PORT} (631 or if in docker environment whatever you set CUPS_PORT to)
+    Goto `http://<yourhost>:{CUPS_PORT}` (631 or if in docker environment whatever you set CUPS_PORT to)
     Add remote printers in CUPS
     Return to the Admin => Printers screen and you should be able to select the CUPS configured print queue
     Give the printer a friendly name if using the default PDF queue
     * **Name** - `PDF Printer`
     * **Options** - Leave this blank for PDF if you are printing to a CAB or Zebra printer then the command language files need to reach the printer without having been put through a filter so set this to `-o raw`
     * **Queue name** - This is the result of the application doing an lpstat and is a list of the CUPS print queues select `PDF` or whichever printer you have configured
-    * **Set as default for these actions** - Here you will see a list of CakePHP Controllers and actions if you wish this printer to be the default printer for a specify Controller::action then check the box next to it.
+    * **Set as default for these actions** - Here you will see a list of CakePHP Controllers and actions if you wish this printer to be the default printer for a specify Controller::action then check the box next to it. For a list of the currently configure Controller::actions that may require a default to be set see [PRINTING.md](PRINTING.md#application-print-controller-action-list)
 
 1. ### Production Lines
     Production Lines allow you to specify a printer for pallet label printing
