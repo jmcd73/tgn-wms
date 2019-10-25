@@ -19,7 +19,7 @@
     ```
 4. Build docker image
     ```sh
-    cd  ../../docker
+    cd ../../../docker/
     docker build -t tgn/php73:v2 .
     ```
 5. Run the container
@@ -27,7 +27,7 @@
     #!/bin/sh
     CUPS_PORT=634
     APACHE_PORT=8634
-    DOCKER_TAG=tgn/php73:v2
+    DOCKER_TAG=tgn/php73:v2 # tag (-t) you used for docker build
     VOLUME=~/sites/tgnwms/
     CONTAINER_NAME=tgnwms
 
@@ -106,8 +106,8 @@
     // app/Config/configuration.php
     //... snippage
     'datasources' => [
-        'HOME' => 'home', // my laptop
-        'TEST' => 'default', // test
+        'HOME' => 'default', // my laptop
+        'TEST' => 'test', // test
         'NEWTEST' => 'palletsTest'
     ],
     //... snippage
@@ -131,7 +131,7 @@
     ```apacheconf
     SetEnv CAKEPHP_DEBUG 2
     Header Set X-Forwarded-Host "frontend.toggen.com.au"
-    SetEnv ENVIRONMENT TEST
+    SetEnv ENVIRONMENT HOME
 
     <IfModule mod_rewrite.c>
     RewriteEngine On
@@ -144,7 +144,7 @@
 
     Most menu items are public but if authentication and authorization is required you will be redirected to a login screen. The default username and password for the CakePHP application is `admin/admin`
 
-    The default **root** password for the docker container is defined in the Dockerfile as `HeartMindSoul`
+    The default **root** password for the docker container is defined in the Dockerfile as `HeartMindSoul`. You will need this if when you add printers via CUPS.
 
     The `tgn-wms-db.sql` file imported above pre-populates the database with some product types & items, sample labels, a PDF Printer and some sample data
 

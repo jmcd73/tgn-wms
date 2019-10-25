@@ -19,6 +19,6 @@ docs/*.pdf
 bin/locations.csv
 bin/items.csv
 bin/test.php
-
+print
 app/Controller/logStatements.txt
 .DS_Store
