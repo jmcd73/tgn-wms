@@ -83,7 +83,8 @@ class AppModel extends Model
     public function getLabelPrinters($controller = null, $action = null)
     {
         $printerModel = ClassRegistry::init('Printer');
-        $controllerAction = $controller . 'Controller::' . $action;
+
+        $controllerAction = Inflector::camelize($controller . '_Controller::') . $action;
 
         $labelPrinters = $printerModel->find(
             'all', [
@@ -93,27 +94,27 @@ class AppModel extends Model
             ]
         );
 
-        $default = [];
+        $default = array_reduce(
+            $labelPrinters,
+            function ($carry, $printer) use ($controllerAction) {
 
-        $label_printer_list = [];
+                if (in_array(
+                    $controllerAction,
+                    $printer['Printer']['set_as_default_on_these_actions']
+                )
+                ) {
+                    $carry = $printer['Printer']['id'];
+                };
+                return $carry;
+            },
+            null
+        );
 
-        foreach ($labelPrinters as $printer) {
-
-            $label_printer_list[$printer['Printer']['id']] = $printer['Printer']['name'];
-            if (
-                isset($printer['Printer']['set_as_default_on_these_actions']) &&
-                !empty($printer['Printer']['set_as_default_on_these_actions'])
-            ) {
-
-                $controllerActionDefaults = $printer['Printer']['set_as_default_on_these_actions'];
-
-                if (in_array($controllerAction, $controllerActionDefaults)) {
-                    $default = $printer['Printer']['id'];
-                }
-            }
-        }
-
-        $printers['printers'] = $label_printer_list;
+        $printers['printers'] = Hash::combine(
+            $labelPrinters,
+            '{n}.Printer.id',
+            '{n}.Printer.name'
+        );
         $printers['default'] = $default;
 
         return $printers;

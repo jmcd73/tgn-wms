@@ -21,3 +21,4 @@ bin/items.csv
 bin/test.php
 
 app/Controller/logStatements.txt
+.DS_Store

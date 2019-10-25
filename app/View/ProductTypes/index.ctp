@@ -9,7 +9,7 @@
 			<th><?= $this->Paginator->sort('next_serial_number', 'Next #'); ?></th>
 			<th><?= $this->Paginator->sort('name'); ?></th>
 			<th><?= $this->Paginator->sort('location_id', 'Default Save Location'); ?></th>
-			<th><?= $this->Paginator->sort('storage_temperature'); ?></th>
+			<th><?= $this->Paginator->sort('inventory_status_id', 'Initial Inventory Status'); ?></th>
 			<th><?= $this->Paginator->sort('code_regex'); ?></th>
 			<th><?= $this->Paginator->sort('code_regex_description'); ?></th>
 			<th class="actions"><?= __('Actions'); ?></th>
@@ -23,7 +23,7 @@
 		<td><?= h($productType['ProductType']['next_serial_number']); ?></td>
 		<td><?= h($productType['ProductType']['name']); ?></td>
 		<td><?= h($productType['DefaultLocation']['location']); ?></td>
-		<td><?= h($productType['ProductType']['storage_temperature']); ?></td>
+		<td><?= h($productType['InventoryStatus']['name']); ?></td>
 		<td><?= h($productType['ProductType']['code_regex']); ?></td>
 		<td><?= h($productType['ProductType']['code_regex_description']); ?></td>
 		<td class="actions">

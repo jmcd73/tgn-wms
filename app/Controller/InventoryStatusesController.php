@@ -15,7 +15,7 @@ class InventoryStatusesController extends AppController {
  */
 	public $components = ['Paginator'];
 
-        
+
         public function beforeFilter() {
             parent::beforeFilter();
             // Allow users to register and logout.
@@ -43,6 +43,9 @@ class InventoryStatusesController extends AppController {
 			throw new NotFoundException(__('Invalid inventory status'));
 		}
 		$options = ['conditions' => ['InventoryStatus.' . $this->InventoryStatus->primaryKey => $id]];
+
+
+		$this->set('stockViewPerms', $this->InventoryStatus->createStockViewPermsList());
 		$this->set('inventoryStatus', $this->InventoryStatus->find('first', $options));
 	}
 
@@ -61,9 +64,9 @@ class InventoryStatusesController extends AppController {
 				$this->Flash->error(__('The inventory status could not be saved. Please, try again.'));
 			}
 		}
-                
+
                  $stockViewPerms = $this->InventoryStatus->createStockViewPermsList();
-                        
+
                 $this->set(compact('stockViewPerms'));
 	}
 
@@ -89,9 +92,9 @@ class InventoryStatusesController extends AppController {
 			$options = ['conditions' => ['InventoryStatus.' . $this->InventoryStatus->primaryKey => $id]];
 			$this->request->data = $this->InventoryStatus->find('first', $options);
 		}
-                
+
                 $stockViewPerms = $this->InventoryStatus->createStockViewPermsList();
-                        
+
                 $this->set(compact('stockViewPerms'));
 	}
 
