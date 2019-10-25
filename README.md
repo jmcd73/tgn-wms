@@ -1,5 +1,11 @@
 # Toggen WMS
-This is a project that I have been working on for a number of years and is used in a production environment. It uses open source components to provide simple pallet and label printing and product production and dispatch workflow
+This is a project that I have been working on for a number of years.
+
+It was orginally coded for, and is still used in a production food manufacturing environment
+
+It uses open source components to provide simple pallet and label printing and product production and dispatch workflow
+
+This github release has largely been rewritten and improved
 
 ## Features
 * Product database for item data (GTIN13/14 barcode, weights, qauntity)
