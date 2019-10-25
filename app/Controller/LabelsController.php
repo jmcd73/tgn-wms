@@ -3,6 +3,7 @@
 App::uses('AppController', 'Controller');
 App::uses('CakeTime', 'Utility');
 App::import('Vendor', 'CabLabel');
+App::uses('MissingItemException', 'Lib');
 
 /**
  * Labels Controller
@@ -203,8 +204,6 @@ class LabelsController extends AppController
             ]
         ]);
 
-        // $this->log($shipments);
-
         foreach ($shipments as $shipment) {
             $item = $shipment['Item']['min_days_life'];
 
@@ -224,8 +223,6 @@ class LabelsController extends AppController
                 echo "Updating " . $pl_ref . "\n";
             }
         }
-
-        //  $this->log(count($shipments) . " Labels");
 
         $this->autoRender = false;
         //$this->Shipment->save($this->request->data)
@@ -655,23 +652,15 @@ class LabelsController extends AppController
                 ]
             );
 
-        $productionLineList = $this->Label->Item
-            ->ProductType->ProductionLine->find(
-                'list', [
-                    'conditions' => [
-                        'ProductionLine.product_type_id' => $productTypeId
-                    ]
-                ]
-            );
-
-        if ($productType['ProductType']['inventory_status_id'] > 0) {
-            $inventoryStatusId = $productType['ProductType']['inventory_status_id'];
-        } else {
-            $inventoryStatusId = 0;
-        }
+        $productionLineList = Hash::combine(
+            $productionLines,
+            '{n}.ProductionLine.id',
+            '{n}.ProductionLine.name'
+        );
+        $inventoryStatusId = ($productType['ProductType']['inventory_status_id'] > 0)
+            ? $productType['ProductType']['inventory_status_id'] : 0;
 
         if ($this->request->is('post')) {
-            //$this->log(['rd' => $this->request->data]);
 
             $plRefMaxLength = $this->Label->getSetting('plRefMaxLength');
             $str = 'Maximum length for a pallet reference is <strong>%d</strong>';
@@ -744,6 +733,16 @@ class LabelsController extends AppController
                 $productionLineName = $productionLine['ProductionLine']['name'];
 
                 $printerId = $productionLine['ProductionLine']['printer_id'];
+
+                if (!$this->Label->Printer->exists($printerId)) {
+                    throw new MissingItemException(
+                        [
+                            'message' => "Missing Printer",
+                            'printer' => $printerId
+                        ],
+                        404
+                    );
+                }
 
                 $sscc = $this->Label->generateSSCC();
 
@@ -887,7 +886,7 @@ class LabelsController extends AppController
                 if ($isPrintDebugMode || $return_value['return_value'] === 0) {
 
                     $this->Label->create();
-                    $this->log(['nl' => $newLabel]);
+
                     if ($this->Label->save($newLabel)) {
 
                         $msg = $this->Label->createSuccessMessage(
@@ -982,7 +981,6 @@ class LabelsController extends AppController
 
             // handle print post
 
-
             $pallet_ref = $label['Label']['pl_ref'];
 
             $replaceTokens = json_decode(
@@ -1013,7 +1011,6 @@ class LabelsController extends AppController
             );
 
             $itemId = $label['Label']['item_id'];
-
 
             // get the printer queue name
             $printerId = $this->request->data['Label']['printer_id'];
@@ -1210,10 +1207,7 @@ class LabelsController extends AppController
         if ($this->request->is(['post', 'put'])) {
 
             if ($this->Label->save($this->request->data)) {
-                // $this->log($this->request->data);
-
                 if ($this->request->is('ajax')) {
-                    //$this->log("ajax baby");
                     $this->autoRender = false;
                     $this->response->type = 'json';
                     $msg = [
@@ -1322,7 +1316,6 @@ class LabelsController extends AppController
         }
 
         if ($this->request->is(['post', 'put'])) {
-            $this->log(['ptoMove' => $this->request->data]);
 
             $location_find = $this->Label->Location->find(
                 'first', [
