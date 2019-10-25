@@ -1,7 +1,5 @@
 # Toggen WMS
-This is a project that I have been working on for a number of years it uses open source components to provide a simple pallet production and dispatch workflow.
-
-Presently it assumes that each pallet contains the same products but can be extended to handle multi-product pallets
+This is a project that I have been working on for a number of years and is used in a production environment. It uses open source components to provide simple pallet and label printing and product production and dispatch workflow
 
 ## Features
 * Product database for item data (GTIN13/14 barcode, weights, qauntity)
@@ -30,6 +28,7 @@ Presently it assumes that each pallet contains the same products but can be exte
 * MySQL or MariaDB
 * Ubuntu 18.04 LTS
 * CUPS 2.2.x
+* CUPS-PDF
 * Supervisord
 
 ### Application packages
@@ -45,5 +44,7 @@ Presently it assumes that each pallet contains the same products but can be exte
 ## Installation
     See [docs/INSTALL.md](docs/INSTALL.md)
 
+## Configuration
+    See [docs/SETUP.md](docs/SETUP.md)
 
 
