@@ -8,13 +8,13 @@ Presently it assumes that each pallet contains the same products but can be exte
 * Locations, Inventory Status, Pack sizes
 * Very simple warehousing
     * Can be configured so pallets 'move' directly to a default location or use simple put-away
-    * Minumum days life calculation so old product isn't sent out unless QA unholds it
-    * Dispatch shipment document creation
-    * Location usage screen
+    * Minimum days life calculation so old product isn't sent out unless QA unholds it
+    * Dispatch PDF Pick slips
+    * Location usage / free space screen
 * Inventory statuses WAIT HOLD etc for QA
+* Bulk inventory status update screen
 * Settings table to manage Company Name, GS1 company prefix
 * Configure multiple product types, production lines  & printers
-* PDF Pick slips
 * Numbering and coding
     * Batch numbers based on ordinal day of year YDDDBB (e.g Last digit of year eg 9 day 105 batch 22)
 * Printing
@@ -24,20 +24,26 @@ Presently it assumes that each pallet contains the same products but can be exte
     * Endpoints to serve Product Lists as JSON or XML for external systems
 
 ## Open source technologies
-* CakePHP 2.x
+### Docker development environment
+* PHP7.3
+* Apache
 * MySQL or MariaDB
-* Use with NGinx or Apache
-* TCPDF
+* Ubuntu 18.04 LTS
 * CUPS 2.2.x
-* Bootstrap 3.4.x
-* CakePHP 2.x Helpers for Bootstrap 3
-    * https://github.com/Holt59/cakephp-bootstrap3-helpers
+* Supervisord
+
+### Application packages
+* [CakePHP 2.10.9](https://cakephp.org/)
+* [TCPDF](https://tcpdf.org/)
+* Bootstrap v3.4.1
+* [CakePHP 2.x Helpers for Bootstrap 3](https://github.com/Holt59/cakephp-bootstrap3-helpers)
 * ReactJS Embedded in CakePHP Views
     * Shipment document add/edit screen
     * Warehouse pallet pick screen
 * GLabels Barcode and Label Printing
 
-
+## Installation
+    See [docs/INSTALL.md](docs/INSTALL.md)
 
 
 
