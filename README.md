@@ -42,9 +42,9 @@ This is a project that I have been working on for a number of years and is used 
 * GLabels Barcode and Label Printing
 
 ## Installation
-    See [docs/INSTALL.md](docs/INSTALL.md)
+See [docs/INSTALL.md](docs/INSTALL.md)
 
 ## Configuration
-    See [docs/SETUP.md](docs/SETUP.md)
+See [docs/SETUP.md](docs/SETUP.md)
 
 
