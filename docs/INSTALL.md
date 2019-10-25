@@ -7,7 +7,7 @@
     ```
 2. Clone this repo
     ```sh
-    git clone this_repo_url tgnwms
+    git clone https://github.com/jmcd73/tgn-wms.git tgnwms
     # pull the docker and FileUpload repos
     cd tgnwms
     git submodule update --init --recursive
@@ -19,7 +19,7 @@
     ```
 4. Build docker image
     ```sh
-    cd  docker
+    cd  ../../docker
     docker build -t tgn/php73:v2 .
     ```
 5. Run the container
@@ -152,3 +152,5 @@
 
     ![Home Screen](images/010-main.png)
 
+## Next Steps
+After completing the above installation steps see [SETUP.md](SETUP.md) for a step by step for configuring your own customized environment
