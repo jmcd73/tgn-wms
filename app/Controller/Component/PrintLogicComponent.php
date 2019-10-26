@@ -626,7 +626,7 @@ class PrintLogicComponent extends Component
      * @param bool $reprint Whether this is a reprint or not default = false
      * @return string
      */
-    public function getPrintJobName($referenceOrAction, $reprint)
+    public function getPrintJobName($referenceOrAction, $reprint = false)
     {
         $this->setJobId($referenceOrAction, $reprint);
 

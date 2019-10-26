@@ -47,15 +47,16 @@ class AppModel extends Model
      */
     public function __construct($id = false, $table = null, $ds = null)
     {
-
         $env = getenv('ENVIRONMENT') ?: 'HOME';
 
         $db_connections = Configure::read('datasources');
+
         $db_connection = $db_connections[$env];
 
         if ($db_connection) {
             $this->useDbConfig = $db_connection;
         }
+
         parent::__construct($id, $table, $ds);
     }
 
@@ -180,10 +181,10 @@ class AppModel extends Model
      * @param $kgs
      * @param $hrs
      * @return int
+     *
      */
     public function divide_values($kgs, $hrs)
     {
-
         if ($kgs == 0.0 || $hrs == 0.0) {
             return 0;
         } else {
@@ -220,8 +221,12 @@ class AppModel extends Model
 
         $date_interval = $start_date->diff($end_date);
 
-        return sprintf('%sh %dm %2ds', $date_interval->h, $date_interval->i, $date_interval->s);
-
+        return sprintf(
+            '%sh %dm %2ds',
+            $date_interval->h,
+            $date_interval->i,
+            $date_interval->s
+        );
     }
 
     /**
@@ -299,9 +304,13 @@ class AppModel extends Model
      * @param $format
      * @param $date_string
      */
-    public function formatLabelDates($format, $date_string)
+    public function formatLabelDates($dateString, $dateFormats)
     {
-        return date($format, $date_string);
+        $dates = [];
+        foreach ($dateFormats as $k => $v) {
+            $dates[$k] = date($v, $dateString);
+        }
+        return $dates;
     }
 
     /**
@@ -313,7 +322,6 @@ class AppModel extends Model
      */
     public function getBatchNumbers()
     {
-
         $batch_prefix = substr(CakeTime::format(time(), '%Y%j'), 3);
 
         for ($i = 1; $i <= 99; $i++) {
@@ -328,6 +336,7 @@ class AppModel extends Model
      *  returns true if it does
      * @returns bool
      *
+     *
      * */
     public function checkBatchNum($batch_no, $context)
     {
@@ -336,7 +345,6 @@ class AppModel extends Model
         $batch_nos = $this->getBatchNumbers();
 
         foreach ($batch_nos as $key => $value) {
-
             if ($batch_no['batch_no'] == $key) {
                 $match = true;
             }
@@ -361,14 +369,15 @@ class AppModel extends Model
         );
 
         $serialNumberFormat = $productType['ProductType']['serial_number_format'];
+
         $serialNumber = $productType['ProductType']['next_serial_number'];
+
         if (!$productTypeModel->save(
             [
                 'id' => $productTypeId,
                 'next_serial_number' => ++$serialNumber
             ]
-        )
-        ) {
+        )) {
             throw new CakeException('Could not update the next_serial_number');
         };
 

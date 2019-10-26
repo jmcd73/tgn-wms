@@ -696,6 +696,15 @@ class Label extends AppModel
     /**
      * @return mixed
      */
+    public function generateSSCCWithCheckDigit()
+    {
+        $sscc = $this->generateSSCC();
+        return  $sscc . $this->generateCheckDigit($sscc);
+    }
+
+    /**
+     * @return mixed
+     */
     public function generateSSCC()
     {
         $settings = ClassRegistry::init('Setting');
