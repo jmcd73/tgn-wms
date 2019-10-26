@@ -21,7 +21,7 @@
 		</dd>
 		<dt><?=__('Url');?></dt>
 		<dd>
-			<?=h($menu['Menu']['url']);?>
+			<?=h($menu['Menu']['bs_url']);?>
 
 		</dd>
 		<dt><?=__('Options');?></dt>
@@ -71,8 +71,7 @@
 		<th><?=__('Parent Id');?></th>
 		<th><?=__('Lft');?></th>
 		<th><?=__('Rght');?></th>
-		<th><?=__('Modified');?></th>
-		<th><?=__('Created');?></th>
+
 		<th class="actions"><?=__('Actions');?></th>
 	</tr>
 	<?php foreach ($menu['ChildMenu'] as $childMenu): ?>
@@ -80,23 +79,15 @@
 			<td><?=$childMenu['id'];?></td>
                         <td><?=$childMenu['active'];?></td>
 			<td><?=$childMenu['name'];?></td>
-			<td><?=$childMenu['url'];?></td>
+			<td><?=$childMenu['bs_url'];?></td>
 			<td><?=$childMenu['options'];?></td>
 			<td><?=$childMenu['parent_id'];?></td>
 			<td><?=$childMenu['lft'];?></td>
 			<td><?=$childMenu['rght'];?></td>
-			<td><?=$childMenu['modified'];?></td>
-			<td><?=$childMenu['created'];?></td>
 			<td class="actions">
 
-                <?=$this->Form->postLink( '<i class="fas fa-caret-down"></i> ' . __('Move down'), ['action' => 'move_down', $childMenu['id']], [
-					'class' => 'btn btn-sm',
-					'escape' => false,
-					'confirm' => __('Are you sure you want to move down # %s??', $menu['Menu']['id'])])?>
-                <?=$this->Form->postLink('<i class="fas fa-caret-up"></i> ' . __('Move up'), ['action' => 'move_up', $childMenu['id']], [
-					'class' => 'btn btn-sm',
-					'escape' => false,
-					'confirm' => __('Are you sure you want to move up # %s?', $menu['Menu']['id'])])?>
+			<div class="row bpad10">
+                            <div class="col-lg-12">
 				<?=$this->Html->link(
 					'<i class="fas fa-eye"></i> ' . __('View'), ['controller' => 'menus', 'action' => 'view', $childMenu['id']],
 			[
@@ -126,7 +117,40 @@
 					'class' => 'btn btn-sm',
 					'escape' => false
 				], __('Are you sure you want to delete # %s?', $childMenu['id']));?>
-
+		</div>
+			</div>
+<div class="row bpad10">
+                            <div class="col-lg-12">
+				 <?php
+                                echo $this->Form->create(null, [
+                                    'url' => [
+                                        'action' => 'move',
+                                        $menu['Menu']['id']
+                                    ],
+                                    'class' => 'input-sm up-down-control'
+                                ]);
+                                echo $this->Form->input('amount', [
+                                    'input-group-size' => 'input-group-sm',
+                                    'label' => false,
+                                    'class' => 'move',
+                                    'placeholder' => 'move up/down',
+                                    'prepend' => $this->Form->button('<i class="fas fa-caret-up"></i>', [
+                                        'type' => 'submit',
+                                        'name' => 'data[Menu][move_up]',
+                                        'class' => 'move-up'
+                                    ]
+                                    ),
+                                    'append' => $this->Form->button('<i class="fas fa-caret-down"></i>', [
+                                        'type' => 'submit',
+                                        'name' => 'data[Menu][move_down]',
+                                        'class' => 'move-down'
+                                    ]
+                                    )
+                                ]);
+                                echo $this->Form->end();
+							?>
+							</div>
+									</div>
 			</td>
 		</tr>
 	<?php endforeach;?>

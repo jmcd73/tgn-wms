@@ -10,6 +10,7 @@
         echo $this->Form->input('admin_menu');
         echo $this->Form->input('name');
         echo $this->Form->input('description');
+        echo $this->Form->input('url');
         echo $this->Form->input('bs_url', [
             'empty' => '(select)',
             'options' => $bs_url]);

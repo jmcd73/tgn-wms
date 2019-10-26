@@ -2,22 +2,6 @@
 	<h2><?php echo __('Print Templates'); ?></h2>
 	<?=$this->Html->link("Add", ['action' => 'add'], ['class' => 'btn btn-xs add btn-primary bpad20']);?>
     <p><strong>Warning:</strong> Do not change these settings unless you know what you are doing</p>
-	<?php /* <table class="table table-bordered table-condensed table-striped table-responsive">
-	<thead>
-	<tr>
-		<th>Name</th>
-		<th>Actions</th>
-	</tr>
-	</thead>
-	<tbody>
-	 <?php foreach($printTemplates as $key => $printTemplate): ?>
-	 	<tr>
-		<td><?php echo $printTemplate; ?></td>
-		<td class="actions"></td>
-		</tr>
-	<?php endforeach; ?>
-	</tbody>
-	</table> */ ?>
 	<table class="table table-bordered table-condensed table-striped table-responsive">
 	<thead>
 	<tr>
@@ -47,26 +31,7 @@
 		<td><?php echo h($printTemplate['PrintTemplate']['print_action']); ?></td>
 
 		<td class="actions">
-		<div class="row bpad10">
-                            <div class="col-lg-12">
-                            <?php echo $this->Form->create(null, [
-
-'url' => [
-    'action' => 'move_up',
-    $printTemplate['PrintTemplate']['id']
-],
-'class' => 'input-sm'
-]);
-echo $this->Form->input('amount',[
-'input-group-size' => 'input-group-sm',
-'label' => false,
-'prepend' => '<i class="fas fa-caret-up"></i>',
-'append' => $this->Form->submit('Up')
-]);
-echo $this->Form->end();
-?>
-</div></div>
-                    <div class="row">
+		            <div class="row">
                         <div class="col-lg-12">
                     <?=$this->Html->link(__('View'), ['action' => 'view', $printTemplate['PrintTemplate']['id']], [
     'class' => 'btn view btn-link btn-sm btn-sm'
@@ -94,21 +59,34 @@ echo $this->Form->end();
 
                     <div class="row bpad10">
                             <div class="col-lg-12">
-                            <?php echo $this->Form->create(null, [
-'url' => [
-    'action' => 'move_down',
-    $printTemplate['PrintTemplate']['id']
-],
-'class' => 'input-sm'
-]);
-echo $this->Form->input('amount',[
-'input-group-size' => 'input-group-sm',
-'label' => false,
-'prepend' => '<i class="fas fa-caret-down"></i>',
-'append' => $this->Form->submit('Dn')
-]);
-echo $this->Form->end();
-?>
+                            <?php
+                                echo $this->Form->create(null, [
+                                    'url' => [
+                                        'action' => 'move',
+										$printTemplate['PrintTemplate']['id']
+                                    ],
+                                    'class' => 'input-sm up-down-control'
+                                ]);
+                                echo $this->Form->input('amount', [
+                                    'input-group-size' => 'input-group-sm',
+                                    'label' => false,
+                                    'class' => 'move',
+                                    'placeholder' => 'move up/down',
+                                    'prepend' => $this->Form->button('<i class="fas fa-caret-up"></i>', [
+                                        'type' => 'submit',
+                                        'name' => 'data[PrintTemplate][move_up]',
+                                        'class' => 'move-up'
+                                    ]
+                                    ),
+                                    'append' => $this->Form->button('<i class="fas fa-caret-down"></i>', [
+                                        'type' => 'submit',
+                                        'name' => 'data[PrintTemplate][move_down]',
+                                        'class' => 'move-down'
+                                    ]
+                                    )
+                                ]);
+                                echo $this->Form->end();
+                            ?>
 
 </div>
 

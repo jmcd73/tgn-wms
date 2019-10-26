@@ -12,6 +12,7 @@
 ]); ?>
 <?=$this->Form->input('edit_menu', [
     'type' => 'select',
+    'empty' => '(select)',
     'options' => $edit_menus
 ]); ?>
 
@@ -34,87 +35,90 @@
             <th><?=$this->Paginator->sort('id'); ?></th>
 
 
-            <th class="actions"><?= __('Actions'); ?></th>
+            <th class="actions"><?=__('Actions'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
 	<?php foreach ($menus as $menu): ?>
 	<tr>
                 <td>
-                <?php $prefix =  !empty($menu['ParentMenu']['id']) ? '&nbsp;&nbsp;--&nbsp;&nbsp;' : ""; ?>
-                <?=  $prefix  . h($menu['Menu']['name']); ?></td>
-
+                <?php $prefix = !empty($menu['ParentMenu']['id']) ? '&nbsp;&nbsp;--&nbsp;&nbsp;' : ""; ?>
+                <?=$prefix . h($menu['Menu']['name']); ?></td>
                 <td><?=h($menu['Menu']['description']); ?></td>
                 <td><?=h($menu['Menu']['active']); ?></td>
                 <td><?=h($menu['Menu']['id']); ?></td>
-
-
                 <td class="actions">
-                <div class="row bpad10">
-                            <div class="col-lg-12">
-                            <?php echo $this->Form->create(null, [
-
-'url' => [
-    'action' => 'move_up',
-    $menu['Menu']['id']
-],
-'class' => 'input-sm'
-]);
-echo $this->Form->input('amount',[
-'input-group-size' => 'input-group-sm',
-'label' => false,
-'prepend' => '<i class="fas fa-caret-up"></i>',
-'append' => $this->Form->submit('Up')
-]);
-echo $this->Form->end();
-?>
-</div></div>
                     <div class="row">
                         <div class="col-lg-12">
-                    <?=$this->Html->link(__('View'), ['action' => 'view', $menu['Menu']['id']], [
-    'class' => 'btn view btn-link btn-sm btn-sm'
-]); ?>
-<?=$this->Html->link(__('Edit'), ['action' => 'edit', $menu['Menu']['id']], [
-    'class' => 'btn edit btn-link btn-sm'
-]); ?>
-<?=$this->Form->postLink(
-    __('Delete'),
-    [
-        'action' => 'delete',
-        $menu['Menu']['id'],
-        '?' => [
-            'redirect' => urlencode($this->here)
-        ]
+                        <?php
+                            echo $this->Html->link(
+                                __('View'),
+                                [
+                                    'action' => 'view',
+                                    $menu['Menu']['id']
+                                ],
+                                [
+                                    'class' => 'btn view btn-link btn-sm btn-sm'
+                                ]
+                            );
+                            echo $this->Html->link(
+                                __('Edit'),
+                                [
+                                    'action' => 'edit',
+                                    $menu['Menu']['id']
+                                ],
+                                [
+                                    'class' => 'btn edit btn-link btn-sm'
+                                ]
+                            );
+                            echo $this->Form->postLink(
+                                __('Delete'),
+                                [
+                                    'action' => 'delete',
+                                    $menu['Menu']['id'],
+                                    '?' => [
+                                        'redirect' => urlencode($this->here)
+                                    ]
 
-    ],
-    [
-        'class' => 'btn delete btn-link btn-sm',
-        'confirm' => __('Are you sure you want to delete # %s?', $menu['Menu']['id'])
-    ]
-); ?>
+                                ],
+                                [
+                                    'class' => 'btn delete btn-link btn-sm',
+                                    'confirm' => __('Are you sure you want to delete # %s?', $menu['Menu']['id'])
+                                ]
+                        ); ?>
                     </div>
                     </div>
-
                     <div class="row bpad10">
                             <div class="col-lg-12">
-                            <?php echo $this->Form->create(null, [
-'url' => [
-    'action' => 'move_down',
-    $menu['Menu']['id']
-],
-'class' => 'input-sm'
-]);
-echo $this->Form->input('amount',[
-'input-group-size' => 'input-group-sm',
-'label' => false,
-'prepend' => '<i class="fas fa-caret-down"></i>',
-'append' => $this->Form->submit('Dn')
-]);
-echo $this->Form->end();
-?>
-
-</div>
-
+                            <?php
+                                echo $this->Form->create(null, [
+                                    'url' => [
+                                        'action' => 'move',
+                                        $menu['Menu']['id']
+                                    ],
+                                    'class' => 'input-sm up-down-control'
+                                ]);
+                                echo $this->Form->input('amount', [
+                                    'input-group-size' => 'input-group-sm',
+                                    'label' => false,
+                                    'class' => 'move',
+                                    'placeholder' => 'move up/down',
+                                    'prepend' => $this->Form->button('<i class="fas fa-caret-up"></i>', [
+                                        'type' => 'submit',
+                                        'name' => 'data[Menu][move_up]',
+                                        'class' => 'move-up'
+                                    ]
+                                    ),
+                                    'append' => $this->Form->button('<i class="fas fa-caret-down"></i>', [
+                                        'type' => 'submit',
+                                        'name' => 'data[Menu][move_down]',
+                                        'class' => 'move-down'
+                                    ]
+                                    )
+                                ]);
+                                echo $this->Form->end();
+                            ?>
+                        </div>
                     </div>
                 </td>
     </tr>

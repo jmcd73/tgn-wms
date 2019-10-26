@@ -809,3 +809,11 @@ a.btn.add::before {
 
     content: ' '; display: block;
 }
+
+form.up-down-control {
+    width: 200px;
+}
+
+input.move {
+    text-align:center;
+ }
