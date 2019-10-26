@@ -93,6 +93,7 @@ CREATE TABLE `items` (
   `item_comment` varchar(256) DEFAULT NULL,
   `print_template_id` int(11) NOT NULL,
   `carton_label_id` int(11) NOT NULL,
+  `pallet_label_copies` int(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -193,7 +194,7 @@ CREATE TABLE `locations` (
   `product_type_id` int(11) NOT NULL,
   `overflow` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -202,7 +203,6 @@ CREATE TABLE `locations` (
 
 LOCK TABLES `locations` WRITE;
 /*!40000 ALTER TABLE `locations` DISABLE KEYS */;
-INSERT INTO `locations` VALUES (1,'A-DEFAULT',999999,0,'Ambient Storage','2019-10-22 22:28:45','2019-10-22 22:28:45',1,0),(2,'C-A0101',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(3,'C-A0102',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(4,'C-A0103',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(5,'C-A0104',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(6,'C-A0201',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(7,'C-A0202',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(8,'C-A0203',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(9,'C-A0204',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(10,'C-A0301',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(11,'C-A0302',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(12,'C-A0303',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(13,'C-A0304',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(14,'C-A0401',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(15,'C-A0402',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(16,'C-A0403',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(17,'C-A0404',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(18,'C-A0501',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(19,'C-A0502',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(20,'C-A0503',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(21,'C-A0504',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(22,'C-B0101',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(23,'C-B0102',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(24,'C-B0103',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(25,'C-B0104',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(26,'C-B0201',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(27,'C-B0202',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(28,'C-B0203',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(29,'C-B0204',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(30,'C-B0301',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(31,'C-B0302',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(32,'C-B0303',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(33,'C-B0304',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(34,'C-B0401',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(35,'C-B0402',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(36,'C-B0403',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(37,'C-B0404',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(38,'C-B0501',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(39,'C-B0502',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(40,'C-B0503',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(41,'C-B0504',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(42,'C-C0101',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(43,'C-C0102',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(44,'C-C0103',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(45,'C-C0104',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(46,'C-C0201',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(47,'C-C0202',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(48,'C-C0203',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(49,'C-C0204',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(50,'C-C0301',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(51,'C-C0302',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(52,'C-C0303',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(53,'C-C0304',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(54,'C-C0401',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(55,'C-C0402',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(56,'C-C0403',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(57,'C-C0404',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(58,'C-C0501',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(59,'C-C0502',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(60,'C-C0503',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(61,'C-C0504',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(62,'C-D0101',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(63,'C-D0102',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(64,'C-D0103',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(65,'C-D0104',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(66,'C-D0201',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(67,'C-D0202',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(68,'C-D0203',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(69,'C-D0204',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(70,'C-D0301',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(71,'C-D0302',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(72,'C-D0303',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(73,'C-D0304',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(74,'C-D0401',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(75,'C-D0402',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(76,'C-D0403',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(77,'C-D0404',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(78,'C-D0501',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(79,'C-D0502',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(80,'C-D0503',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(81,'C-D0504',2,0,'Coolroom location','2019-10-22 22:28:45','2019-10-22 22:28:45',2,0),(82,'C-Floor',2,0,'Coolroom overflow','2019-10-22 22:28:45','2019-10-25 20:27:40',2,1);
 /*!40000 ALTER TABLE `locations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -259,7 +259,7 @@ CREATE TABLE `pack_sizes` (
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -268,7 +268,6 @@ CREATE TABLE `pack_sizes` (
 
 LOCK TABLES `pack_sizes` WRITE;
 /*!40000 ALTER TABLE `pack_sizes` DISABLE KEYS */;
-INSERT INTO `pack_sizes` VALUES (1,'PackSize1','Sample pack size define logical product groups as needed','2019-10-23 14:02:15','2019-10-23 14:02:15');
 /*!40000 ALTER TABLE `pack_sizes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,7 +285,7 @@ CREATE TABLE `print_log` (
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -295,7 +294,6 @@ CREATE TABLE `print_log` (
 
 LOCK TABLES `print_log` WRITE;
 /*!40000 ALTER TABLE `print_log` DISABLE KEYS */;
-INSERT INTO `print_log` VALUES (1,'{\"barcode\":\"1234567890123\",\"print_action\":\"carton_print\",\"description\":\"Desc Chilled 1\",\"count\":\"1\",\"printer_id\":\"1\",\"printer_friendly_name\":\"PDF Printer\"}','carton_print','2019-10-25 22:24:36','2019-10-25 22:24:36'),(2,'{\"barcode\":\"1234567890123\",\"print_action\":\"carton_print\",\"description\":\"Desc Chilled 1\",\"count\":\"1\",\"printer_id\":\"4\",\"printer_friendly_name\":\"PDF Printer\"}','carton_print','2019-10-25 22:26:52','2019-10-25 22:26:52');
 /*!40000 ALTER TABLE `print_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -337,7 +335,7 @@ CREATE TABLE `print_templates` (
 
 LOCK TABLES `print_templates` WRITE;
 /*!40000 ALTER TABLE `print_templates` DISABLE KEYS */;
-INSERT INTO `print_templates` VALUES (2,'Default SSCC Pallet Label Template','150x200 label. Use this template if the qty is 2 digits',_binary 'm m\r\nJ 150 x 200 pallet label\r\nH 100\r\nS l1;0,0,200,203,150\r\nO R\r\nT 15,7,0,596,pt26;*COMPANY_NAME*\r\nG 3,10,0;L:144,.3\r\nT 5,20,0,596,pt18;CODE\r\nT 20,30,0,596,pt72;*INT_CODE*\r\nT 5,40,0,596,pt18;REF\r\nT 20,50,0,596,pt72;*REF*\r\nT 5,60,0,596,pt18;SSCC\r\nT 23,60,0,596,pt24;*SSCC*\r\nT 5,69,0,3,pt24;*DESC*\r\nT 5,76,0,596,pt18;ITEM\r\nT 5,84,0,596,pt24;*GTIN14*\r\nT 110,76,0,596,pt18;QUANTITY\r\nT 125,84,0,596,pt24;*QTY*\r\nT 5,92,0,596,pt18;BEST BEFORE\r\nT 5,100,0,596,pt24;*BB_HR*\r\nT 120,92,0,596,pt18;BATCH\r\nT 110,100,0,596,pt24;*BATCH*\r\nG 3,103,0;L:144,.3\r\nB 9,107,0,GS1-128,40,0.5;(02)*GTIN14*(15)*BB_BC*(10)*BATCH*(37)*QTY*\r\nB 35,152,0,GS1-128,40,0.5;(00)*SSCC*\r\nA *NUM_LABELS*',NULL,1,0,'pallet_print','2017-07-24 13:24:42','2019-10-21 13:19:11','42fced7e-49c6-406f-bc39-3e491e32993c.jpeg',NULL,NULL,50138,'image/jpeg',0,63,30,31),(3,'SSCC Template 3 Digit Qty','150x200 For any products with a 3 digit qty',_binary 'm m\r\nJ 150 x 200 pallet label\r\nH 100\r\nS l1;0,0,200,203,150\r\nO R\r\nT 15,7,0,596,pt26;*COMPANY_NAME*\r\nG 3,10,0;L:144,.3\r\nT 5,20,0,596,pt18;CODE\r\nT 20,30,0,596,pt72;*INT_CODE*\r\nT 5,40,0,596,pt18;REF\r\nT 20,50,0,596,pt72;*REF*\r\nT 5,60,0,596,pt18;SSCC\r\nT 23,60,0,596,pt24;*SSCC*\r\nT 5,69,0,3,pt24;*DESC*\r\nT 5,76,0,596,pt18;ITEM\r\nT 5,84,0,596,pt24;*GTIN14*\r\nT 110,76,0,596,pt18;QUANTITY\r\nT 125,84,0,596,pt24;*QTY*\r\nT 5,92,0,596,pt18;BEST BEFORE\r\nT 5,100,0,596,pt24;*BB_HR*\r\nT 120,92,0,596,pt18;BATCH\r\nT 110,100,0,596,pt24;*BATCH*\r\nG 3,103,0;L:144,.3\r\nB 12.5,107,0,GS1-128,40,0.45;(02)*GTIN14*(15)*BB_BC*(10)*BATCH*(37)*QTY*\r\nB 35,152,0,GS1-128,40,0.5;(00)*SSCC*\r\nA *NUM_LABELS*',NULL,1,0,'pallet_print','2017-07-24 13:26:40','2019-10-21 13:19:19',NULL,NULL,NULL,NULL,NULL,0,63,32,33),(4,'50060 4 Copies','150x200 Print 4 labels instead of the default 2',_binary 'M l BMP;TOGGEN\r\n; TOGGEN is the name of the bitmap \r\n; loaded to the printer e.g. TOGGEN.BMP\r\nm m\r\n; measurement in mm\r\nJ 150 x 200 pallet label 4 copies marg\r\n; pallet label\r\nH 100\r\n; heat speed and printing method\r\nS l1;0,0,200,203,150\r\n; label size\r\nO R\r\n; print options\r\n; T 15,7,0,596,pt26;The Toggen Partnership\r\n; title heading\r\n;I:name;]x,y,r[,mx,my,GOODBADn][,a];name CR\r\n; Image \r\nI:LOGO;13,0,0,1,1,a;TOGGEN\r\n;G 3,10,0;L:144,.3\r\n; graphic line\r\n;T[:name;]x,y,r,font,size[,effects];text CR\r\nT 5,20,0,596,pt18;CODE\r\nT 20,32,0,596,pt70;*INT_CODE*\r\nT 5,40,0,596,pt18;REF\r\nT 20,52,0,596,pt72;*REF*\r\nT 5,62,0,596,pt18;SSCC\r\nT 23,62,0,596,pt24;*SSCC*\r\nT 5,71,0,3,pt24;*DESC*\r\nT 5,78,0,596,pt18;ITEM\r\nT 5,86,0,596,pt24;*GTIN14*\r\nT 110,78,0,596,pt18;QUANTITY\r\nT 125,86,0,596,pt24;*QTY*\r\nT 5,94,0,596,pt18;BEST BEFORE\r\nT 5,102,0,596,pt24;*BB_HR*\r\nT 120,94,0,596,pt18;BATCH\r\nT 110,102,0,596,pt24;*BATCH*\r\nG 3,104,0;L:144,.3\r\nB 9,107,0,GS1-128,40,0.5;(02)*GTIN14*(15)*BB_BC*(10)*BATCH*(37)*QTY*\r\nB 35,152,0,GS1-128,40,0.5;(00)*SSCC*\r\nA 1',NULL,1,0,'pallet_print','2018-10-08 10:56:20','2019-10-21 13:19:45',NULL,NULL,NULL,NULL,NULL,0,63,34,35),(5,'Carton Label','100x50 CAB Carton Label',_binary 'm m\r\nJ 100 x 50 carton label\r\nH 100\r\nS l1;0,0,50,53,100\r\nO R\r\nT 6,4,0,596,pt16;*DESC*\r\nG 3,6,0;L:94,0.3\r\nB 8,8,0,GS1-128,38,0.56;(01)*GTIN14*\r\nA *NUM_LABELS*\r\n',NULL,1,0,'carton_print','2018-12-16 16:11:25','2019-10-21 15:01:26','100x50carton.png',NULL,NULL,12522,'image/png',1,66,6,7),(6,'Big Numbers','100x200 Big Number Zebra Printer Only',_binary '^XA\r\n^MD6.0\r\n\r\n^FXBig Number Shipping Label^FS\r\n^PON\r\n^FT0030,0080^A0N,065,070^FD*COMPANY_NAME*^FS\r\n^FO0030,0100^GB750,5,4^FS\r\n\r\n^FT*OFFSET*,1000^A0N,1000,500^FD*NUMBER*^FS\r\n\r\n^PQ*NUM_LABELS*,0,1,Y^XZ\r\n',NULL,1,0,'big_number','2018-12-16 16:12:20','2019-10-21 13:23:32','100x200-big_numbers-example.png',NULL,NULL,7389,'image/png',1,65,26,27),(52,'Assorted Custom Labels','100x50 50025, Keep Refrigerated Label','','100x50custom.glabels',1,1,'custom_print','2019-06-18 16:34:22','2019-10-21 14:47:07','toggen-custom-print0-1.png','application/octet-stream',16529,77248,'image/png',1,66,2,5),(53,'Sample Labels','100x50 Product Sample Labels','','100x50sample-1.glabels',1,1,'sample_labels','2019-06-18 16:45:46','2019-10-21 14:47:32','sample_label.png','application/octet-stream',11601,71644,'image/png',1,66,10,11),(54,'Shipping Labels','150x200 Shipping Labels','','150x200-shipping-labels.glabels',1,1,'shipping_labels','2019-06-18 17:01:44','2019-10-21 13:21:26','150x200-shipping-label.png','application/octet-stream',6864,71992,'image/png',1,64,14,15),(55,'Shipping Labels Generic','150x200 Generic Shipping Labels','','150x200-shipping-labels-generic.glabels',1,1,'shipping_labels_generic','2019-06-18 17:23:34','2019-10-21 13:21:38','20180419184037-shipping-label-generic180w.png','application/octet-stream',795,14639,'image/png',1,64,16,17),(56,'gLabels 200x150 Label Sample','200x150 gLabels Label Sample','','200x150GarlicButterBlend.glabels',1,1,'glabel_sample_labels','2019-06-18 17:41:25','2019-10-21 13:21:49','200x150glabels-sample.png','application/octet-stream',932,59486,'image/png',1,64,18,19),(57,'Crossdock Labels','150x200 Crossdock Label','','150x200-crossdock-labels.glabels',1,1,'crossdock_labels','2019-06-18 17:51:26','2019-10-21 13:22:15','crossdock_label.png','application/octet-stream',1073,112047,'image/png',1,64,20,21),(58,'Keep Refrigerated','100x50 Keep Refrigerated Label','','100x50custom2-1.glabels',1,0,'keep_refrigerated','2019-07-01 17:40:11','2019-10-21 14:46:43','100x50custom2-1.png','application/octet-stream',16255,16756,'image/png',1,52,3,4),(59,'Custom Print 0','100x50 FUTURE HARVEST','','100x50custom-1.glabels',1,0,'custom_print','2019-10-15 11:49:43','2019-10-21 14:49:31','toggen-custom-print0.png','application/octet-stream',28211,77248,'image/png',1,66,8,9),(61,'150x200 SSCC Glabels','150x200 SSCC Glabels Template','','150x200-SSCC.glabels',1,0,'','2019-10-20 15:55:17','2019-10-21 15:26:26','150x200-SSCC-glabels.png','application/octet-stream',1117,85544,'image/png',1,64,22,23),(63,'150x200 CAB PCL Label Templates','150x200 CAB PCL Label Templates','',NULL,1,0,'','2019-10-21 13:19:02','2019-10-21 13:20:26',NULL,NULL,NULL,NULL,NULL,0,NULL,29,36),(64,'150x200 gLabels Custom Templates','150x200 gLabels Custom Templates','',NULL,1,0,'','2019-10-21 13:21:12','2019-10-21 14:26:16',NULL,NULL,NULL,NULL,NULL,1,NULL,13,24),(65,'Zebra Templates','Zebra Command Language Templates','',NULL,1,0,'','2019-10-21 13:23:21','2019-10-21 14:58:47',NULL,NULL,NULL,NULL,NULL,1,NULL,25,28),(66,'100x50 Labels','Assorted 100x50 Labels','',NULL,1,0,'','2019-10-21 14:46:36','2019-10-21 14:46:36',NULL,NULL,NULL,NULL,NULL,1,NULL,1,12);
+INSERT INTO `print_templates` VALUES (2,'Default SSCC Pallet Label Template','150x200 label. Use this template if the qty is 2 digits',_binary 'm m\r\nJ 150 x 200 pallet label\r\nH 100\r\nS l1;0,0,200,203,150\r\nO R\r\nT 15,7,0,596,pt26;*COMPANY_NAME*\r\nG 3,10,0;L:144,.3\r\nT 5,20,0,596,pt18;CODE\r\nT 20,30,0,596,pt72;*INT_CODE*\r\nT 5,40,0,596,pt18;REF\r\nT 20,50,0,596,pt72;*REF*\r\nT 5,60,0,596,pt18;SSCC\r\nT 23,60,0,596,pt24;*SSCC*\r\nT 5,69,0,3,pt24;*DESC*\r\nT 5,76,0,596,pt18;ITEM\r\nT 5,84,0,596,pt24;*GTIN14*\r\nT 110,76,0,596,pt18;QUANTITY\r\nT 125,84,0,596,pt24;*QTY*\r\nT 5,92,0,596,pt18;BEST BEFORE\r\nT 5,100,0,596,pt24;*BB_HR*\r\nT 120,92,0,596,pt18;BATCH\r\nT 110,100,0,596,pt24;*BATCH*\r\nG 3,103,0;L:144,.3\r\nB 9,107,0,GS1-128,40,0.5;(02)*GTIN14*(15)*BB_BC*(10)*BATCH*(37)*QTY*\r\nB 35,152,0,GS1-128,40,0.5;(00)*SSCC*\r\nA *NUM_LABELS*',NULL,1,0,'pallet_print','2017-07-24 13:24:42','2019-10-26 09:13:38','150x200-SSCC-example.png',NULL,NULL,184411,'image/png',0,63,30,31),(3,'SSCC Template 3 Digit Qty','150x200 For any products with a 3 digit qty',_binary 'm m\r\nJ 150 x 200 pallet label\r\nH 100\r\nS l1;0,0,200,203,150\r\nO R\r\nT 15,7,0,596,pt26;*COMPANY_NAME*\r\nG 3,10,0;L:144,.3\r\nT 5,20,0,596,pt18;CODE\r\nT 20,30,0,596,pt72;*INT_CODE*\r\nT 5,40,0,596,pt18;REF\r\nT 20,50,0,596,pt72;*REF*\r\nT 5,60,0,596,pt18;SSCC\r\nT 23,60,0,596,pt24;*SSCC*\r\nT 5,69,0,3,pt24;*DESC*\r\nT 5,76,0,596,pt18;ITEM\r\nT 5,84,0,596,pt24;*GTIN14*\r\nT 110,76,0,596,pt18;QUANTITY\r\nT 125,84,0,596,pt24;*QTY*\r\nT 5,92,0,596,pt18;BEST BEFORE\r\nT 5,100,0,596,pt24;*BB_HR*\r\nT 120,92,0,596,pt18;BATCH\r\nT 110,100,0,596,pt24;*BATCH*\r\nG 3,103,0;L:144,.3\r\nB 12.5,107,0,GS1-128,40,0.45;(02)*GTIN14*(15)*BB_BC*(10)*BATCH*(37)*QTY*\r\nB 35,152,0,GS1-128,40,0.5;(00)*SSCC*\r\nA *NUM_LABELS*',NULL,1,0,'pallet_print','2017-07-24 13:26:40','2019-10-21 13:19:19',NULL,NULL,NULL,NULL,NULL,0,63,32,33),(5,'Carton Label','100x50 CAB Carton Label',_binary 'm m\r\nJ 100 x 50 carton label\r\nH 100\r\nS l1;0,0,50,53,100\r\nO R\r\nT 6,4,0,596,pt16;*DESC*\r\nG 3,6,0;L:94,0.3\r\nB 8,8,0,GS1-128,38,0.56;(01)*GTIN14*\r\nA *NUM_LABELS*\r\n',NULL,1,0,'carton_print','2018-12-16 16:11:25','2019-10-21 15:01:26','100x50carton.png',NULL,NULL,12522,'image/png',1,66,6,7),(6,'Big Numbers','100x200 Big Number Zebra Printer Only',_binary '^XA\r\n^MD6.0\r\n\r\n^FXBig Number Shipping Label^FS\r\n^PON\r\n^FT0030,0080^A0N,065,070^FD*COMPANY_NAME*^FS\r\n^FO0030,0100^GB750,5,4^FS\r\n\r\n^FT*OFFSET*,1000^A0N,1000,500^FD*NUMBER*^FS\r\n\r\n^PQ*NUM_LABELS*,0,1,Y^XZ\r\n',NULL,1,0,'big_number','2018-12-16 16:12:20','2019-10-21 13:23:32','100x200-big_numbers-example.png',NULL,NULL,7389,'image/png',1,65,26,27),(52,'Assorted Custom Labels','100x50 50025, Keep Refrigerated Label','','100x50custom.glabels',1,1,'custom_print','2019-06-18 16:34:22','2019-10-21 14:47:07','toggen-custom-print0-1.png','application/octet-stream',16529,77248,'image/png',1,66,2,5),(53,'Sample Labels','100x50 Product Sample Labels','','100x50sample-1.glabels',1,1,'sample_labels','2019-06-18 16:45:46','2019-10-21 14:47:32','sample_label.png','application/octet-stream',11601,71644,'image/png',1,66,10,11),(54,'Shipping Labels','150x200 Shipping Labels','','150x200-shipping-labels.glabels',1,1,'shipping_labels','2019-06-18 17:01:44','2019-10-21 13:21:26','150x200-shipping-label.png','application/octet-stream',6864,71992,'image/png',1,64,14,15),(55,'Shipping Labels Generic','150x200 Generic Shipping Labels','','150x200-shipping-labels-generic.glabels',1,1,'shipping_labels_generic','2019-06-18 17:23:34','2019-10-21 13:21:38','20180419184037-shipping-label-generic180w.png','application/octet-stream',795,14639,'image/png',1,64,16,17),(56,'gLabels 200x150 Label Sample','200x150 gLabels Label Sample','','200x150GarlicButterBlend.glabels',1,1,'glabel_sample_labels','2019-06-18 17:41:25','2019-10-26 09:23:35','200x150glabels-sample-1.png','application/octet-stream',932,59486,'image/png',1,64,22,23),(57,'Crossdock Labels','150x200 Crossdock Label','','150x200-crossdock-labels.glabels',1,1,'crossdock_labels','2019-06-18 17:51:26','2019-10-21 13:22:15','crossdock_label.png','application/octet-stream',1073,112047,'image/png',1,64,18,19),(58,'Keep Refrigerated','100x50 Keep Refrigerated Label','','100x50custom2-1.glabels',1,0,'keep_refrigerated','2019-07-01 17:40:11','2019-10-21 14:46:43','100x50custom2-1.png','application/octet-stream',16255,16756,'image/png',1,52,3,4),(59,'Custom Print 0','100x50 FUTURE HARVEST','','100x50custom-1.glabels',1,0,'custom_print','2019-10-15 11:49:43','2019-10-21 14:49:31','toggen-custom-print0.png','application/octet-stream',28211,77248,'image/png',1,66,8,9),(61,'150x200 SSCC Glabels','150x200 SSCC Glabels Template - not used','','150x200-SSCC.glabels',1,0,'','2019-10-20 15:55:17','2019-10-26 09:25:01','150x200-SSCC-example-2.png','application/octet-stream',1117,184411,'image/png',1,64,20,21),(63,'150x200 CAB PCL Label Templates','150x200 CAB PCL Label Templates','',NULL,1,0,'','2019-10-21 13:19:02','2019-10-21 13:20:26',NULL,NULL,NULL,NULL,NULL,0,NULL,29,34),(64,'150x200 gLabels Custom Templates','150x200 gLabels Custom Templates','',NULL,1,0,'','2019-10-21 13:21:12','2019-10-21 14:26:16',NULL,NULL,NULL,NULL,NULL,1,NULL,13,24),(65,'Zebra Templates','Zebra Command Language Templates','',NULL,1,0,'','2019-10-21 13:23:21','2019-10-21 14:58:47',NULL,NULL,NULL,NULL,NULL,1,NULL,25,28),(66,'100x50 Labels','Assorted 100x50 Labels','',NULL,1,0,'','2019-10-21 14:46:36','2019-10-21 14:46:36',NULL,NULL,NULL,NULL,NULL,1,NULL,1,12);
 /*!40000 ALTER TABLE `print_templates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -357,7 +355,7 @@ CREATE TABLE `printers` (
   `set_as_default_on_these_actions` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -366,7 +364,6 @@ CREATE TABLE `printers` (
 
 LOCK TABLES `printers` WRITE;
 /*!40000 ALTER TABLE `printers` DISABLE KEYS */;
-INSERT INTO `printers` VALUES (4,1,'PDF Printer','','PDF','LabelsController::pallet_print\nLabelsController::reprint'),(5,1,'Virtual PDF','','VPDF','PrintLabelsController::carton_print\nPrintLabelsController::crossdock_labels\nPrintLabelsController::shipping_labels\nPrintLabelsController::shipping_labels_generic\nPrintLabelsController::keep_refrigerated\nPrintLabelsController::glabel_sample_labels\nPrintLabelsController::big_number\nPrintLabelsController::custom_print\nPrintLabelsController::sample_labels');
 /*!40000 ALTER TABLE `printers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -391,7 +388,7 @@ CREATE TABLE `product_types` (
   `serial_number_format` varchar(45) DEFAULT NULL,
   `enable_pick_app` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -400,7 +397,6 @@ CREATE TABLE `product_types` (
 
 LOCK TABLES `product_types` WRITE;
 /*!40000 ALTER TABLE `product_types` DISABLE KEYS */;
-INSERT INTO `product_types` VALUES (1,NULL,1,'Ambient','','Ambient','/^10\\d{3}$/','This code must start with a 10 and be 5 digits long',1,29,'A-%06d',0),(2,1,NULL,'Chilled','','Chilled','/^20\\d{3}$/','This chilled product code must start with a 20 and be 5 digits long',1,23,'C-%06d',1);
 /*!40000 ALTER TABLE `product_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -419,7 +415,7 @@ CREATE TABLE `production_lines` (
   `product_type_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -428,7 +424,6 @@ CREATE TABLE `production_lines` (
 
 LOCK TABLES `production_lines` WRITE;
 /*!40000 ALTER TABLE `production_lines` DISABLE KEYS */;
-INSERT INTO `production_lines` VALUES (1,NULL,4,'Ambient Line 1',1),(2,NULL,5,'Chilled Line 1',2),(3,NULL,4,'Ambient Line 2',1);
 /*!40000 ALTER TABLE `production_lines` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -446,7 +441,7 @@ CREATE TABLE `settings` (
   `comment` varchar(1000) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -455,7 +450,7 @@ CREATE TABLE `settings` (
 
 LOCK TABLES `settings` WRITE;
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
-INSERT INTO `settings` VALUES (3,'sscc_ref','72','SSCC Reference number '),(4,'sscc_extension_digit','0','SSCC extension digit'),(5,'sscc_company_prefix','9999999','Added a bogus prefix'),(10,'companyName','The Toggen Partnership','This is used for the title attribute of pages and for anywhere the company name is needed (label headings)'),(13,'cooldown','48','Cooldown time in hours'),(24,'min_days_life','210','Specifies how many days life need to still be on the product before it is considered unshippable to customers'),(26,'shipping_label_total','70','This is for the total number of labels to appear in the drop down selects in the shipping_label view/action'),(29,'MaxShippingLabels','70',''),(30,'GLABELS_ROOT','files/templates',''),(35,'cabLabelTokens','Setting in comment','{\r\n    \"*COMPANY_NAME*\": \"companyName\",\r\n    \"*INT_CODE*\": \"internalProductCode\",\r\n    \"*REF*\": \"reference\",\r\n    \"*SSCC*\": \"sscc\",\r\n    \"*DESC*\": \"description\",\r\n    \"*GTIN14*\": \"gtin14\",\r\n    \"*QTY*\": \"quantity\",\r\n    \"*BB_HR*\": \"bestBeforeHr\",\r\n    \"*BB_BC*\": \"bestBeforeBc\",\r\n    \"*BATCH*\": \"batch\",\r\n    \"*NUM_LABELS*\": \"numLabels\"\r\n}'),(36,'cabCartonTemplateTokens','Setting in comment','{\r\n    \"*DESC*\": \"description\",\r\n    \"*GTIN14*\": \"gtin14\",\r\n    \"*NUM_LABELS*\": \"numLabels\"\r\n}'),(37,'PROXY_HOST','remote.toggen.com.au',''),(41,'bigNumberTemplateTokens','Setting in comment','{\r\n    \"*COMPANY_NAME*\": \"companyName\",\r\n    \"*OFFSET*\": \"offset\",\r\n    \"*NUMBER*\": \"number\",\r\n    \"*NUM_LABELS*\": \"quantity\"\r\n}'),(44,'custom_print_1','Setting in comment','{ \"code\": \"CUSTOM1\",\r\n  \"printer\": { \r\n    \"name\": \"PDF Printer\", \r\n    \"queue\":  \"PDF\" \r\n  },\r\n    \"image\": \"/files/templates/100x50custom2-1.png\",\r\n    \"description\": \"100x50 KEEP REFRIGERATED label\",\r\n    \"template\": \"files/templates/100x50custom2-1.glabels\"\r\n}'),(57,'custom_print_0','Setting in comment','{ \"code\": \"10000\",\r\n  \"printer\": { \r\n    \"name\": \"PDF Printer\", \r\n    \"queue\":  \"PDF\" ,\r\n   \"sample\": \"TEST\"\r\n  },\r\n    \"image\": \"/files/templates/toggen-custom-print0.png\",\r\n    \"description\": \"100x50 HARVEST AWARD 80% 10KG label\",\r\n    \"template\": \"files/templates/100x50custom-1.glabels\",\r\n    \"csv\": [\r\n        \"FUTURE  REWARD 80%\",\r\n        \"\",\r\n        \"Vegetable Oil (80%), Water, Salt, Milk Solids,\",\r\n        \"Emulsifiers (Soy 322,471), Preservative (202),\",\r\n        \"Food Acid (330), Natural Colour (β-Carotene), Flavour.\",\r\n        \"CONTAINS MILK & SOY PRODUCTS, AUSTRALIAN MADE.\",\r\n        \"Made by The Toggen Partnership\",\r\n        \"Website: http://toggen.com.au\",\r\n        \"10KG\"\r\n    ]\r\n}'),(58,'plRefMaxLength','8','Maximum length for a Pallet Reference'),(61,'DOCUMENTATION_ROOT','/docs/help','');
+INSERT INTO `settings` VALUES (3,'sscc_ref','80','SSCC Reference number '),(4,'sscc_extension_digit','0','SSCC extension digit'),(5,'sscc_company_prefix','9999999','Added a bogus prefix'),(10,'companyName','The Toggen Partnership','This is used for the title attribute of pages and for anywhere the company name is needed (label headings)'),(13,'cooldown','48','Cooldown time in hours'),(24,'min_days_life','210','Specifies how many days life need to still be on the product before it is considered unshippable to customers'),(26,'shipping_label_total','70','This is for the total number of labels to appear in the drop down selects in the shipping_label view/action'),(29,'MaxShippingLabels','70',''),(30,'GLABELS_ROOT','files/templates',''),(35,'cabLabelTokens','Setting in comment','{\r\n    \"*COMPANY_NAME*\": \"companyName\",\r\n    \"*INT_CODE*\": \"internalProductCode\",\r\n    \"*REF*\": \"reference\",\r\n    \"*SSCC*\": \"sscc\",\r\n    \"*DESC*\": \"description\",\r\n    \"*GTIN14*\": \"gtin14\",\r\n    \"*QTY*\": \"quantity\",\r\n    \"*BB_HR*\": \"bestBeforeHr\",\r\n    \"*BB_BC*\": \"bestBeforeBc\",\r\n    \"*BATCH*\": \"batch\",\r\n    \"*NUM_LABELS*\": \"numLabels\"\r\n}'),(36,'cabCartonTemplateTokens','Setting in comment','{\r\n    \"*DESC*\": \"description\",\r\n    \"*GTIN14*\": \"gtin14\",\r\n    \"*NUM_LABELS*\": \"numLabels\"\r\n}'),(37,'PROXY_HOST','remote.toggen.com.au',''),(41,'bigNumberTemplateTokens','Setting in comment','{\r\n    \"*COMPANY_NAME*\": \"companyName\",\r\n    \"*OFFSET*\": \"offset\",\r\n    \"*NUMBER*\": \"number\",\r\n    \"*NUM_LABELS*\": \"quantity\"\r\n}'),(44,'custom_print_1','Setting in comment','{ \"code\": \"CUSTOM1\",\r\n  \"printer\": { \r\n    \"name\": \"PDF Printer\", \r\n    \"queue\":  \"PDF\" \r\n  },\r\n    \"image\": \"/files/templates/100x50custom2-1.png\",\r\n    \"description\": \"100x50 KEEP REFRIGERATED label\",\r\n    \"template\": \"files/templates/100x50custom2-1.glabels\"\r\n}'),(57,'custom_print_0','Setting in comment','{ \"code\": \"10000\",\r\n  \"printer\": { \r\n    \"name\": \"PDF Printer\", \r\n    \"queue\":  \"PDF\" ,\r\n   \"sample\": \"TEST\"\r\n  },\r\n    \"image\": \"/files/templates/toggen-custom-print0.png\",\r\n    \"description\": \"100x50 HARVEST AWARD 80% 10KG label\",\r\n    \"template\": \"files/templates/100x50custom-1.glabels\",\r\n    \"csv\": [\r\n        \"FUTURE  REWARD 80%\",\r\n        \"\",\r\n        \"Vegetable Oil (80%), Water, Salt, Milk Solids,\",\r\n        \"Emulsifiers (Soy 322,471), Preservative (202),\",\r\n        \"Food Acid (330), Natural Colour (β-Carotene), Flavour.\",\r\n        \"CONTAINS MILK & SOY PRODUCTS, AUSTRALIAN MADE.\",\r\n        \"Made by The Toggen Partnership\",\r\n        \"Website: http://toggen.com.au\",\r\n        \"10KG\"\r\n    ]\r\n}'),(58,'plRefMaxLength','8','Maximum length for a Pallet Reference'),(61,'DOCUMENTATION_ROOT','/docs/help',''),(62,'sscc_default_label_copies','2','Global default for SSCC Pallet Label Copies');
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -479,7 +474,7 @@ CREATE TABLE `shifts` (
   `stop_time` time NOT NULL,
   `product_type_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -488,7 +483,6 @@ CREATE TABLE `shifts` (
 
 LOCK TABLES `shifts` WRITE;
 /*!40000 ALTER TABLE `shifts` DISABLE KEYS */;
-INSERT INTO `shifts` VALUES (1,'Ambient Day Shift',480,'Ambient Day Shift','2019-10-23 13:59:58','2019-10-23 13:59:58',1,0,'06:00:00','14:00:00',1),(2,'Ambient Afternoon Shift',480,'Ambient Afternoon Shift','2019-10-23 14:00:22','2019-10-23 14:00:22',1,0,'14:00:00','23:00:00',1),(3,'Ambient Night Shift',480,'Ambient Night Shift','2019-10-23 14:00:41','2019-10-23 14:00:41',1,0,'23:00:00','06:00:00',1),(4,'Chilled Day Shift',720,'Chilled Day Shift','2019-10-23 14:01:03','2019-10-23 14:01:03',1,0,'06:00:00','18:00:00',2),(5,'Chilled Night Shift',720,'Chilled Night Shift','2019-10-23 14:01:34','2019-10-23 14:01:34',1,0,'18:00:00','06:00:00',2);
 /*!40000 ALTER TABLE `shifts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -518,7 +512,7 @@ CREATE TABLE `shipments` (
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -527,7 +521,6 @@ CREATE TABLE `shipments` (
 
 LOCK TABLES `shipments` WRITE;
 /*!40000 ALTER TABLE `shipments` DISABLE KEYS */;
-INSERT INTO `shipments` VALUES (1,0,0,'CH1','',1,'Bowral Australia',4,1,NULL,NULL,NULL,NULL,NULL,NULL,'2019-10-25 20:44:29','2019-10-25 21:32:52'),(2,0,0,'CH2','',2,'Bowral NSW Australia',5,1,NULL,NULL,NULL,NULL,NULL,NULL,'2019-10-25 21:30:12','2019-10-25 21:33:13'),(3,0,0,'CH12','',1,'Wollongong',4,0,NULL,NULL,NULL,NULL,NULL,NULL,'2019-10-25 22:30:04','2019-10-25 22:30:04'),(4,0,0,'CH99','',2,'Dee why',3,0,NULL,NULL,NULL,NULL,NULL,NULL,'2019-10-25 23:26:20','2019-10-25 23:26:20');
 /*!40000 ALTER TABLE `shipments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -570,4 +563,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-25 23:33:06
+-- Dump completed on 2019-10-26 15:32:07
