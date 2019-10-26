@@ -17,20 +17,20 @@ class Setting extends AppModel
      * @param $refname
      * @param $product_type
      */
-    public function getReferenceNumber($refname, $product_type = null)
+    public function getReferenceNumber($refname, $productType = null)
     {
-
-        $ref = $this->find('first', ['conditions' => ['name' => $refname]]);
+        $ref = $this->find(
+            'first',
+            [
+                'conditions' => [
+                    'name' => $refname
+                ]
+            ]
+        );
 
         $next_val = $ref['Setting']['setting'] + 1;
 
-        switch ($product_type) {
-            case 'oil':
-                $fmt = 'B%07d';
-                break;
-            case 'marg':
-                $fmt = '%08d';
-                break;
+        switch ($productType) {
             case 'sscc':
                 $fmt = '%09d';
                 break;
@@ -39,9 +39,10 @@ class Setting extends AppModel
         }
 
         $this->id = $ref['Setting']['id'];
-        $this->saveField('setting', $next_val, false);
-        return sprintf($fmt, $next_val);
 
+        $this->saveField('setting', $next_val, false);
+
+        return sprintf($fmt, $next_val);
     }
 
 /**

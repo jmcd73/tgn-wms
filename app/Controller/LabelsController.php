@@ -625,10 +625,7 @@ class LabelsController extends AppController
      */
     public function pallet_print($productTypeId = null)
     {
-
-        if ($productTypeId === null ||
-            !$this->Label->ProductType->exists($productTypeId)
-        ) {
+        if (!$this->Label->ProductType->exists($productTypeId)) {
             throw new NotFoundException(__('Invalid product type'));
         }
 
@@ -636,12 +633,15 @@ class LabelsController extends AppController
 
         $productType = $this->Label->Item
             ->ProductType->find(
-                'first', [
+                'first',
+                [
                     'conditions' => [
                         'ProductType.id' => $productTypeId
                     ]
                 ]
             );
+
+        $locationId = $productType['ProductType']['location_id'];
 
         $productionLines = $this->Label->Item
             ->ProductType->ProductionLine->find(
@@ -657,12 +657,13 @@ class LabelsController extends AppController
             '{n}.ProductionLine.id',
             '{n}.ProductionLine.name'
         );
+
         $inventoryStatusId = ($productType['ProductType']['inventory_status_id'] > 0)
             ? $productType['ProductType']['inventory_status_id'] : 0;
 
         if ($this->request->is('post')) {
-
             $plRefMaxLength = $this->Label->getSetting('plRefMaxLength');
+
             $str = 'Maximum length for a pallet reference is <strong>%d</strong>';
             $str .= ' characters. Please check the Product Type ';
             $str .= '"Serial number format"';
@@ -744,9 +745,7 @@ class LabelsController extends AppController
                     );
                 }
 
-                $sscc = $this->Label->generateSSCC();
-
-                $sscc .= $this->Label->generateCheckDigit($sscc);
+                $sscc = $this->Label->generateSSCCWithCheckDigit();
 
                 $pallet_ref = $this->Label->createPalletRef($productTypeId);
 
@@ -777,33 +776,29 @@ class LabelsController extends AppController
                     $print_date . ' + ' . $days_life . ' days'
                 );
 
-                $bb_hr = $this->Label->formatLabelDates(
-                    'd/m/y',
-                    $print_date_plus_days_life
-                );
-                $bb_date = $this->Label->formatLabelDates(
-                    'Y-m-d',
-                    $print_date_plus_days_life
-                );
-                $bb_bc = $this->Label->formatLabelDates(
-                    'ymd',
-                    $print_date_plus_days_life
+
+                $dateFormats = [
+                    'bb_date' => 'Y-m-d',
+                    'bb_bc' => 'ymd',
+                    'bb_hr' => 'd/m/y'
+                ];
+
+                $bestBeforeDates = $this->Label->formatLabelDates(
+                    $print_date_plus_days_life,
+                    $dateFormats
                 );
 
-                // if the print_type is oil return the "Bottling"
-                // location id else return 0
-                // bottling location id or marg default of 0
-                if ($productType['ProductType']['location_id'] > 0) {
-                    $location_id = $productType['ProductType']['location_id'];
-                } else {
-                    $location_id = 0;
-                }
+                // if the product_type has a default save location defined
+                // set location_id else return 0
+                $location_id = $locationId > 0
+                    ? $locationId
+                    : 0;
 
                 $newLabel = [
                     'Label' => [
                         'item' => $item_detail['Item']['code'],
                         'description' => $item_detail['Item']['description'],
-                        'bb_date' => $bb_date, // Y-m-d
+                        'bb_date' => $bestBeforeDates['bb_date'],
                          'item_id' => $this->request->data[$formName]['item'],
                         'batch' => $this->request->data[$formName]['batch_no'],
                         'qty' => $qty,
@@ -814,8 +809,8 @@ class LabelsController extends AppController
                         'printer_id' => $printerId,
                         'print_date' => $print_date,
                         'cooldown_date' => $print_date,
-                        'location_id' => $location_id, # default is zero or bottling location id
-                         'shipment_id' => 0,
+                        'location_id' => $location_id,
+                        'shipment_id' => 0,
                         'inventory_status_id' => $inventoryStatusId,
                         'production_line' => $productionLineName,
                         'production_line_id' => $productionLineId,
@@ -837,7 +832,6 @@ class LabelsController extends AppController
                 if (empty($print_template)) {
                     $exceptionText = 'Print Template Missing. Check pallet label ';
                     $exceptionText .= ' template configuration of item %s';
-
                     throw new NotFoundException(
                         sprintf($exceptionText, $item_detail['Item']['code'])
                     );
@@ -864,8 +858,8 @@ class LabelsController extends AppController
                         'description' => $item_detail['Item']['description'],
                         'gtin14' => $item_detail['Item']['trade_unit'],
                         'quantity' => $qty,
-                        'bestBeforeHr' => $bb_hr,
-                        'bestBeforeBc' => $bb_bc,
+                        'bestBeforeHr' => $bestBeforeDates['bb_hr'],
+                        'bestBeforeBc' => $bestBeforeDates['bb_bc'],
                         'batch' => $this->request->data[$formName]['batch_no'],
                         'numLabels' => $labelCopies
                     ],
@@ -873,18 +867,20 @@ class LabelsController extends AppController
                     $replaceTokens
                 );
 
-                $print_job = $this->PrintLogic->getPrintJobName($pallet_ref, $reprint = false);
-
-                $print_settings = $this->PrintLogic->getPrintSettings(
-                    $productionLine['Printer']['queue_name'],
-                    $print_job,
-                    $productionLine['Printer']['options'],
-                    $productType['ProductType']['name']// tmp file prefix
-                );
+                //$pallet_ref
+                //$cabLabel->printContent
+                // options
+                //$productionLine['Printer']
+                //$productType['ProductType']['name']
 
                 $return_value = $this->PrintLogic->sendPrint(
                     $cabLabel->printContent,
-                    $print_settings
+                    $this->PrintLogic->getPrintSettings(
+                        $productionLine['Printer']['queue_name'],
+                        $this->PrintLogic->getPrintJobName($pallet_ref),
+                        $productionLine['Printer']['options'],
+                        $productType['ProductType']['name']// tmp file prefix
+                    )
                 );
 
                 if ($isPrintDebugMode || $return_value['return_value'] === 0) {
