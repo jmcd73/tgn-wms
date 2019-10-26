@@ -174,6 +174,41 @@ class PrintTemplatesController extends AppController
         }
         return $this->redirect(['action' => 'index']);
     }
+
+
+      /**
+     * @param $id
+     * @param null $delta
+     */
+    public function move($id = null, $delta = 1)
+    {
+        $this->request->allowMethod(['post', 'put']);
+        if (is_numeric($this->data['PrintTemplate']['amount'])) {
+            $delta = $this->data['PrintTemplate']['amount'];
+        }
+        if (isset($this->data['PrintTemplate']['move_up'])) {
+            $this->requestAction(
+                [
+                    'action' => 'move_up',
+                    $id,
+                    $delta
+                ],
+
+            );
+        }
+        if (isset($this->data['PrintTemplate']['move_down'])) {
+            $this->requestAction(
+                [
+                    'action' => 'move_down',
+                    $id,
+                    $delta
+                ]
+            );
+        }
+    }
+
+
+
      /**
      * @param $id
      * @param null $delta

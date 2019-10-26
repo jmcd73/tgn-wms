@@ -61,13 +61,44 @@ class MenusController extends AppController
     /**
      * @param $id
      * @param null $delta
+     */
+    public function move($id = null, $delta = 1)
+    {
+        $this->request->allowMethod(['post', 'put']);
+        if (is_numeric($this->data['Menu']['amount'])) {
+            $delta = $this->data['Menu']['amount'];
+        }
+        if (isset($this->data['Menu']['move_up'])) {
+            $this->requestAction(
+                [
+                    'action' => 'move_up',
+                    $id,
+                    $delta
+                ],
+
+            );
+        }
+        if (isset($this->data['Menu']['move_down'])) {
+            $this->requestAction(
+                [
+                    'action' => 'move_down',
+                    $id,
+                    $delta
+                ]
+            );
+        }
+    }
+
+    /**
+     * @param $id
+     * @param null $delta
      * @return mixed
      */
     public function move_up($id = null, $delta = 1)
     {
         $this->request->allowMethod(['post', 'put']);
         $this->Menu->id = $id;
-        if(is_numeric($this->data['Menu']['amount'])) {
+        if (is_numeric($this->data['Menu']['amount'])) {
             $delta = $this->data['Menu']['amount'];
         }
         if (!$this->Menu->exists()) {
@@ -78,6 +109,7 @@ class MenusController extends AppController
         } else {
             $this->Flash->error('The category could not be moved up. Please, try again.');
         }
+        $this->log($this->request->data);
         return $this->redirect($this->referer());
     }
 
@@ -90,7 +122,7 @@ class MenusController extends AppController
     {
         $this->request->allowMethod(['post', 'put']);
         $this->Menu->id = $id;
-        if(is_numeric($this->data['Menu']['amount'])) {
+        if (is_numeric($this->data['Menu']['amount'])) {
             $delta = $this->data['Menu']['amount'];
         }
         if (!$this->Menu->exists()) {
@@ -101,6 +133,7 @@ class MenusController extends AppController
         } else {
             $this->Flash->error('The category could not be moved down. Please, try again.');
         }
+        $this->log($this->request->data);
         return $this->redirect($this->referer());
     }
 
