@@ -20,8 +20,10 @@ class LocationsController extends AppController
     {
         parent::beforeFilter();
         // Allow users to register and logout.
-
+        $this->Auth->deny(['delete']);
     }
+
+
 /**
  * index method
  *
