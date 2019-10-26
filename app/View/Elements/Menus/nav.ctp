@@ -22,6 +22,8 @@
         ]);
 ?>
 
+
+
 <?php foreach ($menu_tree as $menu): ?>
 
 	<?php
@@ -38,6 +40,11 @@
 <?php if (!$menu['Menu']['active']) {
         continue;
 } ?>
+
+<?php if(strpos($menu['Menu']['url'], '://') !== false): ?>
+<?php $this->Nav->link($menu['Menu']['name'], $menu['Menu']['url']); ?>
+<?php else: ?>
+
 <?php $this->Nav->beginMenu($menu['Menu']['name']); ?>
 
     <?php if (!empty($menu['children'])): ?>
@@ -46,12 +53,12 @@
         continue;
 } ?>
             <?php if ($child_menu['Menu']['divider']): ?>
-<?php $this->Nav->divider(); ?>
-<?php endif; ?>
-<?php if ($child_menu['Menu']['header']): ?>
-<?php
+                <?php $this->Nav->divider(); ?>
+            <?php endif; ?>
+            <?php if ($child_menu['Menu']['header']): ?>
+        <?php
 
-    $this->Nav->text($child_menu['Menu']['name'], [
+                $this->Nav->text($child_menu['Menu']['name'], [
         'wrap' => 'li',
         'class' => 'dropdown-header']);
 ?>
@@ -76,7 +83,7 @@
             'title' => $child_menu['Menu']['title']
         ];
         $this->Nav->link($child_menu['Menu']['name'], $url, $options);
-    } elseif (strpos($child_menu['Menu']['url'], 'http://') !== false) {
+    } elseif (strpos($child_menu['Menu']['url'], '://') !== false) {
         $url = $child_menu['Menu']['url'];
         $this->Nav->link($child_menu['Menu']['name'], $url, $options);
     }
@@ -85,6 +92,7 @@
 <?php endforeach; ?>
 <?php endif; ?>
 <?php $this->Nav->endMenu(); ?>
+<?php endif; ?>
 <?php endforeach; ?>
 
 <?php if (isset($user)) {
