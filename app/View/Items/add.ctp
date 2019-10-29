@@ -1,5 +1,5 @@
 <div class="container">
-    <?=$this->Form->create('Item'); ?>
+    <?=$this->Form->create('Item', ['bootstrap-size' => 'small']); ?>
     <fieldset>
         <legend><?=__('Edit Item'); ?></legend>
         <div class="col-lg-4 col-md-4 col-sm-6">

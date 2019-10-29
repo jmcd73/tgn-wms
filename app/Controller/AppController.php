@@ -38,9 +38,9 @@ class AppController extends Controller
      */
     public $components = [
         //'DebugKit.Toolbar',
-         //'Session',
-         'RequestHandler', //added json views
-         'Flash',
+        //'Session',
+        'RequestHandler', //added json views
+        'Flash',
         'Auth' => [
             'loginRedirect' => [
                 'controller' => 'pages',
@@ -53,9 +53,10 @@ class AppController extends Controller
                 'index'
             ],
             'authorize' => ['Controller'], // Added this line
-             'flash' => [
+            'flash' => [
                 'key' => 'auth',
-                'element' => 'error'],
+                'element' => 'error'
+            ],
             'authError' => "You cannot access that function without the correct permission.",
             'authenticate' => [
                 'Form' => [
@@ -117,14 +118,18 @@ class AppController extends Controller
 
         if (($this->request->controller !== 'menus') && ($this->request->action !== 'build_menu')) {
             $controllerAction = $this->request->controller . 'Controller::' . $this->request->action;
-           // debug($controllerAction);
-            $this->set('helpPage', $this->{$this->modelClass}->getHelpPage($controllerAction));
+
+            $this->set(
+                'helpPage',
+                $this->{$this->modelClass}
+                    ->getHelpPage($controllerAction)
+            );
         }
 
         //allow everything by default
         $this->Auth->allow();
 
-        if ((bool)AuthComponent::user()) {
+        if ((bool) AuthComponent::user()) {
             $user = $this->Auth->user();
             $this->set(compact('user'));
         }
@@ -178,5 +183,4 @@ class AppController extends Controller
     {
         return $this->{$this->modelClass}->getSetting($settingname, $inComment);
     }
-
 }

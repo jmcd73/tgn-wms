@@ -391,9 +391,10 @@ class AppModel extends Model
     {
         $helpModel = ClassRegistry::init('Help');
         $helpPage = $helpModel->find(
-            'first', [
+            'first',
+            [
                 'conditions' => [
-                    'controller_action' => $controllerAction
+                    'Help.controller_action' => $controllerAction
                 ]
             ]
         );
