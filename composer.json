@@ -1,11 +1,11 @@
 {
-	"name": "jmits/wms",
+	"name": "tgn/wms",
 	"description": "Warehouse Mangement System",
 	"type": "project",
 	"keywords": [
 		"framework"
 	],
-	"homepage": "http://cakephp.org",
+	"homepage": "http://toggen.com.au",
 	"license": "MIT",
 	"authors": [
 		{

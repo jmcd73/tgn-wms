@@ -24,74 +24,40 @@
  * its action called 'display', and we pass a param to select the view file
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
-	Router::connect('/', ['controller' => 'pages', 'action' => 'display', 'index']);
+Router::connect('/', ['controller' => 'pages', 'action' => 'display', 'index']);
 /**
  * ...and connect the rest of 'Pages' controller's URLs.
  */
-	//Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
-        
-        Router::connect('/st', ['controller' => 'stockTakes', 'action' => 'stocktake']);
-        Router::connect('/st/:action/*', ['controller' => 'stockTakes']);
+//Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 
+Router::connect(
+    '/:ctrl/part_list/*',
+    ['controller' => 'Items', 'action' => 'partList'],
+    ['ctrl' => '(?i:items)']
+);
 
-//	Router::connect('/reports', array('controller' => 'reportDates', 'action' => 'index'));
+//    Router::connect('/reports', array('controller' => 'reportDates', 'action' => 'index'));
 //
 //
-//	 Router::connect('/reports/:action/*', array('controller' => 'reportDates'));
-        
-        
-        
-        Router::connect(
-                '/labels/print-sample-labels', 
-                    [
-                    'controller' => 'settings',
-                    'action' => 'sample_labels'
-                    ]);
-        
-         Router::connect(
-                '/labels/print-custom-labels', 
-                [
-                    'controller' => 'settings',
-                    'action' => 'custom_print'
-                    ]);
-         
-         Router::connect(
-                 '/labels/carton_print', 
-                 [
-                     'controller' => 'pages', 
-                     'action' => 'display', 
-                     'carton_print'
-                     ]
-                 );
-         
-         Router::connect(
-                 '/labels/shipping_labels', 
-                 [
-                     'controller' => 'pages', 
-                     'action' => 'display', 
-                     'shipping_labels'
-                     ]
-                 );
-         
-         Router::connect(
-                 '/labels/big_number', 
-                 [
-                     'controller' => 'pages', 
-                     'action' => 'display', 
-                     'big_number'
-                     ]
-                 );
+//     Router::connect('/reports/:action/*', array('controller' => 'reportDates'));
+
+// Renamed Labels Controller to Pallets
+// case insensitive match
+Router::connect(
+    '/:ctrl/:action/*',
+    ['controller' => 'Pallets'],
+    ['ctrl' => '(?i:labels)']
+);
+
 /**
  * Load all plugin routes. See the CakePlugin documentation on
  * how to customize the loading of plugin routes.
  */
-	CakePlugin::routes();
+CakePlugin::routes();
 
-        
-        
-        Router::parseExtensions('json', 'xml', 'csv');
+Router::parseExtensions('json', 'xml', 'csv');
 /**
  * Load the CakePHP default routes. Only remove this if you do not want to use
  * the built-in default routes.
  */
-	require CAKE . 'Config' . DS . 'routes.php';
+require CAKE . 'Config' . DS . 'routes.php';

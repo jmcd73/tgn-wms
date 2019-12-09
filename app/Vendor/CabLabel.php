@@ -155,7 +155,7 @@ class CabLabel
     /**
      * Takes an array of label values and the template and replaces the tokens with the label values
      *
-     * @param array $label_values Label Values Array
+     * @param array $label_values Pallet Values Array
      * @param string $template CAB Language Print Template
      * @return string
      */

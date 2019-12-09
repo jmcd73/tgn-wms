@@ -22,6 +22,10 @@ class ItemsController extends AppController
      */
     public $components = ['Paginator', 'Session', 'PrintLogic'];
 
+    /**
+     * Before filter
+     * @return void
+     */
     public function beforeFilter()
     {
         parent::beforeFilter();
@@ -35,7 +39,6 @@ class ItemsController extends AppController
      */
     public function index()
     {
-
         $this->Item->recursive = 0;
 
         $this->Paginator->settings = [
@@ -55,15 +58,14 @@ class ItemsController extends AppController
         $this->set('items', $this->Paginator->paginate());
         $this->set(compact('item_list'));
         $this->set('_serialize', ['items']);
-
     }
 
     /**
-     * @param $id
+     * @param int $id Product ID
+     * @return void
      */
     public function product($id = null)
     {
-
         $this->layout = 'ajax';
 
         if (!$this->Item->exists($id)) {
@@ -75,27 +77,27 @@ class ItemsController extends AppController
     }
 
     /**
-     * @param $type
+     * @param int $productTypeId Product Type ID
+     * @return void
      */
-    public function part_list($productTypeId = null)
+    public function partList($productTypeId = null)
     {
-
         $this->Item->recursive = -1; // don't get related data only item
 
-        $this->layout = 'xml/default';
+        //$this->layout = 'xml/default';
 
         $options = [
             'conditions' => [
-                'NOT' => [
-                    'active' => 0
-                ],
-                'product_type_id' => $productTypeId
+                'active' => 0
             ]
         ];
+        if ($productTypeId) {
+            $options['conditions']['product_type_id'] = $productTypeId;
+        }
+
+        $this->autoRender = false;
 
         $items = $this->Item->find('all', $options);
-
-        $this->response->type('text/xml');
 
         $xml = new SimpleXMLElement('<productList/>');
         $xml->addAttribute('madeBy', 'Toggen');
@@ -108,12 +110,14 @@ class ItemsController extends AppController
             $itemNode->addChild('gtinEa', $item['Item']['trade_unit']);
             $itemNode->addChild('gtinCu', $item['Item']['consumer_unit']);
         }
+
+        $this->response->type('text/xml');
         $this->response->body($xml->asXML());
-        $this->autoRender = false;
     }
 
     /**
-     * @param $code
+     * @param int $code item code
+     * @return void
      */
     public function productListByCode($code = null)
     {
@@ -138,11 +142,11 @@ class ItemsController extends AppController
     }
 
     /**
-     * @param $type
+     * @param int $productTypeId ID of product Type
+     * @return void
      */
-    public function product_list($productTypeId = null)
+    public function productList($productTypeId = null)
     {
-
         $this->Item->recursive = -1; // don't get related data only item
         $this->layout = 'ajax';
         $options = [
@@ -171,7 +175,7 @@ class ItemsController extends AppController
      * view method
      *
      * @throws NotFoundException
-     * @param string $id
+     * @param string $id ID of Item
      * @return void
      */
     public function view($id = null)
@@ -186,7 +190,7 @@ class ItemsController extends AppController
     /**
      * add method
      *
-     * @return void
+     * @return mixed
      */
     public function add()
     {
@@ -194,23 +198,22 @@ class ItemsController extends AppController
             $this->Item->create();
             if ($this->Item->save($this->request->data)) {
                 $this->Flash->success(__('The item has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The item could not be saved. Please, try again.'));
             }
         }
 
-
-
         $printTemplates = $this->Item->PrintTemplate->generateTreeList(
             [
                 'PrintTemplate.active' => true
-            ]
-           ,
+            ],
             null,
             null,
-           '&nbsp;&nbsp;&nbsp;&nbsp;'
+            '&nbsp;&nbsp;&nbsp;&nbsp;'
         );
+
         $productTypes = $this->Item->ProductType->find('list');
 
         $packSizes = $this->Item->PackSize->find('list');
@@ -231,8 +234,8 @@ class ItemsController extends AppController
      * edit method
      *
      * @throws NotFoundException
-     * @param string $id
-     * @return void
+     * @param string $id ID of Item
+     * @return mixed
      */
     public function edit($id = null)
     {
@@ -250,6 +253,7 @@ class ItemsController extends AppController
         if ($this->request->is(['post', 'put'])) {
             if ($this->Item->save($this->request->data)) {
                 $this->Flash->success(__('The item has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The item could not be saved. Please, try again.'));
@@ -261,14 +265,13 @@ class ItemsController extends AppController
             $this->request->data = $this->Item->find('first', $options);
         }
 
-        $printTemplates = $this->Item->PrintTemplate->find(
-            'list',
+        $printTemplates = $this->Item->PrintTemplate->generateTreeList(
             [
-                'conditions' => [
-                    'PrintTemplate.active' => true
-                ],
-                'recursive' => -1
-            ]
+                'PrintTemplate.active' => true
+            ],
+            null,
+            null,
+            '&nbsp;&nbsp;&nbsp;&nbsp;'
         );
         $global_min_days_life = $this->getSetting('min_days_life');
         $packSizes = $this->Item->PackSize->find('list', [
@@ -278,13 +281,14 @@ class ItemsController extends AppController
             'recursive' => -1
         ]);
         $defaultPalletLabelCopies = $this->getSetting('sscc_default_label_copies');
-        $this->set(compact(
-            'packSizes',
-            'defaultPalletLabelCopies',
-            'printTemplates',
-            'global_min_days_life',
-            'productTypes'
-        )
+        $this->set(
+            compact(
+                'packSizes',
+                'defaultPalletLabelCopies',
+                'printTemplates',
+                'global_min_days_life',
+                'productTypes'
+            )
         );
     }
 
@@ -292,8 +296,8 @@ class ItemsController extends AppController
      * delete method
      *
      * @throws NotFoundException
-     * @param string $id
-     * @return void
+     * @param string $id Item ID to delete
+     * @return mixed
      */
     public function delete($id = null)
     {
@@ -307,7 +311,7 @@ class ItemsController extends AppController
         } else {
             $this->Flash->error(__('The item could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
-
 }

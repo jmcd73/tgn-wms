@@ -1,6 +1,6 @@
 <div class="helps index container">
 	<h2><?php echo __('Helps'); ?></h2>
-	<?=$this->Html->link('Add', ['action' => 'add'], ['class' => 'btn add btn-primary add bpad20 btn-xs']); ?>
+	<?=$this->Html->link('Add', ['action' => 'add'], ['class' => 'btn add btn-primary add mb2 btn-xs']); ?>
 	<p>To add help to a page. Create markdown documents in <em><?= h($documentationRoot) ; ?></em> and add a link between the Controller / Action and the markdown file here</p>
 	<table class="table table-bordered table-condensed table-striped table-responsive">
 	<thead>

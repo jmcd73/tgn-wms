@@ -4,7 +4,7 @@ App::uses('AppModel', 'Model');
 /**
  * Location Model
  *
- * @property Label $Label
+ * @property Pallet $Pallet
  */
 class Location extends AppModel
 {
@@ -52,8 +52,8 @@ class Location extends AppModel
  * @var array
  */
     public $hasMany = [
-        'Label' => [
-            'className' => 'Label',
+        'Pallet' => [
+            'className' => 'Pallet',
             'foreignKey' => 'location_id',
             'dependent' => false,
             'conditions' => '',

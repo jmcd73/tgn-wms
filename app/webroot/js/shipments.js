@@ -8,11 +8,11 @@
 $(function () {
 
     //onload too
-    count = $('input[name="data[Shipment][Label][]"]:checked').length;
+    count = $('input[name="data[Shipment][Pallet][]"]:checked').length;
     $('#selected_label_count').html(count);
 
-    $('input[name="data[Shipment][Label][]"]').click(function(){
-        count = $('input[name="data[Shipment][Label][]"]:checked').length;
+    $('input[name="data[Shipment][Pallet][]"]').click(function(){
+        count = $('input[name="data[Shipment][Pallet][]"]:checked').length;
 
         $('#selected_label_count').html(count);
         console.log("clickity" + count);

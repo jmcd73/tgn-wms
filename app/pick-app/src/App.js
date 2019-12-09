@@ -27,7 +27,7 @@ class App extends Component {
 	togglePicked(id, isChecked, pickAll = false) {
 		const postPickedEditUrl = this.props.baseUrl + "Labels/multiEdit/";
 
-		let labels =  JSON.parse(JSON.stringify(this.state.shipment.Label));
+		let labels =  JSON.parse(JSON.stringify(this.state.shipment.Pallet));
 		let ids = [];
 		let pickedState = {};
 
@@ -61,7 +61,7 @@ class App extends Component {
 			...this.state,
 			shipment: {
 				...this.state.shipment,
-				Label: [
+				Pallet: [
 					...labels
 				]
 
@@ -133,7 +133,7 @@ class App extends Component {
 
 
 				this.setState(d);
-				const allArePicked = d.shipment.Label.every( (label) => { return label.picked });
+				const allArePicked = d.shipment.Pallet.every( (label) => { return label.picked });
 				this.setState({ allPicked: allArePicked });
 			})
 			.catch(e => {});
@@ -179,7 +179,7 @@ class App extends Component {
 	}
 	render() {
 		const { shipments, shipment } = this.state;
-		let { Label: pallets } = shipment;
+		let { Pallet: pallets } = shipment;
 		let palletsCount = 0;
 		let palletsPicked = 0;
 		const defaultPickedClass = 'label-warning';

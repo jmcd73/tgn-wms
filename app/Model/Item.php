@@ -12,12 +12,11 @@ class Item extends AppModel
     /**
      * Display field
      *
-     * @var string
+     * @param in $productTypeId Product Type ID
+     * @return array
      */
-
     public function getPalletPrintItems($productTypeId)
     {
-
         $options = [
             'conditions' => [
                 'NOT' => [
@@ -46,16 +45,15 @@ class Item extends AppModel
     public $displayField = 'name';
 
     /**
-     * @param $term
+     * @param string $term Item snippet to lookup
      * @return mixed
      */
-    public function item_lookup($term)
+    public function itemLookup($term)
     {
-
         $options = [
             'recursive' => -1,
             'conditions' => [
-                'Item.id IN (SELECT Label.item_id from labels as Label)',
+                'Item.id IN (SELECT Pallet.item_id from pallets as Pallet)',
                 'Item.code LIKE' => '%' . $term . '%'
             ],
             'fields' => [
@@ -71,17 +69,17 @@ class Item extends AppModel
 
         $items = $this->find('all', $options);
 
-        $items = Hash::map($items, '{n}.Item', [$this, 'fmt_item']);
+        $items = Hash::map($items, '{n}.Item', [$this, 'fmtItem']);
 
         return $items;
     }
 
     /**
-     * @param $data
+     * @param array $data Array of data to format
+     * @return array data to return to a javascript control somewhere
      */
-    public function fmt_item($data)
+    public function fmtItem($data)
     {
-
         return [
             'label' => $data['name'],
             'value' => $data['code'],
@@ -90,35 +88,9 @@ class Item extends AppModel
         ];
     }
 
-    public function code_desc_pack()
-    {
-        $this->Behaviors->load('Containable');
-
-        $options = [
-            'contain' => ['PackSize' => [
-                'fields' => ['id', 'pack_size']
-            ]
-            ],
-            'conditions' => [
-                'Item.active' => 1
-            ],
-            'order' => [
-                'Item.code' => 'ASC'
-            ],
-            'fields' => [
-                'Item.id',
-                'CONCAT( Item.code, " - " , Item.description, " (", PackSize.pack_size , ")") as item_pack'
-            ],
-            'recursive' => -1
-        ];
-
-        $items_fmt = $this->Report->Item->find('all', $options);
-
-        return Hash::combine($items_fmt, '{n}.Item.id', '{n}.{n}.item_pack');
-    }
-
     /**
-     * @param $check
+     * @param array $check Check array field / value
+     * @return bool
      */
     public function checkItemCodeIsValid($check)
     {
@@ -131,12 +103,12 @@ class Item extends AppModel
         $codeRegex = $productType['ProductType']['code_regex'];
         $this->validator()->getField($field)
             ->getRule('item_code')->message
-                = $productType['ProductType']['code_regex_description'];
+        = $productType['ProductType']['code_regex_description'];
 
         //$this->validator()->getField('password')
         // ->getRule('required')->message = 'This field cannot be left blank';
-        return preg_match($codeRegex, $value) === 1;
 
+        return preg_match($codeRegex, $value) === 1;
     }
 
     /**
@@ -255,8 +227,8 @@ class Item extends AppModel
      * @var array
      */
     public $hasMany = [
-        'Label' => [
-            'className' => 'Label',
+        'Pallet' => [
+            'className' => 'Pallet',
             'foreignKey' => 'item_id',
             'dependent' => false,
             'conditions' => '',
@@ -302,5 +274,4 @@ class Item extends AppModel
             'order' => ''
         ]
     ];
-
 }

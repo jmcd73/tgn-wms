@@ -10,7 +10,7 @@
                 ]); ?>
             </small></H3>
 
-            <div class="bpad10">
+            <div class="mb1">
 
             <?php foreach ($productTypes as $pt): ?>
                     <?php echo $this->Html->link(
@@ -39,7 +39,7 @@
                 <th><?=$this->Paginator->sort('product_type_id', 'Type'); ?></th>
                 <th><?=$this->Paginator->sort('shipper'); ?></th>
                 <th><?=$this->Paginator->sort('destination'); ?></th>
-                <th class="text-center"><?=$this->Paginator->sort('label_count', "No. pallets", ['title' => "Number of pallets on shipment"]); ?></th>
+                <th class="text-center"><?=$this->Paginator->sort('pallet_count', "No. pallets", ['title' => "Number of pallets on shipment"]); ?></th>
                 <th class="hidden-xs"><?=$this->Paginator->sort('created'); ?></th>
                 <th class="hidden-xs"><?=$this->Paginator->sort('modified'); ?></th>
                 <th class="actions"><?=__('Actions'); ?></th>
@@ -64,7 +64,7 @@
                     <td><?=Inflector::humanize($shipment['ProductType']['name']); ?></td>
                     <td><?=h($shipment['Shipment']['shipper']); ?></td>
                     <td><?=h($shipment['Shipment']['destination']); ?></td>
-                    <td class="text-center"><?=h($shipment['Shipment']['label_count']); ?></td>
+                    <td class="text-center"><?=h($shipment['Shipment']['pallet_count']); ?></td>
                     <td class="hidden-xs"><?=h($shipment['Shipment']['created']); ?></td>
                     <td class="hidden-xs"><?=h($shipment['Shipment']['modified']); ?></td>
                     <td class="actions">

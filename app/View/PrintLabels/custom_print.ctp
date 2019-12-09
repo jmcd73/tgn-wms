@@ -22,7 +22,7 @@
     [
         'url' => [
             'controller' => 'PrintLabels',
-            'action' => 'custom_print'],
+            'action' => 'customPrint'],
         'id' => 'CustomPrint' . $cust_print['Setting']['id']
     ]
 ); ?>

@@ -10,21 +10,38 @@ class Help extends AppModel
 {
 
     /**
-     * @param $rootPath
+     * useTable
+     * @var string
+     */
+    public $useTable = 'help';
+
+    /**
+     * Display field
+     *
+     * @var string
+     */
+    public $displayField = 'title';
+    /**
+     * @param string $rootPath Root Path to Doc root
      * @return mixed
      */
     public function setDocumentationRoot($rootPath)
     {
         $docRoot = new Folder($rootPath);
+
         return $docRoot;
     }
 
-    public function getMarkdown($mdDocumentPath){
-
+    /**
+     * @param string $mdDocumentPath Mark down path
+     * @return mixed
+     */
+    public function getMarkdown($mdDocumentPath)
+    {
         $markdownFile = new File($mdDocumentPath);
-        $markdown = sprintf ("<strong>%s</strong> file does not exist. Please edit this link to point to a valid markdown file", $mdDocumentPath);
+        $markdown = sprintf("<strong>%s</strong> file does not exist. Please edit this link to point to a valid markdown file", $mdDocumentPath);
 
-        if($markdownFile->exists()) {
+        if ($markdownFile->exists()) {
             $fileContents = str_replace(
                 '(images/',
                 '(/docs/help/images/',
@@ -37,12 +54,11 @@ class Help extends AppModel
             $markdownFile->close();
         }
 
-
         return $markdown;
-
     }
+
     /**
-     * @param $rootPath
+     * @param string $rootPath path to markdown files
      * @return mixed
      */
     public function listMdFiles($rootPath)
@@ -59,31 +75,11 @@ class Help extends AppModel
         return $fileList;
     }
 
-/**
- * Use database config
- *
- * @var string
- */
-
-/**
- * Use table
- *
- * @var mixed False or table name
- */
-    public $useTable = 'help';
-
-/**
- * Display field
- *
- * @var string
- */
-    public $displayField = 'title';
-
-/**
- * Validation rules
- *
- * @var array
- */
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
     public $validate = [
         'controller' => [
             'notBlank' => [

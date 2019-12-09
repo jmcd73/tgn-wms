@@ -1,6 +1,6 @@
 <?php
-
 $config = [
+    'companyName' => 'The Toggen Partnership',
     'ALLOWED_METHODS' => ['PUT', 'POST'],
     'ALLOWED_ORIGINS' => ['http://localhost:3000', 'http://localhost:8082'],
     'labelMaxCopies' => 400,
@@ -8,7 +8,7 @@ $config = [
     'LabelsRolesActions' => [
         [
             'roles' => ['qa'], // single value must be array
-             'actions' => ['editPallet', 'bulkStatusRemove']
+             'actions' => ['editPallet', 'bulkStatusRemove', 'editPalletCartons']
         ],
         [
             'roles' => ['qty_editor'],
@@ -65,9 +65,10 @@ $config = [
      * SetEnv ENVIRONMENT LIVE|HOME|TEST in .htaccess
      * */
     'datasources' => [
-        'HOME' => 'default', // my laptop
-         'TEST' => 'test', // test
-         'NEWTEST' => 'palletsTest'
+        'HOME' => 'default',
+        'TEST' => 'test',
+        'NEWTEST' => 'palletsTest',
+        'TGN' => 'tgn'
     ],
     'navbar' => [
         'brand' => [

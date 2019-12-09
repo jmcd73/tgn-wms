@@ -1,6 +1,6 @@
 <div class="inventoryStatuses index container">
     <h3><?= __('Inventory Statuses'); ?></h3>
-    <?=$this->Html->link('Add', ['action' => 'add'], ['class' => 'btn add btn-primary add bpad20 btn-xs']); ?>
+    <?=$this->Html->link('Add', ['action' => 'add'], ['class' => 'btn add btn-primary add mb2 btn-xs']); ?>
     <table class="table table-bordered table-condensed table-striped table-responsive">
         <thead>
             <tr>
@@ -59,7 +59,7 @@
     <h3><?= __('Actions'); ?></h3>
     <ul>
         <li><?= $this->Html->link(__('New Inventory Status'), ['action' => 'add']); ?></li>
-        <li><?= $this->Html->link(__('List Labels'), ['controller' => 'labels', 'action' => 'index']); ?> </li>
-        <li><?= $this->Html->link(__('New Label'), ['controller' => 'labels', 'action' => 'add']); ?> </li>
+        <li><?= $this->Html->link(__('List Labels'), ['controller' => 'pallets', 'action' => 'index']); ?> </li>
+        <li><?= $this->Html->link(__('New Label'), ['controller' => 'pallets', 'action' => 'add']); ?> </li>
     </ul>
 </div>

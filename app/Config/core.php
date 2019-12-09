@@ -37,14 +37,11 @@ if (getenv('CAKEPHP_DEBUG')) {
     Configure::write('debug', 2);
     Configure::write('pallet_print_debug', true);
     Configure::write('navbarInverse', false);
-
 } else {
     Configure::write('debug', 0);
     Configure::write('pallet_print_debug', false);
     Configure::write('navbarInverse', true);
 }
-
-
 
 /**
  * Configure the Error handler used to handle errors for your application. By default

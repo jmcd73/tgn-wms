@@ -11,18 +11,18 @@ App::uses('File', 'Utility');
 class PrintTemplatesController extends AppController
 {
 
-/**
- * Components
- *
- * @var array
- */
+    /**
+     * Components
+     *
+     * @var array
+     */
     public $components = ['Paginator', 'Ctrl'];
 
-/**
- * index method
- *
- * @return void
- */
+    /**
+     * index method
+     *
+     * @return void
+     */
     public function index()
     {
         $this->PrintTemplate->recursive = 0;
@@ -43,18 +43,19 @@ class PrintTemplatesController extends AppController
         );*/
         $this->set(
             compact(
-                'printTemplates', 'glabelsRoot'
+                'printTemplates',
+                'glabelsRoot'
             )
         );
     }
 
-/**
- * view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+    /**
+     * view method
+     *
+     * @throws NotFoundException
+     * @param int $id ID of Print Template
+     * @return void
+     */
     public function view($id = null)
     {
         if (!$this->PrintTemplate->exists($id)) {
@@ -67,30 +68,19 @@ class PrintTemplatesController extends AppController
         $this->set('printTemplate', $this->PrintTemplate->find('first', $options));
     }
 
-/**
- * add method
- *
- * @return void
- */
+    /**
+     * add method
+     *
+     * @return mixed
+     */
     public function add()
     {
         if ($this->request->is('post')) {
-            /*
-            [file_template] => Array
-            (
-            [name] => 150x200-shipping-labels.glabels
-            [type] => application/octet-stream
-            [tmp_name] => /tmp/phpDd2TA4
-            [error] => 0
-            [size] => 6864
-            )
-             */
-
             $this->PrintTemplate->create();
 
             if ($this->PrintTemplate->save($this->request->data)) {
-
                 $this->Flash->success(__('The print template has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The print template could not be saved. Please, try again.'));
@@ -102,7 +92,8 @@ class PrintTemplatesController extends AppController
         );
 
         $parents = $this->PrintTemplate->find(
-            'list', [
+            'list',
+            [
                 'conditions' => [
                     'PrintTemplate.parent_id IS NULL'
                 ],
@@ -113,25 +104,24 @@ class PrintTemplatesController extends AppController
         $this->set(compact('controllerList', 'parents'));
     }
 
-/**
- * edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+    /**
+     * edit method
+     *
+     * @throws NotFoundException
+     * @param int $id ID of Print Template
+     * @return mixed
+     */
     public function edit($id = null)
     {
         if (!$this->PrintTemplate->exists($id)) {
             throw new NotFoundException(__('Invalid print template'));
         }
         if ($this->request->is(['post', 'put'])) {
-
             if ($this->PrintTemplate->save($this->request->data)) {
                 $this->Flash->success(__('The print template has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
-
                 $this->Flash->error(__('The print template could not be saved. Please, try again.'));
             }
         } else {
@@ -139,7 +129,8 @@ class PrintTemplatesController extends AppController
             $this->request->data = $this->PrintTemplate->find('first', $options);
         }
         $parents = $this->PrintTemplate->find(
-            'list', [
+            'list',
+            [
                 'conditions' => [
                     'PrintTemplate.parent_id IS NULL'
                 ],
@@ -152,13 +143,13 @@ class PrintTemplatesController extends AppController
         $this->set(compact('controllerList', 'parents'));
     }
 
-/**
- * delete method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+    /**
+     * delete method
+     *
+     * @throws NotFoundException
+     * @param int $id ID of Print Template
+     * @return mixed
+     */
     public function delete($id = null)
     {
         $this->PrintTemplate->id = $id;
@@ -172,34 +163,34 @@ class PrintTemplatesController extends AppController
         } else {
             $this->Flash->error(__('The print template could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 
-
-      /**
-     * @param $id
-     * @param null $delta
+    /**
+     * @param int $id ID of Print Template
+     * @param int $delta How many places to move in tree
+     * @return void
      */
     public function move($id = null, $delta = 1)
     {
         $this->request->allowMethod(['post', 'put']);
-        if (is_numeric($this->data['PrintTemplate']['amount'])) {
-            $delta = $this->data['PrintTemplate']['amount'];
+        if (is_numeric($this->request->data['PrintTemplate']['amount'])) {
+            $delta = $this->request->data['PrintTemplate']['amount'];
         }
-        if (isset($this->data['PrintTemplate']['move_up'])) {
+        if (isset($this->request->data['PrintTemplate']['moveUp'])) {
             $this->requestAction(
                 [
-                    'action' => 'move_up',
+                    'action' => 'moveUp',
                     $id,
                     $delta
-                ],
-
+                ]
             );
         }
-        if (isset($this->data['PrintTemplate']['move_down'])) {
+        if (isset($this->request->data['PrintTemplate']['moveDown'])) {
             $this->requestAction(
                 [
-                    'action' => 'move_down',
+                    'action' => 'moveDown',
                     $id,
                     $delta
                 ]
@@ -207,19 +198,18 @@ class PrintTemplatesController extends AppController
         }
     }
 
-
-
-     /**
-     * @param $id
-     * @param null $delta
+    /**
+     * moveDown
+     * @param int $id ID of Print Template
+     * @param int $delta how far to move
      * @return mixed
      */
-    public function move_down($id = null, $delta = 1)
+    public function moveDown($id = null, $delta = 1)
     {
         $this->request->allowMethod(['post', 'put']);
         $this->PrintTemplate->id = $id;
-        if(is_numeric($this->data['PrintTemplate']['amount'])) {
-            $delta = $this->data['PrintTemplate']['amount'];
+        if (is_numeric($this->request->data['PrintTemplate']['amount'])) {
+            $delta = $this->request->data['PrintTemplate']['amount'];
         }
         if (!$this->PrintTemplate->exists()) {
             throw new NotFoundException(__('Invalid category'));
@@ -229,19 +219,21 @@ class PrintTemplatesController extends AppController
         } else {
             $this->Flash->error('The category could not be moved down. Please, try again.');
         }
+
         return $this->redirect($this->referer());
     }
-     /**
-     * @param $id
-     * @param null $delta
+
+    /**
+     * @param int $id ID of Print Template
+     * @param int $delta how many places to move
      * @return mixed
      */
-    public function move_up($id = null, $delta = 1)
+    public function moveUp($id = null, $delta = 1)
     {
         $this->request->allowMethod(['post', 'put']);
         $this->PrintTemplate->id = $id;
-        if(is_numeric($this->data['PrintTemplate']['amount'])) {
-            $delta = $this->data['PrintTemplate']['amount'];
+        if (is_numeric($this->request->data['PrintTemplate']['amount'])) {
+            $delta = $this->request->data['PrintTemplate']['amount'];
         }
         if (!$this->PrintTemplate->exists()) {
             throw new NotFoundException(__('Invalid category'));
@@ -251,7 +243,7 @@ class PrintTemplatesController extends AppController
         } else {
             $this->Flash->error('The category could not be moved up. Please, try again.');
         }
+
         return $this->redirect($this->referer());
     }
-
 }

@@ -1,6 +1,6 @@
 <div class="printers index container">
 	<h2><?php echo __('Printers'); ?></h2>
-	<?=$this->Html->link('Add', ['action' => 'add'], ['class' => 'btn add btn-primary bpad20 btn-xs']); ?>
+	<?=$this->Html->link('Add', ['action' => 'add'], ['class' => 'btn add btn-primary mb2 btn-xs']); ?>
 	<p><strong>Note:</strong> To add printers you first need to go to <?= $this->Html->link($cupsUrl, $cupsUrl); ?> to define printers using CUPS and then you can add them here </p>
 
 	<table class="table table-bordered table-condensed table-striped table-responsive">

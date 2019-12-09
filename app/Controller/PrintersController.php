@@ -9,18 +9,18 @@ App::uses('AppController', 'Controller');
 class PrintersController extends AppController
 {
 
-/**
- * Components
- *
- * @var array
- */
+    /**
+     * Components
+     *
+     * @var array
+     */
     public $components = ['Paginator', 'Ctrl'];
 
-/**
- * index method
- *
- * @return void
- */
+    /**
+     * index method
+     *
+     * @return void
+     */
     public function index()
     {
         $this->Printer->recursive = 0;
@@ -30,13 +30,13 @@ class PrintersController extends AppController
         $this->set(compact('cupsUrl'));
     }
 
-/**
- * view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+    /**
+     * view method
+     *
+     * @throws NotFoundException
+     * @param string $id ID of Printer
+     * @return void
+     */
     public function view($id = null)
     {
         if (!$this->Printer->exists($id)) {
@@ -46,17 +46,18 @@ class PrintersController extends AppController
         $this->set('printer', $this->Printer->find('first', $options));
     }
 
-/**
- * add method
- *
- * @return void
- */
+    /**
+     * add method
+     *
+     * @return mixed
+     */
     public function add()
     {
         if ($this->request->is('post')) {
             $this->Printer->create();
             if ($this->Printer->save($this->request->data)) {
                 $this->Flash->success(__('The printer has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The printer could not be saved. Please, try again.'));
@@ -70,13 +71,13 @@ class PrintersController extends AppController
         $this->set(compact('controllers', 'localPrinters', 'cupsUrl'));
     }
 
-/**
- * edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+    /**
+     * edit method
+     *
+     * @throws NotFoundException
+     * @param string $id ID of Printer
+     * @return mixed
+     */
     public function edit($id = null)
     {
         if (!$this->Printer->exists($id)) {
@@ -85,12 +86,12 @@ class PrintersController extends AppController
         if ($this->request->is(['post', 'put'])) {
             if ($this->Printer->save($this->request->data)) {
                 $this->Flash->success(__('The printer has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The printer could not be saved. Please, try again.'));
             }
         } else {
-
             $options = ['conditions' => ['Printer.' . $this->Printer->primaryKey => $id]];
             $this->request->data = $this->Printer->find('first', $options);
         }
@@ -100,13 +101,13 @@ class PrintersController extends AppController
         $this->set(compact('controllers', 'localPrinters', 'cupsUrl'));
     }
 
-/**
- * delete method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+    /**
+     * delete method
+     *
+     * @throws NotFoundException
+     * @param string $id ID to Delete
+     * @return mixed
+     */
     public function delete($id = null)
     {
         if (!$this->Printer->exists($id)) {
@@ -118,6 +119,7 @@ class PrintersController extends AppController
         } else {
             $this->Flash->error(__('The printer could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

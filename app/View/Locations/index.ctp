@@ -22,7 +22,7 @@
 </div>
 <div class="col-lg-10 col-md-10 col-sm-12 locations index">
 	<h3><?=__('Locations');?></h3>
-	<?=$this->Html->link('Add', ['action' => 'add'], ['class' => 'btn add btn-primary add bpad20 btn-xs']); ?>
+	<?=$this->Html->link('Add', ['action' => 'add'], ['class' => 'btn add btn-primary add mb2 btn-xs']); ?>
 	<table class="table table-bordered table-condensed table-striped table-responsive">
 	<thead>
 	<tr>

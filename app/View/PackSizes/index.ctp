@@ -1,6 +1,6 @@
 <div class="container">
 	<h3><?= __('Pack Sizes'); ?></h3>
-	<?=$this->Html->link('Add', ['action' => 'add'], ['class' => 'btn btn-primary bpad20 add btn-xs']); ?>
+	<?=$this->Html->link('Add', ['action' => 'add'], ['class' => 'btn btn-primary mb2 add btn-xs']); ?>
 	<table class="table table-bordered table-condensed table-striped table-responsive">
 	<thead>
 	<tr>

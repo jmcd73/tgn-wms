@@ -9,13 +9,16 @@ App::uses('AppController', 'Controller');
 class LocationsController extends AppController
 {
 
-/**
- * Components
- *
- * @var array
- */
+    /**
+     * Components
+     *
+     * @var array
+     */
     public $components = ['Paginator'];
 
+    /** beforeFilter
+     * @return void
+     */
     public function beforeFilter()
     {
         parent::beforeFilter();
@@ -23,19 +26,19 @@ class LocationsController extends AppController
         $this->Auth->deny(['delete']);
     }
 
-
-/**
- * index method
- *
- * @return void
- */
+    /**
+     * index method
+     *
+     * @return void
+     */
     public function index()
     {
-        $this->Location->Behaviors->load('Containable');
+        //$this->Location->Behaviors->load('Containable');
         $this->Location->recursive = -1;
 
         $location_list = $this->Location->find(
-            'list', [
+            'list',
+            [
                 'order' => [
                     'location' => 'ASC'
                 ]
@@ -53,13 +56,13 @@ class LocationsController extends AppController
         $this->set('_serialize', ['location_list']);
     }
 
-/**
- * view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+    /**
+     * view method
+     *
+     * @throws NotFoundException
+     * @param int $id ID of Location record
+     * @return void
+     */
     public function view($id = null)
     {
         if (!$this->Location->exists($id)) {
@@ -75,30 +78,31 @@ class LocationsController extends AppController
 
         $labelOptions = [
             'conditions' => [
-                'Label.location_id' => $id
+                'Pallet.location_id' => $id
             ],
             'contain' => ['Location', 'Shipment'],
             'limit' => 100
         ];
         $this->Paginator->settings = $labelOptions;
 
-        $labels = $this->Paginator->paginate('Label');
+        $pallets = $this->Paginator->paginate('Pallet');
 
-        $this->set('labels', $labels);
+        $this->set('pallets', $pallets);
         $this->set('location', $this->Location->find('first', $options));
     }
 
-/**
- * add method
- *
- * @return void
- */
+    /**
+     * add method
+     *
+     * @return mixed
+     */
     public function add()
     {
         if ($this->request->is('post')) {
             $this->Location->create();
             if ($this->Location->save($this->request->data)) {
                 $this->Flash->success(__('The location has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The location could not be saved. Please, try again.'));
@@ -109,28 +113,29 @@ class LocationsController extends AppController
         $this->set(compact('productTypes'));
     }
 
-/**
- * edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+    /**
+     * edit method
+     *
+     * @throws NotFoundException
+     * @param int $id ID of Location record
+     * @return mixed
+     */
     public function edit($id = null)
     {
-
         if (!empty($this->request->query['id'])) {
             $id = $this->request->query('id');
         }
 
         if (!$id) {
             $this->Flash->error('Please select a location to edit');
+
             return $this->redirect(['action' => 'index']);
         }
 
         if ($this->request->is(['post', 'put'])) {
             if ($this->Location->save($this->request->data)) {
                 $this->Flash->success(__('The location has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The location could not be saved. Please, try again.'));
@@ -144,16 +149,15 @@ class LocationsController extends AppController
 
         $productTypes = $this->Location->ProductType->find('list');
         $this->set(compact('productTypes'));
-
     }
 
-/**
- * delete method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+    /**
+     * delete method
+     *
+     * @throws NotFoundException
+     * @param int $id Id of Location record
+     * @return mixed
+     */
     public function delete($id = null)
     {
         $this->Location->id = $id;
@@ -167,7 +171,7 @@ class LocationsController extends AppController
         } else {
             $this->Flash->error(__('The location could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
-
 }

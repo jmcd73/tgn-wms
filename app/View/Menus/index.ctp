@@ -24,7 +24,7 @@
 <div class="col-lg-10">
 
 <h2><?=__('Menus'); ?></h2>
-    <?=$this->Html->link('Add', ['action' => 'add'], ['class' => 'btn btn-primary bpad20 add btn-xs']); ?>
+    <?=$this->Html->link('Add', ['action' => 'add'], ['class' => 'btn btn-primary mb2 add btn-xs']); ?>
         <p><strong>Warning:</strong> Do not change these settings unless you know what you are doing</p>
 	<table class="table table-bordered table-condensed table-responsive table-striped">
 	<thead>
@@ -77,7 +77,7 @@
                                     'action' => 'delete',
                                     $menu['Menu']['id'],
                                     '?' => [
-                                        'redirect' => urlencode($this->here)
+                                        'redirect' => urlencode($this->request->here)
                                     ]
 
                                 ],
@@ -88,7 +88,7 @@
                         ); ?>
                     </div>
                     </div>
-                    <div class="row bpad10">
+                    <div class="row mb1">
                             <div class="col-lg-12">
                             <?php
                                 echo $this->Form->create(null, [
@@ -105,13 +105,13 @@
                                     'placeholder' => 'move up/down',
                                     'prepend' => $this->Form->button('<i class="fas fa-caret-up"></i>', [
                                         'type' => 'submit',
-                                        'name' => 'data[Menu][move_up]',
+                                        'name' => 'data[Menu][moveUp]',
                                         'class' => 'move-up'
                                     ]
                                     ),
                                     'append' => $this->Form->button('<i class="fas fa-caret-down"></i>', [
                                         'type' => 'submit',
-                                        'name' => 'data[Menu][move_down]',
+                                        'name' => 'data[Menu][moveDown]',
                                         'class' => 'move-down'
                                     ]
                                     )

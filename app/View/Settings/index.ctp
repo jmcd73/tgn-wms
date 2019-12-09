@@ -1,6 +1,6 @@
 <div class="settings index container">
 	<h3><?= __('Settings'); ?></h3>
-	<?= $this->Html->link("Add", [ 'action' => 'add'],  [ 'class' => 'btn btn-primary bpad20 add btn-xs']); ?>
+	<?= $this->Html->link("Add", [ 'action' => 'add'],  [ 'class' => 'btn btn-primary mb2 add btn-xs']); ?>
     <p><strong>Warning:</strong> Do not change these settings unless you know what you are doing</p>
 	<table class="table table-bordered table-condensed table-striped table-responsive">
 	<thead>

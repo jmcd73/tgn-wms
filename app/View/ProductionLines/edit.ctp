@@ -9,7 +9,9 @@
 		echo $this->Form->input('printer_id', [
 			'empty' => '(select)'
 		]);
-		echo $this->Form->input('product_type_id');
+		echo $this->Form->input('product_type_id', [
+            'empty' => '(select)'
+        ]);
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

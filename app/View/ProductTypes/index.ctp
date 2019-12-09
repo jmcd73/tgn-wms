@@ -1,6 +1,6 @@
 <div class="productTypes index container">
 	<h3><?= __('Product Types'); ?></h3>
-        <?= $this->Html->link('Add', ['action' => 'add'], ['class' => 'btn btn-primary add bpad20 btn-xs']); ?>
+        <?= $this->Html->link('Add', ['action' => 'add'], ['class' => 'btn btn-primary add mb2 btn-xs']); ?>
 	<table class="table table-bordered table-condensed table-striped table-responsive">
 	<thead>
 	<tr>

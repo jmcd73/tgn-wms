@@ -54,5 +54,5 @@ $this->getSetting('printTemplatesPerRowCols', true);
 or
 # with model included
 $this->{$this->modelClass}->getSetting('setting_name');
-$this->Label->getSetting('setting_name');
+$this->Pallet->getSetting('setting_name');
 ```

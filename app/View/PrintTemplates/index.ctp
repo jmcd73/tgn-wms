@@ -1,6 +1,6 @@
 <div class="printTemplates index container">
 	<h2><?php echo __('Print Templates'); ?></h2>
-	<?=$this->Html->link("Add", ['action' => 'add'], ['class' => 'btn btn-xs add btn-primary bpad20']);?>
+	<?=$this->Html->link("Add", ['action' => 'add'], ['class' => 'btn btn-xs add btn-primary mb2']);?>
     <p><strong>Warning:</strong> Do not change these settings unless you know what you are doing</p>
 	<table class="table table-bordered table-condensed table-striped table-responsive">
 	<thead>
@@ -45,7 +45,7 @@
         'action' => 'delete',
         $printTemplate['PrintTemplate']['id'],
         '?' => [
-            'redirect' => urlencode($this->here)
+            'redirect' => urlencode($this->request->here)
         ]
 
     ],
@@ -57,7 +57,7 @@
                     </div>
                     </div>
 
-                    <div class="row bpad10">
+                    <div class="row mb1">
                             <div class="col-lg-12">
                             <?php
                                 echo $this->Form->create(null, [
@@ -74,13 +74,13 @@
                                     'placeholder' => 'move up/down',
                                     'prepend' => $this->Form->button('<i class="fas fa-caret-up"></i>', [
                                         'type' => 'submit',
-                                        'name' => 'data[PrintTemplate][move_up]',
+                                        'name' => 'data[PrintTemplate][moveUp]',
                                         'class' => 'move-up'
                                     ]
                                     ),
                                     'append' => $this->Form->button('<i class="fas fa-caret-down"></i>', [
                                         'type' => 'submit',
-                                        'name' => 'data[PrintTemplate][move_down]',
+                                        'name' => 'data[PrintTemplate][moveDown]',
                                         'class' => 'move-down'
                                     ]
                                     )

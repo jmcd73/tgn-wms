@@ -2,7 +2,7 @@
 <div class="col-lg-12">
 
           <h3><?= __('Shifts'); ?></h3>
-          <?= $this->Html->link('Add', ['action' => 'add'], ['class' => 'btn add btn-primary bpad20 btn-xs']); ?>
+          <?= $this->Html->link('Add', ['action' => 'add'], ['class' => 'btn add btn-primary mb2 btn-xs']); ?>
           </div>
 <div class="col-lg-12">
     <table class="table table-bordered table-condensed table-striped table-responsive">

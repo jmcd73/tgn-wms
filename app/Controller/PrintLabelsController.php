@@ -20,8 +20,10 @@ class PrintLabelsController extends AppController
      * @var mixed
      */
     public $showInSelectedControllerActionList = true;
+
     /**
-     * @param $id
+     * @param int $id Print ID
+     * @return void
      */
     public function completed($id = null)
     {
@@ -30,18 +32,16 @@ class PrintLabelsController extends AppController
         }
         $options = ['conditions' => ['PrintLabel.' . $this->PrintLabel->primaryKey => $id]];
         $this->set('completed', $this->PrintLabel->find('first', $options));
-
     }
 
     /**
-     * Ajax endpoint for carton_print action
+     * Ajax endpoint for cartonPrint action
      *
      * @return void
      */
     public function printCartonLabels()
     {
         if ($this->request->is(['POST', 'PUT'])) {
-
             $labelData = $this->request->data;
             $this->loadModel('Item');
 
@@ -94,7 +94,6 @@ class PrintLabelsController extends AppController
             $logData = '';
 
             if ($returnValue['return_value'] == 0) {
-
                 $logData = $this->PrintLabel->formatPrintLogData(
                     $this->request->data['print_action'],
                     $this->request->data
@@ -106,12 +105,15 @@ class PrintLabelsController extends AppController
 
             $this->set('data', $replyData);
             $this->set('_serialize', ['data']);
-
         }
 
         //$this->autoRender = false;
     }
 
+    /**
+     * printLog method
+     * @return void
+     */
     public function printLog()
     {
         $this->paginate = [
@@ -122,9 +124,14 @@ class PrintLabelsController extends AppController
 
         $this->set('printItems', $this->Paginator->paginate());
     }
-    public function carton_print()
-    {
 
+    /**
+     * cartonPrint
+     *
+     * @return void
+     */
+    public function cartonPrint()
+    {
         $printers = $this->PrintLabel->getLabelPrinters($this->request->controller, $this->request->action);
 
         $this->set('print_action', $this->request->action);
@@ -132,9 +139,13 @@ class PrintLabelsController extends AppController
         $this->set('default', $printers['default']);
     }
 
-    public function crossdock_labels()
+    /**
+     * crossdockLabels
+     *
+     * @return mixed
+     */
+    public function crossdockLabels()
     {
-
         $this->loadModel('PrintTemplate');
 
         list(
@@ -145,11 +156,9 @@ class PrintLabelsController extends AppController
         );
 
         if ($this->request->is(['POST', 'PUT'])) {
-
             $this->PrintLabel->set($this->request->data);
 
             if ($this->PrintLabel->validates()) {
-
                 $dataNoModel = $this->request->data['PrintLabel'];
 
                 $saveData = $this->PrintLabel->formatPrintLogData(
@@ -192,7 +201,7 @@ class PrintLabelsController extends AppController
                     $this->Flash->error($message);
                 }
 
-                $this->redirect(['action' => 'completed', $this->PrintLabel->id]);
+                return $this->redirect(['action' => 'completed', $this->PrintLabel->id]);
             } else {
                 $this->Flash->error('Invalid data');
             }
@@ -206,7 +215,7 @@ class PrintLabelsController extends AppController
             $this->request->action
         );
 
-        $companyName = $this->getSetting('companyName');
+        $companyName = Configure::read('companyName');
 
         $this->set(compact('glabelsExampleImage', 'companyName'));
         $this->set('printers', $printers['printers']);
@@ -214,7 +223,11 @@ class PrintLabelsController extends AppController
         $this->set('sequence', $sequence);
     }
 
-    public function shipping_labels()
+    /**
+     * shippingLabels
+     * @return mixed
+     */
+    public function shippingLabels()
     {
         $this->loadModel("PrintTemplate");
         $maxShippingLabels = $this->getSetting('MaxShippingLabels');
@@ -227,7 +240,6 @@ class PrintLabelsController extends AppController
         );
 
         if ($this->request->is(['POST', 'PUT'])) {
-
             $this->PrintLabel->set($this->request->data);
 
             $dataNoModel = $this->request->data['PrintLabel'];
@@ -269,10 +281,8 @@ class PrintLabelsController extends AppController
                     $this->Flash->error($message);
                 }
 
-                $this->redirect(['action' => 'completed', $this->PrintLabel->id]);
-
+                return $this->redirect(['action' => 'completed', $this->PrintLabel->id]);
             } else {
-
                 $this->Flash->error('Not valid data');
             }
         }
@@ -290,10 +300,14 @@ class PrintLabelsController extends AppController
         $this->set(compact('sequence'));
     }
 
-    public function shipping_labels_generic()
+    /**
+     * shippingLabelsGeneric
+     * @return mixed
+     */
+    public function shippingLabelsGeneric()
     {
-
         $printers = $this->PrintLabel->getLabelPrinters($this->request->controller, $this->request->action);
+
         $this->loadModel('PrintTemplate');
 
         list(
@@ -342,7 +356,7 @@ class PrintLabelsController extends AppController
                     $this->Flash->error($message);
                 }
 
-                $this->redirect(['action' => 'completed', $this->PrintLabel->id]);
+                return $this->redirect(['action' => 'completed', $this->PrintLabel->id]);
             } else {
                 $this->Flash->error('Invalid data');
             }
@@ -353,7 +367,11 @@ class PrintLabelsController extends AppController
         $this->set('default', $printers['default']);
     }
 
-    public function keep_refrigerated()
+    /**
+     * keepRefrigerated
+     * @return mixed
+     */
+    public function keepRefrigerated()
     {
         $printers = $this->PrintLabel->getLabelPrinters(
             $this->request->controller,
@@ -368,7 +386,6 @@ class PrintLabelsController extends AppController
         );
 
         if ($this->request->is(['POST', 'PUT'])) {
-
             $this->PrintLabel->set($this->request->data);
 
             $dataNoModel = $this->request->data['PrintLabel'];
@@ -404,7 +421,6 @@ class PrintLabelsController extends AppController
                 }
 
                 if ($result['return_value'] == 0) {
-
                     $printer = $this->PrintLabel->getLabelPrinterById(
                         $glabelsData['printer']
                     );
@@ -434,7 +450,11 @@ class PrintLabelsController extends AppController
         $this->set('default', $printers['default']);
     }
 
-    public function glabel_sample_labels()
+    /**
+     * glabelSampleLabels
+     * @return mixed
+     */
+    public function glabelSampleLabels()
     {
         $printers = $this->PrintLabel->getLabelPrinters(
             $this->request->controller,
@@ -449,12 +469,10 @@ class PrintLabelsController extends AppController
         );
 
         if ($this->request->is(['POST', 'PUT'])) {
-
             $this->PrintLabel->set($this->request->data);
             $dataNoModel = $this->request->data['PrintLabel'];
 
             if ($this->PrintLabel->validates()) {
-
                 $saveData = $this->PrintLabel->formatPrintLogData(
                     $this->request->action,
                     $dataNoModel
@@ -494,7 +512,7 @@ class PrintLabelsController extends AppController
                     $this->Flash->error($message);
                 }
 
-                $this->redirect(['action' => 'completed', $this->PrintLabel->id]);
+                return $this->redirect(['action' => 'completed', $this->PrintLabel->id]);
             } else {
                 $this->Flash->error('Invalid data');
             }
@@ -504,9 +522,13 @@ class PrintLabelsController extends AppController
         $this->set('default', $printers['default']);
     }
 
-    public function big_number()
+    /**
+     * bigNumber action method
+     *
+     * @return mixed
+     */
+    public function bigNumber()
     {
-
         $printers = $this->PrintLabel->getLabelPrinters(
             $this->request->controller,
             $this->request->action
@@ -517,9 +539,10 @@ class PrintLabelsController extends AppController
         $companyName = $this->PrintLabel->getSetting('companyName');
         $this->loadModel('PrintTemplate');
         $printTemplate = $this->PrintTemplate->find(
-            'first', [
+            'first',
+            [
                 'conditions' => [
-                    'PrintTemplate.print_action' => 'big_number',
+                    'PrintTemplate.print_action' => 'bigNumber',
                     'PrintTemplate.active' => 1
                 ]
             ]
@@ -527,11 +550,10 @@ class PrintLabelsController extends AppController
         $glabelsRoot = $this->getSetting('GLABELS_ROOT');
 
         if ($this->request->is(['POST', 'PUT'])) {
-
             $printTemplateContents = $printTemplate['PrintTemplate']['text_template'];
 
             if (empty($printTemplateContents)) {
-                throw new NotFoundException("Cannot find print template for big_number");
+                throw new NotFoundException("Cannot find print template for bigNumber");
             }
 
             $formData = $this->request->data['PrintLabel'];
@@ -586,7 +608,8 @@ class PrintLabelsController extends AppController
                 );
                 $this->PrintLabel->save($saveData);
                 $this->Flash->success("Sent big numbers to printer " . $formData['printer']);
-                $this->redirect(['action' => 'completed', $this->PrintLabel->id]);
+
+                return $this->redirect(['action' => 'completed', $this->PrintLabel->id]);
             } else {
                 $this->Flash->error("Failed sending big numbers to printer " .
                     $formData['printer'] . ' - ' . $returnValue['stderr']);
@@ -597,9 +620,13 @@ class PrintLabelsController extends AppController
         $this->set(compact('printer', 'exampleImage', 'glabelsRoot'));
     }
 
+    /**
+     * labelChooser method action
+     *
+     * @return mixed
+     */
     public function labelChooser()
     {
-
         $glabelsRoot = $this->getSetting('GLABELS_ROOT');
 
         $this->loadModel("PrintTemplate");
@@ -615,22 +642,21 @@ class PrintLabelsController extends AppController
             ]
         );
 
-        //debug($printTemplatesThreaded);die;
-
         $this->set(
             compact(
                 'glabelsRoot',
                 'printTemplatesThreaded'
             )
         );
-
     }
 
-    public function custom_print()
+    /**
+     * customPrint
+     * @return mixed
+     */
+    public function customPrint()
     {
-
         if ($this->request->is(['POST', 'PUT'])) {
-
             $arrayKey = array_keys($this->request->data)[0];
 
             $this->request->data['PrintLabel'] = $this->request->data[$arrayKey];
@@ -694,8 +720,8 @@ class PrintLabelsController extends AppController
 
         $custom_prints = $this->Setting->find('all', $conditions);
 
-        foreach ($custom_prints as $key => $custom_print) {
-            $custom_prints[$key]['Setting']['decoded'] = json_decode($custom_print['Setting']['comment'], true);
+        foreach ($custom_prints as $key => $customPrint) {
+            $custom_prints[$key]['Setting']['decoded'] = json_decode($customPrint['Setting']['comment'], true);
         }
 
         $printers = $this->PrintLabel->getLabelPrinters(
@@ -706,12 +732,14 @@ class PrintLabelsController extends AppController
         $this->set(compact('custom_prints'));
         $this->set('printers', $printers['printers']);
         $this->set('default', $printers['default']);
-
     }
 
-    public function sample_labels()
+    /**
+     * sampleLabels
+     * @return mixed
+     */
+    public function sampleLabels()
     {
-
         $maxShippingLabels = $this->getSetting('MaxShippingLabels');
 
         list($glabelsTemplateFullPath, $glabelsExampleImage)
@@ -720,7 +748,9 @@ class PrintLabelsController extends AppController
         $printers = $this->PrintLabel->getLabelPrinters($this->request->controller, $this->request->action);
 
         $sequence = $this->PrintLabel->createSequenceList(
-            $maxShippingLabels, 1, [
+            $maxShippingLabels,
+            1,
+            [
                 50, 60, 80, 100, 200
             ]
         );
@@ -760,7 +790,6 @@ class PrintLabelsController extends AppController
                     $glabelsTemplateFullPath
                 );
 
-
                 $this->PrintLogic->formatPrintLine($this->request->action, $glabelsData);
 
                 $result = $this->PrintLogic->glabelsBatchPrint();
@@ -789,9 +818,11 @@ class PrintLabelsController extends AppController
         $this->set('default', $printers['default']);
     }
 
-    public function dayofyear()
+    /**
+     * dayOfYear shows day_of_year.ctp but doesn't do much else
+     * @return void
+     */
+    public function dayOfYear()
     {
-
     }
-
 }

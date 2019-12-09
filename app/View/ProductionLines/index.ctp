@@ -1,6 +1,6 @@
 <div class="productionLines form container">
 	<h2><?php echo __('Production Lines'); ?></h2>
-	<?=$this->Html->link('Add', ['action' => 'add'], ['class' => 'btn btn-primary bpad20 add btn-xs']); ?>
+	<?=$this->Html->link('Add', ['action' => 'add'], ['class' => 'btn btn-primary mb2 add btn-xs']); ?>
 	<table class="table table-bordered table-condensed table-striped table-responsive">
 	<thead>
 	<tr>

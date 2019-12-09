@@ -8,23 +8,17 @@ App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
 class User extends AppModel
 {
 
-/**
- * Use database config
- *
- * @var string
- */
-
-/**
- * Display field
- *
- * @var string
- */
+    /**
+     * Display field
+     *
+     * @var string
+     */
     public $displayField = 'username';
 
-    // app/Model/User.php
-
     /**
-     * @param array $options
+     * beforeSave callback method
+     * @param array $options options array
+     * @return bool
      */
     public function beforeSave($options = [])
     {
@@ -34,14 +28,15 @@ class User extends AppModel
                 $this->data[$this->alias]['password']
             );
         }
+
         return true;
     }
 
-/**
- * Validation rules
- *
- * @var array
- */
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
     public $validate = [
         'username' => [
             'notBlank' => [
@@ -76,6 +71,17 @@ class User extends AppModel
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ]
+        ]
+    ];
+
+    /**
+     * @var array
+     */
+    public $hasMany = [
+        'Pallet' => [
+            'className' => 'Pallet',
+            'foreignKey' => 'qty_user_id',
+            'dependent' => false
         ]
     ];
 }

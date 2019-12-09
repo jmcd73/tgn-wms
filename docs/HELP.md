@@ -11,7 +11,7 @@ Here are some examples of the Controller::Action to Markdown mappings
 
 | Controller / Action | Markdown Document |
 |---------------------|-------------------|
-| LabelsController::pallet_print | PALLET_PRINT.md |
+| PalletsController::pallet_print | PALLET_PRINT.md |
 | ShipmentsController::addApp | ADD_APP.md |
 | ShipmentsController::index | DISPATCH_INDEX.md |
 | SettingsController::index | SETTINGS.md |
@@ -19,4 +19,4 @@ Here are some examples of the Controller::Action to Markdown mappings
 
 The URLs in the application map to the controller / action
 
-    http://localhost:8083/Labels/onhand = LabelsController::onhand
+    http://localhost:8083/Labels/onhand = PalletsController::onhand

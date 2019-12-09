@@ -5,9 +5,10 @@ App::uses('AppModel', 'Model');
 /**
  * InventoryStatus Model
  *
- * @property Label $Label
+ * @property Pallet $Pallet
  */
-class InventoryStatus extends AppModel {
+class InventoryStatus extends AppModel
+{
 
     /**
      * Use table
@@ -22,33 +23,48 @@ class InventoryStatus extends AppModel {
      */
     public $displayField = 'name';
 
-    public function createStockViewPermsList() {
+    /**
+     * @return mixed
+     */
+    public function createStockViewPermsList()
+    {
         $svp = Configure::read('StockViewPerms');
         foreach ($svp as $k => $v) {
             $new_array[$svp[$k]['value']] = Inflector::humanize($svp[$k]['display']);
         }
+
         return $new_array;
     }
 
-    public function afterFind($results, $primary = false) {
+    /**
+     * @param array $results Array of results
+     * @param bool $primary is being call from primary model
+     * @return mixed
+     */
+    public function afterFind($results, $primary = false)
+    {
         //parent::afterFind($results, $primary);
 
         foreach ($results as $key => $val) {
             if (isset($val['InventoryStatus']['perms'])) {
-
                 $perms = Configure::read('StockViewPerms');
-                foreach ($perms as $k => $perm) {               
+                foreach ($perms as $k => $perm) {
                     $results[$key]['InventoryStatus']['StockViewPerms'][$perm['value']] = $val['InventoryStatus']['perms'] & $perm['value'];
                 }
             }
         }
+
         return $results;
     }
 
     /* this allows storing perms in one field */
 
-    public function beforeSave($options = []) {
-
+    /**
+     * @param array $options Options
+     * @return void
+     */
+    public function beforeSave($options = [])
+    {
         $perms = 0;
 
         if (!empty($this->data[$this->alias]['StockViewPerms'])) {
@@ -65,24 +81,24 @@ class InventoryStatus extends AppModel {
     public $validate = [
         'name' => [
             'notEmpty' => [
-                'rule' => 'notBlank',
-            //'message' => 'Your custom message here',
-            //'allowEmpty' => false,
-            //'required' => false,
-            //'last' => false, // Stop validation after this rule
-            //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ],
+                'rule' => 'notBlank'
+                //'message' => 'Your custom message here',
+                //'allowEmpty' => false,
+                //'required' => false,
+                //'last' => false, // Stop validation after this rule
+                //'on' => 'create', // Limit validation to 'create' or 'update' operations
+            ]
         ],
         'name' => [
             'isUnique' => [
                 'rule' => ['isUnique'],
-                'message' => 'Inventory status already exists. Please change',
-            //'allowEmpty' => false,
-            //'required' => false,
-            //'last' => false, // Stop validation after this rule
-            //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ],
-        ],
+                'message' => 'Inventory status already exists. Please change'
+                //'allowEmpty' => false,
+                //'required' => false,
+                //'last' => false, // Stop validation after this rule
+                //'on' => 'create', // Limit validation to 'create' or 'update' operations
+            ]
+        ]
     ];
 
     //The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -93,8 +109,8 @@ class InventoryStatus extends AppModel {
      * @var array
      */
     public $hasMany = [
-        'Label' => [
-            'className' => 'Label',
+        'Pallet' => [
+            'className' => 'Pallet',
             'foreignKey' => 'inventory_status_id',
             'dependent' => false,
             'conditions' => '',
@@ -107,5 +123,4 @@ class InventoryStatus extends AppModel {
             'counterQuery' => ''
         ]
     ];
-
 }

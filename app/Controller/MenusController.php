@@ -20,24 +20,30 @@ class MenusController extends AppController
 
     ];
 
+    /**
+     * beforeFilter
+     *
+     * @return void
+     */
     public function beforeFilter()
     {
         parent::beforeFilter();
         // Allow users to register and logout.
 
         $this->Auth->deny();
-        $this->Auth->allow('build_menu');
-
+        $this->Auth->allow('buildMenu');
     }
 
+    /**
+     * controllerList
+     * @return void
+     */
     public function controllerList()
     {
-
         $controllerList = $this->Ctrl->get();
         $controllerList = $this->Ctrl->formatArray($controllerList);
 
         $this->set(compact('controllerList'));
-
     }
 
     /**
@@ -54,34 +60,34 @@ class MenusController extends AppController
         ];
 
         $menus = $this->Paginator->paginate();
-        $edit_menus = $this->Menu->find_stacked();
+        $edit_menus = $this->Menu->findStacked();
         $this->set(compact('menus', 'edit_menus'));
     }
 
     /**
-     * @param $id
-     * @param null $delta
+     * @param int $id ID of menu
+     * @param int $delta how much to move up or down
+     * @return void
      */
     public function move($id = null, $delta = 1)
     {
         $this->request->allowMethod(['post', 'put']);
-        if (is_numeric($this->data['Menu']['amount'])) {
-            $delta = $this->data['Menu']['amount'];
+        if (is_numeric($this->request->data['Menu']['amount'])) {
+            $delta = $this->request->data['Menu']['amount'];
         }
-        if (isset($this->data['Menu']['move_up'])) {
+        if (isset($this->request->data['Menu']['moveUp'])) {
             $this->requestAction(
                 [
-                    'action' => 'move_up',
+                    'action' => 'moveUp',
                     $id,
                     $delta
-                ],
-
+                ]
             );
         }
-        if (isset($this->data['Menu']['move_down'])) {
+        if (isset($this->request->data['Menu']['moveDown'])) {
             $this->requestAction(
                 [
-                    'action' => 'move_down',
+                    'action' => 'moveDown',
                     $id,
                     $delta
                 ]
@@ -90,16 +96,17 @@ class MenusController extends AppController
     }
 
     /**
-     * @param $id
-     * @param null $delta
+     * moveUp
+     * @param int $id ID of menu
+     * @param int $delta how many places to moveUp
      * @return mixed
      */
-    public function move_up($id = null, $delta = 1)
+    public function moveUp($id = null, $delta = 1)
     {
         $this->request->allowMethod(['post', 'put']);
         $this->Menu->id = $id;
-        if (is_numeric($this->data['Menu']['amount'])) {
-            $delta = $this->data['Menu']['amount'];
+        if (is_numeric($this->request->data['Menu']['amount'])) {
+            $delta = $this->request->data['Menu']['amount'];
         }
         if (!$this->Menu->exists()) {
             throw new NotFoundException(__('Invalid category'));
@@ -110,20 +117,22 @@ class MenusController extends AppController
             $this->Flash->error('The category could not be moved up. Please, try again.');
         }
         $this->log($this->request->data);
+
         return $this->redirect($this->referer());
     }
 
     /**
-     * @param $id
-     * @param null $delta
+     * moveDown
+     * @param int $id ID of menu
+     * @param int $delta how many places to moveDown
      * @return mixed
      */
-    public function move_down($id = null, $delta = 1)
+    public function moveDown($id = null, $delta = 1)
     {
         $this->request->allowMethod(['post', 'put']);
         $this->Menu->id = $id;
-        if (is_numeric($this->data['Menu']['amount'])) {
-            $delta = $this->data['Menu']['amount'];
+        if (is_numeric($this->request->data['Menu']['amount'])) {
+            $delta = $this->request->data['Menu']['amount'];
         }
         if (!$this->Menu->exists()) {
             throw new NotFoundException(__('Invalid category'));
@@ -134,15 +143,17 @@ class MenusController extends AppController
             $this->Flash->error('The category could not be moved down. Please, try again.');
         }
         $this->log($this->request->data);
+
         return $this->redirect($this->referer());
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function build_menu()
+    public function buildMenu()
     {
         $this->Menu->recursive = -1;
+
         $options = [
             'order' => [
                 'Menu.lft' => 'ASC'
@@ -171,7 +182,7 @@ class MenusController extends AppController
     /**
      * add method
      *
-     * @return void
+     * @return mixed
      */
     public function add()
     {
@@ -186,7 +197,7 @@ class MenusController extends AppController
             }
         }
 
-        $parentMenus = $this->Menu->find_stacked();
+        $parentMenus = $this->Menu->findStacked();
 
         $controllerList = $this->Ctrl->get();
         $bs_url = $this->Ctrl->formatArray($controllerList);
@@ -198,8 +209,8 @@ class MenusController extends AppController
      * edit method
      *
      * @throws NotFoundException
-     * @param string $id
-     * @return void
+     * @param int $id ID of Menu
+     * @return mixed
      */
     public function edit($id = null)
     {
@@ -224,7 +235,7 @@ class MenusController extends AppController
             $options = ['conditions' => ['Menu.' . $this->Menu->primaryKey => $id]];
             $this->request->data = $this->Menu->find('first', $options);
         }
-        $parentMenus = $this->Menu->find_stacked();
+        $parentMenus = $this->Menu->findStacked();
 
         $controllerList = $this->Ctrl->get();
         $bs_url = $this->Ctrl->formatArray($controllerList);
@@ -238,8 +249,8 @@ class MenusController extends AppController
      * delete method
      *
      * @throws NotFoundException
-     * @param string $id
-     * @return void
+     * @param int $id ID of Menu
+     * @return mixed
      */
     public function delete($id = null)
     {
@@ -253,7 +264,7 @@ class MenusController extends AppController
             $this->Flash->success(__('The menu has been deleted.'));
             $redirectUrl = $this->request->query('redirect');
             if ($redirectUrl) {
-                $this->redirect(urldecode($redirectUrl));
+                return $this->redirect(urldecode($redirectUrl));
             }
         } else {
             $this->Flash->error(__('The menu could not be deleted. Please, try again.'));

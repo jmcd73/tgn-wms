@@ -119,7 +119,7 @@
                 <div class="row">
 
                     <h4>Select quantity to print</h4>
-                    <div class="btn-group btn-group-lg qty-group" role="group" id="cartons-label-count">
+                    <div class="btn-group btn-group-lg qty-group" role="group" id="cartons-pallet-count">
 
                         <?php foreach ([1, 10, 20, 50, 100, 200, 400] as $button): ?>
 <?php $class = ($button === 1) ? 'active ' : '';?>
@@ -144,7 +144,7 @@
                 <h4 class="modal-title" id="cartonLabelPrintModalTitle">Label Print</h4>
             </div>
             <div class="modal-body">
-                <p id="label-count"></p>
+                <p id="pallet-count"></p>
                 <div class="alert alert-warning tpad" role="alert">
 					<?= $this->Html->tag('i', '', [ 'class' => 'glyphicon glyphicon-warning-sign' ]); ?> <strong>Warning!</strong> Remember to load 100x50 labels into the printer
 				</div>

@@ -10,28 +10,23 @@ App::uses('AppModel', 'Model');
 class ProductType extends AppModel
 {
 
-/**
- * Use database config
- *
- * @var string
- */
-
-/**
- * Use table
- *
- * @var mixed False or table name
- */
-
-/**
- * Display field
- *
- * @var string
- */
+    /**
+     * Display field
+     *
+     * @var string
+     */
     public $displayField = 'name';
 
+    /**
+     * getStorageTemperatureSelectOptions
+     * Reads configure and returns an array
+     * [ 'Ambient' => 'Ambient', 'Chilled' => 'Chilled' ]
+     * @return array
+     */
     public function getStorageTemperatureSelectOptions()
     {
         $storeTemps = Configure::read('StorageTemperatures');
+
         return array_combine($storeTemps, $storeTemps);
     }
 
@@ -51,18 +46,18 @@ class ProductType extends AppModel
         ]
     ];
 
-/**
- * hasMany associations
- *
- * @var array
- */
+    /**
+     * hasMany associations
+     *
+     * @var array
+     */
     public $hasMany = [
         'ProductionLine' => [
             'className' => 'ProductionLine',
             'foreignKey' => 'product_type_id',
-            'dependent' => false,
+            'dependent' => false
         ],
-         'Item' => [
+        'Item' => [
             'className' => 'Item',
             'foreignKey' => 'product_type_id',
             'dependent' => false,
@@ -102,5 +97,4 @@ class ProductType extends AppModel
             'counterQuery' => ''
         ]
     ];
-
 }

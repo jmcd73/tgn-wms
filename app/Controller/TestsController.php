@@ -3,13 +3,13 @@ App::uses('AppController', 'Controller');
 /**
  * Tests Controller
  */
-class TestsController extends AppController {
+class TestsController extends AppController
+{
 
-/**
- * Scaffold
- *
- * @var mixed
- */
-	public $scaffold;
-
+    /**
+     * Scaffold
+     *
+     * @var mixed
+     */
+    public $scaffold;
 }

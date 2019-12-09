@@ -29,7 +29,7 @@
 <?=$this->Html->link(
 			"Add", ['action' => 'add'], [
 				'escape' => false,
-	'class' => 'btn add btn-primary bpad20 btn-xs'
+	'class' => 'btn add btn-primary mb2 btn-xs'
 ]);?>
 <table class="table table-bordered table-condensed table-striped table-responsive">
     <thead>

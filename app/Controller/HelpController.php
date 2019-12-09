@@ -12,21 +12,21 @@ App::uses('File', 'Utility');
 class HelpController extends AppController
 {
 
-/**
- * Components
- *
- * @var array
- */
+    /**
+     * Components
+     *
+     * @var array
+     */
     public $components = ['Paginator', 'Ctrl'];
     /**
      * @var array
      */
 
-/**
- * index method
- *
- * @return void
- */
+    /**
+     * index method
+     *
+     * @return void
+     */
     public function index()
     {
         $controllerActions = $this->Ctrl->formatForPrinterViews();
@@ -40,13 +40,13 @@ class HelpController extends AppController
         $this->set('helps', $this->Paginator->paginate());
     }
 
-/**
- * view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+    /**
+     * view method
+     *
+     * @throws NotFoundException
+     * @param string $id Help Table ID
+     * @return void
+     */
     public function view($id = null)
     {
         if (!$this->Help->exists($id)) {
@@ -59,7 +59,7 @@ class HelpController extends AppController
         $mdDocumentPath = ROOT . $this->getSetting('DOCUMENTATION_ROOT') .
             DS . $help['Help']['markdown_document'];
 
-        $markdown  = $this->Help->getMarkdown($mdDocumentPath);
+        $markdown = $this->Help->getMarkdown($mdDocumentPath);
 
         $this->set(compact('help', 'markdown'));
     }
@@ -68,36 +68,36 @@ class HelpController extends AppController
      * view method
      *
      * @throws NotFoundException
-     * @param string $id
+     * @param int $id ID of Help page
      * @return void
      */
-    public function view_page_help($id = null)
+    public function viewPageHelp($id = null)
     {
         if (!$this->Help->exists($id)) {
             throw new NotFoundException(__('Invalid help'));
         }
         $options = ['conditions' => ['Help.' . $this->Help->primaryKey => $id]];
-        $help =  $this->Help->find('first', $options);
-
+        $help = $this->Help->find('first', $options);
 
         $mdDocumentPath = ROOT . $this->getSetting('DOCUMENTATION_ROOT') .
-        DS . $help['Help']['markdown_document'];
+            DS . $help['Help']['markdown_document'];
 
-        $markdown  = $this->Help->getMarkdown($mdDocumentPath);
+        $markdown = $this->Help->getMarkdown($mdDocumentPath);
         $this->set(compact('help', 'markdown'));
     }
 
-/**
- * add method
- *
- * @return void
- */
+    /**
+     * add method
+     *
+     * @return mixed
+     */
     public function add()
     {
         if ($this->request->is('post')) {
             $this->Help->create();
             if ($this->Help->save($this->request->data)) {
                 $this->Flash->success(__('The help has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The help could not be saved. Please, try again.'));
@@ -110,13 +110,13 @@ class HelpController extends AppController
         $this->set(compact('controllerActions', 'documentationRoot', 'markdownDocuments'));
     }
 
-/**
- * edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+    /**
+     * edit method
+     *
+     * @throws NotFoundException
+     * @param string $id ID of Help page
+     * @return mixed
+     */
     public function edit($id = null)
     {
         if (!$this->Help->exists($id)) {
@@ -125,6 +125,7 @@ class HelpController extends AppController
         if ($this->request->is(['post', 'put'])) {
             if ($this->Help->save($this->request->data)) {
                 $this->Flash->success(__('The help has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The help could not be saved. Please, try again.'));
@@ -140,13 +141,13 @@ class HelpController extends AppController
         }
     }
 
-/**
- * delete method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+    /**
+     * delete method
+     *
+     * @throws NotFoundException
+     * @param string $id ID to delete
+     * @return mixed
+     */
     public function delete($id = null)
     {
         if (!$this->Help->exists($id)) {
@@ -158,6 +159,7 @@ class HelpController extends AppController
         } else {
             $this->Flash->error(__('The help could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

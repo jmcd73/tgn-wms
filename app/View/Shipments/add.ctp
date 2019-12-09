@@ -54,14 +54,14 @@ $this->Form->button('Submit', [
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                 <?php $item_id = null;?>
 <?php foreach ($shipment_labels as $key => $sl): ?>
-<?php if ($sl['Label']['item_id'] !== $item_id): ?>
-<?php $item_id = $sl['Label']['item_id']?>
+<?php if ($sl['Pallet']['item_id'] !== $item_id): ?>
+<?php $item_id = $sl['Pallet']['item_id']?>
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="heading<?=$key;?>">
                                 <h5 class="panel-title">
                                     <a class="collapsed" role="button" data-toggle="collapse" href="#collapse<?=$key;?>" aria-expanded="false" aria-controls="collapse<?=$key;?>">
 
-                                        <?=$sl['Label']['item'] . ' ' . $sl['Label']['description'];?>
+                                        <?=$sl['Pallet']['item'] . ' ' . $sl['Pallet']['description'];?>
 
                                     </a>
                                 </h5>
@@ -70,27 +70,27 @@ $this->Form->button('Submit', [
                                 <div class="panel-body">
 	<?php endif;?>
 
-                                <div class="checkbox pallet-list <?=$sl['Label']['disabled'] ? 'disabled' : ''
+                                <div class="checkbox pallet-list <?=$sl['Pallet']['disabled'] ? 'disabled' : ''
 
 ;?>">
                                     <label>
-                                        <input aria-label="<?=$sl['Label']['name'];?>"
-                                               value="<?=$sl['Label']['id'];?>"
-                                               name="data[Shipment][Label][]"
-                                               type="checkbox" <?=$sl['Label']['disabled'] ? 'disabled' : '';?>>
+                                        <input aria-label="<?=$sl['Pallet']['name'];?>"
+                                               value="<?=$sl['Pallet']['id'];?>"
+                                               name="data[Shipment][Pallet][]"
+                                               type="checkbox" <?=$sl['Pallet']['disabled'] ? 'disabled' : '';?>>
                                         <!-- icon -->
-                                         <?=$sl['Label']['disabled'] ? '<span class="glyphicon glyphicon-ban-circle"></span>' : '';?>
+                                         <?=$sl['Pallet']['disabled'] ? '<span class="glyphicon glyphicon-ban-circle"></span>' : '';?>
                                          <?=$sl['Location']['location'];?>:
-					<?=$sl['Label']['item'];?>,
-                                         <?=$this->Time->format($sl['Label']['bb_date'], '%d/%m/%y');?>,
-                                         <?=$sl['Label']['pl_ref'];?>,
-                                         <?=$sl['Label']['qty'];?>,
-					<?=$sl['Label']['description'];?>
+					<?=$sl['Pallet']['item'];?>,
+                                         <?=$this->Time->format($sl['Pallet']['bb_date'], '%d/%m/%y');?>,
+                                         <?=$sl['Pallet']['pl_ref'];?>,
+                                         <?=$sl['Pallet']['qty'];?>,
+					<?=$sl['Pallet']['description'];?>
                                     </label>
                                 </div>
                                 <?php if (
-                                        isset($shipment_labels[$key + 1]['Label']['item_id']) &&
-                                        $shipment_labels[$key + 1]['Label']['item_id'] !== $item_id
+                                        isset($shipment_labels[$key + 1]['Pallet']['item_id']) &&
+                                        $shipment_labels[$key + 1]['Pallet']['item_id'] !== $item_id
                                 ): ?>
                                 </div>
                             </div>

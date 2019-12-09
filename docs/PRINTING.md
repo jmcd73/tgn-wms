@@ -61,17 +61,17 @@ These are the Controller Action combinations that have print screens attached to
 
 | Controller | Action | Description |
 |------------|--------|-------------|
-| LabelsController | pallet_print | CAB Printer Language Pallet Label Print |
-| LabelsController | reprint | CAB Reprint Pallet Labels |
-| PrintLabelsController | carton_print | CAB 100x50 Carton Labels |
-| PrintLabelsController | crossdock_labels | gLabels 150x200 Labels |
-| PrintLabelsController | shipping_labels | gLabels 150x200 Labels |
-| PrintLabelsController | shipping_labels_generic | gLabels 150x200 |
-| PrintLabelsController | keep_refrigerated | gLabels 100x50 Fixed Text Keep Refrigerated |
-| PrintLabelsController | glabel_sample_labels | gLabels 100x50 Product Sample Labels |
-| PrintLabelsController | big_number | Zebra Printer Language 100x200 Labels |
-| PrintLabelsController | custom_print | gLabels 100x50 assorted label prints |
-| PrintLabelsController | sample_labels | gLabels 100x50 company logo with product details |
+| PalletsController | pallet_print | CAB Printer Language Pallet Label Print |
+| PalletsController | reprint | CAB Reprint Pallet Labels |
+| PrintPalletsController | carton_print | CAB 100x50 Carton Labels |
+| PrintPalletsController | crossdock_labels | gLabels 150x200 Labels |
+| PrintPalletsController | shipping_labels | gLabels 150x200 Labels |
+| PrintPalletsController | shipping_labels_generic | gLabels 150x200 |
+| PrintPalletsController | keep_refrigerated | gLabels 100x50 Fixed Text Keep Refrigerated |
+| PrintPalletsController | glabel_sample_labels | gLabels 100x50 Product Sample Labels |
+| PrintPalletsController | big_number | Zebra Printer Language 100x200 Labels |
+| PrintPalletsController | custom_print | gLabels 100x50 assorted label prints |
+| PrintPalletsController | sample_labels | gLabels 100x50 company logo with product details |
 
 
 

@@ -41,9 +41,9 @@ class AppModel extends Model
     public $actsAs = ['Containable'];
 
     /**
-     * @param $id
-     * @param false $table
-     * @param null $ds
+     * @param bool $id ID
+     * @param false $table Table
+     * @param null $ds DS not sure
      */
     public function __construct($id = false, $table = null, $ds = null)
     {
@@ -61,24 +61,31 @@ class AppModel extends Model
     }
 
     /**
-     * @param $printerId
+     * getLabelPrinterById
+     *
+     * @param int $printerId Printer ID
      * @return mixed
      */
     public function getLabelPrinterById($printerId)
     {
         $printerModel = ClassRegistry::init('Printer');
         $printer = $printerModel->find(
-            'first', [
+            'first',
+            [
                 'conditions' => [
                     'Printer.id' => $printerId
                 ]
             ]
         );
+
         return $printer;
     }
+
     /**
-     * get Label Printers JSON from Settings Table
-     * @param string $action the action as derived from $this->request->action
+     * get Label Printers from printers table each controller/view can have
+     *
+     * @param string $controller the controller
+     * @param string $action the controller action as derived from $this->request->action
      * @return array
      */
     public function getLabelPrinters($controller = null, $action = null)
@@ -88,7 +95,8 @@ class AppModel extends Model
         $controllerAction = Inflector::camelize($controller . '_Controller::') . $action;
 
         $labelPrinters = $printerModel->find(
-            'all', [
+            'all',
+            [
                 'conditions' => [
                     'Printer.active' => 1
                 ]
@@ -98,14 +106,16 @@ class AppModel extends Model
         $default = array_reduce(
             $labelPrinters,
             function ($carry, $printer) use ($controllerAction) {
-
-                if (in_array(
-                    $controllerAction,
-                    $printer['Printer']['set_as_default_on_these_actions']
-                )
+                if (
+                    $printer['Printer']['set_as_default_on_these_actions'] !== null &&
+                    in_array(
+                        $controllerAction,
+                        $printer['Printer']['set_as_default_on_these_actions']
+                    )
                 ) {
                     $carry = $printer['Printer']['id'];
                 };
+
                 return $carry;
             },
             null
@@ -123,11 +133,11 @@ class AppModel extends Model
 
     /**
      *
-     * @param string $settingname
-     * @param bool $settingInCommentField
-     * @return type
+     * @param string $settingname the name of the setting in the settings.setting field of the db
+     * @param bool $inComment some settings are stored in the comment field as they have CR or JSON
+     * @return string
      */
-    public function getSetting(String $settingname, bool $inComment = false)
+    public function getSetting(string $settingname, bool $inComment = false)
     {
         $settingModel = ClassRegistry::init('Setting');
         $setting = $settingModel->find(
@@ -140,36 +150,48 @@ class AppModel extends Model
         );
 
         if (empty($setting)) {
-            throw new NotFoundException('Could not find setting in Settings table named ' . $settingname);
+            throw new MissingConfigurationException(
+                [
+                    'message' => __(
+                        'Could not find setting in settings table named <strong>%s</strong>',
+                        $settingname
+                    )
+                ],
+                '500'
+            );
         }
 
-        $slug = !$inComment ? 'setting' : 'comment';
+        $slug = $inComment ? 'comment' : 'setting';
 
         # if it's an array then return the setting otherwise empty string
 
         return is_array($setting) ? $setting['Setting'][$slug] : '';
     }
 
-    /* returns the perm number when given the text
-     * make globally available to all models
-     *
-     */
-
     /**
-     * @param $perm
+     * getViewPermNumber returns the perm number when given the text
+     * make globally available to all models
+     * @param array $perm Perm
      * @return mixed
      */
     public function getViewPermNumber($perm = null)
     {
         $perms = Configure::read('StockViewPerms');
         $key = array_search($perm, array_column($perms, 'slug'));
+
         return $perms[$key]['value'];
     }
 
-    public function db_config()
+    /**
+     * This dbConfig allows dynamic configuration of the database by an environment variable
+     * passed in from Apache .htaccess
+     *
+     * @return array
+     */
+    public function dbConfig()
     {
-
         $dataSource = ConnectionManager::getDataSource($this->useDbConfig);
+
         return [
             'database' => $dataSource->config['database'],
             'config' => $this->useDbConfig,
@@ -178,24 +200,23 @@ class AppModel extends Model
     }
 
     /**
-     * @param $kgs
-     * @param $hrs
+     * @param int $kgs KGs
+     * @param int $hrs Hrs
      * @return int
      *
      */
-    public function divide_values($kgs, $hrs)
+    public function divideValues($kgs, $hrs)
     {
         if ($kgs == 0.0 || $hrs == 0.0) {
             return 0;
         } else {
             return round(($kgs / $hrs), 4);
         }
-
     }
 
     /**
-     * @param array $date
-     * @return mixed
+     * @param array $date Cakephp date array
+     * @return string "Y-m-d"
      */
     public function arrayToMysqlDate($date = [])
     {
@@ -211,8 +232,9 @@ class AppModel extends Model
     }
 
     /**
-     * @param $start
-     * @param $end
+     * @param string $start Start date time
+     * @param string $end End date time
+     * @return string
      */
     public function getDateTimeDiff($start, $end)
     {
@@ -234,51 +256,77 @@ class AppModel extends Model
      * validationError array and makes it into a string
      *
      * @param array $validationErrors The validation array
-     *
+     * @param string $errorMessage All errors concatenated into a string
      * @return mixed
      */
-    public function formatValidationErrors($validationErrors = [])
+    public function formatValidationErrors($validationErrors = [], $errorMessage = null)
     {
-
-        $errorMessage = null;
         // get Validation errors and append them into a string
 
         foreach ($validationErrors as $key => $value) {
-
-            if ($errorMessage) {
-                $errorMessage .= sprintf(". <strong>%s: </strong>", $key);
+            if (is_array($value)) {
+                $errorMessage = $this->formatValidationErrors($value, $errorMessage);
             } else {
-                $errorMessage = sprintf("<strong>%s: </strong>", $key);
+                if ($errorMessage) {
+                    $errorMessage .= sprintf(". %s: ", $value);
+                } else {
+                    $errorMessage = sprintf("%s", $value);
+                }
             }
-
-            foreach ($value as $i => $j) {
-                $errorMessage .= $j;
-            }
-        };
+        }
 
         return $errorMessage;
     }
 
+    /* public function formatValidationErrors($validationErrors = [])
+    {
+    $errorMessage = null;
+    // get Validation errors and append them into a string
+
+    foreach ($validationErrors as $key => $value) {
+    if ($errorMessage) {
+    $errorMessage .= sprintf(". <strong>%s: </strong>", $key);
+    } else {
+    $errorMessage = sprintf("<strong>%s: </strong>", $key);
+    }
+
+    foreach ($value as $i => $j) {
+    $errorMessage .= $j;
+    }
+    };
+
+    return $errorMessage;
+    } */
+
     /**
-     * @param $date_time
-     * @param $minutes
-     * @return mixed
+     * @param datetime $date_time Y-m-d H:i:s
+     * @param int $minutes minutes to add
+     * @return string
      */
     public function addMinutesToDateTime($date_time, $minutes)
     {
         $dateTime = new \DateTime($date_time);
-        $add_minutes = '+' . $minutes . ' minutes';
+        $add_minutes = '+ ' . $minutes . ' minutes';
         $dateTime->modify($add_minutes);
+
         return $dateTime->format('Y-m-d H:i:s');
     }
+
     /**
-     * @param $cartons
-     * @param $qty_per_pallet
+     * This returns a if given a carton count it will divide the
+     * carton count by the quantity per pallet to get cartons
+     * and then also get the left over
+     * e.g.
+     * given 100 cartons and a qty_per_pallet of 40
+     * returns 2.20
+     *
+     * @param int $cartons Count of cartons
+     * @param int $qty_per_pallet the quantity per pallet for that item
+     *
      * @return mixed
      */
     public function palletsDotCartons($cartons, $qty_per_pallet)
     {
-
         $pallets = $cartons / $qty_per_pallet;
 
         $mod = $cartons % $qty_per_pallet;
@@ -287,22 +335,34 @@ class AppModel extends Model
         }
 
         return $pallets;
-
     }
 
-    /*
+    /**
      * returns a 2017-02-21 06:43:00 date time stamp
      *
+     * @return date
      */
-
     public function getDateTimeStamp()
     {
         return date("Y-m-d H:i:s");
     }
 
     /**
-     * @param $format
-     * @param $date_string
+     * FormatLabelDates given a dateString and an array of dateFormats as follows
+     *
+     * [
+     *     'bb_date' => 'dd/mm/yy',
+     *     'mysl_date' => 'yyyy-MM-dd'
+     * ]
+     *
+     * returns the dates with the inital keys e.g.
+     * [
+     *     'bb_date' => '31/01/73',
+     *     'mysql_date' => '1973-01-31'
+     * ]
+     * @param string $dateString The date as a string
+     * @param array $dateFormats As above example
+     * @return array of date strings
      */
     public function formatLabelDates($dateString, $dateFormats)
     {
@@ -310,6 +370,7 @@ class AppModel extends Model
         foreach ($dateFormats as $k => $v) {
             $dates[$k] = date($v, $dateString);
         }
+
         return $dates;
     }
 
@@ -319,6 +380,7 @@ class AppModel extends Model
      *      601201 => '6012 - 01',
      *      601202 => '6012 - 02'
      *  ]
+     * @return array Array of batch numbers
      */
     public function getBatchNumbers()
     {
@@ -334,10 +396,11 @@ class AppModel extends Model
     /**
      * checks if batch number matches todays date
      *  returns true if it does
-     * @returns bool
+     * @param string $batch_no Batch number
+     * @param array $context data array
+     * @return bool
      *
-     *
-     * */
+     */
     public function checkBatchNum($batch_no, $context)
     {
         $match = false;
@@ -354,7 +417,10 @@ class AppModel extends Model
     }
 
     /**
-     * @param $productTypeId
+     * createPalletRef queriesy product_types table to find last value and adds 1 to it
+     *
+     * @param int $productTypeId product_type_id of current product
+     * @return string
      */
     public function createPalletRef($productTypeId)
     {
@@ -372,12 +438,14 @@ class AppModel extends Model
 
         $serialNumber = $productType['ProductType']['next_serial_number'];
 
-        if (!$productTypeModel->save(
-            [
-                'id' => $productTypeId,
-                'next_serial_number' => ++$serialNumber
-            ]
-        )) {
+        if (
+            !$productTypeModel->save(
+                [
+                    'id' => $productTypeId,
+                    'next_serial_number' => ++$serialNumber
+                ]
+            )
+        ) {
             throw new CakeException('Could not update the next_serial_number');
         };
 
@@ -385,7 +453,9 @@ class AppModel extends Model
     }
 
     /**
-     * @param $controllerAction
+     *
+     * @param string $controllerAction controller action method name
+     * @return array Help page record array or empty array
      */
     public function getHelpPage($controllerAction = null)
     {
@@ -398,6 +468,7 @@ class AppModel extends Model
                 ]
             ]
         );
+
         return $helpPage;
     }
 }

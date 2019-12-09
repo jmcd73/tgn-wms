@@ -8,11 +8,13 @@ App::uses('CakeText', 'Utility');
  */
 class Printer extends AppModel
 {
-
     /**
+     * getCupsURL
      * Return the Docker specific port for CUPS
      * or the default if there is no CUPS_PORT variable
-     * @param $request
+     * @param Request $request Cakephp request
+     * @return string
+     * phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
      */
     public function getCupsURL($request)
     {
@@ -27,8 +29,12 @@ class Printer extends AppModel
         $scheme = 'https';
         $host = $request->host();
         $hostPart = explode(":", $host)[0];
+
         return sprintf('%s://%s:%s', $scheme, $hostPart, $cupsPort);
     }
+
+    // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
+
     /**
      * Get Local Printer List
      * @return mixed
@@ -47,70 +53,54 @@ class Printer extends AppModel
         foreach ($printerLine as $printer) {
             $printerList[] = explode(" ", $printer)[0];
         }
-        return $printerList;
 
+        return $printerList;
     }
 
-/**
- * Display field
- *
- * @var string
- */
+    /**
+     * Display field
+     *
+     * @var string
+     */
     public $displayField = 'name';
 
     /**
-     * @param array $options
+     * beforeSave method
+     *
+     * @param array $options array of options
+     * @return void
      */
     public function beforeSave($options = [])
     {
-
         $defaultActions = $this->data[$this->alias]['set_as_default_on_these_actions'];
         if (!empty($defaultActions)) {
             $this->data['Printer']['set_as_default_on_these_actions'] = implode("\n", $defaultActions);
         }
-
     }
 
     /**
-     * @param $results
-     * @param $primary
+     * afterFind
+     * @param array $results results of find
+     * @param bool $primary Primary model or call from another
      * @return mixed
      */
     public function afterFind($results, $primary = false)
     {
-        //parent::afterFind($results, $primary);
-        //$defaultActions = $this->data[$this->alias]['set_as_default_on_these_actions'];
-        //$this->data['Printer']['set_as_default_on_these_actions'] = implode("\n", $defaultActions);
-        /*
-
-        [0] => Array
-        (
-        [Printer] => Array
-        (
-        [id] => 1
-        [active] => 1
-        [name] => name2
-        [options] => options2
-        [queue_name] => nameq2
-        [set_as_default_on_these_actions] => ItemsController::part_list
-        ItemsController::add
-        ItemsController::delete
-        )
-
-        )*/
         foreach ($results as $key => $val) {
             if (isset($val[$this->alias]['set_as_default_on_these_actions'])) {
                 $defaultActions = $val[$this->alias]['set_as_default_on_these_actions'];
                 $results[$key][$this->alias]['set_as_default_on_these_actions'] = explode("\n", $defaultActions);
             }
-
         }
+
         return $results;
     }
 
     /**
-     * @param $check
-     * @param $options
+     * isControllerActionDuplicated validation method
+     * @param array $check fieldName => fieldValue
+     * @param array $options array of options
+     * @return bool
      */
     public function isControllerActionDuplicated($check, $options)
     {
@@ -130,7 +120,6 @@ class Printer extends AppModel
 
         foreach ($check['set_as_default_on_these_actions'] as $checkThis) {
             foreach ($allFields as $field) {
-
                 if (
                     is_array($field['Printer']['set_as_default_on_these_actions']) &&
                     in_array(
@@ -138,24 +127,20 @@ class Printer extends AppModel
                         $field['Printer']['set_as_default_on_these_actions']
                     )
                 ) {
-
                     if (isset($matched[$field['Printer']['id']]['duplicates'])) {
-
                         array_push($matched[$field['Printer']['id']]['duplicates'], $checkThis);
                     } else {
                         $matched[$field['Printer']['id']] = [
-                            'duplicates' => [ $checkThis ]
+                            'duplicates' => [$checkThis]
                         ];
                     }
                     $matched[$field['Printer']['id']]['printer'] = $field["Printer"]['name'];
-
                 }
             }
         }
         $msg = '';
         $ctr = 0;
         foreach ($matched as $match) {
-
             if ($ctr > 0) {
                 $msg .= ' ';
             }
@@ -169,11 +154,12 @@ class Printer extends AppModel
 
         return count($matched) === 0;
     }
-/**
- * Validation rules
- *
- * @var array
- */
+
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
     public $validate = [
         'name' => [
             'notBlank' => [

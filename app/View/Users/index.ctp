@@ -1,7 +1,7 @@
 <div class="users index container">
 
                 <h3><?= __('Users'); ?></h3>
-        <?= $this->Html->link('Add', [ 'action'=> 'add'], [ 'class' => 'btn add btn-primary bpad20 btn-xs'] ); ?>
+        <?= $this->Html->link('Add', [ 'action'=> 'add'], [ 'class' => 'btn add btn-primary mb2 btn-xs'] ); ?>
 
     <table class="table table-bordered table-condensed table-striped table-responsive">
         <thead>

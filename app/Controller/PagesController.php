@@ -20,7 +20,6 @@
 
 App::uses('AppController', 'Controller');
 
-
 /**
  * Static content controller
  *
@@ -29,66 +28,67 @@ App::uses('AppController', 'Controller');
  * @package       app.Controller
  * @link http://book.cakephp.org/2.0/en/controllers/pages-controller.html
  */
-class PagesController extends AppController {
+class PagesController extends AppController
+{
 
-/**
- * This controller does not use a model
- *
- * @var array
- */
-    /* needed so we can read the db_config jm */
+    /**
+     * This controller does not use a model
+     *
+     * @var array
+     */
+    /* needed so we can read the dbConfig jm */
     public $uses = ['AppModel'];
-        
-   
-        public function beforeFilter() {
-            parent::beforeFilter();
-            // Allow users to register and logout.
-   
+
+    /**
+     * Before Filter
+     *
+     * @return void
+     *
+     */
+    public function beforeFilter()
+    {
+        parent::beforeFilter();
+        // Allow users to register and logout.
     }
 
-/**
- * Displays a view
- *
- * @return void
- * @throws NotFoundException When the view file could not be found
- *	or MissingViewException in debug mode.
- */
+    /**
+     * Displays a view
+     *
+     * @return mixed
+     * @throws NotFoundException When the view file could not be found
+     *    or MissingViewException in debug mode.
+     */
+    public function display()
+    {
+        $path = func_get_args();
 
+        $count = count($path);
+        if (!$count) {
+            return $this->redirect('/');
+        }
+        $page = $subpage = $title_for_layout = null;
 
-	public function display() {
-		$path = func_get_args();
+        if (!empty($path[0])) {
+            $page = $path[0];
+        }
+        if (!empty($path[1])) {
+            $subpage = $path[1];
+        }
+        if (!empty($path[$count - 1])) {
+            $title_for_layout = Inflector::humanize($path[$count - 1]);
+        }
 
-		$count = count($path);
-		if (!$count) {
-			return $this->redirect('/');
-		}
-		$page = $subpage = $title_for_layout = null;
+        $dbConfig = $this->AppModel->dbConfig();
 
-		if (!empty($path[0])) {
-			$page = $path[0];
-		}
-		if (!empty($path[1])) {
-			$subpage = $path[1];
-		}
-		if (!empty($path[$count - 1])) {
-			$title_for_layout = Inflector::humanize($path[$count - 1]);
-	
-                }
-                
-             
-                $db_config = $this->AppModel->db_config();
-                
-                
-                
-		$this->set(compact('db_config', 'page', 'subpage', 'title_for_layout'));
+        $this->set(compact('dbConfig', 'page', 'subpage', 'title_for_layout'));
 
-		try {
-			$this->render(implode('/', $path));
-		} catch (MissingViewException $e) {
-			if (Configure::read('debug')) {
-				throw $e;
-			}
-			throw new NotFoundException();
-		}
-	}
+        try {
+            $this->render(implode('/', $path));
+        } catch (MissingViewException $e) {
+            if (Configure::read('debug')) {
+                throw $e;
+            }
+            throw new NotFoundException();
+        }
+    }
 }

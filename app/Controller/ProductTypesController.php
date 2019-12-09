@@ -11,18 +11,18 @@ App::uses('AppController', 'Controller');
 class ProductTypesController extends AppController
 {
 
-/**
- * Components
- *
- * @var array
- */
+    /**
+     * Components
+     *
+     * @var array
+     */
     public $components = ['Paginator', 'Session', 'Flash'];
 
-/**
- * index method
- *
- * @return void
- */
+    /**
+     * index method
+     *
+     * @return void
+     */
     public function index()
     {
         $this->ProductType->recursive = 0;
@@ -33,13 +33,13 @@ class ProductTypesController extends AppController
         $this->set(compact('locations'));
     }
 
-/**
- * view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+    /**
+     * view method
+     *
+     * @throws NotFoundException
+     * @param string $id ID of Product Type
+     * @return void
+     */
     public function view($id = null)
     {
         if (!$this->ProductType->exists($id)) {
@@ -52,25 +52,25 @@ class ProductTypesController extends AppController
             $this->response->header('Access-Control-Allow-Origin', $origin);
         }
 
-
         $options = ['conditions' => ['ProductType.' . $this->ProductType->primaryKey => $id]];
         $locations = $this->ProductType->DefaultLocation->find('list');
         $this->set(compact('locations'));
         $this->set('productType', $this->ProductType->find('first', $options));
-        $this->set('_serialize', [ 'productType']);
+        $this->set('_serialize', ['productType']);
     }
 
-/**
- * add method
- *
- * @return void
- */
+    /**
+     * add method
+     *
+     * @return mixed
+     */
     public function add()
     {
         if ($this->request->is('post')) {
             $this->ProductType->create();
             if ($this->ProductType->save($this->request->data)) {
                 $this->Flash->success(__('The area or type has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The area or type could not be saved. Please, try again.'));
@@ -85,13 +85,13 @@ class ProductTypesController extends AppController
         $this->set(compact('storageTemps'));
     }
 
-/**
- * edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+    /**
+     * edit method
+     *
+     * @throws NotFoundException
+     * @param int $id ID of product type
+     * @return mixed
+     */
     public function edit($id = null)
     {
         if (!$this->ProductType->exists($id)) {
@@ -100,6 +100,7 @@ class ProductTypesController extends AppController
         if ($this->request->is(['post', 'put'])) {
             if ($this->ProductType->save($this->request->data)) {
                 $this->Flash->success(__('The area or type has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The area or type could not be saved. Please, try again.'));
@@ -109,7 +110,8 @@ class ProductTypesController extends AppController
             $productType = $this->ProductType->find('first', $options);
             $this->request->data = $productType;
             $locations = $this->ProductType->Location->find(
-                'list', [
+                'list',
+                [
                     'conditions' => [
                         'Location.product_type_id' => $productType['ProductType']['id']
                     ]
@@ -120,21 +122,18 @@ class ProductTypesController extends AppController
             $inventoryStatuses = $this->ProductType->InventoryStatus->find('list');
             $this->set(compact('inventoryStatuses'));
 
-
             $storageTemps = $this->ProductType->getStorageTemperatureSelectOptions();
             $this->set(compact('storageTemps'));
-
         }
-
     }
 
-/**
- * delete method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+    /**
+     * delete method
+     *
+     * @throws NotFoundException
+     * @param int $id ID of product type
+     * @return mixed
+     */
     public function delete($id = null)
     {
         $this->ProductType->id = $id;
@@ -147,6 +146,7 @@ class ProductTypesController extends AppController
         } else {
             $this->Flash->error(__('The area or type could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

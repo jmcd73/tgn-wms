@@ -25,11 +25,13 @@ class PrintTemplate extends AppModel
     )
      */
 
-
     public $actsAs = [
         'Tree',
         'FileUpload.FileUpload' => [
-            'forceWebroot' => true, //if false, files will be upload to the exact path of uploadDir
+
+            //if false, files will be upload to the exact path of uploadDir
+
+            'forceWebroot' => true,
             'fields' => [
                 'name' => 'file_template',
                 'type' => 'type',
@@ -47,10 +49,22 @@ class PrintTemplate extends AppModel
                 'glabels' => ['application/x-gzip', 'application/octet-stream']
             ],
             'fileVar' => 'file_template_upload',
-            'required' => false, //default is false, if true a validation error would occur if a file wsan't uploaded.
-            'maxFileSize' => false, //bytes OR false to turn off maxFileSize (default false)
-            'unique' => true, //filenames will overwrite existing files of the same name. (default true)
-            'fileNameFunction' => false //execute the Sha1 function on a filename before saving it (default false)
+
+            //required - default is false, if true a validation error would occur if a file wsan't uploaded.
+
+            'required' => false,
+
+            //maxFileSize bytes OR false to turn off maxFileSize (default false)
+
+            'maxFileSize' => false,
+
+            //unique - filenames will overwrite existing files of the same name. (default true)
+
+            'unique' => true,
+
+            //fileNameFunction - execute the Sha1 function on a filename before saving it (default false)
+
+            'fileNameFunction' => false
         ]
     ];
 
@@ -120,43 +134,29 @@ class PrintTemplate extends AppModel
     }*/
 
     /**
-     * @param $fileName
+     * @param string $fileName file name to delete
+     * @return void
      */
     public function deleteFileTemplate($fileName)
     {
-
         $fileToDelete = WWW_ROOT . Configure::read('GLABELS_ROOT') . DS . $fileName;
 
         $file = new File($fileToDelete);
         $file->delete();
     }
 
-    /*public function afterDelete()
-    {
-    // /var/www/wms/app/webroot//files/templates/
-
-    $fileName = $this->fileTemplateName['PrintTemplate']['file_template'];
-    $this->deleteFileTemplate($fileName);
-    }*/
-
-/**
- * Use database config
- *
- * @var string
- */
-
-/**
- * Display field
- *
- * @var string
- */
+    /**
+     * Display field
+     *
+     * @var string
+     */
     public $displayField = 'name';
 
-/**
- * Validation rules
- *
- * @var array
- */
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
     public $validate = [
         'name' => [
             'notBlank' => [
@@ -173,15 +173,15 @@ class PrintTemplate extends AppModel
             ]
         ],
         /*'print_action' => [
-            'notBlank' => [
-                'rule' => ['notBlank']
-            ]
+        'notBlank' => [
+        'rule' => ['notBlank']
+        ]
         ],*/
         'text_template' => [
             'notBlank' => [
                 'rule' => ['notBlank'],
                 //'message' => 'Your custom message here',
-                'allowEmpty' => true
+                 'allowEmpty' => true
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
@@ -191,11 +191,11 @@ class PrintTemplate extends AppModel
 
     // The Associations below have been created with all possible keys, those that are not needed can be removed
 
-/**
- * hasMany associations
- *
- * @var array
- */
+    /**
+     * hasMany associations
+     *
+     * @var array
+     */
     public $hasMany = [
         'Item' => [
             'className' => 'Item',
@@ -225,6 +225,9 @@ class PrintTemplate extends AppModel
         ]
     ];
 
+    /**
+     * @var array
+     */
     public $belongsTo = [
         'ParentTemplate' => [
             'className' => 'PrintTemplate',

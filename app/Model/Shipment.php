@@ -5,19 +5,29 @@ App::uses('AppModel', 'Model');
 /**
  * Shipment Model
  *
- * @property Label $Label
+ * @property Pallet $Pallet
  */
 class Shipment extends AppModel
 {
+
+    /**
+     * Display field
+     *
+     * @var string
+     */
+    public $displayField = 'shipper';
+
     /**
      * @var mixed $old Contains null or previous record
      */
     public $old = null;
 
     /**
-     * Checks that no pallets have been added or removed
+     * getShipmentLabelOptions creates an options array for a find call
+     * @param int $id of shipment
+     * @param int $productTypeId id of product type we lookup for
      *
-     * @return boolean
+     * @return array
      */
     public function getShipmentLabelOptions($id, $productTypeId)
     {
@@ -28,30 +38,25 @@ class Shipment extends AppModel
         // or allowed
         // and also the current shipment id or a blank ID.
         $options = [
-
             'conditions' => [
-                // not on hold
                 'OR' => [
                     'InventoryStatus.perms & ' . $perms,
-                    'Label.inventory_status_id' => 0
+                    'Pallet.inventory_status_id' => 0 // not on hold
                 ],
                 'AND' => [
-                    // not shipped or this shipper
                     'OR' => [
-                        'Label.product_type_id' => $productTypeId,
-                        'Label.shipment_id = ' . $id
-
+                        'Pallet.product_type_id' => $productTypeId,
+                        'Pallet.shipment_id = ' . $id
                     ]
                 ],
-                // has been put away
                 'NOT' => [
-                    'Label.location_id' => 0
-                ]],
+                    'Pallet.location_id' => 0 // has been put away
+                ]
+            ],
             'order' => [
-                'FIELD ( Label.shipment_id,' . $id . ',0)',
-             //   "FIND_IN_SET( LEFT( Label.item, 1), " . "'" . $sh_sort . "')",
-                'Label.item' => 'ASC',
-                'Label.pl_ref' => 'ASC'
+                'FIELD ( Pallet.shipment_id,' . $id . ',0)',
+                'Pallet.item' => 'ASC',
+                'Pallet.pl_ref' => 'ASC'
             ],
             'contain' => [
 
@@ -66,34 +71,36 @@ class Shipment extends AppModel
     }
 
     /**
-     * @param $id
-     * @param $sh_sort
+     * getShipmentLabels method
+     * @param int $id shipment id
+     * @param int $productTypeId Product type Id
      * @return mixed
      */
     public function getShipmentLabels($id, $productTypeId)
     {
-        $options = $this->getShipmentLabelOptions($id,  $productTypeId);
+        $options = $this->getShipmentLabelOptions($id, $productTypeId);
 
-        return $this->Label->find('all', $options);
-
+        return $this->Pallet->find('all', $options);
     }
+
     /**
-     * @param $data
+     * labelCount count pallets
+     * @param array $data data array of labels
+     * @return int
      */
     public function labelCount($data)
     {
-
         return empty($data) ? 0 : count($data);
-
     }
 
     /**
-     * @param array $old
-     * @param array $now
+     * isDifferentArrays
+     * @param array $old Old array
+     * @param array $now Now array
+     * @return bool
      */
     public function isDifferentArrays($old = [], $now = [])
     {
-
         $now = $now === '' ? [] : $now;
 
         sort($now);
@@ -101,24 +108,22 @@ class Shipment extends AppModel
 
         $diff = Hash::diff($now, $old);
 
-        return (bool) count($diff);
-
+        return (bool)count($diff);
     }
 
     /**
-     * @param $check
+     * checkLabelsNotChanged validation method
+     * @return bool
      */
-    public function checkLabelsNotChanged($check)
+    public function checkLabelsNotChanged()
     {
-
-        if ($this->id && isset($this->data['Label'])) {
-
+        if ($this->id && isset($this->data['Pallet'])) {
             // is an update
             $this->old = $this->findById($this->id);
 
-            $labels_now = Hash::extract($this->data['Label'], '{n}.id');
+            $labels_now = Hash::extract($this->data['Pallet'], '{n}.id');
 
-            $labels_old = Hash::extract($this->old['Label'], '{n}.id');
+            $labels_old = Hash::extract($this->old['Pallet'], '{n}.id');
 
             $old_shipped = $this->old[$this->alias]['shipped'];
             $new_shipped = $this->data[$this->alias]['shipped'];
@@ -130,18 +135,18 @@ class Shipment extends AppModel
                 ($old_shipped && !$new_shipped && !$changed) ||
                 ($old_shipped && $new_shipped && !$changed) ||
                 (!$old_shipped && !$new_shipped && !$changed);
-
         }
+
         return true;
     }
 
     /**
-     * @param $term
-     * @return mixed
+     * destinationLookup
+     * @param string $term snippet of destination to lookup from typeahead
+     * @return array
      */
     public function destinationLookup($term)
     {
-
         $options = [
             'fields' => [
                 'DISTINCT(Shipment.destination) as destination'
@@ -161,81 +166,71 @@ class Shipment extends AppModel
                 $this, 'formatBatch'
             ]
         );
+
         return $destinations;
     }
 
     /**
-     * @param $data
+     * @param array $data Data to format
+     * @return array
      */
     public function formatBatch($data)
     {
-
         return [
             'value' => $data['destination']
         ];
-
     }
 
     // gets shipment type based on shipment id
 
-
     /**
-     * @param array $dataArray
-     * @return mixed
+     * @param array $dataArray array of data
+     * @return array
      */
     public function getIds($dataArray = [])
     {
         $ids = [];
 
-        if (!empty($dataArray['Label'][0]['Label'])) {
-            $ids = Hash::extract($dataArray['Label'], '{n}.Label.id');
-        } elseif (!empty($dataArray['Label'][0]['id'])) {
-            $ids = Hash::extract($dataArray['Label'], '{n}.id');
-        } elseif (!empty($dataArray['Label'])) {
-            $ids = $dataArray['Label'];
+        if (!empty($dataArray['Pallet'][0]['Pallet'])) {
+            $ids = Hash::extract($dataArray['Pallet'], '{n}.Pallet.id');
+        } elseif (!empty($dataArray['Pallet'][0]['id'])) {
+            $ids = Hash::extract($dataArray['Pallet'], '{n}.id');
+        } elseif (!empty($dataArray['Pallet'])) {
+            $ids = $dataArray['Pallet'];
         }
 
         return $ids;
     }
 
-    /*
-     * formats labels Bottling: 62001, 08/09/17, B0041386, 63, Coles Canola 4lt
-     * [ id => "Location: Code, Date, pl ref, qty, description" ]
-     */
-
     /**
-     * @param $shipment_labels
+     * @param array $shipment_labels Array of labels or pallets more correctly
+     * @return array
      */
     public function formatLabels($shipment_labels)
     {
-        return Hash::combine($shipment_labels, '{n}.Label.id', [
+        return Hash::combine($shipment_labels, '{n}.Pallet.id', [
             '%s: %s, %s, %s, %s, %s',
             '{n}.Location.location',
-            '{n}.Label.item',
-            '{n}.Label.best_before',
-            '{n}.Label.pl_ref',
-            '{n}.Label.qty',
-            '{n}.Label.description'
+            '{n}.Pallet.item',
+            '{n}.Pallet.best_before',
+            '{n}.Pallet.pl_ref',
+            '{n}.Pallet.qty',
+            '{n}.Pallet.description'
         ]);
     }
 
-    /*
-     * creates and returns an array of items for the Form->input control to disable
-     */
-
     /**
-     * @param array $shipment_labels
-     * @return mixed
+     * markDisabled creates and returns an array of items for the Form->input control to disable
+     * @param array $shipment_labels array of pallets
+     * @return array
      */
     public function markDisabled($shipment_labels = [])
     {
-
         foreach ($shipment_labels as $key => $ret) {
-
-            if ($shipment_labels[$key]['Label']['dont_ship'] && !$shipment_labels[$key]['Label']['ship_low_date']) {
-                $shipment_labels[$key]['Label']['disabled'] = true;
+            if ($shipment_labels[$key]['Pallet']['dont_ship'] && !$shipment_labels[$key]['Pallet']['ship_low_date']) {
+                $shipment_labels[$key]['Pallet']['disabled'] = true;
             } else {
-                $shipment_labels[$key]['Label']['disabled'] = false;
+                $shipment_labels[$key]['Pallet']['disabled'] = false;
             }
         }
 
@@ -247,18 +242,17 @@ class Shipment extends AppModel
      */
 
     /**
-     * @param $values
-     * @return mixed
+     * getDiabled creates and returns an array of items for the Form->input control to disable
+     * @param array $values values to disable
+     * @return array
      */
     public function getDisabled($values)
     {
-
         $disabled = [];
 
         foreach ($values as $ret) {
-
-            if ($ret['Label']['dont_ship'] && !$ret['Label']['ship_low_date']) {
-                $disabled[] = $ret['Label']['id'];
+            if ($ret['Pallet']['dont_ship'] && !$ret['Pallet']['ship_low_date']) {
+                $disabled[] = $ret['Pallet']['id'];
             }
         }
 
@@ -266,87 +260,25 @@ class Shipment extends AppModel
     }
 
     /**
-     * Display field
-     *
-     * @var string
-     */
-    public $displayField = 'shipper';
-
-    // define shipment type based on label ids
-
-    /**
-     * @param array $ids
-     * @return mixed
-     */
-    public function getShipmentTypeByLabelIds($ids = [])
-    {
-
-        $labels = $this->Label->find(
-            'all', [
-                'conditions' => [
-                    'Label.id' => $ids
-                ],
-                'fields' => [
-                    'LEFT(Label.item, 1) as code_start'
-                ]
-            ]
-        );
-        return $this->compareShipmentTypes($labels);
-    }
-
-    // gets shipment type based on shipment id
-
-
-
-    // takes an array of the first digit of labels e.g. [ 5, 6]
-    // and checks to see if the array matches
-    // oil [ 6 ], marg [ 5 ] or mixed [ 5, 6 ]
-    // and returns the string type either oil, marg, mixed or unknown (if labels is null)
-
-    /**
-     * @param $labels
-     * @return mixed
-     */
-    public function compareShipmentTypes($labels = null)
-    {
-
-        $shipment_types = Configure::read('ShipmentTypes');
-
-        if ($labels === null) {
-            return $shipment_types['unknown']['type'];
-        }
-
-        $code_start = Hash::extract($labels, '{n}.{n}.code_start');
-
-        $codes = array_values(array_unique($code_start));
-
-        sort($codes);
-
-        foreach ($shipment_types as $k => $t) {
-            sort($t['values']);
-
-            if ($t['values'] == $codes) {
-                return $t['type'];
-            }
-        }
-    }
-
-    /**
-     * @param $var
+     * @param mixed $var a value to check for empty
+     * @return bool
      */
     public function isEmpty($var)
     {
-
         if (empty($var) && $var !== '' && intval($var) === 0) {
             return false;
         }
         if (empty($var)) {
             return true;
         }
+
         return false;
     }
+
     /**
-     * @param $check
+     * noChangeOnceShipped validation method
+     * @param array $check fieldname and value array to check
+     * @return bool
      */
     public function noChangeOnceShipped($check)
     {
@@ -374,23 +306,23 @@ class Shipment extends AppModel
 
         return true;
     }
+
     /**
-     * CheckPallets need pallets on a shipment to mark as shipped
-     * @param string $check field to check
+     * checkPallets need pallets on a shipment to mark as shipped
+     * @param array $check field to check
      *
      * @return bool
      */
     public function checkPallets($check)
     {
-
-        if ((int) $check['shipped'] === 0) {
+        if ((int)$check['shipped'] === 0) {
             // don't check if not shipping
             return true;
         }
 
-        return (int) $check['shipped'] === 1 && (
-            !empty($this->data['Shipment']['Label']) ||
-            !empty($this->data['Label'])
+        return (int)$check['shipped'] === 1 && (
+            !empty($this->data['Shipment']['Pallet']) ||
+            !empty($this->data['Pallet'])
         );
     }
 
@@ -439,7 +371,7 @@ class Shipment extends AppModel
 
     //The Associations below have been created with all possible keys, those that are not needed can be removed
 
-     /**
+    /**
      * @var array
      */
     public $belongsTo = [
@@ -453,8 +385,8 @@ class Shipment extends AppModel
      * @var array
      */
     public $hasMany = [
-        'Label' => [
-            'className' => 'Label',
+        'Pallet' => [
+            'className' => 'Pallet',
             'foreignKey' => 'shipment_id',
             'dependent' => false
         ]

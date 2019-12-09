@@ -10,6 +10,7 @@ class CtrlComponent extends Component
     /**
      * Return an array of user Controllers and their methods.
      * The function will exclude ApplicationController methods
+     * @param bool $showSelected show the controller based on
      * @return array
      */
     public function get($showSelected = false)
@@ -27,7 +28,6 @@ class CtrlComponent extends Component
                     $propertyExists = property_exists($controller, 'showInSelectedControllerActionList');
 
                     if ($propertyExists) {
-
                         $myclass = new $controller();
 
                         $propertyValue = $myclass->showInSelectedControllerActionList;
@@ -59,6 +59,7 @@ class CtrlComponent extends Component
 
         return $controllers;
     }
+
     /**
      * Re-Format Array of Controllers for use in
      * @param array $array Array of Controllers
@@ -77,7 +78,7 @@ class CtrlComponent extends Component
     }
 
     /**
-     * @param $showSelected
+     * @param bool $showSelected show
      * @return mixed
      */
     public function formatForPrinterViews($showSelected = false)

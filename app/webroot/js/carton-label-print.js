@@ -27,7 +27,7 @@ $(function() {
 			label_details.printer_friendly_name +
 			"</strong> printer?";
 
-		modal.find("#label-count").html(question);
+		modal.find("#pallet-count").html(question);
 	});
 
 	$(settings.modalPrintButton).click(function() {
@@ -38,7 +38,7 @@ $(function() {
 	product_list_url = $(settings.productList).data("url");
 	settings.print_url = $(settings.productList).data("print_url");
 	//console.log(jmits.print_url);
-	$("#cartons-label-count .qty").click(function() {
+	$("#cartons-pallet-count .qty").click(function() {
 		$(this)
 			.addClass("active")
 			.siblings()

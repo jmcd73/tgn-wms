@@ -16,29 +16,37 @@ class ShipmentsController extends AppController
      */
     public $components = ['Paginator', 'ReactEmbed'];
 
+    /**
+     * beforeFilter
+     * @return void
+     */
     public function beforeFilter()
     {
         parent::beforeFilter();
     }
 
-    public function update_shipment_types()
+    /**
+     * updateShipmentTypes action to bulk update shipments not used anymore
+     * @return void
+     */
+    public function updateShipmentTypes()
     {
         //$this->Shipment->recursive = -1;
 
-        $this->Shipment->Behaviors->load('Containable');
+        //$this->Shipment->Behaviors->load('Containable');
         $shipments = $this->Shipment->find('all', [
             'contain' => [
-                'Label' => [
-                    'fields' => 'Label.id'
+                'Pallet' => [
+                    'fields' => 'Pallet.id'
                 ]
             ]
         ]);
 
         foreach ($shipments as $s) {
-            $ids = Hash::extract($s, 'Label.{n}.id');
+            $ids = Hash::extract($s, 'Pallet.{n}.id');
 
-            unset($s['Label']);
-            $s['Shipment']['Label'] = $ids;
+            unset($s['Pallet']);
+            $s['Shipment']['Pallet'] = $ids;
 
             if ($this->Shipment->save($s)) {
                 $this->log('Updated ' . $s['Shipment']['id']);
@@ -47,6 +55,10 @@ class ShipmentsController extends AppController
         $this->render(false);
     }
 
+    /**
+     * destinationLookup for react view
+     * @return void
+     */
     public function destinationLookup()
     {
         $search_term = $this->request->query['term'];
@@ -63,11 +75,14 @@ class ShipmentsController extends AppController
         $this->set('_serialize', 'json_output');
     }
 
+    /**
+     * openShipments
+     * @return void
+     */
     public function openShipments()
     {
-
         $this->Shipment->recursive = -1;
-        $productTypes = $this->Shipment->Label->Item->ProductType->find('all', [
+        $productTypes = $this->Shipment->Pallet->Item->ProductType->find('all', [
             'conditions' => [
                 'ProductType.active' => 1,
                 'ProductType.enable_pick_app' => 1
@@ -87,7 +102,6 @@ class ShipmentsController extends AppController
                 ]
             ];
         } else {
-
             $shipments = $this->Shipment->find('all', [
                 'conditions' => [
                     'Shipment.shipped' => 0,
@@ -96,7 +110,6 @@ class ShipmentsController extends AppController
                 ],
                 'order' => ['Shipment.id' => 'desc']
             ]);
-
         }
 
         $origin = $this->request->header('Origin');
@@ -116,11 +129,12 @@ class ShipmentsController extends AppController
      */
     public function index()
     {
-        //$this->Shipment->Behaviors->load('Containable');
+        ////$this->Shipment->Behaviors->load('Containable');
         $this->Shipment->recursive = -1;
 
         $count = $this->Shipment->find(
-            'count', [
+            'count',
+            [
                 'conditions' => [
                     'Shipment.shipped' => 0
                 ]
@@ -133,7 +147,7 @@ class ShipmentsController extends AppController
                 'contain' => ['ProductType']
             ]
         ];
-        $productTypes = $this->Shipment->Label->Item->ProductType->find('all', [
+        $productTypes = $this->Shipment->Pallet->Item->ProductType->find('all', [
             'conditions' => [
                 'ProductType.active' => 1
             ]
@@ -145,10 +159,11 @@ class ShipmentsController extends AppController
     }
 
     /**
-     * pdf pick list
+     * pdfPickList
      *
+     * @param int $id ID of Shipment
+     * @return void
      */
-
     public function pdfPickList($id = null)
     {
         if (!$this->Shipment->exists($id)) {
@@ -158,10 +173,10 @@ class ShipmentsController extends AppController
         //Configure::write('debug', 0);
 
         $this->Shipment->recursive = 0;
-        $this->Shipment->Behaviors->load('Containable');
+        //$this->Shipment->Behaviors->load('Containable');
 
         $pl_options = [
-            'conditions' => ['Label.shipment_id' => $id],
+            'conditions' => ['Pallet.shipment_id' => $id],
             'contain' => [
                 'Item',
                 'Location'
@@ -169,21 +184,21 @@ class ShipmentsController extends AppController
             'order' => [
                 'Item.code' => 'ASC',
                 'Location.location' => 'ASC',
-                'Label.pl_ref' => 'ASC'
+                'Pallet.pl_ref' => 'ASC'
             ]
         ];
 
-        $pallets = $this->Shipment->Label->find('all', $pl_options);
+        $pallets = $this->Shipment->Pallet->find('all', $pl_options);
 
-        $pl_count = $this->Shipment->Label->find('count', $pl_options);
+        $pl_count = $this->Shipment->Pallet->find('count', $pl_options);
 
         $pl_groups = $pl_options = [
-            'conditions' => ['Label.shipment_id' => $id],
+            'conditions' => ['Pallet.shipment_id' => $id],
             'fields' => [
-                'Label.id',
-                'COUNT(Label.item_id) as Pallets',
-                'SUM(Label.qty) as Total',
-                'Label.item_id',
+                'Pallet.id',
+                'COUNT(Pallet.item_id) as Pallets',
+                'SUM(Pallet.qty) as Total',
+                'Pallet.item_id',
                 'Item.description',
                 'Item.code'
             ],
@@ -194,7 +209,7 @@ class ShipmentsController extends AppController
             'order' => ['Item.code' => 'ASC']
         ];
 
-        $groups = $this->Shipment->Label->find('all', $pl_groups);
+        $groups = $this->Shipment->Pallet->find('all', $pl_groups);
 
         $options = [
             'conditions' => ['Shipment.' . $this->Shipment->primaryKey => $id]
@@ -205,19 +220,23 @@ class ShipmentsController extends AppController
         $this->layout = 'pdf/default';
         $file_name = $shipment['Shipment']['shipper'] . '_pick_list.pdf';
         $this->response->type('pdf');
-        $this->set(compact(
-            'file_name',
-            'shipment', 'pallets', 'pl_count', 'groups'));
+        $this->set(
+            compact(
+                'file_name',
+                'shipment',
+                'pallets',
+                'pl_count',
+                'groups'
+            )
+        );
     }
 
-    /*
-     * mobile simplified view
-     */
-
     /**
-     * @param $id
+     * @throws NotFoundException
+     * @param int $id ID of Shipment
+     * @return void
      */
-    public function viewplain($id = null)
+    public function viewPlain($id = null)
     {
         if (!$this->Shipment->exists($id)) {
             throw new NotFoundException(__('Invalid shipment'));
@@ -226,10 +245,10 @@ class ShipmentsController extends AppController
         Configure::write('debug', 0);
 
         $this->Shipment->recursive = 0;
-        $this->Shipment->Behaviors->load('Containable');
+        //$this->Shipment->Behaviors->load('Containable');
 
         $pl_options = [
-            'conditions' => ['Label.shipment_id' => $id],
+            'conditions' => ['Pallet.shipment_id' => $id],
             'contain' => [
                 'Item',
                 'Location'
@@ -237,19 +256,19 @@ class ShipmentsController extends AppController
             'order' => [
                 'Item.code' => 'ASC',
                 'Location.location' => 'ASC',
-                'Label.pl_ref' => 'ASC'
+                'Pallet.pl_ref' => 'ASC'
             ]
         ];
 
-        $pallets = $this->Shipment->Label->find('all', $pl_options);
+        $pallets = $this->Shipment->Pallet->find('all', $pl_options);
 
-        $pl_count = $this->Shipment->Label->find('count', $pl_options);
+        $pl_count = $this->Shipment->Pallet->find('count', $pl_options);
 
         $pl_groups = $pl_options = [
-            'conditions' => ['Label.shipment_id' => $id],
+            'conditions' => ['Pallet.shipment_id' => $id],
             'fields' => [
-                'Label.id', 'COUNT(Label.item_id) as Pallets',
-                'SUM(Label.qty) as Total', 'Label.item_id',
+                'Pallet.id', 'COUNT(Pallet.item_id) as Pallets',
+                'SUM(Pallet.qty) as Total', 'Pallet.item_id',
                 'Item.description', 'Item.code'
             ],
             'contain' => [
@@ -261,7 +280,7 @@ class ShipmentsController extends AppController
             'order' => ['Item.code' => 'ASC']
         ];
 
-        $groups = $this->Shipment->Label->find('all', $pl_groups);
+        $groups = $this->Shipment->Pallet->find('all', $pl_groups);
 
         $options = [
             'conditions' => ['Shipment.' . $this->Shipment->primaryKey => $id]
@@ -278,7 +297,7 @@ class ShipmentsController extends AppController
      * view method
      *
      * @throws NotFoundException
-     * @param string $id
+     * @param int $id ID of Shipment
      * @return void
      */
     public function view($id = null)
@@ -287,12 +306,12 @@ class ShipmentsController extends AppController
             throw new NotFoundException(__('Invalid shipment'));
         }
         $this->Shipment->recursive = 0;
-        $this->Shipment->Behaviors->load('Containable');
+        //$this->Shipment->Behaviors->load('Containable');
 
         $options = [
             'conditions' => ['Shipment.' . $this->Shipment->primaryKey => $id],
             'contain' => [
-                'Label' => [
+                'Pallet' => [
                     'Location' => [
                         'fields' => ['Location.id', 'Location.location']
                     ]
@@ -312,6 +331,7 @@ class ShipmentsController extends AppController
     /**
      * pickStock React SPA
      *
+     * @return void
      */
     public function pickStock()
     {
@@ -325,11 +345,11 @@ class ShipmentsController extends AppController
 
     /**
      * addApp React SPA
-     * @param $shipment_type
+     * @param int $shipment_type Product Type ID
+     * @return void
      */
     public function addApp($shipment_type = null)
     {
-
         list($js, $css, $baseUrl) = $this->ReactEmbed->getAssets(
             'shipment-app',
             $this
@@ -337,14 +357,14 @@ class ShipmentsController extends AppController
 
         $this->set(compact('js', 'css', 'baseUrl'));
     }
+
     /**
      * add method
      * @param string $shipment_type oil or marg
-     * @return void
+     * @return mixed
      */
     public function add($shipment_type = null)
     {
-
         $last = null;
         $error = null;
 
@@ -361,32 +381,29 @@ class ShipmentsController extends AppController
         if ($this->request->is('post')) {
             $this->Shipment->create();
             if ($this->request->data) {
-
                 $shipment = $this->Shipment->save($this->request->data);
 
                 if (!empty($shipment)) {
-
                     $shipper = $this->request->data['Shipment']['shipper'];
 
                     if (!$this->request->is('ajax')) {
                         $this->Flash->success('The shipment ' . '<strong>' . h($shipper) . '</strong> has been saved.');
                     }
 
-                    if (!empty($this->request->data['Label'])) {
-
+                    if (!empty($this->request->data['Pallet'])) {
                         $update_labels = array_map(
                             function ($val) {
                                 return [
-                                    'Label' => [
+                                    'Pallet' => [
                                         'id' => $val,
                                         'shipment_id' => $this->Shipment->id
                                     ]
                                 ];
                             },
-                            $this->request->data['Label']
+                            $this->request->data['Pallet']
                         );
 
-                        if ($this->Shipment->Label->saveMany($update_labels)) {
+                        if ($this->Shipment->Pallet->saveMany($update_labels)) {
                             if (!$this->request->is('ajax')) {
                                 $this->Flash->success('The shipment ' . '<strong>' . h($shipper) . '</strong> has been saved.', [
                                     'clear' => true
@@ -394,7 +411,6 @@ class ShipmentsController extends AppController
                             } else {
                                 $last = $this->Shipment->findById($this->Shipment->id);
                             }
-
                         }
                     }
                     if (!$this->request->is('ajax')) {
@@ -408,30 +424,31 @@ class ShipmentsController extends AppController
                     }
                 }
             }
-
         }
 
         $shipment_slug = 'mixed';
 
         $options = [
             'conditions' => [
-                'Label.product_type_id' => $shipment_type,
-                # not on hold
-                 'OR' => [
-                    'InventoryStatus.perms & ' . $perms,
-                    'Label.inventory_status_id' => 0
+                'Pallet.product_type_id' => $shipment_type,
+                'OR' => [
+                    // not on hold
+                     'InventoryStatus.perms & ' . $perms,
+                    'Pallet.inventory_status_id' => 0
                 ],
-                # hasn't been shipped
-                 'Label.shipment_id' => 0,
-                # has been put away
-                 'NOT' => [
-                    'Label.location_id' => 0
+
+                'Pallet.shipment_id' => 0,
+                // hasn't been shipped
+
+                'NOT' => [
+                    // has been put away
+                     'Pallet.location_id' => 0
                 ]
 
             ],
             'order' => [
-                'Label.item' => 'ASC',
-                'Label.pl_ref' => 'ASC'
+                'Pallet.item' => 'ASC',
+                'Pallet.pl_ref' => 'ASC'
             ],
             'contain' => ['InventoryStatus',
                 'Location' => [
@@ -439,8 +456,8 @@ class ShipmentsController extends AppController
                 ]]
         ];
 
-        $shipment_labels = $this->Shipment->Label->find('all', $options);
-        $label_count = $this->Shipment->Label->find('count', $options);
+        $shipment_labels = $this->Shipment->Pallet->find('all', $options);
+        $pallet_count = $this->Shipment->Pallet->find('count', $options);
 
         $shipment_labels = $this->Shipment->markDisabled($shipment_labels);
 
@@ -452,13 +469,14 @@ class ShipmentsController extends AppController
                 'last',
                 'shipment_labels',
                 'disable_footer',
-                'label_count'
+                'pallet_count'
             )
         );
     }
 
     /**
-     * @param $id
+     * @param int $id ID of shipment
+     * @return mixed
      */
     public function toggleShipped($id = null)
     {
@@ -482,7 +500,6 @@ class ShipmentsController extends AppController
             $this->Shipment->set($shipment);
             if ($this->Shipment->save($data)) {
                 $this->Flash->success("Successfully toggled shipped state");
-
             } else {
                 $errorText = '';
 
@@ -492,17 +509,17 @@ class ShipmentsController extends AppController
                 };
                 $this->Flash->error('Failed to toggle shipped state. ' . $errorText);
             }
-            $this->redirect(['action' => 'index']);
-        }
 
+            return $this->redirect(['action' => 'index']);
+        }
     }
 
     /**
      * edit method
      *
      * @throws NotFoundException
-     * @param string $id
-     * @return void
+     * @param string $id Shipment ID
+     * @return mixed
      */
     public function edit($id = null)
     {
@@ -518,37 +535,34 @@ class ShipmentsController extends AppController
             throw new NotFoundException(__('Invalid shipment'));
         }
 
-        $this->Shipment->Behaviors->load('Containable');
+        //$this->Shipment->Behaviors->load('Containable');
 
         $options = [
             'conditions' => [
                 'Shipment.' . $this->Shipment->primaryKey => $id
             ],
             'contain' => [
-                'Label.Location'
+                'Pallet.Location'
             ]
         ];
 
         $thisShipment = $this->Shipment->find('first', $options);
 
         if ($this->request->is(['post', 'put'])) {
-
             $shipper = $this->request->data['Shipment']['shipper'];
 
             if ($this->Shipment->saveAll($this->request->data)) {
-
-                if (!empty($this->request->data['Label'])) {
-
-                    $requestedLabelIdsOnShipment = Hash::extract($this->request->data['Label'], '{n}.id');
+                if (!empty($this->request->data['Pallet'])) {
+                    $requestedLabelIdsOnShipment = Hash::extract($this->request->data['Pallet'], '{n}.id');
 
                     $previousLabels = Hash::extract(
                         $thisShipment,
-                        'Label'
+                        'Pallet'
                     );
 
                     $previousIds = Hash::extract(
                         $thisShipment,
-                        'Label.id'
+                        'Pallet.id'
                     );
 
                     $previousWithoutRequested = array_filter(
@@ -565,6 +579,7 @@ class ShipmentsController extends AppController
                         function ($val) {
                             $val['picked'] = 0;
                             $val['shipment_id'] = 0;
+
                             return $val;
                         },
                         $previousWithoutRequested
@@ -573,28 +588,27 @@ class ShipmentsController extends AppController
                     // this removes labels that have been deselected
                     // and removes 'picked'
                     if ($pwor) {
-                        $this->Shipment->Label->saveAll($pwor);
+                        $this->Shipment->Pallet->saveAll($pwor);
                     }
-
                 } else {
-
                     // if there are no labels then remove them all
-                    $this->Shipment->Label->updateAll(
-                        ['Label.shipment_id' => 0],
-                        ['Label.shipment_id' => $id]
+                    $this->Shipment->Pallet->updateAll(
+                        ['Pallet.shipment_id' => 0],
+                        ['Pallet.shipment_id' => $id]
                     );
 
                     // and update counterCache to be zero`
                     $this->Shipment->save(
                         [
                             'id' => $id,
-                            'label_count' => 0
+                            'pallet_count' => 0
                         ]
                     );
                 }
 
                 if (!$this->request->is('ajax')) {
                     $this->Flash->success('The shipment <strong>' . h($shipper) . '</strong> has been saved.');
+
                     return $this->redirect(
                         $this->request->data['Shipment']['referer']
                     );
@@ -607,59 +621,31 @@ class ShipmentsController extends AppController
                 }
             }
         } else {
-
             $this->request->data = $thisShipment;
-
         }
         $productTypeId = $thisShipment['Shipment']['product_type_id'];
-
-        $shipment_labels = $this->Shipment->getShipmentLabels($id, $productTypeId);
-
-        $labels = $this->Shipment->formatLabels($shipment_labels);
 
         $options = $this->Shipment->getShipmentLabelOptions($id, $productTypeId);
 
         unset($options['conditions']['AND']['OR']);
-        $options['conditions']['AND']['Label.shipment_id'] = 0;
-        $options['conditions']['AND']['Label.product_type_id'] = $productTypeId;
-
-        $shipment_labels = $this->Shipment->Label->find('all', $options);
-        $label_count = count($shipment_labels);
-
-        $disabled = $this->Shipment->getDisabled($shipment_labels);
-        $label_count -= count($disabled);
-        $shipment_labels = $this->Shipment->markDisabled($shipment_labels);
-
-        if (isset($this->request->data['Label'])) {
-
-            $selected_label_count = $this->Shipment->labelCount($this->request->data['Label']);
-
-        } elseif (isset($this->request->data['Shipment']['Label'])) {
-
-            $selected_label_count = $this->Shipment->labelCount($this->request->data['Shipment']['Label']);
-
+        $options['conditions']['AND']['Pallet.shipment_id'] = 0;
+        if ($productTypeId) {
+            $options['conditions']['AND']['Pallet.product_type_id'] = $productTypeId;
         }
 
-        $label_count -= $selected_label_count;
+        $shipment_labels = $this->Shipment->Pallet->find('all', $options);
 
-        $shipment_id = $id;
+        $disabled = $this->Shipment->getDisabled($shipment_labels);
+
+        $shipment_labels = $this->Shipment->markDisabled($shipment_labels);
 
         $disable_footer = true;
-
-        $referer = $this->request->referer();
 
         $this->set(
             compact(
                 'error',
                 'thisShipment',
-                'shipment_labels',
-                'referer',
-                'labels',
-                'disable_footer',
-                'label_count',
-                'selected_label_count',
-                'disabled',
-                'shipment_id'
+                'shipment_labels'
             )
         );
 
@@ -677,8 +663,8 @@ class ShipmentsController extends AppController
      * delete method
      *
      * @throws NotFoundException
-     * @param string $id
-     * @return void
+     * @param int $id Shipment ID
+     * @return mixed
      */
     public function delete($id = null)
     {
@@ -689,22 +675,21 @@ class ShipmentsController extends AppController
         $this->request->allowMethod('post', 'delete');
 
         $options = [
-            'conditions' => ['Label.shipment_id' => $this->Shipment->id]
+            'conditions' => ['Pallet.shipment_id' => $this->Shipment->id]
         ];
 
-        if ($this->Shipment->Label->find('count', $options) > 0) {
-
+        if ($this->Shipment->Pallet->find('count', $options) > 0) {
             // zero out the shipment_id so that
             // the pallets re-appear
             // also set picked to 0
-            $this->Shipment->Label->updateAll(
+            $this->Shipment->Pallet->updateAll(
                 [
                     //field to change and new values
-                     'Label.picked' => 0,
-                    'Label.shipment_id' => 0
+                     'Pallet.picked' => 0,
+                    'Pallet.shipment_id' => 0
                 ],
                 // conditions
-                ['Label.shipment_id' => $id]
+                ['Pallet.shipment_id' => $id]
             );
         };
 
@@ -713,7 +698,7 @@ class ShipmentsController extends AppController
         } else {
             $this->Flash->error(__('The shipment could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
-
 }

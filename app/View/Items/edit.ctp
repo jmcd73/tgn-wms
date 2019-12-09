@@ -9,14 +9,17 @@
         echo $this->Form->input('active');
         echo $this->Form->input('product_type_id', [
             'options' => $productTypes,
-            'empty' => '(select)'
+            'empty' => '(select)',
+
         ]);
 
         echo $this->Form->input('code');
         echo $this->Form->input('description');
         echo $this->Form->input('print_template_id', [
             'label' => "Pallet Label Print Template",
-            'empty' => '(Select a template)']);
+            'empty' => '(Select a template)',
+            'escape' => false
+            ]);
 
         echo $this->Form->input(
             'pallet_label_copies',
@@ -31,6 +34,7 @@
         echo $this->Form->input('carton_label_id', [
             'label' => "Carton Label Print Template",
             'options' => $printTemplates,
+            'escape' => false,
             'label' => "Carton Label Template",
             'empty' => '(Select a template)']);
         echo $this->Form->input('quantity',

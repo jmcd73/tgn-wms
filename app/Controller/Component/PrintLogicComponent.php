@@ -14,52 +14,53 @@ class PrintLogicComponent extends Component
     /**
      * @var int
      */
-    private $glabelPrintCopies = 0;
+    protected $_glabelPrintCopies = 0;
     /**
      * @var bool
      */
-    private $glabelsMergeCSV = false;
+    protected $_glabelsMergeCSV = false;
 
     /**
      * @var string
      */
-    private $glabelsTemplate = '';
+    protected $_glabelsTemplate = '';
     /**
      * @var string
      */
-    private $outFile = 'output.pdf';
+    protected $_outFile = 'output.pdf';
     /**
      * @var string
      */
-    private $printContent = '';
+    protected $_printContent = '';
     /**
      * @var array
      */
-    private $printContentArray = [];
+    protected $_printContentArray = [];
     /**
      * @var mixed
      */
-    private $cwd = null;
+    protected $_cwd = null;
     /**
      * @var string
      */
-    private $jobId = '';
+    protected $_jobId = '';
 
     /**
      * @var array
      */
-    private $_actionToFunctionMap = [
-        'glabel_sample_labels' => 'formatGLabelSample',
-        'keep_refrigerated' => 'formatCustomLabel',
-        'custom_print' => 'formatCustomLabel',
-        'shipping_labels' => 'formatShippingLabelPrintLine',
-        'crossdock_labels' => 'formatCrossdockLabelPrintLine',
-        'shipping_labels_generic' => 'formatShippingLabelsGeneric',
-        'sample_labels' => 'formatSampleLabel'
+    protected $_actionToFunctionMap = [
+        'glabelSampleLabels' => 'formatGlabelSample',
+        'keepRefrigerated' => 'formatCustomLabel',
+        'customPrint' => 'formatCustomLabel',
+        'shippingLabels' => 'formatShippingLabelPrintLine',
+        'crossdockLabels' => 'formatCrossdockLabelPrintLine',
+        'shippingLabelsGeneric' => 'formatShippingLabelsGeneric',
+        'sampleLabels' => 'formatSampleLabel'
     ];
 
     /**
-     * @param Controller $controller
+     * @param Controller $controller pass in the Controller to the component
+     * @return void
      */
     public function initialize(Controller $controller)
     {
@@ -99,6 +100,7 @@ class PrintLogicComponent extends Component
     {
         return $this->cwd;
     }
+
     /**
      * Sets the current working directory for the print process
      * @param string $cwd usually TMP is passed in
@@ -133,28 +135,33 @@ class PrintLogicComponent extends Component
             );
         }
     }
+
     /**
      * @param string $template Template from config
+     * @return void
      */
     public function setGlabelsTemplate($template)
     {
-        $this->glabelsTemplate = realpath($template);
+        $this->_glabelsTemplate = realpath($template);
     }
+
     /**
      * Formats a date as YYYYMMDDHHMMSS
      * @return string
      */
-    private function formatDate()
+    protected function _formatDate()
     {
         return date('YmdHis');
     }
+
     /**
      * @return mixed
      */
     public function getGlabelsTemplate()
     {
-        return $this->glabelsTemplate;
+        return $this->_glabelsTemplate;
     }
+
     /**
      * @return mixed
      */
@@ -162,13 +169,15 @@ class PrintLogicComponent extends Component
     {
         return $this->jobId;
     }
+
     /**
-     * @param string $actionOrReference pass in the controller action e.g. carton_print or a pallet reference e.g. 0023456
+     * @param string $actionOrReference pass in the controller action e.g. cartonPrint or a pallet reference e.g. 0023456
      * @param bool $reprint if reprint append 'reprint'
+     * @return string something like 201912021219-B0232232
      */
     public function setJobId($actionOrReference = '', $reprint = false)
     {
-        $fmtDate = $this->formatDate();
+        $fmtDate = $this->_formatDate();
 
         if ($actionOrReference !== '') {
             $actionOrReference = '-' . $actionOrReference;
@@ -182,6 +191,7 @@ class PrintLogicComponent extends Component
 
         return $this->jobId;
     }
+
     /**
      * Sets the output file name and path
      * @param string $rootDir The root directory usually TMP/file.pdf
@@ -189,20 +199,22 @@ class PrintLogicComponent extends Component
      */
     public function setOutFile($rootDir)
     {
-        $this->outFile = $rootDir . $this->getJobId() . '.pdf';
+        $this->_outFile = $rootDir . $this->getJobId() . '.pdf';
     }
+
     /**
      * @return mixed
      */
     public function getOutFile()
     {
-        return $this->outFile;
+        return $this->_outFile;
     }
 
     /**
      * @param mixed $content Print Content
+     * @return void
      */
-    private function setPrintContent($content)
+    protected function _setPrintContent($content)
     {
         $this->printContent = $content;
     }
@@ -213,7 +225,7 @@ class PrintLogicComponent extends Component
      * @param string $enclosure What to wrap spaced strings in
      * @return string
      */
-    private function strPutCsv($input, $delimiter = ',', $enclosure = '"')
+    protected function _strPutCsv($input, $delimiter = ',', $enclosure = '"')
     {
         if (!is_array($input[0])) {
             $input = [$input];
@@ -232,8 +244,10 @@ class PrintLogicComponent extends Component
         // ... close the "file"...
         fclose($fp);
         // ... and return the $data to the caller, with the trailing newline from fgets() removed.
+
         return $data;
     }
+
     /**
      * @param array $printArray Print Array
      * @param array $arrayOfProperties An Array of Properties to look for in the Print Array
@@ -258,8 +272,10 @@ class PrintLogicComponent extends Component
 
         return $returnProps;
     }
+
     /**
-     * @param array $printArray
+     * @param array $printArray print array
+     * @return void
      */
     public function formatSampleLabel($printArray)
     {
@@ -276,33 +292,36 @@ class PrintLogicComponent extends Component
         $copies = $printArray['copies'];
         $printLines = [];
 
-        $this->glabelsMergeCSV = true;
+        $this->_glabelsMergeCSV = true;
 
         for ($i = 1; $i <= $copies; $i++) {
             $printLines[] = $returnedProps;
         }
 
-        $printThis = $this->strPutCsv($printLines);
+        $printThis = $this->_strPutCsv($printLines);
 
-        $this->setPrintContent($printThis);
+        $this->_setPrintContent($printThis);
     }
 
     /**
-     * @param $printData
+     * setPrintCopies
+     * @param int $copies number of copies
+     * @return void
      */
     public function setPrintCopies($copies)
     {
-
-        $this->glabelPrintCopies = $copies;
+        $this->_glabelPrintCopies = $copies;
     }
+
     /**
-     * @param $printArray
+     * @param array $printArray Print data array
+     * @return void
      */
-    public function formatGLabelSample($printArray)
+    public function formatGlabelSample($printArray)
     {
-        $this->glabelsMergeCSV = false;
+        $this->_glabelsMergeCSV = false;
         $this->setPrintCopies($printArray['copies']);
-        $this->setPrintContent(null);
+        $this->_setPrintContent(null);
     }
 
     /**
@@ -311,34 +330,32 @@ class PrintLogicComponent extends Component
      */
     public function formatCustomLabel($printArray)
     {
-
         $printLines = [];
         $printThis = null;
 
         $copies = $printArray['copies'];
 
         if (isset($printArray['csv']) && is_array($printArray['csv'])) {
-
             // merge is 1 copy
-
             for ($i = 1; $i <= $copies; $i++) {
                 $printLines[] = $printArray['csv'];
             }
 
-            $printThis = $this->strPutCsv($printLines);
+            $printThis = $this->_strPutCsv($printLines);
 
-            $this->glabelsMergeCSV = true;
+            $this->_glabelsMergeCSV = true;
             $this->setPrintCopies(1);
-
         } else {
-            $this->glabelsMergeCSV = false;
+            $this->_glabelsMergeCSV = false;
             $this->setPrintCopies($copies);
         }
 
-        $this->setPrintContent($printThis);
+        $this->_setPrintContent($printThis);
     }
+
     /**
-     * @param $printArray
+     * @param array $printArray Print data array
+     * @return void
      */
     public function formatShippingLabelsGeneric($printArray)
     {
@@ -357,7 +374,7 @@ class PrintLogicComponent extends Component
 
         $copies = $printArray['copies'];
 
-        $this->glabelsMergeCSV = true;
+        $this->_glabelsMergeCSV = true;
 
         $printLines = [];
 
@@ -366,9 +383,9 @@ class PrintLogicComponent extends Component
             array_splice($loopArray, 7, 0, $i);
             $printLines[] = $loopArray;
         }
-        $printThis = $this->strPutCsv($printLines);
+        $printThis = $this->_strPutCsv($printLines);
 
-        $this->setPrintContent($printThis);
+        $this->_setPrintContent($printThis);
     }
 
     /**
@@ -391,6 +408,7 @@ class PrintLogicComponent extends Component
             )
         );
     }
+
     /**
      * Crossdock Labels
      * @param array $printArray cakephp array from form with model
@@ -412,7 +430,7 @@ class PrintLogicComponent extends Component
         $sequenceStart = $printArray['sequence-start'];
         $sequenceEnd = $printArray['sequence-end'];
         $copies = $printArray['copies'];
-        $this->glabelsMergeCSV = true;
+        $this->_glabelsMergeCSV = true;
 
         $printLines = [];
         $printLines[] = $csvHeadings;
@@ -425,20 +443,24 @@ class PrintLogicComponent extends Component
             }
         };
 
-        $printThis = $this->strPutCsv($printLines);
+        $printThis = $this->_strPutCsv($printLines);
 
-        $this->setPrintContent($printThis);
+        $this->_setPrintContent($printThis);
     }
 
     /**
-     * @param $line
+     * @param string $line Line with a potential comma to add a newline
+     * @return string
      */
     public function insertNewLineAtComma($line)
     {
         return preg_replace('/\s*,\s*/', '\n', $line);
     }
+
     /**
-     * @param $printArray
+     * formatShippingLabelPrintLine
+     * @param array $printArray Print data array
+     * @return void
      */
     public function formatShippingLabelPrintLine($printArray)
     {
@@ -446,7 +468,7 @@ class PrintLogicComponent extends Component
         $sequenceEnd = $printArray['sequence-end'];
         $copies = $printArray['copies'];
 
-        $this->glabelsMergeCSV = true;
+        $this->_glabelsMergeCSV = true;
 
         $reference = $printArray['reference'];
         $state = $printArray['state'];
@@ -471,10 +493,11 @@ class PrintLogicComponent extends Component
             }
         }
 
-        $printThis = $this->strPutCsv($printLines);
+        $printThis = $this->_strPutCsv($printLines);
 
-        $this->setPrintContent($printThis);
+        $this->_setPrintContent($printThis);
     }
+
     /**
      * send gLabels PDF to designated LPR printer
      * @param string $printer Print queue name
@@ -485,11 +508,11 @@ class PrintLogicComponent extends Component
         /* the print file is no longer used but may be handy if things
          * don't work as they should so leaving it here
          */
-        $print_file = new File($this->outFile);
+        $print_file = new File($this->_outFile);
 
         $jobId = $this->getJobId();
 
-        $copies = $this->glabelPrintCopies;
+        $copies = $this->_glabelPrintCopies;
 
         $cmdArgs = [
             'lpr',
@@ -497,7 +520,7 @@ class PrintLogicComponent extends Component
             $printer,
             '-#',
             $copies,
-            $this->outFile,
+            $this->_outFile,
             '-J',
             $jobId,
             '-T',
@@ -517,6 +540,7 @@ class PrintLogicComponent extends Component
 
         // set back to 0 for next run
         $this->setPrintCopies(0);
+
         return $returnValue;
     }
 
@@ -525,7 +549,6 @@ class PrintLogicComponent extends Component
      *
      * Sends the completed template to the printer held in the $print_settings array
      *
-     * @param bool $merge Whether print uses a CSV merge input data or just a template only
      * @return array Array holding the results of the lpr command
      */
     public function glabelsBatchPrint()
@@ -533,15 +556,15 @@ class PrintLogicComponent extends Component
         $cmdArgs = [
             'glabels-3-batch',
             '-o',
-            $this->outFile,
-            $this->glabelsTemplate
+            $this->_outFile,
+            $this->_glabelsTemplate
         ];
 
-        if ($this->glabelsMergeCSV) {
+        if ($this->_glabelsMergeCSV) {
             $this->setPrintCopies(1);
             /**
              * add stdin to glabels command line when piping  CSV data into glabels
-             * glabels-3-batch -i - -o /var/www/wms/app/tmp/20190701182321-custom_print.pdf /var/www/wms/app/webroot/files/templates/100x50custom.glabels
+             * glabels-3-batch -i - -o /var/www/wms/app/tmp/20190701182321-customPrint.pdf /var/www/wms/app/webroot/files/templates/100x50custom.glabels
              */
             array_splice($cmdArgs, 1, 0, ['-i', '-']);
         }
@@ -622,7 +645,7 @@ class PrintLogicComponent extends Component
      * Takes reference number and formats it as date - reference and if reprint is true adds -reprint
      * e.g.20170126232221-B0123456 or 20170126232221-00123456-reprint
      *
-     * @param string $reference The Pallet Reference number
+     * @param string $referenceOrAction The Pallet Reference number or action
      * @param bool $reprint Whether this is a reprint or not default = false
      * @return string
      */
@@ -632,14 +655,16 @@ class PrintLogicComponent extends Component
 
         return $this->getJobId();
     }
+
     /**
      * createTempFile
      * create a temporary file in TMP with the contents sent to the printer
-     *
+     * @param string $print_content Print content
+     * @param array $print_settings as an array
+     * @return void
      */
     public function createTempFile($print_content, $print_settings = [])
     {
-
         if (isset($print_settings['temp_file'])) {
             $tempFile = $print_settings['temp_file'];
         } else {
@@ -652,6 +677,7 @@ class PrintLogicComponent extends Component
 
         $print_file->close();
     }
+
     /**
      * Send job to printer
      *
@@ -673,6 +699,7 @@ class PrintLogicComponent extends Component
         ];
 
         /* return an array with all the necessary information */
+
         return $this->runProcess(implode(' ', $cmd), $print_content);
     }
 }

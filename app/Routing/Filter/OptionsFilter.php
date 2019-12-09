@@ -94,8 +94,8 @@ class OptionsFilter extends DispatcherFilter
                 )
             );
             $event->stopPropagation();
+
             return $response;
         }
-
     }
 }

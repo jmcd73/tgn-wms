@@ -20,9 +20,7 @@
  * @license http://www.apache.org/licenses/LICENSE-2.0
  */
 
-//App::uses('ModdedFormHelper', 'View/Helper') ;
 App::uses('BootstrapHtmlHelper', 'Bootstrap3.View/Helper');
-//App::import('Helper', 'Form') ;
 
 class ToggenHtmlHelper extends BootstrapHtmlHelper
 {

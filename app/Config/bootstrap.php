@@ -62,6 +62,10 @@ Cache::config(
  *
  */
 
+App::build([
+    'Plugin' => [ROOT . '/Plugin/']
+]);
+
 /**
  * Custom Inflector rules can be set to correctly pluralize or singularize table, model, controller names or whatever other
  * string is passed to the inflection functions
@@ -131,5 +135,5 @@ CakeLog::config('error', [
 
 CakePlugin::load('Bootstrap3');
 CakePlugin::load('FileUpload');
-
+//CakePlugin::load('Migrations');
 Configure::write('Config.language', 'eng');

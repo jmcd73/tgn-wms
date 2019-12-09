@@ -1,7 +1,7 @@
 <?php
 
     if (empty($menu_tree)) {
-        $menu_tree = $this->requestAction('/menus/build_menu');
+        $menu_tree = $this->requestAction('/menus/buildMenu');
     }
 
     $this->Nav->create([
@@ -26,14 +26,14 @@
 
 <?php foreach ($menu_tree as $menu): ?>
 
-	<?php
-        $isAdminMenu = $menu['Menu']['admin_menu'];
-        $isAdminUser = (
-            isset($user['role']) && $user['role'] === 'admin'
-        ) || (
-            isset($user['User']['role']) && $user['User']['role'] === 'admin'
-        );
-    ?>
+<?php
+    $isAdminMenu = $menu['Menu']['admin_menu'];
+    $isAdminUser = (
+        isset($user['role']) && $user['role'] === 'admin'
+    ) || (
+        isset($user['User']['role']) && $user['User']['role'] === 'admin'
+    );
+?>
 <?php if ($isAdminMenu && !$isAdminUser) {
         continue; // i.e skip to next loop
 } ?>
@@ -41,35 +41,28 @@
         continue;
 } ?>
 
-<?php if(strpos($menu['Menu']['url'], '://') !== false): ?>
+<?php if (strpos($menu['Menu']['url'], '://') !== false): ?>
 <?php $this->Nav->link($menu['Menu']['name'], $menu['Menu']['url']); ?>
 <?php else: ?>
 
 <?php $this->Nav->beginMenu($menu['Menu']['name']); ?>
 
-    <?php if (!empty($menu['children'])): ?>
+<?php if (!empty($menu['children'])): ?>
 <?php foreach ($menu['children'] as $child_menu): ?>
 <?php if (!$child_menu['Menu']['active']) {
         continue;
 } ?>
-            <?php if ($child_menu['Menu']['divider']): ?>
-                <?php $this->Nav->divider(); ?>
-            <?php endif; ?>
-            <?php if ($child_menu['Menu']['header']): ?>
-        <?php
-
-                $this->Nav->text($child_menu['Menu']['name'], [
+<?php if ($child_menu['Menu']['divider']): ?>
+<?php $this->Nav->divider(); ?>
+<?php endif; ?>
+<?php if ($child_menu['Menu']['header']): ?>
+<?php $this->Nav->text($child_menu['Menu']['name'], [
         'wrap' => 'li',
-        'class' => 'dropdown-header']);
-?>
+    'class' => 'dropdown-header']); ?>
 <?php endif; ?>
 <?php if (!$child_menu['Menu']['divider'] && !$child_menu['Menu']['header']): ?>
-<?php
-
-    if (strpos($child_menu['Menu']['bs_url'], '::') !== false) {
-
+<?php if (strpos($child_menu['Menu']['bs_url'], '::') !== false) {
         $array = explode('::', $child_menu['Menu']['bs_url']);
-
         $url = [
             'controller' => $array[0],
             'action' => $array[1]
@@ -80,7 +73,7 @@
             $url = array_merge($url, $split_strings);
         }
         $options = [
-            'title' => $child_menu['Menu']['title']
+            'title' => $child_menu['Menu']['description']
         ];
         $this->Nav->link($child_menu['Menu']['name'], $url, $options);
     } elseif (strpos($child_menu['Menu']['url'], '://') !== false) {
@@ -100,7 +93,7 @@
         if (isset($user['User'])) {
             $user = $user['User'];
         }
-        $username = empty($user['full_name']) ?  $user['username'] : $user['full_name'];
+        $username = empty($user['full_name']) ? $user['username'] : $user['full_name'];
         $this->Nav->link(
             $username . '&nbsp;&nbsp;' .
             $this->Html->tag('i', '', ['aria-hidden' => 'true', 'class' => 'glyphicon glyphicon-log-out'])
@@ -137,4 +130,4 @@
         ]);
 ?>
 
-<?=$this->Nav->end(true); ?>
+<?php echo $this->Nav->end(true); ?>

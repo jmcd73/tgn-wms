@@ -7,15 +7,16 @@ App::uses('AppModel', 'Model');
 class Setting extends AppModel
 {
 
-/**
- * Display field
- * @var string
- */
+    /**
+     * Display field
+     * @var string
+     */
     public $displayField = 'name';
 
     /**
-     * @param $refname
-     * @param $product_type
+     * @param string $refname setting name
+     * @param string $productType 'sscc'
+     * @return string a number with leading zeros
      */
     public function getReferenceNumber($refname, $productType = null)
     {
@@ -45,11 +46,11 @@ class Setting extends AppModel
         return sprintf($fmt, $next_val);
     }
 
-/**
- * Validation rules
- *
- * @var array
- */
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
     public $validate = [
         'qty' => [
             'isNumeric' => [
