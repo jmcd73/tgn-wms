@@ -1,6 +1,7 @@
 TRUNCATE inventory_statuses;
 TRUNCATE items;
-TRUNCATE labels;
+TRUNCATE cartons;
+TRUNCATE pallets;
 TRUNCATE locations;
 TRUNCATE pack_sizes;
 TRUNCATE printers;

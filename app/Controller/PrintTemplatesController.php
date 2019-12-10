@@ -50,6 +50,44 @@ class PrintTemplatesController extends AppController
     }
 
     /**
+     * Method checkExists - Finds files that are in the templates dir
+     * that shouldn't be and deletes them
+     *
+     * @return void
+     */
+    public function checkExists()
+    {
+        debug("Remove the return statement from PrintTemplatesController/checkExists() to use");
+
+        return;
+
+        $i2c = array_diff(scandir(WWW_ROOT . 'files/templates'), ['.', '..']);
+        $pt = $this->PrintTemplate->find(
+            'all',
+            [
+                'recursive' => -1
+            ]
+        );
+
+        $ft = Hash::extract(
+            $pt,
+            '{n}.PrintTemplate.file_template'
+        );
+
+        $ei = Hash::extract(
+            $pt,
+            '{n}.PrintTemplate.example_image'
+        );
+        $filesToDelete = array_diff($i2c, $ft, $ei);
+        debug($filesToDelete);
+
+        foreach ($filesToDelete as $file) {
+            $fileObject = new File(WWW_ROOT . 'files/templates' . '/' . $file);
+            debug($fileObject->delete());
+        }
+
+    }
+    /**
      * view method
      *
      * @throws NotFoundException
