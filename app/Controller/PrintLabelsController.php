@@ -536,7 +536,7 @@ class PrintLabelsController extends AppController
 
         $printer = $printers['printers'][$printers['default']];
 
-        $companyName = $this->PrintLabel->getSetting('companyName');
+        $companyName = Configure::read('companyName');
         $this->loadModel('PrintTemplate');
         $printTemplate = $this->PrintTemplate->find(
             'first',
