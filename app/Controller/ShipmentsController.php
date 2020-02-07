@@ -83,6 +83,7 @@ class ShipmentsController extends AppController
         }
 
         $this->set(compact('shipments'));
+
         $this->set('_serialize', ['shipments']);
     }
 
@@ -181,14 +182,23 @@ class ShipmentsController extends AppController
 
         $shipment = $this->Shipment->find('first', $options);
 
+        $appName = Configure::read('applicationName');
+
+        $keywords = Configure::read('pdfPickListKeywords');
+
         $this->layout = 'pdf/default';
+
         $file_name = $shipment['Shipment']['shipper'] . '_pick_list.pdf';
+
         $this->response->type('pdf');
+
         $this->set(
             compact(
                 'file_name',
                 'shipment',
                 'pallets',
+                'appName',
+                'keywords',
                 'pl_count',
                 'groups'
             )
