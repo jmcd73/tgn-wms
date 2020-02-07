@@ -5,7 +5,6 @@
 
     class XTCPDF extends TCPDF
     {
-
         public function Header()
         {
             // Logo
@@ -19,7 +18,7 @@
                     $imageType = 'PNG';
                     break;
                 default:
-                    throw new NotFoundException("Footer image type unknown");
+                    throw new NotFoundException('Footer image type unknown');
             };
 
             $this->Image($image_file, 10, 10, 60, '', $imageType, '', 'B', false, 300, '', false, false, 0, false, false, false);
@@ -29,7 +28,6 @@
             // Cell( $w, $h = 0, $txt = '',
             // $border = 0, $ln = 0, $align = '', $fill = false, $link = '', $stretch = 0, $ignore_min_height = false, $calign = 'T', $valign = 'M' )
             $this->Cell(60, 15, 'Shipment Pick List', 0, false, 'C', 0, '', 0, false, 'M', 'T');
-
         }
 
         public function Footer()
@@ -44,12 +42,19 @@
     }
 
     $pdf = new XTCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+    $shipper = $shipment['Shipment']['shipper'];
 
     $pdf->SetCreator(PDF_CREATOR);
-    $pdf->SetAuthor('Toggen IT Services');
-    $pdf->SetTitle($shipment['Shipment']['shipper']);
-    $pdf->SetSubject('Pick List');
-    $pdf->SetKeywords('Pick List, ' . $shipment['Shipment']['shipper'] . ',"100PBC WMS"');
+
+    $pdf->SetAuthor($appName);
+
+    $pdf->SetTitle($shipper);
+
+    $pdf->SetSubject('Pick List for ' . $shipper);
+
+    array_push($keywords, $appName, $shipper);
+
+    $pdf->SetKeywords(join(' ', $keywords));
 
     $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
     $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
@@ -83,7 +88,10 @@
             'L',
             true,
             0,
-            false, false, 0);
+            false,
+            false,
+            0
+        );
         $pdf->Write(0, $doubleDivider, '', 0, 'L', true, 0, false, false, 0);
         $pdf->Write(0, '  Item Code                                             Total', '', 0, 'L', true, 0, false, false, 0);
         $pdf->Write(0, '  Description   Location   Reference    Qty   Pallets   Qty', '', 0, 'L', true, 0, false, false, 0);
@@ -100,9 +108,18 @@
 
             foreach ($pallets as $pallet):
                 if ($pallet['Pallet']['item_id'] == $group['Pallet']['item_id']):
-                    $pdf->Write(0,
+                    $pdf->Write(
+                        0,
                         str_pad($pallet['Location']['location'], 24, ' ', STR_PAD_LEFT) . '    ' . $pallet['Pallet']['pl_ref'] . '     ' . $pallet['Pallet']['qty'],
-                        '', 0, 'L', true, 0, false, false, 0);
+                        '',
+                        0,
+                        'L',
+                        true,
+                        0,
+                        false,
+                        false,
+                        0
+                    );
 
                 endif;
             endforeach;
