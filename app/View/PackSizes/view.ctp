@@ -24,7 +24,7 @@
 		</dd>
 	</dl>
 </div>
-
+<div class="container">
 <div class="row">
 	<h3><?= __('Related Items'); ?></h3>
 	<?php if (!empty($packSize['Item'])): ?>
@@ -65,9 +65,9 @@
 			<td><?= $item['modified']; ?></td>
 			<td><?= $item['pack_size_id']; ?></td>
 			<td class="actions">
-				<?= $this->Html->link(__('View'), ['controller' => 'items', 'action' => 'view', $item['id']]); ?>
-				<?= $this->Html->link(__('Edit'), ['controller' => 'items', 'action' => 'edit', $item['id']]); ?>
-				<?= $this->Form->postLink(__('Delete'), ['controller' => 'items', 'action' => 'delete', $item['id']], [], __('Are you sure you want to delete # %s?', $item['id'])); ?>
+				<?= $this->Html->link(__('View'), ['controller' => 'items', 'action' => 'view', $item['id']], ['class' => 'btn btn-link btn-sm view']); ?>
+				<?= $this->Html->link(__('Edit'), ['controller' => 'items', 'action' => 'edit', $item['id']], ['class' => 'btn btn-link btn-sm edit']); ?>
+				<?= $this->Form->postLink(__('Delete'), ['controller' => 'items', 'action' => 'delete', $item['id']], ['class' => 'btn btn-link btn-sm delete'], __('Are you sure you want to delete # %s?', $item['id'])); ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>
@@ -80,7 +80,7 @@
 		</ul>
 	</div>
 </div>
-<div class="related">
+<div class="row">
 	<h3><?= __('Related Machines Standard Rates'); ?></h3>
 	<?php if (!empty($packSize['MachinesStandardRate'])): ?>
 	<table cellpadding = "0" cellspacing = "0">
@@ -112,4 +112,5 @@
 			<li><?= $this->Html->link(__('New Machines Standard Rate'), ['controller' => 'machines_standard_rates', 'action' => 'add']); ?> </li>
 		</ul>
 	</div>
+</div>
 </div>

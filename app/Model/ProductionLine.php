@@ -7,7 +7,6 @@ App::uses('AppModel', 'Model');
  */
 class ProductionLine extends AppModel
 {
-
     /**
      * Display field
      *
@@ -17,6 +16,15 @@ class ProductionLine extends AppModel
 
     // The Associations below have been created with all possible keys, those that are not needed can be removed
 
+    /**
+     * @var array
+     */
+    public $validate = [
+        'name' => [
+            'rule' => 'isUnique',
+            'message' => 'This production line already exists',
+        ],
+    ];
     /**
      * belongsTo associations
      *
@@ -28,15 +36,14 @@ class ProductionLine extends AppModel
             'foreignKey' => 'product_type_id',
             'conditions' => '',
             'fields' => '',
-            'order' => ''
+            'order' => '',
         ],
         'Printer' => [
             'className' => 'Printer',
             'foreignKey' => 'printer_id',
             'conditions' => '',
             'fields' => '',
-            'order' => ''
-        ]
-
+            'order' => '',
+        ],
     ];
 }

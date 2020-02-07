@@ -8,7 +8,6 @@ App::uses('AppModel', 'Model');
  */
 class PrintTemplate extends AppModel
 {
-
     /**
      * @var array
      */
@@ -25,28 +24,73 @@ class PrintTemplate extends AppModel
     )
      */
 
+    /**
+     * method beforeSave
+     *
+     * @param array $options Options array from ->save
+     */
+    public function beforeSave($options = [])
+    {
+        if (
+            isset($this->data['PrintTemplate']['controller_action']) &&
+            !empty($this->data['PrintTemplate']['controller_action'])
+        ) {
+            $controllerAction = $this->data['PrintTemplate']['controller_action'];
+            $controllerActions = explode('::', $controllerAction);
+            $this->data['PrintTemplate']['print_controller'] = $controllerActions[0];
+            $this->data['PrintTemplate']['print_action'] = $controllerActions[1];
+            unset($this->data['PrintTemplate']['controller_action']);
+        } elseif (
+            isset($this->data['PrintTemplate']['controller_action']) &&
+            empty($this->data['PrintTemplate']['controller_action'])
+        ) {
+            $this->data['PrintTemplate']['print_controller'] = '';
+            $this->data['PrintTemplate']['print_action'] = '';
+            unset($this->data['PrintTemplate']['controller_action']);
+        }
+
+        return true;
+    }
+
+    public function afterFind($results, $primary = false)
+    {
+        foreach ($results as $key => $result) {
+            if (
+                isset($result['PrintTemplate']['print_controller']) &&
+                !empty($result['PrintTemplate']['print_controller']) &&
+                isset($result['PrintTemplate']['print_action']) &&
+                !empty($result['PrintTemplate']['print_action'])
+            ) {
+                $results[$key]['PrintTemplate']['controller_action'] =
+                    $result['PrintTemplate']['print_controller'] . '::' .
+                    $result['PrintTemplate']['print_action'];
+            }
+        }
+
+        return $results;
+    }
+
     public $actsAs = [
         'Tree',
         'FileUpload.FileUpload' => [
-
             //if false, files will be upload to the exact path of uploadDir
 
             'forceWebroot' => true,
             'fields' => [
                 'name' => 'file_template',
                 'type' => 'type',
-                'size' => 'size'
+                'size' => 'size',
             ],
             'uploadFormFields' => [
                 'file_template',
-                'example_image'
+                'example_image',
             ],
             'allowedTypes' => [
                 'jpg' => ['image/jpeg', 'image/pjpeg'],
                 'jpeg' => ['image/jpeg', 'image/pjpeg'],
                 'gif' => ['image/gif'],
                 'png' => ['image/png', 'image/x-png'],
-                'glabels' => ['application/x-gzip', 'application/octet-stream']
+                'glabels' => ['application/x-gzip', 'application/octet-stream'],
             ],
             'fileVar' => 'file_template_upload',
 
@@ -64,74 +108,19 @@ class PrintTemplate extends AppModel
 
             //fileNameFunction - execute the Sha1 function on a filename before saving it (default false)
 
-            'fileNameFunction' => false
-        ]
+            'fileNameFunction' => false,
+        ],
     ];
 
     /**
-     * @param array $options
+     * @param bool $cascade Cascade
      */
-    /*
-    public function beforeSave($options = [])
-    {
-    $fileName = $this->data["PrintTemplate"]['file_template']['name'];
-    $deleteFileTemplate =  isset($this->data["PrintTemplate"]['delete_file_template']) ?
-    (bool) $this->data["PrintTemplate"]['delete_file_template'] : false ;
-
-    if ($fileName && !$deleteFileTemplate) {
-
-    if ($this->id) {
-    $this->fileTemplateName = $this->findById($this->id);
-    $previousFileName = $this->fileTemplateName["PrintTemplate"]['file_template'];
-    if ($previousFileName !== $fileName) {
-    $this->deleteFileTemplate($previousFileName);
-    }
-    }
-
-    $uploadFolder = WWW_ROOT . Configure::read('GLABELS_ROOT');
-    $targetFolder = new Folder($uploadFolder, true, 0777);
-    $tmpName = $this->data["PrintTemplate"]['file_template']['tmp_name'];
-    $fileName = $this->data["PrintTemplate"]['file_template']['name'];
-    $targetName = $targetFolder->path . DS . $fileName;
-
-    if (move_uploaded_file($tmpName, $targetName)) {
-    chmod($targetName, 0777);
-    $this->data['PrintTemplate']['file_template'] = $fileName;
-    } else {
-
-    throw new CakeException('Failed to move uploaded file to ' . $fileName);
-
-    };
-
-    } else {
-    unset($this->data['PrintTemplate']['file_template']);
-    }
-
-    if (!empty($this->id) && $deleteFileTemplate) {
-    $this->fileTemplateName = $this->findById($this->id);
-
-    $this->deleteFileTemplate(
-    $this->fileTemplateName['PrintTemplate']['file_template']
-    );
-
-    $this->data['PrintTemplate']['file_template'] = '';
-
-    }
-
-    return true;
-
-    }*/
-
-    /**
-     * @param $cascade
-     */
-    /*
     public function beforeDelete($cascade = true)
     {
-    $this->fileTemplateName = $this->findById($this->id);
-    return true;
+        $this->fileTemplateName = $this->findById($this->id);
 
-    }*/
+        return true;
+    }
 
     /**
      * @param string $fileName file name to delete
@@ -160,7 +149,7 @@ class PrintTemplate extends AppModel
     public $validate = [
         'name' => [
             'notBlank' => [
-                'rule' => ['notBlank']
+                'rule' => ['notBlank'],
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
@@ -169,8 +158,8 @@ class PrintTemplate extends AppModel
             ],
             'unique' => [
                 'rule' => 'isUnique',
-                'message' => 'Name must be unique'
-            ]
+                'message' => 'Name must be unique',
+            ],
         ],
         /*'print_action' => [
         'notBlank' => [
@@ -181,12 +170,12 @@ class PrintTemplate extends AppModel
             'notBlank' => [
                 'rule' => ['notBlank'],
                 //'message' => 'Your custom message here',
-                 'allowEmpty' => true
+                'allowEmpty' => true,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
-        ]
+            ],
+        ],
     ];
 
     // The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -208,7 +197,20 @@ class PrintTemplate extends AppModel
             'offset' => '',
             'exclusive' => '',
             'finderQuery' => '',
-            'counterQuery' => ''
+            'counterQuery' => '',
+        ],
+        'CartonLabel' => [
+            'className' => 'Item',
+            'foreignKey' => 'carton_label_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => '',
         ],
         'ChildTemplate' => [
             'className' => 'PrintTemplate',
@@ -216,13 +218,13 @@ class PrintTemplate extends AppModel
             'dependent' => false,
             'conditions' => '',
             'fields' => '',
-            'order' => ['lft' => "ASC"],
+            'order' => ['lft' => 'ASC'],
             'limit' => '',
             'offset' => '',
             'exclusive' => '',
             'finderQuery' => '',
-            'counterQuery' => ''
-        ]
+            'counterQuery' => '',
+        ],
     ];
 
     /**
@@ -234,7 +236,7 @@ class PrintTemplate extends AppModel
             'foreignKey' => 'parent_id',
             'conditions' => '',
             'fields' => '',
-            'order' => ''
-        ]
+            'order' => '',
+        ],
     ];
 }

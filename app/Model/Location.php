@@ -8,20 +8,14 @@ App::uses('AppModel', 'Model');
  */
 class Location extends AppModel
 {
-
     public $displayField = 'location';
-    public $virtualFields = [
-        'aisle' => 'SUBSTR(location, 2,1)',
-        'column' => 'SUBSTR(location, 4,2)',
-        'level' => 'SUBSTR(location, -2)',
-    ];
 
 
-/**
- * Validation rules
- *
- * @var array
- */
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
     public $validate = [
         'location' => [
             'notEmpty' => [
@@ -46,11 +40,11 @@ class Location extends AppModel
 
     //The Associations below have been created with all possible keys, those that are not needed can be removed
 
-/**
- * hasMany associations
- *
- * @var array
- */
+    /**
+     * hasMany associations
+     *
+     * @var array
+     */
     public $hasMany = [
         'Pallet' => [
             'className' => 'Pallet',
@@ -76,5 +70,4 @@ class Location extends AppModel
             'order' => '',
         ],
     ];
-
 }

@@ -7,6 +7,7 @@
  */
 
 App::uses('AppModel', 'Model');
+App::uses('GlabelsTemplate', 'Lib/Print/Glabel');
 
 class PrintLabel extends AppModel
 {
@@ -31,24 +32,31 @@ class PrintLabel extends AppModel
 
     /**
      * getGlabelsDetail
+     *
+     * @param string $controller controller name
      * @param string $action action name
-     * @return array
+     * @return GlabelsTemplate
      */
-    public function getGlabelsDetail($action)
+    public function getGlabelsDetail($controller, $action)
     {
-        $printTemplateModel = ClassRegistry::init('PrintTemplate');
+        $glabelsTemplate = $action;
 
-        $glabelsRoot = $this->getSetting("GLABELS_ROOT");
+        if (!is_array($action)) {
+            $printTemplateModel = ClassRegistry::init('PrintTemplate');
 
-        $glabelsTemplate = $printTemplateModel->find(
-            'first',
-            [
-                'conditions' => [
-                    'PrintTemplate.print_action' => $action,
-                    'PrintTemplate.active' => 1
+            $glabelsTemplate = $printTemplateModel->find(
+                'first',
+                [
+                    'conditions' => [
+                        'PrintTemplate.print_controller' => $controller,
+                        'PrintTemplate.print_action' => $action,
+                        'PrintTemplate.active' => 1,
+                    ],
                 ]
-            ]
-        );
+            );
+        }
+
+        $glabelsRoot = $this->getSetting('GLABELS_ROOT');
 
         $glabelsTemplateFullPath = WWW_ROOT . $glabelsRoot . DS .
             $glabelsTemplate['PrintTemplate']['file_template'];
@@ -56,7 +64,9 @@ class PrintLabel extends AppModel
         $glabelsExampleImage = DS . $glabelsRoot . DS .
             $glabelsTemplate['PrintTemplate']['example_image'];
 
-        return [$glabelsTemplateFullPath, $glabelsExampleImage];
+        //$this->log(get_defined_vars();
+
+        return new GlabelsTemplate($glabelsTemplateFullPath, $glabelsExampleImage, $glabelsTemplate);
     }
 
     /**
@@ -97,7 +107,7 @@ class PrintLabel extends AppModel
 
         return [
             'print_data' => json_encode($print_data),
-            'print_action' => $print_action
+            'print_action' => $print_action,
         ];
     }
 
@@ -108,36 +118,36 @@ class PrintLabel extends AppModel
         'printer' => [
             'notBlank' => [
                 'rule' => 'notBlank',
-                'message' => "Please specify a printer"
-            ]
+                'message' => 'Please specify a printer',
+            ],
         ],
         'copies' => [
             'naturalNumber' => [
                 'rule' => ['naturalNumber', false],
-                'message' => 'Please enter a valid number'
+                'message' => 'Please enter a valid number',
             ],
             'lessThanOrEqual' => [
                 'rule' => ['comparison', 'less or equal', 400],
-                'message' => 'Must be less than or equal to 400'
-            ]],
+                'message' => 'Must be less than or equal to 400',
+            ], ],
         'state' => [
             'checkStateNotBlank' => [
                 'rule' => 'notBlank',
-                'message' => 'Please enter a state or destination'
-            ]
+                'message' => 'Please enter a state or destination',
+            ],
         ],
         'sequence-start' => [
             'checkStartEndCorrect' => [
                 'rule' => 'checkStartEndCorrect',
-                'message' => "Start should be less than or equal to End!"
-            ]
+                'message' => 'Start should be less than or equal to End!',
+            ],
         ],
         'sequence-end' => [
             'checkStartEndCorrect' => [
                 'rule' => 'checkStartEndCorrect',
-                'message' => "Start should be less than or equal to End!"
-            ]
-        ]
+                'message' => 'Start should be less than or equal to End!',
+            ],
+        ],
     ];
 
     /**

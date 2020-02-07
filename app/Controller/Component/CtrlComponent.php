@@ -6,6 +6,10 @@
 //
 class CtrlComponent extends Component
 {
+    protected $hasPrintActions = [
+        'PalletsController',
+        'PrintLabelsController',
+    ];
 
     /**
      * Return an array of user Controllers and their methods.
@@ -24,20 +28,8 @@ class CtrlComponent extends Component
 
                 App::import('Controller', str_replace('Controller', '', $controller));
 
-                if ($showSelected) {
-                    $propertyExists = property_exists($controller, 'showInSelectedControllerActionList');
-
-                    if ($propertyExists) {
-                        $myclass = new $controller();
-
-                        $propertyValue = $myclass->showInSelectedControllerActionList;
-
-                        if (!$propertyValue) {
-                            continue;
-                        }
-                    } else {
-                        continue;
-                    }
+                if ($showSelected && !in_array(get_class(new $controller()), $this->hasPrintActions)) {
+                    continue;
                 }
 
                 // Load its methods / actions
@@ -62,12 +54,15 @@ class CtrlComponent extends Component
 
     /**
      * Re-Format Array of Controllers for use in
-     * @param array $array Array of Controllers
+     * @param bool $printClassesOnly Whether to include only those classes
+     * listed in $this->hasPrintActions
+     *
      * @return array
      */
-    public function formatArray($array)
+    public function formatArray($printClassesOnly = true)
     {
-        foreach ($array as $key => $value) {
+        $classList = $this->get($printClassesOnly);
+        foreach ($classList as $key => $value) {
             $controller = str_replace('Controller', '', $key);
             foreach ($value as $k => $v) {
                 $ret[$key][$controller . '::' . $v] = $controller . '::' . $v;

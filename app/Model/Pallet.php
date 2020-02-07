@@ -11,7 +11,6 @@ App::uses('CakeTime', 'Utility');
  */
 class Pallet extends AppModel
 {
-
     //public $actsAs = array('Containable');
     /**
      * @var array
@@ -46,10 +45,7 @@ class Pallet extends AppModel
      */
     protected function _findPalletsCartons($state, $query, $results = [])
     {
-        $this->log(['findPalletsCartons' => $state, $query, $results]);
         if ($state === 'before') {
-            //$query['conditions']['Article.published'] = true;
-
             return $query;
         }
 
@@ -70,43 +66,6 @@ class Pallet extends AppModel
         }
 
         return $results;
-    }
-
-    /**
-     * Legacy getWarehouseAislesColumnsLevels
-     * @return array
-     */
-    public function getWarehouseAislesColumnsLevels()
-    {
-        # only margarine coolroom for put away
-        $options = [
-            'conditions' => [
-                'Location.location LIKE' => 'MC%'
-            ]
-        ];
-
-        $options['fields'] = ['SUBSTR(Location.location,3,1) as aisle_letter'];
-        $options['group'] = ['SUBSTR(Location.location,3,1)'];
-
-        $aisles = $this->Location->find('all', $options);
-
-        $options['fields'] = ['SUBSTR(Location.location, 4,2) as col'];
-        $options['group'] = ['SUBSTR(Location.location, 4,2)'];
-
-        $columns = $this->Location->find('all', $options);
-
-        $col_groups = $this->getSetting("WarehouseColumns");
-
-        $columns = array_chunk($columns, $col_groups);
-
-        $options['fields'] = ['SUBSTR(Location.location, -2) as level'];
-        $options['group'] = ['SUBSTR(Location.location, -2)'];
-
-        $levels = $this->Location->find('all', $options);
-
-        return [
-            $aisles, $columns, $levels
-        ];
     }
 
     /**
@@ -132,7 +91,7 @@ class Pallet extends AppModel
          */
         $requiredFields = [
             'qty', 'item_id', 'qty_before',
-            'inventory_status_id', 'product_type_id'
+            'inventory_status_id', 'product_type_id',
         ];
 
         if (!$this->arrayKeysExists($requiredFields, $data['Pallet'])) {
@@ -146,8 +105,8 @@ class Pallet extends AppModel
             [
                 'recursive' => -1,
                 'conditions' => [
-                    'ProductType.id' => $productTypeId
-                ]
+                    'ProductType.id' => $productTypeId,
+                ],
             ]
         );
 
@@ -180,8 +139,8 @@ class Pallet extends AppModel
         $shifts = $shift_model->find('all', [
             'conditions' => [
                 'Shift.active' => 1,
-                'Shift.for_prod_dt' => 0
-            ]]);
+                'Shift.for_prod_dt' => 0,
+            ], ]);
 
         $date = $this->arrayToMysqlDate($query_date);
         $reports = [];
@@ -225,7 +184,7 @@ class Pallet extends AppModel
         }
 
         return ['reports' => $reports,
-            'xml_shift_report' => $xml_shift_report];
+            'xml_shift_report' => $xml_shift_report, ];
     }
 
     /**
@@ -246,7 +205,7 @@ class Pallet extends AppModel
         $options = [
             'contain' => [
                 'Item',
-                'Carton'
+                'Carton',
             ],
             'fields' => [
                 'Pallet.production_line',
@@ -254,19 +213,18 @@ class Pallet extends AppModel
                 'Pallet.item',
                 'Pallet.description',
                 'Pallet.qty',
-                'Item.quantity'
+                'Item.quantity',
             ],
             'order' => [
                 'Pallet.production_line',
-                'Pallet.created'
+                'Pallet.created',
             ],
             'conditions' => [
                 'Pallet.created >= "' . $start_date_time . '"',
                 'Pallet.created <= "' . $end_date_time . '"',
                 'Pallet.product_type_id' => $productTypeId,
-                'Pallet.qty !=' => 0
-            ]
-
+                'Pallet.qty !=' => 0,
+            ],
         ];
 
         $pallets = $this->find('all', $options);
@@ -347,8 +305,8 @@ class Pallet extends AppModel
         $location = $this->Location->find('first', [
             'recursive' => -1,
             'conditions' => [
-                'Location.id' => $id
-            ]
+                'Location.id' => $id,
+            ],
         ]);
 
         return $location;
@@ -364,7 +322,7 @@ class Pallet extends AppModel
             'contain' => true,
             'fields' => ['ProductType.*'],
             'conditions' => [
-                'Pallet.id' => $id
+                'Pallet.id' => $id,
             ],
             'joins' => [
                 [
@@ -372,18 +330,18 @@ class Pallet extends AppModel
                     'alias' => 'Item',
                     'type' => 'INNER',
                     'conditions' => [
-                        'Item.product_type_id = ProductType.id'
-                    ]
+                        'Item.product_type_id = ProductType.id',
+                    ],
                 ],
                 [
                     'table' => 'pallets',
                     'alias' => 'Pallet',
                     'type' => 'INNER',
                     'conditions' => [
-                        'Pallet.item_id = Item.id'
-                    ]
-                ]
-            ]
+                        'Pallet.item_id = Item.id',
+                    ],
+                ],
+            ],
         ];
 
         $product_type = $this->Item->ProductType->find('first', $options);
@@ -399,7 +357,7 @@ class Pallet extends AppModel
     {
         $options['conditions'] = [
             'Location.location LIKE ' => 'MC' . $aisle . '%',
-            'Location.is_hidden' => 0
+            'Location.is_hidden' => 0,
         ];
         $options['fields'] = ['SUBSTR(Location.location,3,1) as aisle_letter'];
         $options['group'] = ['SUBSTR(Location.location,3,1)'];
@@ -436,9 +394,9 @@ class Pallet extends AppModel
     {
         $options = [
             'conditions' => [
-                'Location.location' => $locationName
+                'Location.location' => $locationName,
             ],
-            'contain' => true
+            'contain' => true,
         ];
 
         return $this->Location->find('first', $options);
@@ -473,32 +431,31 @@ class Pallet extends AppModel
         $options = [
             'recursive' => -1,
             'conditions' => [
-
                 'OR' => [
                     // not shipped
-                     'Shipment.shipped' => 0,
-                    "Pallet.shipment_id" => 0
+                    'Shipment.shipped' => 0,
+                    'Pallet.shipment_id' => 0,
                 ],
                 'NOT' => [
                     // must have a location i.e. its been put-away
-                     "Pallet.location_id" => 0
+                    'Pallet.location_id' => 0,
                 ],
                 'AND' => [
                     'OR' => [
                         'InventoryStatus.perms & ' . $view_perms,
-                        'InventoryStatus.id IS NULL'
-                    ]
-                ]
+                        'InventoryStatus.id IS NULL',
+                    ],
+                ],
             ],
             'order' => [
                 // sort qad code
-                 'Pallet.item' => 'ASC',
+                'Pallet.item' => 'ASC',
                 // oldest first
-                 'Pallet.pl_ref' => 'ASC'
+                'Pallet.pl_ref' => 'ASC',
             ],
             'limit' => 3000,
             'maxLimit' => 3000,
-            'contain' => $contain
+            'contain' => $contain,
         ];
 
         return $options;
@@ -513,10 +470,10 @@ class Pallet extends AppModel
 
         $options['fields'] = [
             'Pallet.item_id',
-            'CONCAT(Pallet.item, " - ",  Pallet.description, " (", COUNT(Pallet.item_id), ")") as item_code_desc'
+            'CONCAT(Pallet.item, " - ",  Pallet.description, " (", COUNT(Pallet.item_id), ")") as item_code_desc',
         ];
         $options['group'] = [
-            'Pallet.item_id'
+            'Pallet.item_id',
         ];
 
         $item_codes_qry = $this->find('all', $options);
@@ -531,15 +488,15 @@ class Pallet extends AppModel
         // [58549] => 58549 - WOW SELECT OLIVE 500G
         // [60002] => 60002 - HA CANOLA OIL 20L
         // [60004] => 60004 - HA COTTON OIL 20L
-        # add the oil and marg search prefixes
+        // add the oil and marg search prefixes
 
         $productTypes = $this->Item->ProductType->find(
             'list',
             [
                 'conditions' => [
-                    'ProductType.active' => 1
+                    'ProductType.active' => 1,
                 ],
-                'recursive' => -1
+                'recursive' => -1,
             ]
         );
 
@@ -609,19 +566,19 @@ class Pallet extends AppModel
                     'Pallet.product_type_id' => $productTypeId,
                     'OR' => [
                         'Shipment.shipped IS NULL',
-                        'Shipment.shipped' => 0
+                        'Shipment.shipped' => 0,
                     ],
                     'OR' => [
                         [
                             'Pallet.print_date >=' => $startDateTime,
-                            'Pallet.print_date <=' => $endDateTime
+                            'Pallet.print_date <=' => $endDateTime,
                         ],
                         [
                             'Pallet.qty_modified >=' => $startDateTime,
-                            'Pallet.qty_modified <=' => $endDateTime
-                        ]
-                    ]
-                ]
+                            'Pallet.qty_modified <=' => $endDateTime,
+                        ],
+                    ],
+                ],
             ],
             'joins' => [
                 [
@@ -629,16 +586,16 @@ class Pallet extends AppModel
                     'alias' => 'Carton',
                     'type' => 'LEFT',
                     'conditions' => [
-                        'Carton.pallet_id = Pallet.id'
-                    ]
-                ]
+                        'Carton.pallet_id = Pallet.id',
+                    ],
+                ],
             ],
             'contain' => [
                 'Item',
                 'Shipment',
                 'Carton',
                 'Location',
-                'ProductionLine'
+                'ProductionLine',
             ],
             'fields' => [
                 'ProductionLine.name',
@@ -650,14 +607,13 @@ class Pallet extends AppModel
                 'Pallet.qty_previous',
                 'Item.code',
                 'Pallet.pl_ref',
-                'Pallet.sscc_fmt',
                 'bb_date',
                 'print_date',
                 'Location.location',
                 'Shipment.shipper',
                 'Shipment.shipped',
                 'Item.quantity',
-                'COUNT(Carton.id) AS cartonRecordCount'
+                'COUNT(Carton.id) AS cartonRecordCount',
             ],
             'countFields' => [
                 'Pallet.item_id',
@@ -665,28 +621,27 @@ class Pallet extends AppModel
                 'Pallet.qty',
                 'Item.code',
                 'Pallet.pl_ref',
-                'Pallet.sscc_fmt',
                 'bb_date',
                 'print_date',
                 'Location.location',
                 'Shipment.shipper',
                 'Shipment.shipped',
                 'Item.quantity',
-                'COUNT(Carton.id) AS cartonRecordCount'
+                'COUNT(Carton.id) AS cartonRecordCount',
             ],
             'group' => [
-                'Pallet.id'
+                'Pallet.id',
             ],
             'having' => [
                 'OR' => [
                     'cartonRecordCount > 1',
-                    'Item.quantity <> Pallet.qty'
-                ]
+                    'Item.quantity <> Pallet.qty',
+                ],
             ],
             'order' => [
-                'Pallet.print_date' => 'ASC'
+                'Pallet.print_date' => 'ASC',
             ],
-            'recursive' => -1
+            'recursive' => -1,
         ];
 
         return $this->find('all', $cartonFindOptions);
@@ -704,8 +659,8 @@ class Pallet extends AppModel
         $shifts = $shift_model->find('all', [
             'conditions' => [
                 'Shift.active' => 1,
-                'Shift.for_prod_dt' => 0
-            ]]);
+                'Shift.for_prod_dt' => 0,
+            ], ]);
 
         $date = $this->arrayToMysqlDate($queryDate);
         $reports = [];
@@ -752,7 +707,7 @@ class Pallet extends AppModel
         }
 
         return ['reports' => $reports,
-            'xml_shift_report' => $xml_shift_report];
+            'xml_shift_report' => $xml_shift_report, ];
     }
 
     /**
@@ -771,7 +726,7 @@ class Pallet extends AppModel
                 $search_value = explode('.', $arg_key)[1];
 
                 if ($search_value === 'item_id_select') {
-                    $options[] = ['Item.code' => $args];
+                    $options[] = ['Pallet.item' => $args];
 //                } elseif ($search_value === 'bb_date') {
                     //                    $options[] = array($search_value => CakeTime::format($args, '%d/%m/%y'));
                 } elseif ($search_value === 'print_date') {
@@ -798,7 +753,6 @@ class Pallet extends AppModel
             ($dont_ship === 1 && $ship_low_date === 1) ||
             ($dont_ship === 1 && $ship_low_date === 0) ||
             ($dont_ship === 0 && $ship_low_date === 0)
-
         ) ? true : false;
 
         return $allow;
@@ -821,10 +775,9 @@ class Pallet extends AppModel
         $this->old = $this->find(
             'first',
             [
-                'conditions' =>
-                [
-                    'Pallet.id' => $this->data[$this->alias]['id']
-                ]
+                'conditions' => [
+                    'Pallet.id' => $this->data[$this->alias]['id'],
+                ],
             ]
         );
 
@@ -874,13 +827,13 @@ class Pallet extends AppModel
         $msgString .= ' sent to <strong>%s</strong>';
 
         if ($debugMode) {
-            $debugText = "<strong>IN DEBUG MODE: </strong>";
-            $debugText .= $alertType === 'error' ? $return_value['stderr'] : "";
+            $debugText = '<strong>IN DEBUG MODE: </strong>';
+            $debugText .= $alertType === 'error' ? $return_value['stderr'] : '';
         }
 
         return [
             'type' => $alertType,
-            'msg' => sprintf($msgString, $debugText, $pallet_ref, $printerName)
+            'msg' => sprintf($msgString, $debugText, $pallet_ref, $printerName),
         ];
     }
 
@@ -935,11 +888,11 @@ class Pallet extends AppModel
             }
         }
         $mod_sum = $sum % 10;
-        # if it exactly divide the checksum is 0
+        // if it exactly divide the checksum is 0
         if ($mod_sum == 0) {
             $cd = 0;
         } else {
-            # go to the next multiple of 10 above and subtract
+            // go to the next multiple of 10 above and subtract
             $cd = ((10 - $mod_sum) + $sum) - $sum;
         }
 
@@ -1049,14 +1002,18 @@ class Pallet extends AppModel
     }
 
     /**
+     * @throws CakeException
      * @param bool $created set to true if new DB record created
      * @param array $options Options array
      * @return void
      */
     public function afterSave($created, $options = [])
     {
-        if ($created) {
+        $fields = ['qty', 'print_date', 'bb_date'];
+
+        if ($created && $this->arrayKeysExists($fields, $this->data[$this->alias])) {
             $palletId = $this->id;
+
             $cartonQty = $this->data[$this->alias]['qty'];
             $productionDate = $this->data[$this->alias]['print_date'];
             $bb_date = $this->data[$this->alias]['bb_date'];
@@ -1064,7 +1021,7 @@ class Pallet extends AppModel
             $formattedDate = $this->formatLabelDates(
                 strtotime($productionDate),
                 [
-                    'production_date' => 'Y-m-d'
+                    'production_date' => 'Y-m-d',
                 ]
             );
 
@@ -1072,16 +1029,14 @@ class Pallet extends AppModel
                 'pallet_id' => $palletId,
                 'count' => $cartonQty,
                 'production_date' => $formattedDate['production_date'],
-                'best_before' => $bb_date
+                'best_before' => $bb_date,
             ];
 
             $this->Carton->create();
 
-            if ($this->Carton->save($cartons)) {
-                $this->log("OK Saved Carton");
-            } else {
-                $this->log("It's an error");
-            };
+            if (!$this->Carton->save($cartons)) {
+                throw new CakeException('Could not save Carton record in Pallet.php afterSave method');
+            }
         }
     }
 
@@ -1118,8 +1073,7 @@ class Pallet extends AppModel
         'code_desc' => 'CONCAT( Pallet.pl_ref, ": ", Pallet.item, " - " , Pallet.description)',
         'best_before' => 'DATE_FORMAT(Pallet.bb_date, "%d/%m/%y")',
         'name' => 'CONCAT( Pallet.item, " " , Pallet.description, " " , Pallet.pl_ref)',
-        'sscc_fmt' => 'CONCAT( LEFT(Pallet.sscc,1) , " ", MID(Pallet.sscc, 2,7) , " ", MID(Pallet.sscc,9,9) , " ",  RIGHT(Pallet.sscc,1) )',
-        'dont_ship' => 'DATEDIFF(Pallet.bb_date, CURDATE()) < Pallet.min_days_life AND Pallet.shipment_id = 0'
+        'dont_ship' => 'DATEDIFF(Pallet.bb_date, CURDATE()) < Pallet.min_days_life AND Pallet.shipment_id = 0',
     ];
     /**
      * @var string
@@ -1137,17 +1091,16 @@ class Pallet extends AppModel
         $options = [
             'fields' => [
                 'Pallet.pl_ref',
-                'Pallet.code_desc'
+                'Pallet.code_desc',
             ],
             'conditions' => [
                 'Pallet.pl_ref IS NOT NULL',
                 'Pallet.pl_ref !=' => '',
-                $cond
+                $cond,
             ],
-            'order' =>
-            [
-                'Pallet.pl_ref' => 'ASC'
-            ]
+            'order' => [
+                'Pallet.pl_ref' => 'ASC',
+            ],
         ];
         $pl_ref = $this->find('all', $options);
 
@@ -1181,8 +1134,8 @@ class Pallet extends AppModel
         $options = [
             'contain' => true,
             'conditions' => [
-                'Location.id' => $locationId
-            ]
+                'Location.id' => $locationId,
+            ],
         ];
         $locationDetails = $this->Location->find('first', $options);
 
@@ -1198,7 +1151,7 @@ class Pallet extends AppModel
      */
     public function locationSpaceUsageOptions($filter, $productTypeId = 'all', $extraOptions = [])
     {
-        $this->virtualFields['Pallets'] = 'COU  NT(Pallet.id)';
+        $this->virtualFields['Pallets'] = 'COUNT(Pallet.id)';
         $this->virtualFields['hasSpace'] = 'COUNT(Pallet.id) < Location.pallet_capacity';
         $this->virtualFields['LocationId'] = 'Location.id';
         $this->virtualFields['pallet_capacity'] = 'Location.pallet_capacity';
@@ -1211,7 +1164,7 @@ class Pallet extends AppModel
                 'COUNT(Pallet.id) < Location.pallet_capacity as Pallet__hasSpace',
                 'Location.id  AS Pallet__LocationId',
                 'Location.pallet_capacity AS Pallet__pallet_capacity',
-                'Location.location AS Pallet__Location'
+                'Location.location AS Pallet__Location',
             ],
             'joins' => [
                 [
@@ -1220,8 +1173,8 @@ class Pallet extends AppModel
                     'type' => 'LEFT',
                     'conditions' => [
                         'Pallet.shipment_id = Shipment.id',
-                        'Shipment.shipped' => 0
-                    ]
+                        'Shipment.shipped' => 0,
+                    ],
                 ],
                 [
                     'table' => 'locations',
@@ -1234,27 +1187,27 @@ class Pallet extends AppModel
 							Pallet.picked <> true ) AND
 						(
 							( Pallet.shipment_id = 0 ) OR
-							( Pallet.shipment_id <> 0 AND Shipment.shipped IS NOT NULL))'
-                    ]
-                ]
+							( Pallet.shipment_id <> 0 AND Shipment.shipped IS NOT NULL))',
+                    ],
+                ],
             ],
             'order' => [
-                'Location.location' => 'ASC'
+                'Location.location' => 'ASC',
             ],
             'group' => [
-                'Location.id'
-            ]
+                'Location.id',
+            ],
         ];
 
         $having = [
             'having' => [
-                'Location.pallet_capacity > COUNT(Pallet.id)'
-            ]
+                'Location.pallet_capacity > COUNT(Pallet.id)',
+            ],
         ];
 
         if ($productTypeId !== 'all') {
             $options['conditions'] = [
-                'Location.product_type_id' => $productTypeId
+                'Location.product_type_id' => $productTypeId,
             ];
         }
 
@@ -1296,25 +1249,25 @@ class Pallet extends AppModel
                 'alias' => 'Shipment',
                 'type' => 'LEFT',
                 'conditions' => [
-                    'Pallet.shipment_id = Shipment.id'
-                ]]
+                    'Pallet.shipment_id = Shipment.id',
+                ], ],
             ],
             'conditions' => [
                 'OR' => [
                     [
                         'Pallet.location_id' => $locationId,
                         'Pallet.shipment_id' => 0,
-                        'Pallet.inventory_status_id <> 2'
+                        'Pallet.inventory_status_id <> 2',
                     ],
                     [
                         'Pallet.location_id' => $locationId,
                         'Pallet.shipment_id <> 0',
                         'Pallet.picked = 0',
                         'Shipment.shipped = 0',
-                        'Pallet.inventory_status_id <> 2'
-                    ]
-                ]
-            ]
+                        'Pallet.inventory_status_id <> 2',
+                    ],
+                ],
+            ],
         ];
 
         $palletsInLocation = $this->find('count', $options);
@@ -1324,7 +1277,7 @@ class Pallet extends AppModel
                 ->getField('location_id')
                 ->getRule('checkCapacity')
                 ->message = sprintf(
-                    "%s is full. It already contains %d pallets and has a capacity of %d. Please put the pallet in another location",
+                    '%s is full. It already contains %d pallets and has a capacity of %d. Please put the pallet in another location',
                     $location['Location']['location'],
                     $palletsInLocation,
                     $capacity
@@ -1343,15 +1296,15 @@ class Pallet extends AppModel
         $options = [
             'fields' => [
                 'DISTINCT(Pallet.batch) as batch',
-                'Pallet.print_date'
+                'Pallet.print_date',
             ],
             'conditions' => [
-                'Pallet.batch LIKE' => '%' . $term . '%'
+                'Pallet.batch LIKE' => '%' . $term . '%',
             ],
             'group' => [
-                'Pallet.batch'
+                'Pallet.batch',
             ],
-            'recursive' => -1
+            'recursive' => -1,
         ];
 
         $batches = $this->find('all', $options);
@@ -1369,7 +1322,7 @@ class Pallet extends AppModel
     {
         return [
             'value' => $data['batch'],
-            'label' => $data['batch'] . " - " . CakeTime::format($data['print_date'], '%a %d/%m/%Y', 'invalid')
+            'label' => $data['batch'] . ' - ' . CakeTime::format($data['print_date'], '%a %d/%m/%Y', 'invalid'),
         ];
     }
 
@@ -1382,7 +1335,7 @@ class Pallet extends AppModel
     {
         return [
             'label' => $pl_data['code_desc'],
-            'value' => $pl_data['pl_ref']
+            'value' => $pl_data['pl_ref'],
         ];
     }
 
@@ -1396,35 +1349,35 @@ class Pallet extends AppModel
             'checkEnableShipLowDate' => [
                 'rule' => 'checkEnableShipLowDate',
                 'on' => 'update',
-                'message' => "The ship low dated checkbox can only be checked if the pallet is low dated"
-            ]
+                'message' => 'The ship low dated checkbox can only be checked if the pallet is low dated',
+            ],
         ],
         'inventory_status_id' => [
             'checkChangeOK' => [
                 'rule' => 'checkChangeOK',
-                'on' => 'update'
+                'on' => 'update',
                 //'message' => "You cannot change the status of a pallet on a shipper. Remove it from the shipper first"
-            ]
+            ],
         ],
         'item' => [
             'notEmpty' => [
-                'rule' => 'notBlank'
+                'rule' => 'notBlank',
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
         'description' => [
             'notEmpty' => [
-                'rule' => 'notBlank'
+                'rule' => 'notBlank',
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
         /* 'best_before' => [
         'notEmpty' => [
@@ -1439,27 +1392,27 @@ class Pallet extends AppModel
 
         'gtin14' => [
             'notEmpty' => [
-                'rule' => 'notBlank'
+                'rule' => 'notBlank',
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
         'qty' => [
             'numeric' => [
-                'rule' => ['numeric']
+                'rule' => ['numeric'],
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
         'pl_ref' => [
             'notEmpty' => [
-                'rule' => 'notBlank'
+                'rule' => 'notBlank',
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
@@ -1469,57 +1422,57 @@ class Pallet extends AppModel
             'notTooLong' => [
                 'rule' => ['maxLength', 19],
                 'message' => 'Maximum length for a pallet reference is 19 characters.
-                Please check the Product Type "Serial number format"'
-            ]
+                Please check the Product Type "Serial number format"',
+            ],
         ],
         'sscc' => [
             'notEmpty' => [
-                'rule' => 'notBlank'
+                'rule' => 'notBlank',
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
         'batch_no' => [
             'notEmpty' => 'notBlank',
             'message' => 'Please select a batch number',
-            'on' => 'create'
+            'on' => 'create',
         ],
         'batch' => [
             'notEmpty' => [
-                'rule' => 'notBlank'
+                'rule' => 'notBlank',
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
         'printer' => [
             'notEmpty' => [
-                'rule' => 'notBlank'
+                'rule' => 'notBlank',
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
         'print_date' => [
             'notEmpty' => [
-                'rule' => 'notBlank'
+                'rule' => 'notBlank',
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
         'location_id' => [
             'mustBeNumeric' => [
-                'rule' => ['numeric']
+                'rule' => ['numeric'],
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
@@ -1529,19 +1482,19 @@ class Pallet extends AppModel
             'checkCapacity' => [
                 'rule' => 'hasCapacityInLocation',
                 'on' => 'update',
-                'message' => 'Location full. Please choose another location'
-            ]
+                'message' => 'Location full. Please choose another location',
+            ],
         ],
         'shipment_id' => [
             'numeric' => [
                 'rule' => ['numeric'],
                 //'message' => 'Your custom message here',
-                 'allowEmpty' => true
+                'allowEmpty' => true,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
-        ]
+            ],
+        ],
     ];
 
     //The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -1561,8 +1514,8 @@ class Pallet extends AppModel
             'offset' => '',
             'exclusive' => '',
             'finderQuery' => '',
-            'counterQuery' => ''
-        ]
+            'counterQuery' => '',
+        ],
     ];
     /**
      * belongsTo associations
@@ -1575,28 +1528,28 @@ class Pallet extends AppModel
             'foreignKey' => 'product_type_id',
             'conditions' => '',
             'fields' => '',
-            'order' => ''
+            'order' => '',
         ],
         'ProductionLine' => [
             'className' => 'ProductionLine',
             'foreignKey' => 'production_line_id',
             'conditions' => '',
             'fields' => '',
-            'order' => ''
+            'order' => '',
         ],
         'Printer' => [
             'className' => 'Printer',
             'foreignKey' => 'printer_id',
             'conditions' => '',
             'fields' => '',
-            'order' => ''
+            'order' => '',
         ],
         'Location' => [
             'className' => 'Location',
             'foreignKey' => 'location_id',
             'conditions' => '',
             'fields' => '',
-            'order' => ''
+            'order' => '',
         ],
         'Shipment' => [
             'className' => 'Shipment',
@@ -1604,28 +1557,28 @@ class Pallet extends AppModel
             'conditions' => '',
             'fields' => '',
             'order' => '',
-            'counterCache' => true
+            'counterCache' => true,
         ],
         'Item' => [
             'className' => 'Item',
             'foreignKey' => 'item_id',
             'conditions' => '',
             'fields' => '',
-            'order' => ''
+            'order' => '',
         ],
         'InventoryStatus' => [
             'className' => 'InventoryStatus',
             'foreignKey' => 'inventory_status_id',
             'conditions' => '',
             'fields' => '',
-            'order' => ''
+            'order' => '',
         ],
         'User' => [
             'className' => 'User',
             'foreignKey' => 'qty_user_id',
             'conditions' => '',
             'fields' => '',
-            'order' => ''
-        ]
+            'order' => '',
+        ],
     ];
 }

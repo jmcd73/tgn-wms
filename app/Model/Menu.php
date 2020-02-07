@@ -16,7 +16,7 @@ class Menu extends AppModel
      * @var array
      */
     public $actsAs = [
-        'Tree'
+        'Tree',
     ];
     /**
      * @var string
@@ -50,7 +50,7 @@ class Menu extends AppModel
      */
     public function findStacked()
     {
-        $ret = $this->find('list', ['order' => $this->alias . ".lft"]);
+        $ret = $this->find('list', ['order' => $this->alias . '.lft']);
         foreach ($ret as $key => $value) {
             $ret[$key] = $this->fmtReasonCode($key);
         }
@@ -89,8 +89,8 @@ class Menu extends AppModel
             'foreignKey' => 'parent_id',
             'conditions' => '',
             'fields' => '',
-            'order' => ''
-        ]
+            'order' => '',
+        ],
     ];
 
     /**
@@ -105,12 +105,12 @@ class Menu extends AppModel
             'dependent' => false,
             'conditions' => '',
             'fields' => '',
-            'order' => ['lft' => "ASC"],
+            'order' => ['lft' => 'ASC'],
             'limit' => '',
             'offset' => '',
             'exclusive' => '',
             'finderQuery' => '',
-            'counterQuery' => ''
-        ]
+            'counterQuery' => '',
+        ],
     ];
 }

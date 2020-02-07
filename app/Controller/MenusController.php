@@ -8,7 +8,6 @@ App::uses('AppController', 'Controller');
  */
 class MenusController extends AppController
 {
-
     /**
      * Components
      *
@@ -16,8 +15,7 @@ class MenusController extends AppController
      */
     public $components = [
         'Paginator',
-        'Ctrl'
-
+        'Ctrl',
     ];
 
     /**
@@ -56,7 +54,7 @@ class MenusController extends AppController
         $this->Menu->recursive = 0;
 
         $this->Paginator->settings['order'] = [
-            'Menu.lft' => 'ASC'
+            'Menu.lft' => 'ASC',
         ];
 
         $menus = $this->Paginator->paginate();
@@ -67,82 +65,27 @@ class MenusController extends AppController
     /**
      * @param int $id ID of menu
      * @param int $delta how much to move up or down
-     * @return void
+     * @return mixed
      */
     public function move($id = null, $delta = 1)
     {
         $this->request->allowMethod(['post', 'put']);
-        if (is_numeric($this->request->data['Menu']['amount'])) {
-            $delta = $this->request->data['Menu']['amount'];
-        }
-        if (isset($this->request->data['Menu']['moveUp'])) {
-            $this->requestAction(
-                [
-                    'action' => 'moveUp',
-                    $id,
-                    $delta
-                ]
-            );
-        }
-        if (isset($this->request->data['Menu']['moveDown'])) {
-            $this->requestAction(
-                [
-                    'action' => 'moveDown',
-                    $id,
-                    $delta
-                ]
-            );
-        }
-    }
 
-    /**
-     * moveUp
-     * @param int $id ID of menu
-     * @param int $delta how many places to moveUp
-     * @return mixed
-     */
-    public function moveUp($id = null, $delta = 1)
-    {
-        $this->request->allowMethod(['post', 'put']);
-        $this->Menu->id = $id;
+        if (!$this->Menu->exists($id)) {
+            throw new NotFoundException(__('Menu ID %s not found', $id));
+        }
+
         if (is_numeric($this->request->data['Menu']['amount'])) {
             $delta = $this->request->data['Menu']['amount'];
         }
-        if (!$this->Menu->exists()) {
-            throw new NotFoundException(__('Invalid category'));
-        }
-        if ($this->Menu->moveUp($this->Menu->id, abs($delta))) {
+
+        $action = isset($this->request->data['Menu']['moveUp']) ? 'moveUp' : 'moveDown';
+
+        if ($this->Menu->$action($id, abs($delta))) {
             $this->Flash->success('The category has been moved Up.');
         } else {
             $this->Flash->error('The category could not be moved up. Please, try again.');
         }
-        $this->log($this->request->data);
-
-        return $this->redirect($this->referer());
-    }
-
-    /**
-     * moveDown
-     * @param int $id ID of menu
-     * @param int $delta how many places to moveDown
-     * @return mixed
-     */
-    public function moveDown($id = null, $delta = 1)
-    {
-        $this->request->allowMethod(['post', 'put']);
-        $this->Menu->id = $id;
-        if (is_numeric($this->request->data['Menu']['amount'])) {
-            $delta = $this->request->data['Menu']['amount'];
-        }
-        if (!$this->Menu->exists()) {
-            throw new NotFoundException(__('Invalid category'));
-        }
-        if ($this->Menu->moveDown($this->Menu->id, abs($delta))) {
-            $this->Flash->success('The category has been moved down.');
-        } else {
-            $this->Flash->error('The category could not be moved down. Please, try again.');
-        }
-        $this->log($this->request->data);
 
         return $this->redirect($this->referer());
     }
@@ -156,8 +99,8 @@ class MenusController extends AppController
 
         $options = [
             'order' => [
-                'Menu.lft' => 'ASC'
-            ]
+                'Menu.lft' => 'ASC',
+            ],
         ];
 
         return $this->Menu->find('threaded', $options);

@@ -9,7 +9,6 @@ App::uses('AppModel', 'Model');
  */
 class Shipment extends AppModel
 {
-
     /**
      * Display field
      *
@@ -41,30 +40,29 @@ class Shipment extends AppModel
             'conditions' => [
                 'OR' => [
                     'InventoryStatus.perms & ' . $perms,
-                    'Pallet.inventory_status_id' => 0 // not on hold
+                    'Pallet.inventory_status_id' => 0, // not on hold
                 ],
                 'AND' => [
                     'OR' => [
                         'Pallet.product_type_id' => $productTypeId,
-                        'Pallet.shipment_id = ' . $id
-                    ]
+                        'Pallet.shipment_id = ' . $id,
+                    ],
                 ],
                 'NOT' => [
-                    'Pallet.location_id' => 0 // has been put away
-                ]
+                    'Pallet.location_id' => 0, // has been put away
+                ],
             ],
             'order' => [
                 'FIELD ( Pallet.shipment_id,' . $id . ',0)',
                 'Pallet.item' => 'ASC',
-                'Pallet.pl_ref' => 'ASC'
+                'Pallet.pl_ref' => 'ASC',
             ],
             'contain' => [
-
                 'Location' => [
-                    'fields' => ['Location.id', 'Location.location']
+                    'fields' => ['Location.id', 'Location.location'],
                 ],
-                'InventoryStatus'
-            ]
+                'InventoryStatus',
+            ],
         ];
 
         return $options;
@@ -149,12 +147,12 @@ class Shipment extends AppModel
     {
         $options = [
             'fields' => [
-                'DISTINCT(Shipment.destination) as destination'
+                'DISTINCT(Shipment.destination) as destination',
             ],
             'conditions' => [
-                'Shipment.destination LIKE' => '%' . $term . '%'
+                'Shipment.destination LIKE' => '%' . $term . '%',
             ],
-            'recursive' => -1
+            'recursive' => -1,
         ];
 
         $destinations = $this->find('all', $options);
@@ -163,7 +161,7 @@ class Shipment extends AppModel
             $destinations,
             '{n}.Shipment',
             [
-                $this, 'formatBatch'
+                $this, 'formatBatch',
             ]
         );
 
@@ -177,7 +175,7 @@ class Shipment extends AppModel
     public function formatBatch($data)
     {
         return [
-            'value' => $data['destination']
+            'value' => $data['destination'],
         ];
     }
 
@@ -215,7 +213,7 @@ class Shipment extends AppModel
             '{n}.Pallet.best_before',
             '{n}.Pallet.pl_ref',
             '{n}.Pallet.qty',
-            '{n}.Pallet.description'
+            '{n}.Pallet.description',
         ]);
     }
 
@@ -334,13 +332,13 @@ class Shipment extends AppModel
             'noChangeOnceShipped' => [
                 'rule' => 'noChangeOnceShipped',
                 'on' => 'update',
-                'message' => "You can't change a shipment after marking it as shipped"
-            ]
+                'message' => "You can't change a shipment after marking it as shipped",
+            ],
         ],
         'shipper' => [
             'notEmpty' => [
                 'rule' => 'notBlank',
-                'message' => 'Shipper number cannot be blank'
+                'message' => 'Shipper number cannot be blank',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
@@ -349,24 +347,24 @@ class Shipment extends AppModel
             'noChangeOnceShipped' => [
                 'rule' => 'noChangeOnceShipped',
                 'on' => 'update',
-                'message' => "You can't change a shipment after marking it as shipped"
+                'message' => "You can't change a shipment after marking it as shipped",
             ],
             'isUnique' => [
                 'rule' => ['isUnique'],
-                'message' => 'Shipment number must be unique'
-            ]
+                'message' => 'Shipment number must be unique',
+            ],
         ],
         'shipped' => [
             'check_pallets' => [
                 'rule' => 'checkPallets',
-                'message' => 'At least one pallet is needed on a shipment'
+                'message' => 'At least one pallet is needed on a shipment',
             ],
             'no_add_to_shipped' => [
                 'rule' => 'checkLabelsNotChanged',
                 'on' => 'update',
-                'message' => "You can't change a shipment after marking it as shipped"
-            ]
-        ]
+                'message' => "You can't change a shipment after marking it as shipped",
+            ],
+        ],
     ];
 
     //The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -378,8 +376,8 @@ class Shipment extends AppModel
         'ProductType' => [
             'className' => 'ProductType',
             'foreignKey' => 'product_type_id',
-            'dependent' => false
-        ]
+            'dependent' => false,
+        ],
     ];
     /**
      * @var array
@@ -388,7 +386,7 @@ class Shipment extends AppModel
         'Pallet' => [
             'className' => 'Pallet',
             'foreignKey' => 'shipment_id',
-            'dependent' => false
-        ]
+            'dependent' => false,
+        ],
     ];
 }

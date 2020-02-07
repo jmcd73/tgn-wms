@@ -7,15 +7,14 @@
 			<?= h($user['User']['id']); ?>
 
 		</dd>
+        <dt><?= __('Full name'); ?></dt>
+		<dd>
+			<?= h($user['User']['full_name']); ?>
+
+		</dd>
 		<dt><?= __('Username'); ?></dt>
 		<dd>
 			<?= h($user['User']['username']); ?>
-
-		</dd>
-		<dt><?= __('Password'); ?></dt>
-		<dd>
-			<?= h($user['User']['password']); ?>
-
 		</dd>
 		<dt><?= __('Role'); ?></dt>
 		<dd>

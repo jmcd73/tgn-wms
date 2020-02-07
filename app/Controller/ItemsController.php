@@ -10,17 +10,15 @@ App::uses('Folder', 'Utility');
  * @property Item $Item
  * @property PaginatorComponent $Paginator
  * @property SessionComponent $Session
- * @property PrintLogicComponent $PrintLogic
  */
 class ItemsController extends AppController
 {
-
     /**
      * Components
      *
      * @var array
      */
-    public $components = ['Paginator', 'Session', 'PrintLogic'];
+    public $components = ['Paginator', 'Session'];
 
     /**
      * Before filter
@@ -44,15 +42,15 @@ class ItemsController extends AppController
         $this->Paginator->settings = [
             'Item' => [
                 'order' => [
-                    'code' => 'ASC'
-                ]
-            ]
+                    'code' => 'ASC',
+                ],
+            ],
         ];
 
         $item_list = $this->Item->find('list', [
             'order' => [
-                'Item.code' => 'ASC'
-            ]
+                'Item.code' => 'ASC',
+            ],
         ]);
 
         $this->set('items', $this->Paginator->paginate());
@@ -88,8 +86,8 @@ class ItemsController extends AppController
 
         $options = [
             'conditions' => [
-                'active' => 0
-            ]
+                'active' => 0,
+            ],
         ];
         if ($productTypeId) {
             $options['conditions']['product_type_id'] = $productTypeId;
@@ -127,11 +125,11 @@ class ItemsController extends AppController
         $this->layout = 'ajax';
         $options = [
             'conditions' => [
-                'code LIKE' => "%" . $search_term . "%"
+                'code LIKE' => '%' . $search_term . '%',
             ],
             'order' => [
-                'code' => 'ASC'
-            ]
+                'code' => 'ASC',
+            ],
         ];
         $json_output = $this->Item->find('all', $options);
 
@@ -152,11 +150,11 @@ class ItemsController extends AppController
         $options = [
             'conditions' => [
                 'active' => 1,
-                'product_type_id' => $productTypeId
+                'product_type_id' => $productTypeId,
             ],
             'order' => [
-                'code' => 'ASC'
-            ]
+                'code' => 'ASC',
+            ],
         ];
         $items = $this->Item->find('all', $options);
         // allow cross domain request CORS Cross-origin resource sharing
@@ -207,7 +205,7 @@ class ItemsController extends AppController
 
         $printTemplates = $this->Item->PrintTemplate->generateTreeList(
             [
-                'PrintTemplate.active' => true
+                'PrintTemplate.active' => true,
             ],
             null,
             null,
@@ -261,13 +259,13 @@ class ItemsController extends AppController
         } else {
             $options = [
                 'recursive' => -1,
-                'conditions' => ['Item.' . $this->Item->primaryKey => $id]];
+                'conditions' => ['Item.' . $this->Item->primaryKey => $id], ];
             $this->request->data = $this->Item->find('first', $options);
         }
 
         $printTemplates = $this->Item->PrintTemplate->generateTreeList(
             [
-                'PrintTemplate.active' => true
+                'PrintTemplate.active' => true,
             ],
             null,
             null,
@@ -275,10 +273,10 @@ class ItemsController extends AppController
         );
         $global_min_days_life = $this->getSetting('min_days_life');
         $packSizes = $this->Item->PackSize->find('list', [
-            'recursive' => -1
+            'recursive' => -1,
         ]);
         $productTypes = $this->Item->ProductType->find('list', [
-            'recursive' => -1
+            'recursive' => -1,
         ]);
         $defaultPalletLabelCopies = $this->getSetting('sscc_default_label_copies');
         $this->set(

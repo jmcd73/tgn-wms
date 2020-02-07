@@ -5,65 +5,79 @@ App::uses('CtrlComponent', 'Controller/Component');
 
 /**
  * CtrlComponent Test Case
+ * @property CtrlComponent $Ctrl
  */
-class CtrlComponentTest extends CakeTestCase {
+class CtrlComponentTest extends CakeTestCase
+{
+    /**
+     * setUp method
+     *
+     * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $Collection = new ComponentCollection();
+        $this->Ctrl = new CtrlComponent($Collection);
+    }
 
-/**
- * setUp method
- *
- * @return void
- */
-	public function setUp() {
-		parent::setUp();
-		$Collection = new ComponentCollection();
-		$this->Ctrl = new CtrlComponent($Collection);
-	}
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        unset($this->Ctrl);
 
-/**
- * tearDown method
- *
- * @return void
- */
-	public function tearDown() {
-		unset($this->Ctrl);
+        parent::tearDown();
+    }
 
-		parent::tearDown();
-	}
+    /**
+     * testGet method
+     *
+     * @return void
+     */
+    public function testGet()
+    {
+        $controllerList = $this->Ctrl->get();
+        $this->assertArrayHasKey('HelpController', $controllerList);
+        $this->assertArrayHasKey('PalletsController', $controllerList);
+        // $this->markTestIncomplete('testGet not implemented.');
+    }
 
-/**
- * testGet method
- *
- * @return void
- */
-	public function testGet() {
-		$this->markTestIncomplete('testGet not implemented.');
-	}
+    /**
+     * testFormatArray method
+     *
+     * @return void
+     */
+    public function testFormatArray()
+    {
+        $formattedArray = $this->Ctrl->formatArray(false);
 
-/**
- * testFormatArray method
- *
- * @return void
- */
-	public function testFormatArray() {
-		$this->markTestIncomplete('testFormatArray not implemented.');
-	}
+        $this->assertGreaterThan(2, count($formattedArray));
 
-/**
- * testFormatForPrinterViews method
- *
- * @return void
- */
-	public function testFormatForPrinterViews() {
-		$this->markTestIncomplete('testFormatForPrinterViews not implemented.');
-	}
+        $formattedArray = $this->Ctrl->formatArray();
+        $this->assertEqual(2, count($formattedArray));
+    }
 
-/**
- * testFormatControllersWithActionOnlyList method
- *
- * @return void
- */
-	public function testFormatControllersWithActionOnlyList() {
-		$this->markTestIncomplete('testFormatControllersWithActionOnlyList not implemented.');
-	}
+    /**
+     * testFormatForPrinterViews method
+     *
+     * @return void
+     */
+    public function testFormatForPrinterViews()
+    {
+        $this->markTestIncomplete('testFormatForPrinterViews not implemented.');
+    }
 
+    /**
+     * testFormatControllersWithActionOnlyList method
+     *
+     * @return void
+     */
+    public function testFormatControllersWithActionOnlyList()
+    {
+        $this->markTestIncomplete('testFormatControllersWithActionOnlyList not implemented.');
+    }
 }

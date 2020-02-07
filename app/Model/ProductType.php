@@ -9,7 +9,6 @@ App::uses('AppModel', 'Model');
  */
 class ProductType extends AppModel
 {
-
     /**
      * Display field
      *
@@ -38,12 +37,12 @@ class ProductType extends AppModel
     public $belongsTo = [
         'DefaultLocation' => [
             'className' => 'Location',
-            'foreignKey' => 'location_id'
+            'foreignKey' => 'location_id',
         ],
         'InventoryStatus' => [
-            'className' => "InventoryStatus",
-            'foreignKey' => 'inventory_status_id'
-        ]
+            'className' => 'InventoryStatus',
+            'foreignKey' => 'inventory_status_id',
+        ],
     ];
 
     /**
@@ -55,7 +54,7 @@ class ProductType extends AppModel
         'ProductionLine' => [
             'className' => 'ProductionLine',
             'foreignKey' => 'product_type_id',
-            'dependent' => false
+            'dependent' => false,
         ],
         'Item' => [
             'className' => 'Item',
@@ -68,7 +67,7 @@ class ProductType extends AppModel
             'offset' => '',
             'exclusive' => '',
             'finderQuery' => '',
-            'counterQuery' => ''
+            'counterQuery' => '',
         ],
         'Location' => [
             'className' => 'Location',
@@ -81,7 +80,7 @@ class ProductType extends AppModel
             'offset' => '',
             'exclusive' => '',
             'finderQuery' => '',
-            'counterQuery' => ''
+            'counterQuery' => '',
         ],
         'Shift' => [
             'className' => 'Shift',
@@ -94,7 +93,7 @@ class ProductType extends AppModel
             'offset' => '',
             'exclusive' => '',
             'finderQuery' => '',
-            'counterQuery' => ''
-        ]
+            'counterQuery' => '',
+        ],
     ];
 }

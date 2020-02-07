@@ -8,6 +8,15 @@ App::uses('AppModel', 'Model');
  */
 class Item extends AppModel
 {
+    public function __construct($id = false, $table = null, $ds = null)
+    {
+        parent::__construct($id, $table, $ds);
+        $this->virtualFields['name'] = sprintf(
+            'CONCAT(%s.code, " - ", %s.description)',
+            $this->alias,
+            $this->alias
+        );
+    }
 
     /**
      * Display field
@@ -20,14 +29,14 @@ class Item extends AppModel
         $options = [
             'conditions' => [
                 'NOT' => [
-                    'active' => 0
+                    'active' => 0,
                 ],
-                'product_type_id' => $productTypeId
+                'product_type_id' => $productTypeId,
             ],
             'order' => [
-                'code' => 'ASC'
+                'code' => 'ASC',
             ],
-            'recursive' => -1
+            'recursive' => -1,
         ];
 
         return $this->find('list', $options);
@@ -36,9 +45,9 @@ class Item extends AppModel
     /**
      * @var array
      */
-    public $virtualFields = [
-        'name' => 'CONCAT(Item.code, " - ", Item.description)'
-    ];
+    /*  public $virtualFields = [
+         'name' => 'CONCAT(Item.code, " - ", Item.description)',
+     ]; */
     /**
      * @var string
      */
@@ -54,17 +63,17 @@ class Item extends AppModel
             'recursive' => -1,
             'conditions' => [
                 'Item.id IN (SELECT Pallet.item_id from pallets as Pallet)',
-                'Item.code LIKE' => '%' . $term . '%'
+                'Item.code LIKE' => '%' . $term . '%',
             ],
             'fields' => [
                 'Item.id',
                 'Item.code',
                 'Item.name',
-                'Item.trade_unit'
+                'Item.trade_unit',
             ],
             'order' => [
-                'Item.code' => 'ASC'
-            ]
+                'Item.code' => 'ASC',
+            ],
         ];
 
         $items = $this->find('all', $options);
@@ -84,7 +93,7 @@ class Item extends AppModel
             'label' => $data['name'],
             'value' => $data['code'],
             'trade_unit' => $data['trade_unit'],
-            'id' => $data['id']
+            'id' => $data['id'],
         ];
     }
 
@@ -120,7 +129,7 @@ class Item extends AppModel
         'code' => [
             'isUnique' => [
                 'rule' => ['isUnique'],
-                'message' => 'This Item code already exists. Item codes must be unique.'
+                'message' => 'This Item code already exists. Item codes must be unique.',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
@@ -128,100 +137,98 @@ class Item extends AppModel
             ],
             'item_code' => [
                 'rule' => 'checkItemCodeIsValid',
-                'message' => "validation message"
+                'message' => 'validation message',
             ],
             /* 'length' => array(
             'rule' => array('lengthBetween', 5,5),
             'message' => "Item code must be 5 digits long"
             ), */
             'notEmpty' => [
-                'rule' => 'notBlank'
+                'rule' => 'notBlank',
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
         'description' => [
             'lengthBetween' => [
                 'rule' => ['lengthBetween', 5, 32],
-                'message' => 'Must be between 5 and 32 characters long'
+                'message' => 'Must be between 5 and 32 characters long',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
         'quantity' => [
             'numeric' => [
-                'rule' => ['numeric']
+                'rule' => ['numeric'],
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
 
         'item' => [
             'notEmpty' => [
-                'rule' => 'notBlank'
+                'rule' => 'notBlank',
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
         'days_life' => [
             'numbersOnly' => [
                 'rule' => ['numeric'],
-                'message' => 'Days life is needed to calculate best before'
+                'message' => 'Days life is needed to calculate best before',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
         'print_template_id' => [
             'printTemplate' => [
                 'rule' => 'notBlank',
-                'message' => 'All products require a pallet label print template'
-            ]
+                'message' => 'All products require a pallet label print template',
+            ],
         ],
         'trade_unit' => [
             'tradeUnit' => [
                 'rule' => 'notBlank',
-                'message' => 'TUN Barcode is mandatory'
+                'message' => 'TUN Barcode is mandatory',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
         'pack_size_id' => [
             'packSizeId' => [
                 'rule' => 'notBlank',
-                'message' => 'Pack Size is mandatory'
+                'message' => 'Pack Size is mandatory',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
-
+            ],
         ],
         'product_type_id' => [
             'productTypeId' => [
                 'rule' => 'notBlank',
-                'message' => 'Product Type is mandatory'
+                'message' => 'Product Type is mandatory',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
-
-        ]
+            ],
+        ],
     ];
     /**
      * @var array
@@ -238,8 +245,8 @@ class Item extends AppModel
             'offset' => '',
             'exclusive' => '',
             'finderQuery' => '',
-            'counterQuery' => ''
-        ]
+            'counterQuery' => '',
+        ],
     ];
     /**
      * @var array
@@ -250,28 +257,28 @@ class Item extends AppModel
             'foreignKey' => 'pack_size_id',
             'conditions' => '',
             'fields' => '',
-            'order' => ''
+            'order' => '',
         ],
         'PrintTemplate' => [
             'className' => 'PrintTemplate',
             'foreignKey' => 'print_template_id',
             'conditions' => '',
             'fields' => '',
-            'order' => ''
+            'order' => '',
         ],
         'CartonLabel' => [
             'className' => 'PrintTemplate',
             'foreignKey' => 'carton_label_id',
             'conditions' => '',
             'fields' => '',
-            'order' => ''
+            'order' => '',
         ],
         'ProductType' => [
             'className' => 'ProductType',
             'foreignKey' => 'product_type_id',
             'conditions' => '',
             'fields' => '',
-            'order' => ''
-        ]
+            'order' => '',
+        ],
     ];
 }

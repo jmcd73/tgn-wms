@@ -8,14 +8,17 @@
         <div class="col-md-offset-2 col-lg-offset-2 col-lg-3 col-md-3">
             <?=
             $this->Form->create(null, [
-                'class' => 'form-horizontal'
+                'class' => 'form-horizontal',
             ])
             ?>
-
+            <?= $this->Form->input('printerId', [
+                'type' => 'hidden',
+                'value' => $printerId,
+            ]); ?>
             <?= $this->Form->input('printer', [
                 'type' => 'hidden',
 
-                'value' => $printer
+                'value' => $printer,
             ]); ?>
             <?php
             for ($i = 1; $i <= 99; $i++) {
@@ -24,7 +27,6 @@
             ?>
             <?=
             $this->Form->input('number', [
-
                 'label' => [
                     'text' => 'The number you want to see on the label',
                 ],
@@ -34,16 +36,15 @@
             ?>
             <?=
             $this->Form->input('quantity', [
-
                 'options' => $options_a,
                 'type' => 'select',
                 'label' => [
                     'text' => 'Quantity',
-                ],]);
+                ], ]);
             ?>
             <?=
             $this->Form->button('Send to printer', [
-                'class' => 'btn btn-lg btn-primary'
+                'class' => 'btn btn-lg btn-primary',
             ]);
             ?>
             <?= $this->Form->end(); ?>

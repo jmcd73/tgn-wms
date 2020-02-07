@@ -26,7 +26,6 @@ App::uses('BootstrapFormHelper', 'Bootstrap3.View/Helper');
 
 class ToggenFormHelper extends BootstrapFormHelper
 {
-
     /**
      * @var array
      */
@@ -48,87 +47,27 @@ class ToggenFormHelper extends BootstrapFormHelper
     /**
      * @var mixed
      */
-    private $__colSize;
+    protected $colSize;
 
     /**
      * @var array
      */
-    private $__buttonTypes = ['primary', 'info', 'success', 'warning', 'danger', 'inverse', 'link'];
+    protected $_buttonTypes = ['primary', 'info', 'success', 'warning', 'danger', 'inverse', 'link'];
     /**
      * @var array
      */
-    private $__buttonSizes = ['sm', 'md', 'lg'];
+    protected $_buttonSizes = ['sm', 'md', 'lg'];
 
     /**
      * @var mixed
      */
-    private $__currentInputType = null;
-
-/**
- * Closes an HTML form, cleans up values set by FormHelper::create(), and writes hidden
- * input fields where appropriate.
- *
- * If $options is set a form submit button will be created. Options can be either a string or an array.
- *
- * ```
- * array usage:
- *
- * array('label' => 'save'); value="save"
- * array('label' => 'save', 'name' => 'Whatever'); value="save" name="Whatever"
- * array('name' => 'Whatever'); value="Submit" name="Whatever"
- * array('label' => 'save', 'name' => 'Whatever', 'div' => 'good') <div class="good"> value="save" name="Whatever"
- * array('label' => 'save', 'name' => 'Whatever', 'div' => array('class' => 'good')); <div class="good"> value="save" name="Whatever"
- * ```
- *
- * If $secureAttributes is set, these html attributes will be merged into the hidden input tags generated for the
- * Security Component. This is especially useful to set HTML5 attributes like 'form'
- *
- * @param string|array $options as a string will use $options as the value of button,
- * @param array $secureAttributes will be passed as html attributes into the hidden input elements generated for the
- *   Security Component.
- * @return string a closing FORM tag optional submit button.
- * @link https://book.cakephp.org/2.0/en/core-libraries/helpers/form.html#closing-the-form
- */
-    /* public function end($options = null, $secureAttributes = [])
-    {
-    $out = null;
-    $submit = null;
-
-    if ($options !== null) {
-    $submitOptions = [];
-    if (is_string($options)) {
-    $submit = $options;
-    } else {
-    if (isset($options['label'])) {
-    $submit = $options['label'];
-    unset($options['label']);
-    }
-    $submitOptions = $options;
-    }
-    $out .= $this->submit($submit, $submitOptions);
-    }
-    if ($this->requestType !== 'get' &&
-    isset($this->request['_Token']) &&
-    !empty($this->request['_Token'])
-    ) {
-    $out .= $this->secure($this->fields, $secureAttributes);
-    $this->fields = [];
-    }
-    $this->setEntity(null);
-    $out .= $this->Html->useTag('formend');
-
-    $this->_unlockedFields = [];
-    $this->_View->modelScope = false;
-    $this->requestType = null;
-    $this->log(['endOut' => $out]);
-    return $out;
-    } */
+    protected $_currentInputType = null;
 
     /**
      *
      * Add classes to options according to values of bootstrap-type and bootstrap-size for button.
      *
-     * @param $options The initial options with bootstrap-type and/or bootstrat-size values
+     * @param array $options The initial options with bootstrap-type and/or bootstrat-size values
      *
      * @return The new options with class values (btn, and btn-* according to initial options)
      *
@@ -137,20 +76,18 @@ class ToggenFormHelper extends BootstrapFormHelper
     {
         $options = $this->addClass($options, 'btn');
 
-
-
-        if (isset($options['bootstrap-type']) && in_array($options['bootstrap-type'], $this->__buttonTypes)) {
+        if (isset($options['bootstrap-type']) && in_array($options['bootstrap-type'], $this->_buttonTypes)) {
             $options = $this->addClass($options, 'btn-' . $options['bootstrap-type']);
         } else {
             $options = $this->addClass($options, 'btn-primary');
         }
 
-        if (isset($options['bootstrap-size']) && in_array($options['bootstrap-size'], $this->__buttonSizes)) {
+        if (isset($options['bootstrap-size']) && in_array($options['bootstrap-size'], $this->_buttonSizes)) {
             $options = $this->addClass($options, 'btn-' . $options['bootstrap-size']);
         }
 
-        unset($options['bootstrap-size']);
-        unset($options['bootstrap-type']);
+        unset($options['bootstrap-size'], $options['bootstrap-type']);
+
         return $options;
     }
 
@@ -158,7 +95,7 @@ class ToggenFormHelper extends BootstrapFormHelper
      *
      * Try to match the specified HTML code with a button or a input with submit type.
      *
-     * @param $html The HTML code to check
+     * @param string $html The HTML code to check
      *
      * @return true if the HTML code contains a button
      *
@@ -180,18 +117,18 @@ class ToggenFormHelper extends BootstrapFormHelper
      * Unusable options:
      *  - inputDefaults
      *
-     * @param $model The model corresponding to the form
-     * @param $options Options to customize the form
+     * @param Model $model The model corresponding to the form
+     * @param array $options Options to customize the form
      *
      * @return The HTML tags corresponding to the openning of the form
      *
      **/
     public function create($model = null, $options = [])
     {
-        $this->__colSize = [
+        $this->colSize = [
             'label' => 2,
             'input' => 6,
-            'error' => 4
+            'error' => 4,
         ];
 
         if (isset($options['cols'])) {
@@ -216,16 +153,19 @@ class ToggenFormHelper extends BootstrapFormHelper
         $options['role'] = 'form';
         $options['inputDefaults'] = [
             'div' => [
-                'class' => 'form-group'
-            ]
+                'class' => 'form-group',
+            ],
         ];
+
         return FormHelper::create($model, $options);
     }
 
     /**
      *
      * Return the col size class for the specified column (label, input or error).
-     *
+     * @param string $what thing we are looking at
+     * @param bool $offset with we are looking at offset
+     * @return string
      **/
     protected function _getColClass($what, $offset = false)
     {
@@ -237,6 +177,7 @@ class ToggenFormHelper extends BootstrapFormHelper
         if ($size) {
             return 'col-md-' . ($offset ? 'offset-' : '') . $size;
         }
+
         return '';
     }
 
@@ -246,7 +187,10 @@ class ToggenFormHelper extends BootstrapFormHelper
      *
      * The error is wrapped in a <span> tag, with a class
      * according to the form type (help-inline or help-block).
-     *
+     * @param array $field (not sure what type this is)
+     * @param mixed $text string or null
+     * @param array $options options array
+     * @return string
      **/
     public function error($field, $text = null, $options = [])
     {
@@ -258,17 +202,21 @@ class ToggenFormHelper extends BootstrapFormHelper
             $errorClass .= ' ' . $this->_getColClass('error');
         }
         $options = $this->addClass($options, $errorClass);
+
         return FormHelper::error($field, $text, $options);
     }
 
     /**
      *
      * Create & return a label message (Twitter Boostrap like).
-     *
+     * @param string $fieldName field name
+     * @param mixed $text string or null
+     * @param array $options options array
+     * @return string
      **/
     public function label($fieldName = null, $text = null, $options = [])
     {
-        if ($this->__currentInputType == 'checkbox') {
+        if ($this->_currentInputType == 'checkbox') {
             if ($text === null) {
                 if (strpos($fieldName, '.') !== false) {
                     $fieldElements = explode('.', $fieldName);
@@ -281,6 +229,7 @@ class ToggenFormHelper extends BootstrapFormHelper
                 }
                 $text = __(Inflector::humanize(Inflector::underscore($text)));
             }
+
             return $text;
         }
         if (!$this->inline) {
@@ -292,6 +241,7 @@ class ToggenFormHelper extends BootstrapFormHelper
         if ($this->inline) {
             //  $options = $this->addClass($options, 'sr-only') ;
         }
+
         return FormHelper::label($fieldName, $text, $options);
     }
 
@@ -304,13 +254,14 @@ class ToggenFormHelper extends BootstrapFormHelper
      *      -> string: Add <span class="add-on"> before the input
      *      -> array: Add elements in array before inputs
      *  - append: Same as prepend except it add elements after input
-     *
+     * @param string $fieldName field name
+     * @param array $options Options array
+     * @return string
      **/
     public function input($fieldName, $options = [])
     {
-
         $options += [
-            'multiple' => ''
+            'multiple' => '',
         ];
         $inputGroupSize = $this->_extractOption('input-group-size', $options, null);
         unset($options['input-group-size']);
@@ -331,11 +282,10 @@ class ToggenFormHelper extends BootstrapFormHelper
 
         //jmits changes to put error outside after and it works@!!!!!
         $options['format'] = ['label', 'before', 'input', 'between', 'after', 'error'];
-        $this->__currentInputType = $options['type'];
+        $this->_currentInputType = $options['type'];
 
         $beforeClass = [];
         $oneLessDiv = false;
-
 
         if ($options['type'] == 'checkbox' || $options['type'] == 'radio') {
             $before = '<label' . ($inline ? ' class="' . $options['type'] . '-inline"' : '') . '>' . $before;
@@ -346,15 +296,15 @@ class ToggenFormHelper extends BootstrapFormHelper
                 'label',
                 'between',
                 'error',
-                'after'];
+                'after', ];
             if ($this->horizontal) {
-                $before = '<div class="' . $this->_getColClass('input')
-                    . ($options['type'] == 'checkbox' || !$label ? ' ' . $this->_getColClass('offset') : '') . '">'
-                    . ($inline ? '' : '<div class="' . $options['type'] . '">') . $before;
+                $before = '<div class="' . $this->_getColClass('input') .
+                    ($options['type'] == 'checkbox' || !$label ? ' ' . $this->_getColClass('offset') : '') . '">' .
+                    ($inline ? '' : '<div class="' . $options['type'] . '">') . $before;
                 $after = $after . ($inline ? '' : '</div>') . '</div>';
             } elseif (!$inline && ($options['type'] == 'checkbox' || !$label)) {
                 $options['div'] = [
-                    'class' => $options['type']
+                    'class' => $options['type'],
                 ];
             }
             if ($options['type'] == 'radio') {
@@ -372,8 +322,8 @@ class ToggenFormHelper extends BootstrapFormHelper
         $beforePrepend = '';
         if ($prepend) {
             $defaultBeforeClass = 'input-group';
-            if($inputGroupSize) {
-                 $defaultBeforeClass .= ' ' . $inputGroupSize;
+            if ($inputGroupSize) {
+                $defaultBeforeClass .= ' ' . $inputGroupSize;
             }
             $beforeClass[] = $defaultBeforeClass;
             if (is_string($prepend)) {
@@ -387,8 +337,8 @@ class ToggenFormHelper extends BootstrapFormHelper
         }
         if ($append) {
             $defaultBeforeClass = 'input-group';
-            if($inputGroupSize) {
-                 $defaultBeforeClass .= ' ' . $inputGroupSize;
+            if ($inputGroupSize) {
+                $defaultBeforeClass .= ' ' . $inputGroupSize;
             }
             $beforeClass[] = $defaultBeforeClass;
             if (is_string($append)) {
@@ -418,9 +368,11 @@ class ToggenFormHelper extends BootstrapFormHelper
 
         $type = $options['type'];
         $error = $this->_extractOption('error', $options, null);
-        if ($type !== 'hidden'
+        if (
+            $type !== 'hidden'
             && $error !== false
-            && $this->error($fieldName, $error)) {
+            && $this->error($fieldName, $error)
+        ) {
             $options['div'] = $this->addClass($this->_inputDefaults['div'], 'has-error');
         }
 
@@ -432,6 +384,7 @@ class ToggenFormHelper extends BootstrapFormHelper
             $options = $this->addClass($options, 'form-control');
         }
         //debug(FormHelper::input($fieldName, $options) );
+
         return FormHelper::input($fieldName, $options);
     }
 
@@ -442,12 +395,15 @@ class ToggenFormHelper extends BootstrapFormHelper
      * New options:
      *  - bootstrap-type: Twitter bootstrap button type (primary, danger, info, etc.)
      *  - bootstrap-size: Twitter bootstrap button size (mini, small, large)
-     *
+     * @param string $title Title
+     * @param array $options Options array
+     * @return string
      **/
     public function button($title, $options = [])
     {
         $options = $this->_addButtonClasses($options);
         //$options['type'] = FALSE ;
+
         return FormHelper::button($title, $options);
     }
 
@@ -455,12 +411,12 @@ class ToggenFormHelper extends BootstrapFormHelper
      *
      * Create & return a Twitter Like button group.
      *
-     * @param $buttons The buttons in the group
-     * @param $options Options for div method
+     * @param array $buttons The buttons in the group
+     * @param array $options Options for div method
      *
      * Extra options:
      *  - vertical true/false
-     *
+     * @return string
      **/
     public function buttonGroup($buttons, $options = [])
     {
@@ -470,6 +426,7 @@ class ToggenFormHelper extends BootstrapFormHelper
         if ($vertical) {
             $options = $this->addClass($options, 'btn-group-vertical');
         }
+
         return $this->Html->tag('div', implode('', $buttons), $options);
     }
 
@@ -477,13 +434,14 @@ class ToggenFormHelper extends BootstrapFormHelper
      *
      * Create & return a Twitter Like button toolbar.
      *
-     * @param $buttons The groups in the toolbar
-     * @param $options Options for div method
-     *
+     * @param  array $buttonGroups The groups in the toolbar
+     * @param array $options Options for div method
+     * @return string
      **/
     public function buttonToolbar($buttonGroups, $options = [])
     {
         $options = $this->addClass($options, 'btn-toolbar');
+
         return $this->Html->tag('div', implode('', $buttonGroups), $options);
     }
 
@@ -491,18 +449,18 @@ class ToggenFormHelper extends BootstrapFormHelper
      *
      * Create & return a twitter bootstrap dropdown button.
      *
-     * @param $title The text in the button
-     * @param $menu HTML tags corresponding to menu options (which will be wrapped
+     * @param string $title The text in the button
+     * @param string $menu HTML tags corresponding to menu options (which will be wrapped
      *       into <li> tag). To add separator, pass 'divider'.
-     * @param $options Options for button
+     * @param array $options Options for button
+     * @return string
      *
      **/
     public function dropdownButton($title, $menu = [], $options = [])
     {
-
         $options['type'] = false;
         $options['data-toggle'] = 'dropdown';
-        $options = $this->addClass($options, "dropdown-toggle");
+        $options = $this->addClass($options, 'dropdown-toggle');
 
         $outPut = '<div class="btn-group">';
         $outPut .= $this->button($title . '<span class="caret"></span>', $options);
@@ -515,6 +473,7 @@ class ToggenFormHelper extends BootstrapFormHelper
             }
         }
         $outPut .= '</ul></div>';
+
         return $outPut;
     }
 
@@ -527,7 +486,9 @@ class ToggenFormHelper extends BootstrapFormHelper
      *  - bootstrap-size: Twitter bootstrap button size (mini, small, large)
      *
      * Unusable options: div
-     *
+     * @param string $caption Submit caption
+     * @param array $options Options array
+     * @return string
      **/
     public function submit($caption = null, $options = [])
     {
@@ -538,6 +499,7 @@ class ToggenFormHelper extends BootstrapFormHelper
         if (!$this->horizontal) {
             return FormHelper::submit($caption, $options);
         }
+
         return '<div class="form-group"><div class="' . $this->_getColClass('offset') . ' ' . $this->_getColClass('input') . '">' . FormHelper::submit($caption, $options) . '</div></div>';
     }
 
@@ -547,18 +509,17 @@ class ToggenFormHelper extends BootstrapFormHelper
      *
      * Create a basic bootstrap search form.
      *
-     * @param $model The model of the form
-     * @param $options The options that will be pass to the BootstrapForm::create method
+     * @param Model $model The model of the form
+     * @param array $options The options that will be pass to the BootstrapForm::create method
      *
      * Extra options:
      *  - label: The input label (default false)
      *  - placeholder: The input placeholder (default "Search... ")
      *  - button: The search button text (default: "Search")
-     *
+     * @return string
      **/
     public function searchForm($model = null, $options = [])
     {
-
         $label = $this->_extractOption('label', $options, false);
         unset($options['label']);
         $placeholder = $this->_extractOption('placeholder', $options, 'Search... ');
@@ -573,8 +534,8 @@ class ToggenFormHelper extends BootstrapFormHelper
             'label' => $label,
             'placeholder' => $placeholder,
             'append' => [
-                $this->button($button, ['style' => 'vertical-align: middle'])
-            ]
+                $this->button($button, ['style' => 'vertical-align: middle']),
+            ],
         ]);
         $output .= $this->end();
 
@@ -618,7 +579,10 @@ class ToggenFormHelper extends BootstrapFormHelper
                     $parents[] = $name;
                 }
                 $select = array_merge($select, $this->_selectOptions(
-                    $title, $parents, $showParents, $attributes
+                    $title,
+                    $parents,
+                    $showParents,
+                    $attributes
                 ));
 
                 if (!empty($name)) {
@@ -639,7 +603,8 @@ class ToggenFormHelper extends BootstrapFormHelper
 
             if ($name !== null) {
                 $isNumeric = is_numeric($name);
-                if ((!$selectedIsArray && !$selectedIsEmpty && (string)$attributes['value'] == (string)$name) ||
+                if (
+                    (!$selectedIsArray && !$selectedIsEmpty && (string)$attributes['value'] == (string)$name) ||
                     ($selectedIsArray && in_array((string)$name, $attributes['value'], !$isNumeric))
                 ) {
                     if ($attributes['style'] === 'checkbox') {
@@ -659,7 +624,8 @@ class ToggenFormHelper extends BootstrapFormHelper
                             $disabledIsNumeric = is_numeric($name);
                         }
                     }
-                    if ($hasDisabled &&
+                    if (
+                        $hasDisabled &&
                         $disabledIsArray &&
                         in_array((string)$name, $attributes['disabled'], !$disabledIsNumeric)
                     ) {
@@ -706,5 +672,4 @@ class ToggenFormHelper extends BootstrapFormHelper
 
         return array_reverse($select, true);
     }
-
 }

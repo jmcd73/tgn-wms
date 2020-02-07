@@ -26,47 +26,47 @@ class Shift extends AppModel
     public $validate = [
         'name' => [
             'notEmpty' => [
-                'rule' => 'notBlank'
+                'rule' => 'notBlank',
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
         'shift_minutes' => [
             'numeric' => [
-                'rule' => ['numeric']
+                'rule' => ['numeric'],
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
-//                'start_time' => [
-         //                        'checkTimes' => [
-         //                            'rule' => [ 'checkStartStopTimes', 'stop_time'],
-         //                            'message' => 'Start Time must be before Stop Time'
-         //                        ]
-         //                ],
-         //                    'stop_time' => [
-         //                        'checkTimes' => [
-         //                            'rule' => [ 'checkStartStopTimes', 'start_time'],
-         //                            'message' => 'Start Time must be before Stop Time'
-         //                        ]
-         //                ],
+        //                'start_time' => [
+        //                        'checkTimes' => [
+        //                            'rule' => [ 'checkStartStopTimes', 'stop_time'],
+        //                            'message' => 'Start Time must be before Stop Time'
+        //                        ]
+        //                ],
+        //                    'stop_time' => [
+        //                        'checkTimes' => [
+        //                            'rule' => [ 'checkStartStopTimes', 'start_time'],
+        //                            'message' => 'Start Time must be before Stop Time'
+        //                        ]
+        //                ],
 
         'comment' => [
             'notEmpty' => [
-                'rule' => 'notBlank'
+                'rule' => 'notBlank',
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
-        ]
+            ],
+        ],
     ];
 
     //The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -80,7 +80,7 @@ class Shift extends AppModel
             'foreignKey' => 'product_type_id',
             'conditions' => '',
             'fields' => '',
-            'order' => ''
-        ]
+            'order' => '',
+        ],
     ];
 }

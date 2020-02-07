@@ -19,14 +19,13 @@ App::uses('Configure', 'Core');
 
 class OptionsFilter extends DispatcherFilter
 {
-
     /**
      * @var int
      */
     public $priority = 9;
 
     /**
-     * @param CakeEvent $event
+     * @param CakeEvent $event Event
      * @return mixed
      */
     public function beforeDispatch(CakeEvent $event)
@@ -48,7 +47,6 @@ class OptionsFilter extends DispatcherFilter
         $accessControlMaxAge = '7200';
 
         if ($request->is('OPTIONS')) {
-
             // where is the request coming from
             // e.g. from my react dev environment
             // it is http://localhost:3000
@@ -70,15 +68,16 @@ class OptionsFilter extends DispatcherFilter
 
             if (in_array($method, $allowedMethods)) {
                 $response->header(
-                    "Access-Control-Allow-Methods", $method
+                    'Access-Control-Allow-Methods',
+                    $method
                 );
             }
 
             $response->header(
-                "Access-Control-Allow-Headers",
+                'Access-Control-Allow-Headers',
                 $headers
             );
-            $response->header('Access-Control-Allow-Credentials', "true");
+            $response->header('Access-Control-Allow-Credentials', 'true');
             $response->header('Access-Control-Max-Age', $accessControlMaxAge);
             $response->header('Content-Type', 'application/json');
 
@@ -89,7 +88,7 @@ class OptionsFilter extends DispatcherFilter
             $response->body(
                 json_encode(
                     [
-                        'options' => 'pre-flight from dispatcher'
+                        'options' => 'pre-flight from dispatcher',
                     ]
                 )
             );

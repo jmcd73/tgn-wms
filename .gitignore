@@ -19,6 +19,12 @@ docs/*.pdf
 bin/locations.csv
 bin/items.csv
 bin/test.php
-print
 app/Controller/logStatements.txt
 .DS_Store
+date.js
+parseInt.js
+test.php
+dev/scripted upgrade/sql/pallets-snapshot-*
+dev/scratch/
+dev/scratch/compactIsArray.php
+dev/scripted upgrade/sql/mysql-bin*

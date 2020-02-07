@@ -1,9 +1,11 @@
 <?php
     echo $this->Html->script(
-        [
-            'bootstrap-datepicker.min',
-            'samples'
-        ], ['block' => 'from_view']);
+    [
+        'bootstrap-datepicker.min',
+        'samples',
+    ],
+    ['block' => 'from_view']
+);
 
     $this->Html->css(['bootstrap-datepicker3.min'], ['inline' => false]);
 ?>
@@ -19,82 +21,78 @@
             <?php echo $this->Form->create(null); ?>
             <?=$this->Form->hidden('code', ['name' => 'code', 'value' => 'sample']);?>
             <?=$this->Form->input('printer', [
-    'options' => $printers,
-    'default' => $default
-]);?>
-<?php
+                'options' => $printers['printers'],
+                'default' => $printers['default'] ? $printers['default'] : '',
+            ]);?>
+            <?php
     echo $this->Form->input('copies', [
         'options' => $sequence,
         'label' => [
-            'text' => "How many labels?"
-        ]
+            'text' => 'How many labels?',
+        ],
     ]);
 ?>
-<?php
+            <?php
     echo $this->Form->input('productName', [
-
         'label' => [
-            'text' => 'Product Name (24 Characters max)'
+            'text' => 'Product Name (24 Characters max)',
         ],
-        'maxLength' => 24
+        'maxLength' => 24,
     ]);
 ?>
-<?php
+            <?php
     echo $this->Form->input('batch', [
-
         'label' => [
-            'text' => 'Batch (' . substr($this->Time->format(time(), '%Y%j'), 3) . 'XX) where XX is batch No. of the day'
+            'text' => 'Batch (' . substr($this->Time->format(time(), '%Y%j'), 3) . 'XX) where XX is batch No. of the day',
         ],
-        'placeholder' => substr($this->Time->format(time(), '%Y%j'), 3) . 'XX'
+        'placeholder' => substr($this->Time->format(time(), '%Y%j'), 3) . 'XX',
     ]);
 ?>
-<?php
+            <?php
     echo $this->Form->input('manufactureDate', [
-
         'label' => [
-            'text' => 'Manufacturing Date (dd/mm/yyyy)'
+            'text' => 'Manufacturing Date (dd/mm/yyyy)',
         ],
         'class' => 'form-control datepicker',
-        'autocomplete' => "off",
-        'default' => date('d/m/Y')
+        'autocomplete' => 'off',
+        'default' => date('d/m/Y'),
     ]);
 ?>
 
 
-<?php
+            <?php
     echo $this->Form->input('bestBefore', [
         'class' => 'form-control datepicker',
-        'autocomplete' => "off",
+        'autocomplete' => 'off',
         'label' => [
-            'text' => 'Best Before Date (dd/mm/yyyy)'
-        ]
+            'text' => 'Best Before Date (dd/mm/yyyy)',
+        ],
     ]);
 ?>
-<?php
+            <?php
     echo $this->Form->input('comment', [
-
         'label' => [
-            'text' => 'Comment (36 Characters max)'
+            'text' => 'Comment (36 Characters max)',
         ],
-        'maxLength' => 36
+        'maxLength' => 36,
     ]);
 ?>
 
 
 
             <?=$this->Form->end([
-    'id' => 'print1',
-    'label' => 'Print',
-    'bootstrap-type' => 'primary',
-    'data-toggle' => "modal",
-    'data-target' => "#samplePrintModal"
-]);?>
+                'id' => 'print1',
+                'label' => 'Print',
+                'bootstrap-type' => 'primary',
+                'data-toggle' => 'modal',
+                'data-target' => '#samplePrintModal',
+            ]);?>
 
         </div>
         <div class="col-md-3">
             <!-- add sample print -->
             <p>Load 100x50 labels in printer</p>
-            <?=$this->Html->image($glabelsExampleImage, ['class' => 'img-responsive']);?>
+            <?=$this->Html->image($template->image, ['class' => 'img-responsive']);?>
             <em>Sample Label</em>
         </div> <!-- col-md-3 -->
     </div>
@@ -105,13 +103,16 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Print Labels</h4>
             </div>
             <div class="modal-body">
-                <p style="font-size: 1.5em;">Do you want to print <strong id="qty"></strong> label<span id="isplural"></span> to the <strong id="printer"></strong> printer?</p>
+                <p style="font-size: 1.5em;">Do you want to print <strong id="qty"></strong> label<span
+                        id="isplural"></span> to the <strong id="printer"></strong> printer?</p>
 
-                <div class="alert alert-warning"><span class="glyphicon glyphicon-alert"></span> Make sure you have loaded 100x50 labels in the printer first</div>
+                <div class="alert alert-warning"><span class="glyphicon glyphicon-alert"></span> Make sure you have
+                    loaded 100x50 labels in the printer first</div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">Close</button>

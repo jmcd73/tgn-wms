@@ -9,7 +9,6 @@ App::uses('AppModel', 'Model');
  */
 class InventoryStatus extends AppModel
 {
-
     /**
      * Use table
      *
@@ -81,24 +80,24 @@ class InventoryStatus extends AppModel
     public $validate = [
         'name' => [
             'notEmpty' => [
-                'rule' => 'notBlank'
+                'rule' => 'notBlank',
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
         'name' => [
             'isUnique' => [
                 'rule' => ['isUnique'],
-                'message' => 'Inventory status already exists. Please change'
+                'message' => 'Inventory status already exists. Please change',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
-        ]
+            ],
+        ],
     ];
 
     //The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -120,7 +119,7 @@ class InventoryStatus extends AppModel
             'offset' => '',
             'exclusive' => '',
             'finderQuery' => '',
-            'counterQuery' => ''
-        ]
+            'counterQuery' => '',
+        ],
     ];
 }

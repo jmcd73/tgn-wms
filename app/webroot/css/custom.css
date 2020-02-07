@@ -872,3 +872,33 @@ div.pallet-info {
   margin-right: 10px;
   display: inline-block;
 }
+
+.file-pdf {
+  color: blue;
+}
+.file-code {
+  color: yellowgreen;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+table.cartons > tbody > tr:first-child > td {
+  border-top: 0px;
+}
+
+table.cartons.table-bordered {
+  border-width: 0px;
+}
+
+table.cartons.table-bordered > tbody > tr > td:first-child {
+  border-left-width: 0px;
+}
+
+table.cartons.table-bordered > tbody > tr > td:last-child {
+  border-right-width: 0px;
+}
+table.cartons.table-bordered > tbody > tr:last-child:not(:only-child) > td {
+  border-bottom-width: 0px;
+}

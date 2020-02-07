@@ -51,6 +51,7 @@
 	</dl>
 </div>
 
+<div class="container">
 <div class="row">
 	<h3><?= __('Related Report Dates'); ?></h3>
 	<?php if (!empty($shift['ReportDate'])): ?>
@@ -87,4 +88,5 @@
 			<li><?= $this->Html->link(__('New Report Date'), ['controller' => 'report_dates', 'action' => 'add']); ?> </li>
 		</ul>
 	</div>
+</div>
 </div>

@@ -7,16 +7,22 @@ App::uses('File', 'Utility');
  *
  * @property PrintTemplate $PrintTemplate
  * @property PaginatorComponent $Paginator
+ * @property CtrlComponent $Ctrl
  */
 class PrintTemplatesController extends AppController
 {
-
     /**
      * Components
      *
      * @var array
      */
     public $components = ['Paginator', 'Ctrl'];
+
+    public function beforeFilter()
+    {
+        // $this->Security->unlockedFields = ['moveUp', 'moveDown'];
+        parent::beforeFilter();
+    }
 
     /**
      * index method
@@ -28,65 +34,14 @@ class PrintTemplatesController extends AppController
         $this->PrintTemplate->recursive = 0;
         $this->Paginator->settings = [
             'PrintTemplate' => [
-                'order' => ['PrintTemplate.lft' => 'ASC']
-            ]
+                'order' => ['PrintTemplate.lft' => 'ASC'],
+            ],
         ];
         $printTemplates = $this->Paginator->paginate();
 
-        $glabelsRoot = DS . $this->getSetting('GLABELS_ROOT') . DS;
-
-        /*$printTemplates = $this->PrintTemplate->generateTreeList(
-        null,
-        null,
-        "{n}.PrintTemplate.description",
-        '&nbsp;&nbsp;&nbsp;'
-        );*/
-        $this->set(
-            compact(
-                'printTemplates',
-                'glabelsRoot'
-            )
-        );
+        $this->set(compact('printTemplates'));
     }
 
-    /**
-     * Method checkExists - Finds files that are in the templates dir
-     * that shouldn't be and deletes them
-     *
-     * @return void
-     */
-    public function checkExists()
-    {
-        debug("Remove the return statement from PrintTemplatesController/checkExists() to use");
-
-        return;
-
-        $i2c = array_diff(scandir(WWW_ROOT . 'files/templates'), ['.', '..']);
-        $pt = $this->PrintTemplate->find(
-            'all',
-            [
-                'recursive' => -1
-            ]
-        );
-
-        $ft = Hash::extract(
-            $pt,
-            '{n}.PrintTemplate.file_template'
-        );
-
-        $ei = Hash::extract(
-            $pt,
-            '{n}.PrintTemplate.example_image'
-        );
-        $filesToDelete = array_diff($i2c, $ft, $ei);
-        debug($filesToDelete);
-
-        foreach ($filesToDelete as $file) {
-            $fileObject = new File(WWW_ROOT . 'files/templates' . '/' . $file);
-            debug($fileObject->delete());
-        }
-
-    }
     /**
      * view method
      *
@@ -99,7 +54,12 @@ class PrintTemplatesController extends AppController
         if (!$this->PrintTemplate->exists($id)) {
             throw new NotFoundException(__('Invalid print template'));
         }
-        $options = ['conditions' => ['PrintTemplate.' . $this->PrintTemplate->primaryKey => $id]];
+        $options = [
+            'conditions' => [
+                'PrintTemplate.' . $this->PrintTemplate->primaryKey => $id,
+            ],
+        ];
+
         $this->loadModel('Setting');
         $glabelsRoot = DS . $this->getSetting('GLABELS_ROOT') . DS;
         $this->set(compact('glabelsRoot'));
@@ -121,21 +81,20 @@ class PrintTemplatesController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             } else {
+                $this->log(['addErrors' => $this->validationErrors]);
                 $this->Flash->error(__('The print template could not be saved. Please, try again.'));
             }
         }
 
-        $controllerList = $this->Ctrl->formatControllersWithActionOnlyList(
-            $this->Ctrl->get()
-        );
+        $controllerList = $this->Ctrl->formatArray();
 
         $parents = $this->PrintTemplate->find(
             'list',
             [
                 'conditions' => [
-                    'PrintTemplate.parent_id IS NULL'
+                    'PrintTemplate.parent_id IS NULL',
                 ],
-                'order' => "PrintTemplate.lft"
+                'order' => 'PrintTemplate.lft',
             ]
         );
 
@@ -155,6 +114,7 @@ class PrintTemplatesController extends AppController
             throw new NotFoundException(__('Invalid print template'));
         }
         if ($this->request->is(['post', 'put'])) {
+            $this->log(['eidt' => $this->request->data]);
             if ($this->PrintTemplate->save($this->request->data)) {
                 $this->Flash->success(__('The print template has been saved.'));
 
@@ -170,14 +130,13 @@ class PrintTemplatesController extends AppController
             'list',
             [
                 'conditions' => [
-                    'PrintTemplate.parent_id IS NULL'
+                    'PrintTemplate.parent_id IS NULL',
                 ],
-                'order' => "PrintTemplate.lft"
+                'order' => 'PrintTemplate.lft',
             ]
         );
-        $controllerList = $this->Ctrl->formatControllersWithActionOnlyList(
-            $this->Ctrl->get()
-        );
+        $controllerList = $this->Ctrl->formatArray();
+
         $this->set(compact('controllerList', 'parents'));
     }
 
@@ -208,80 +167,62 @@ class PrintTemplatesController extends AppController
     /**
      * @param int $id ID of Print Template
      * @param int $delta How many places to move in tree
-     * @return void
+     * @return mixed
      */
     public function move($id = null, $delta = 1)
     {
         $this->request->allowMethod(['post', 'put']);
-        if (is_numeric($this->request->data['PrintTemplate']['amount'])) {
-            $delta = $this->request->data['PrintTemplate']['amount'];
-        }
-        if (isset($this->request->data['PrintTemplate']['moveUp'])) {
-            $this->requestAction(
-                [
-                    'action' => 'moveUp',
-                    $id,
-                    $delta
-                ]
-            );
-        }
-        if (isset($this->request->data['PrintTemplate']['moveDown'])) {
-            $this->requestAction(
-                [
-                    'action' => 'moveDown',
-                    $id,
-                    $delta
-                ]
-            );
-        }
-    }
 
-    /**
-     * moveDown
-     * @param int $id ID of Print Template
-     * @param int $delta how far to move
-     * @return mixed
-     */
-    public function moveDown($id = null, $delta = 1)
-    {
-        $this->request->allowMethod(['post', 'put']);
         $this->PrintTemplate->id = $id;
+
+        if (!$this->PrintTemplate->exists()) {
+            throw new NotFoundException(__('Invalid PrintTemplate'));
+        }
+
         if (is_numeric($this->request->data['PrintTemplate']['amount'])) {
             $delta = $this->request->data['PrintTemplate']['amount'];
         }
-        if (!$this->PrintTemplate->exists()) {
-            throw new NotFoundException(__('Invalid category'));
-        }
-        if ($this->PrintTemplate->moveDown($this->PrintTemplate->id, abs($delta))) {
-            $this->Flash->success('The category has been moved down.');
+
+        $action = isset($this->request->data['PrintTemplate']['moveUp']) ? 'moveUp' : 'moveDown';
+
+        if ($this->PrintTemplate->$action($this->PrintTemplate->id, abs($delta))) {
+            $this->Flash->success('The PrintTemplate has been moved down.');
         } else {
-            $this->Flash->error('The category could not be moved down. Please, try again.');
+            $this->Flash->error('The PrintTemplate could not be moved down. Please, try again.');
         }
 
         return $this->redirect($this->referer());
     }
 
     /**
-     * @param int $id ID of Print Template
-     * @param int $delta how many places to move
-     * @return mixed
+     * use this to delete files that don't exist in the PrintTemplate table
+     * file_template or example_image fields
      */
-    public function moveUp($id = null, $delta = 1)
+    public function cleanUpTemplates()
     {
-        $this->request->allowMethod(['post', 'put']);
-        $this->PrintTemplate->id = $id;
-        if (is_numeric($this->request->data['PrintTemplate']['amount'])) {
-            $delta = $this->request->data['PrintTemplate']['amount'];
-        }
-        if (!$this->PrintTemplate->exists()) {
-            throw new NotFoundException(__('Invalid category'));
-        }
-        if ($this->PrintTemplate->moveUp($this->PrintTemplate->id, abs($delta))) {
-            $this->Flash->success('The category has been moved Up.');
-        } else {
-            $this->Flash->error('The category could not be moved up. Please, try again.');
+        $printTemplates = $this->PrintTemplate->find('all', ['contain' => true]);
+        $filesToCheck = [];
+        foreach (['file_template', 'example_image'] as $field) {
+            $fieldValues = Hash::extract($printTemplates, '{n}.PrintTemplate.' . $field);
+            $fieldValues = Hash::filter($fieldValues);
+
+            $filesToCheck = array_merge($filesToCheck, $fieldValues);
         }
 
-        return $this->redirect($this->referer());
+        $templateRoot = WWW_ROOT . 'files/templates';
+
+        $folder = new Folder($templateRoot);
+
+        $filesInFolder = $folder->find('.*');
+
+        $filesToDelete = array_diff($filesInFolder, $filesToCheck);
+
+        foreach ($filesToDelete as $file) {
+            $file = new File($templateRoot . DS . $file);
+            debug('Deleting ' . $file->path);
+            $file->delete();
+        }
+
+        debug($filesToDelete);
     }
 }

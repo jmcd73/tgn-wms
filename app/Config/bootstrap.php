@@ -30,9 +30,10 @@ spl_autoload_register(['App', 'load'], true, true);
 
 // Setup a 'default' cache configuration for use in the application.
 Cache::config(
-    'default', [
+    'default',
+    [
         'engine' => 'File',
-        'mask' => 0666
+        'mask' => 0666,
     ]
 );
 
@@ -63,7 +64,7 @@ Cache::config(
  */
 
 App::build([
-    'Plugin' => [ROOT . '/Plugin/']
+    'Plugin' => [ROOT . '/Plugin/'],
 ]);
 
 /**
@@ -115,7 +116,8 @@ if (getenv('CAKEPHP_DEBUG')) {
 Configure::write('Dispatcher.filters', [
     'AssetDispatcher',
     'CacheDispatcher',
-    'OptionsFilter' // custom by tgn
+    // custom by tgn
+    'OptionsFilter',
 ]);
 
 /**
@@ -125,12 +127,12 @@ App::uses('CakeLog', 'Log');
 CakeLog::config('debug', [
     'engine' => 'File',
     'types' => ['notice', 'info', 'debug'],
-    'file' => 'debug'
+    'file' => 'debug',
 ]);
 CakeLog::config('error', [
     'engine' => 'File',
     'types' => ['warning', 'error', 'critical', 'alert', 'emergency'],
-    'file' => 'error'
+    'file' => 'error',
 ]);
 
 CakePlugin::load('Bootstrap3');

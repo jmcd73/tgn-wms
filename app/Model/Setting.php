@@ -6,7 +6,6 @@ App::uses('AppModel', 'Model');
  */
 class Setting extends AppModel
 {
-
     /**
      * Display field
      * @var string
@@ -24,8 +23,8 @@ class Setting extends AppModel
             'first',
             [
                 'conditions' => [
-                    'name' => $refname
-                ]
+                    'name' => $refname,
+                ],
             ]
         );
 
@@ -55,29 +54,36 @@ class Setting extends AppModel
         'qty' => [
             'isNumeric' => [
                 'rule' => ['numeric'],
-                'message' => "This must be a number"
-            ]
+                'message' => 'This must be a number',
+            ],
         ],
         'name' => [
             'notEmpty' => [
-                'rule' => 'notBlank'
+                'rule' => 'notBlank',
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
-
+            ],
+            'isUnique' => [
+                'rule' => 'isUnique',
+                'message' => 'The setting name must be unique',
+                //'allowEmpty' => false,
+                //'required' => false,
+                //'last' => false, // Stop validation after this rule
+                //'on' => 'create', // Limit validation to 'create' or 'update' operations
+            ],
         ],
         'setting' => [
             'notEmpty' => [
-                'rule' => 'notBlank'
+                'rule' => 'notBlank',
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
-        ]
+            ],
+        ],
     ];
 }
