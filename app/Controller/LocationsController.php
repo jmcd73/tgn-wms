@@ -8,7 +8,6 @@ App::uses('AppController', 'Controller');
  */
 class LocationsController extends AppController
 {
-
     /**
      * Components
      *
@@ -40,15 +39,14 @@ class LocationsController extends AppController
             'list',
             [
                 'order' => [
-                    'location' => 'ASC'
-                ]
-
+                    'location' => 'ASC',
+                ],
             ]
         );
         $this->Paginator->settings = [
             'contain' => [
-                'ProductType'
-            ]
+                'ProductType',
+            ],
         ];
 
         $this->set('locations', $this->Paginator->paginate());
@@ -71,17 +69,17 @@ class LocationsController extends AppController
 
         $options = [
             'conditions' => [
-                'Location.' . $this->Location->primaryKey => $id
+                'Location.' . $this->Location->primaryKey => $id,
             ],
-            'contain' => true
+            'contain' => true,
         ];
 
         $labelOptions = [
             'conditions' => [
-                'Pallet.location_id' => $id
+                'Pallet.location_id' => $id,
             ],
             'contain' => ['Location', 'Shipment'],
-            'limit' => 100
+            'limit' => 100,
         ];
         $this->Paginator->settings = $labelOptions;
 
@@ -143,7 +141,7 @@ class LocationsController extends AppController
         } else {
             $options = [
                 'recursive' => -1,
-                'conditions' => ['Location.' . $this->Location->primaryKey => $id]];
+                'conditions' => ['Location.' . $this->Location->primaryKey => $id], ];
             $this->request->data = $this->Location->find('first', $options);
         }
 

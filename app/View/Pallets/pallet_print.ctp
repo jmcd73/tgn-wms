@@ -1,89 +1,101 @@
-<?php $this->Html->script([
+<?php $this->Html->script(
+    [
         'jquery.cookie',
-        'pallet-print'
-    ], [
+        'pallet-print',
+    ],
+    [
         'inline' => false,
-        'block' => 'from_view'
+        'block' => 'from_view',
     ]
 ); ?>
 
 <div <?php echo $this->Html->buildClass([
-    "container",
+    'container',
     $this->request->controller,
-    $this->request->action
+    $this->request->action,
 ]); ?>>
     <div class="row">
         <div class="col-lg-12">
             <h3 class="col-lg-12">
-                <?php echo __("Print %s Pallet Labels", Inflector::humanize($product_type));
+                <?php echo __('Print %s Pallet Labels', Inflector::humanize($product_type));
 $this->Html->link(
     $this->Html->tag(
         'i',
         '',
         [
-            'aria-hidden' => "true",
-            'class' => 'glyphicon glyphicon-question-sign'
+            'aria-hidden' => 'true',
+            'class' => 'glyphicon glyphicon-question-sign',
         ]
     ),
     [
         'controller' => 'pages',
         'action' => 'display',
-        'pallet_print_help'
+        'pallet_print_help',
     ],
     [
-        'escape' => false
+        'escape' => false,
     ]
 ); ?></h3>
             <?php foreach (['left', 'right'] as $palletForm): ?>
             <?php $formName = 'PalletLabel' . Inflector::humanize($palletForm) . 'PalletPrintForm'; ?>
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="col-lg-12 col-md-12 col-md-12 well">
-                    <?php echo $this->Form->create($formName
-    ,
+                    <?php echo $this->Form->create(
+    $formName,
     [
         'id' => $formName,
-        'class' => 'pallet-print'
+        'class' => 'pallet-print',
     ]
 ); ?>
-
+                    <?php echo $this->Form->hidden(
+    'refer',
+    [
+        'value' => $refer,
+    ]
+); ?>
                     <?php echo $this->Form->hidden(
     'formName',
     [
         'class' => 'formName',
-        'value' => $palletForm
+        'value' => $palletForm,
     ]
 ); ?>
                     <?php echo $this->Form->input('item', [
-    'class' => 'item',
-    'empty' => '(select)'
-]); ?>
+                        'class' => 'item',
+                        'empty' => '(select)',
+                    ]); ?>
                     <?php echo $this->Form->input(
-    'production_line',
-    [
-        'options' => $productionLines,
-        'empty' => '(select)'
-    ]); ?>
+                        'production_line',
+                        [
+                            'options' => $productionLines,
+                            'empty' => '(select)',
+                        ]
+                    ); ?>
                     <?php echo $this->Form->hidden('product_type', ['value' => $product_type, 'class' => 'product_type']); ?>
                     <?php echo $this->Form->input('part_pallet', [
-    'type' => 'checkbox',
-    'data-queryurl' => $this->Html->url(['controller' => 'items', 'action' => 'product'])]); ?>
+                        'type' => 'checkbox',
+                        'data-queryurl' => $this->Html->url(['controller' => 'items', 'action' => 'product']), ]); ?>
                     <?php echo $this->Form->input('qty', ['class' => 'qty', 'type' => 'select', 'div' => ['class' => 'form-group', 'style' => 'display: none;']]); ?>
-                    <?php echo $this->Form->input('batch_no',
-    [
-        'options' => $batch_nos,
-        'empty' => '(select)'
-    ]); ?>
+                    <?php echo $this->Form->input(
+                            'batch_no',
+                            [
+                                'options' => $batch_nos,
+                                'empty' => '(select)',
+                            ]
+                        ); ?>
                     <?php echo $this->Form->button(
-    $this->Html->tag('i', '', ['class' => 'fas fa-print']) . ' Print...', [
-        'class' => 'frm-print col-md-12 ' . $palletForm,
-        'bootstrap-size' => 'lg',
-        'bootstrap-type' => 'primary',
-        'type' => 'button',
-        'data-formName' => $formName,
-        'escape' => false,
-        'data-toggle' => "modal",
-        'data-target' => "#dialog"
-    ]); ?>
+                            $this->Html->tag('i', '', ['class' => 'fas fa-print']) . ' Print...',
+                            [
+                                'class' => 'frm-print col-md-12 ' . $palletForm,
+                                'bootstrap-size' => 'lg',
+                                'bootstrap-type' => 'primary',
+                                'type' => 'button',
+                                'data-formName' => $formName,
+                                'escape' => false,
+                                'data-toggle' => 'modal',
+                                'data-target' => '#dialog',
+                            ]
+                        ); ?>
                     <?php echo $this->Form->end(); ?>
 
 

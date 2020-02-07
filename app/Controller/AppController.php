@@ -22,8 +22,8 @@
 
 App::uses('Controller', 'Controller');
 App::uses('CakeTime', 'Utility');
-App::uses('MissingItemException', 'Lib');
-App::uses('MissingConfigurationException', 'Lib');
+App::uses('MissingItemException', 'Lib/Exception');
+App::uses('MissingConfigurationException', 'Lib/Exception');
 
 /**
  * Application Controller
@@ -38,34 +38,51 @@ App::uses('MissingConfigurationException', 'Lib');
 class AppController extends Controller
 {
     /**
+     * If you run getHelpPage when Debug_Kit is trying to get
+     * History it will fail
+     * Also getHelpPage is not relavent to menus/buildMenu
+     *
+     * @var $controllerActionsToSkip
+     *
+     * [ 'controller' => 'action' ]
+     *
+     */
+    protected $controllerActionsToSkip = [
+        'menus' => 'buildMenu',
+        'toolbar_access' => 'history_state',
+    ];
+    /**
      * @var array
      */
     public $components = [
         'RequestHandler',
         'Flash',
+        /*  'Security' => [
+            'csrfExpires' => '+1 hour',
+        ], */
         'Auth' => [
             'loginRedirect' => [
                 'controller' => 'pages',
                 'action' => 'display',
-                'index'
+                'index',
             ],
             'logoutRedirect' => [
                 'controller' => 'pages',
                 'action' => 'display',
-                'index'
+                'index',
             ],
             'authorize' => ['Controller'],
             'flash' => [
                 'key' => 'auth',
-                'element' => 'error'
+                'element' => 'error',
             ],
-            'authError' => "You cannot access that function without the correct permission.",
+            'authError' => 'You cannot access that function without the correct permission.',
             'authenticate' => [
                 'Form' => [
-                    'passwordHasher' => 'Blowfish'
-                ]
-            ]
-        ]
+                    'passwordHasher' => 'Blowfish',
+                ],
+            ],
+        ],
     ];
 
     /**
@@ -85,31 +102,31 @@ class AppController extends Controller
         parent::__construct($request, $response);
     }
 
-    # make the settings table available from all controllers
+    // make the settings table available from all controllers
     /**
      * @var array
      */
     public $uses = ['Setting'];
 
-    # enable Time
-    # 'Form', 'Html',
+    // enable Time
+    // 'Form', 'Html',
     /**
      * @var array
      */
     public $helpers = [
         'Time',
         'Nav' => [
-            'className' => 'NavBar' // extends BootstrapNavbarHelper
+            'className' => 'NavBar', // extends BootstrapNavbarHelper
         ],
         'Html' => [
-            'className' => 'ToggenHtml'
+            'className' => 'ToggenHtml',
         ],
         'Form' => [
-            'className' => 'ToggenForm'
+            'className' => 'ToggenForm',
         ],
         'Modal' => [
-            'className' => 'Bootstrap3.BootstrapModal'
-        ]
+            'className' => 'Bootstrap3.BootstrapModal',
+        ],
     ];
 
     /**
@@ -121,16 +138,6 @@ class AppController extends Controller
     {
         if (isset($this->request->params['requested'])) {
             $this->Auth->allow($this->request->action);
-        }
-
-        if (($this->request->controller !== 'menus') && ($this->request->action !== 'buildMenu')) {
-            $controllerAction = $this->request->controller . 'Controller::' . $this->request->action;
-
-            $this->set(
-                'helpPage',
-                $this->{$this->modelClass}
-                    ->getHelpPage($controllerAction)
-            );
         }
 
         //allow everything by default
@@ -146,6 +153,34 @@ class AppController extends Controller
         $this->set(compact('companyName'));
 
         $this->set('isLoggedIn', $this->Auth->user() !== null);
+
+        if ($this->allowGetHelpPage($this->request)) {
+            $controllerAction = $this->request->controller . 'Controller::' . $this->request->action;
+
+            $this->set(
+                'helpPage',
+                $this->{$this->modelClass}
+                     ->getHelpPage($controllerAction)
+            );
+        }
+    }
+
+    protected function allowGetHelpPage($request)
+    {
+        $controller = $request->controller;
+        $action = $request->action;
+
+        if ($request->is(['PUT', 'POST'])) {
+            return false;
+        }
+
+        foreach ($this->controllerActionsToSkip as $key => $value) {
+            if ($controller === $key && $action === $value) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

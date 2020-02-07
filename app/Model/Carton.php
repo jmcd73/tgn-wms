@@ -72,8 +72,6 @@ class Carton extends AppModel
             ]
         );
 
-        $this->log(['notShipped' => $pallet]);
-
         return $pallet['Shipment']['shipped'] !== true;
     }
 

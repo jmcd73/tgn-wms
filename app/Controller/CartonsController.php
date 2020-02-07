@@ -8,7 +8,6 @@ App::uses('AppController', 'Controller');
  */
 class CartonsController extends AppController
 {
-
     /**
      * Components
      *
@@ -61,8 +60,8 @@ class CartonsController extends AppController
             'first',
             [
                 'conditions' => [
-                    'Pallet.id' => $palletId
-                ]
+                    'Pallet.id' => $palletId,
+                ],
             ]
         );
 
@@ -88,7 +87,7 @@ class CartonsController extends AppController
                 [
                     'id' => $palletId,
                     'qty' => $total,
-                    'qty_user_id' => $this->request->data['Pallet']['qty_user_id']
+                    'qty_user_id' => $this->request->data['Pallet']['qty_user_id'],
                 ]
             );
 
@@ -100,14 +99,14 @@ class CartonsController extends AppController
                 if (
                     $this->Carton->deleteAll(
                         [
-                            'Carton.id IN' => $deleteIds
+                            'Carton.id IN' => $deleteIds,
                         ],
                         false
                     )
                 ) {
                     $deleteOK = true;
                 } else {
-                    $this->Flash->error("Delete Error");
+                    $this->Flash->error('Delete Error');
                 };
             }
 
@@ -118,9 +117,9 @@ class CartonsController extends AppController
                     $validationErrors = $this->Carton->validationErrors;
                     $errorText = $this->Carton->formatValidationErrors($validationErrors);
                     if ($errorText) {
-                        $msg = __("<strong>Update Error: </strong> %s", $errorText);
+                        $msg = __('<strong>Update Error: </strong> %s', $errorText);
                     } else {
-                        $msg = "<strong>Update Error</strong>";
+                        $msg = '<strong>Update Error</strong>';
                     }
 
                     $this->Flash->error($msg);
@@ -132,7 +131,7 @@ class CartonsController extends AppController
                     [
                         'controller' => 'Pallets',
                         'action' => 'view',
-                        $palletId
+                        $palletId,
                     ]
                 );
             }
@@ -141,7 +140,7 @@ class CartonsController extends AppController
         array_push($cartons, [
             'count' => '',
             'best_before' => '',
-            'pallet_id' => $palletId
+            'pallet_id' => $palletId,
         ]);
 
         $palletCartons['Carton'] = $cartons;

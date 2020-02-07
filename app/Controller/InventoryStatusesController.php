@@ -8,7 +8,6 @@ App::uses('AppController', 'Controller');
  */
 class InventoryStatusesController extends AppController
 {
-
     /**
      * Components
      *
@@ -100,7 +99,9 @@ class InventoryStatusesController extends AppController
                 $this->Flash->error(__('The inventory status could not be saved. Please, try again.'));
             }
         } else {
-            $options = ['conditions' => ['InventoryStatus.' . $this->InventoryStatus->primaryKey => $id]];
+            $options = [
+                'contain' => true,
+                'conditions' => ['InventoryStatus.' . $this->InventoryStatus->primaryKey => $id], ];
             $this->request->data = $this->InventoryStatus->find('first', $options);
         }
 

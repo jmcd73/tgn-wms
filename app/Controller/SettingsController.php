@@ -8,7 +8,6 @@ App::uses('AppController', 'Controller');
  */
 class SettingsController extends AppController
 {
-
     /**
      * Components
      *
@@ -16,10 +15,6 @@ class SettingsController extends AppController
      */
     public $components = ['Paginator'];
 
-    /**
-     * beforeFilter
-     * @return void
-     */
     public function beforeFilter()
     {
         parent::beforeFilter();

@@ -5,6 +5,7 @@
         <thead>
             <tr>
                 <th><?= $this->Paginator->sort('id'); ?></th>
+                <th><?= $this->Paginator->sort('allow_bulk_status_change'); ?></th>
                 <th><?= $this->Paginator->sort('name'); ?></th>
                 <th><?= $this->Paginator->sort('comment'); ?></th>
                 <th class="actions"><?= __('Actions'); ?></th>
@@ -12,38 +13,40 @@
         </thead>
         <tbody>
             <?php foreach ($inventoryStatuses as $inventoryStatus): ?>
-                <tr>
-                    <td><?= h($inventoryStatus['InventoryStatus']['id']); ?></td>
-                    <td><?= h($inventoryStatus['InventoryStatus']['name']); ?></td>
-                    <td><?= h($inventoryStatus['InventoryStatus']['comment']); ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(
-                            __('View'),
-                            ['action' => 'view', $inventoryStatus['InventoryStatus']['id']],
-                            [ 'class' => 'btn btn-link btn-sm view']
-                            ); ?>
-                        <?= $this->Html->link(
-                            __('Edit'),
-                            ['action' => 'edit', $inventoryStatus['InventoryStatus']['id']],
-                            [ 'class' => 'btn btn-link btn-sm edit']
-                            ); ?>
-                        <?= $this->Form->postLink(
-                            __('Delete'),
-                            ['action' => 'delete', $inventoryStatus['InventoryStatus']['id']],
-                            [ 'class' => 'btn btn-link btn-sm delete'],
-                            __('Are you sure you want to delete # %s?', $inventoryStatus['InventoryStatus']['id'])); ?>
-                    </td>
-                </tr>
+            <tr>
+                <td><?= h($inventoryStatus['InventoryStatus']['id']); ?></td>
+                <td><?= h($inventoryStatus['InventoryStatus']['allow_bulk_status_change']); ?></td>
+                <td><?= h($inventoryStatus['InventoryStatus']['name']); ?></td>
+                <td><?= h($inventoryStatus['InventoryStatus']['comment']); ?></td>
+                <td class="actions">
+                    <?= $this->Html->link(
+    __('View'),
+    ['action' => 'view', $inventoryStatus['InventoryStatus']['id']],
+    ['class' => 'btn btn-link btn-sm view']
+); ?>
+                    <?= $this->Html->link(
+    __('Edit'),
+    ['action' => 'edit', $inventoryStatus['InventoryStatus']['id']],
+    ['class' => 'btn btn-link btn-sm edit']
+); ?>
+                    <?= $this->Form->postLink(
+    __('Delete'),
+    ['action' => 'delete', $inventoryStatus['InventoryStatus']['id']],
+    ['class' => 'btn btn-link btn-sm delete'],
+    __('Are you sure you want to delete # %s?', $inventoryStatus['InventoryStatus']['id'])
+); ?>
+                </td>
+            </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
     <p>
         <?php
         echo $this->Paginator->counter([
-            'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
+            'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}'),
         ]);
-        ?>	</p>
-     <div class="pagination pagination-large">
+        ?> </p>
+    <div class="pagination pagination-large">
         <ul class="pagination">
             <?php
             echo $this->Paginator->first('&laquo; first', ['escape' => false, 'tag' => 'li']);

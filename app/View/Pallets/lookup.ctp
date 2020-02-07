@@ -1,15 +1,17 @@
 <?php $this->Html->css([
-        'bootstrap-datepicker3.min'
+    'bootstrap-datepicker3.min',
 ], ['inline' => false]); ?>
-<?php $this->Html->script([
+<?php $this->Html->script(
+    [
         'bootstrap-datepicker.min',
         'locales/bootstrap-datepicker.en-AU.min',
         'typeahead.bundle.min',
         'edit-modal',
-        'lookup'
-    ], [
+        'lookup',
+    ],
+    [
         'inline' => false,
-        'block' => 'from_view'
+        'block' => 'from_view',
     ]
 ); ?>
 <div class="container">
@@ -18,29 +20,31 @@
             <div class="lookup-search">
                 <p><?php echo __('Enter multiple search conditions and click Search'); ?></p>
                 <?php echo $this->Form->create(
-                        'Lookup', [
-                            'class' => null,
-                            'url' => [
-                                'controller' => 'pallets',
-                                'action' => 'lookupSearch'
-                            ],
-                            'inputDefaults' => [
-
-                                'label' => [
-                                    'class' => 'form-label'
-                                ],
-                                'before' => null,
-                                'after' => null
-                            ]
-                        ]
-                    );
+    'Lookup',
+    [
+        'class' => null,
+        'url' => [
+            'controller' => 'pallets',
+            'action' => 'lookupSearch',
+        ],
+        'inputDefaults' => [
+            'label' => [
+                'class' => 'form-label',
+            ],
+            'before' => null,
+            'after' => null,
+        ],
+    ]
+);
                 ?>
 
 
-                <?php echo $this->Form->input('Lookup.item_id_select', [
+                <?php echo $this->Form->input(
+                    'Lookup.item_id_select',
+                    [
                         'label' => [
                             'text' => 'Item Code',
-                            'class' => null
+                            'class' => null,
                         ],
                         'placeholder' => 'Item Code',
                         'data-submit_url' => $this->request->base . '/' . $this->request->params['controller'] . '/itemLookup',
@@ -49,30 +53,33 @@
                         'empty' => true,
 
                         'div' => [
-                            'class' => 'form-group col-md-j8'
-                        ]
+                            'class' => 'form-group col-md-j8',
+                        ],
                     ]
-                    );
+                );
                     //echo $this->Form->hidden('Skip.item_id', ['id' => 'item_id']);
 
                     echo $this->Form->input(
-                        'bb_date', [
+                        'bb_date',
+                        [
                             'label' => 'Best Before',
 
                             'placeholder' => 'YYYY-MM-DD',
                             'type' => 'text',
                             'id' => 'bb_date',
                             'div' => [
-                                'class' => 'form-group col-md-j8'
-                            ]
-                        ]);
+                                'class' => 'form-group col-md-j8',
+                            ],
+                        ]
+                    );
 
                     echo $this->Form->input(
-                        'pl_ref', [
+                        'pl_ref',
+                        [
                             'id' => 'pl_ref',
                             'label' => [
                                 'class' => 'form-label',
-                                'text' => "Pallet Ref No."
+                                'text' => 'Pallet Ref No.',
                             ],
                             'data-submit_url' => $this->request->base . '/' . $this->request->params['controller'] . '/palletReferenceLookup',
                             'type' => 'text',
@@ -80,67 +87,75 @@
                             'class' => 'typeahead form-control',
                             'placeholder' => 'Pallet Ref.',
                             'div' => [
-                                'class' => 'form-group col-md-j8'
-                            ]
-                        ]);
-
-                    echo $this->Form->input('batch', [
-                        'id' => 'batch',
-                        'data-submit_url' => $this->request->base . '/' . $this->request->params['controller'] . '/batchLookup',
-                        'type' => 'text',
-
-                        'empty' => true,
-                        'placeholder' => "Batch No.",
-                        'div' => [
-                            'class' => 'form-group col-md-j8'
+                                'class' => 'form-group col-md-j8',
+                            ],
                         ]
-                    ]
+                    );
+
+                    echo $this->Form->input(
+                        'batch',
+                        [
+                            'id' => 'batch',
+                            'data-submit_url' => $this->request->base . '/' . $this->request->params['controller'] . '/batchLookup',
+                            'type' => 'text',
+
+                            'empty' => true,
+                            'placeholder' => 'Batch No.',
+                            'div' => [
+                                'class' => 'form-group col-md-j8',
+                            ],
+                        ]
                     );
                     echo $this->Form->input(
-                        'inventory_status_id', [
+                        'inventory_status_id',
+                        [
                             'type' => 'select',
                             'options' => $statuses,
                             'empty' => true,
                             'class' => 'form-control',
                             'div' => [
-                                'class' => 'form-group col-md-j8'
-                            ]
+                                'class' => 'form-group col-md-j8',
+                            ],
                         ]
                     );
                     echo $this->Form->input(
-                        'print_date', [
+                        'print_date',
+                        [
                             'type' => 'text',
                             'id' => 'print_date',
-                            'label' => "Date Manuf.",
+                            'label' => 'Date Manuf.',
                             'placeholder' => 'YYYY-MM-DD',
 
                             'div' => [
-                                'class' => 'form-group col-md-j8'
-                            ]]);
+                                'class' => 'form-group col-md-j8',
+                            ], ]
+                    );
                     echo $this->Form->input(
-                        'location_id', [
+                        'location_id',
+                        [
                             'type' => 'select',
                             'options' => $locations,
                             'empty' => true,
                             'class' => 'form-control',
                             'div' => [
-                                'class' => 'form-group col-md-j8'
-                            ]
+                                'class' => 'form-group col-md-j8',
+                            ],
                         ]
                     );
                     echo $this->Form->input(
-                        'shipment_id', [
+                        'shipment_id',
+                        [
                             'type' => 'select',
                             'class' => 'form-control',
                             'options' => $shipments,
                             'empty' => true,
                             'label' => [
                                 'class' => 'form-label',
-                                'text' => "Shipper No."
+                                'text' => 'Shipper No.',
                             ],
                             'div' => [
-                                'class' => 'form-group col-md-j8'
-                            ]
+                                'class' => 'form-group col-md-j8',
+                            ],
                         ]
                     );
                 ?>
@@ -155,8 +170,8 @@
                     'label' => __('Search'),
                     'bootstrap-type' => 'primary',
                     'div' => [
-                        'class' => 'form-group col-md-j8'
-                    ]
+                        'class' => 'form-group col-md-j8',
+                    ],
                 ]);
             ?>
             <div class="col-md-j8"></div>
@@ -168,13 +183,13 @@
             <?php
                 echo $this->Form->input('reset', [
                     'type' => 'reset',
-                    'value' => "Clear Form",
+                    'value' => 'Clear Form',
                     'label' => false,
                     'class' => 'form-control',
                     'class' => 'btn btn-default',
                     'div' => [
-                        'class' => 'form-group col-md-j8'
-                    ]]);
+                        'class' => 'form-group col-md-j8',
+                    ], ]);
             ?>
         </div>
     </div>
@@ -193,7 +208,7 @@
 
                         <th><?php echo $this->Paginator->sort('item_id'); ?></th>
                         <th><?php echo $this->Paginator->sort('description'); ?></th>
-                        <th><?php echo $this->Paginator->sort('bb_date', "Best Before"); ?></th>
+                        <th><?php echo $this->Paginator->sort('bb_date', 'Best Before'); ?></th>
                         <th><?php echo $this->Paginator->sort('qty'); ?></th>
                         <th><?php echo $this->Paginator->sort('pl_ref'); ?></th>
                         <th><?php echo $this->Paginator->sort('batch'); ?></th>
@@ -206,14 +221,14 @@
                 </thead>
                 <tbody>
                     <?php if (!empty($pallets)): ?>
-<?php foreach ($pallets as $pallet): ?>
+                    <?php foreach ($pallets as $pallet): ?>
                     <tr<?php
     if ($pallet['Pallet']['dont_ship']) {
         echo 'class="lowdate"';
-}
+    }
 ?>>
 
-                        <td><?php echo h($pallet['Item']['code']); ?></td>
+                        <td><?php echo h($pallet['Pallet']['item']); ?></td>
                         <td><?php echo h($pallet['Pallet']['description']); ?></td>
                         <td><?php echo $this->Time->format($pallet['Pallet']['bb_date'], '%d/%m/%y'); ?></td>
                         <td><?php echo h($pallet['Pallet']['qty']); ?></td>
@@ -224,39 +239,48 @@
                         <td><?php echo h($pallet['Location']['location']); ?></td>
                         <td><?php
                                 echo $this->Html->link(
-                                    h($pallet['Shipment']['shipper']), [
-                                        'controller' => 'shipments',
-                                        'action' => 'view',
-                                        $pallet['Shipment']['id']
-                                ]);
+    h($pallet['Shipment']['shipper']),
+    [
+        'controller' => 'shipments',
+        'action' => 'view',
+        $pallet['Shipment']['id'],
+    ]
+);
                             ?></td>
                         <td class="actions">
                             <?php echo $this->Html->link(
-                                    __('Edit'), '#', [
-                                        'data-palletId' => $pallet['Pallet']['id'],
-                                        'data-codeDesc' => $pallet['Pallet']['code_desc'],
-                                        'data-editPalletCartons' => $this->Html->url([
-                                            'controller' => 'Cartons',
-                                            'action' => 'editPalletCartons',
-                                            $pallet['Pallet']['id']
-                                        ]),
-                                        'data-moveOrEdit' => $this->Html->url([
-                                            'action' => 'editPallet',
-                                            $pallet['Pallet']['id']
-                                        ]),
-                                        'data-toggle' => "modal",
-                                        'data-target' => "#edit-modal",
-                                        'class' => 'btn edit btn-xs tgn-modal',
-                                        'title' => 'Click here for popup edit options menu'
-                                    ]);
+                                __('Edit'),
+                                '#',
+                                [
+                                    'data-palletId' => $pallet['Pallet']['id'],
+                                    'data-codeDesc' => $pallet['Pallet']['code_desc'],
+                                    'data-editPalletCartons' => $this->Html->url([
+                                        'controller' => 'Cartons',
+                                        'action' => 'editPalletCartons',
+                                        $pallet['Pallet']['id'],
+                                    ]),
+                                    'data-moveOrEdit' => $this->Html->url([
+                                        'action' => 'editPallet',
+                                        $pallet['Pallet']['id'],
+                                    ]),
+                                    'data-toggle' => 'modal',
+                                    'data-target' => '#edit-modal',
+                                    'class' => 'btn edit btn-xs tgn-modal',
+                                    'title' => 'Click here for popup edit options menu',
+                                ]
+                            );
                             ?>
-<?php echo $this->Html->link(__('View'), ['action' => 'view', $pallet['Pallet']['id']], ['class' => 'btn view btn-xs']); ?>
-<?php echo $this->Html->link(__('Reprint'), ['action' => 'reprint', $pallet['Pallet']['id']], ['class' => 'btn reprint btn-xs']); ?>
-
+                            <?php echo $this->Html->link(__('View'), ['action' => 'view', $pallet['Pallet']['id']], ['class' => 'btn view btn-xs']); ?>
+                            <?php echo $this->Html->link(__('Reprint'), ['action' => 'palletReprint', $pallet['Pallet']['id']], ['class' => 'btn reprint btn-xs']); ?>
+                            <?php if ($isLoggedIn && isset($user['role']) && $user['role'] === 'admin'): ?>
+                            <?php echo $this->Html->link(__('Glabels Reprint'), [
+                                'controller' => 'PrintLabels',
+                                'action' => 'ssccLabel', $pallet['Pallet']['id'], ], ['class' => 'btn reprint btn-xs']); ?>
+                            <?php endif; ?>
                         </td>
                         </tr>
                         <?php endforeach; ?>
-<?php else: ?>
+                        <?php else: ?>
                         <tr>
                             <td colspan="11">
                                 <div class="text-center">
@@ -274,8 +298,8 @@
             <p>
                 <?php
                     echo $this->Paginator->counter([
-                        'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
-                ]);
+                        'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}'),
+                    ]);
                 ?> </p>
             <div class="pagination pagination-large">
                 <ul class="pagination">

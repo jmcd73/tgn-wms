@@ -3,8 +3,6 @@ class AppSchema extends CakeSchema {
 
 	public $file = 'schema_1.php';
 
-	public $connection = 'tgn';
-
 	public function before($event = array()) {
 		return true;
 	}
@@ -152,7 +150,7 @@ class AppSchema extends CakeSchema {
 		'print_date' => array('type' => 'datetime', 'null' => false, 'default' => null, 'key' => 'index'),
 		'cooldown_date' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'min_days_life' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false),
-		'production_line' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 10, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
+		'production_line' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
 		'printer_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
 		'product_type_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
 		'qty_user_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false),
@@ -203,7 +201,7 @@ class AppSchema extends CakeSchema {
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'key' => 'unique', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'description' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 100, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'text_template' => array('type' => 'binary', 'null' => true, 'default' => null),
+		'text_template' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 2000, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'file_template' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 200, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'active' => array('type' => 'boolean', 'null' => true, 'default' => null),
 		'is_file_template' => array('type' => 'integer', 'null' => true, 'default' => '0', 'length' => 1, 'unsigned' => false),
@@ -219,6 +217,7 @@ class AppSchema extends CakeSchema {
 		'parent_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
 		'lft' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
 		'rght' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
+		'replace_tokens' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 2000, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
 			'name_UNIQUE' => array('column' => 'name', 'unique' => 1)

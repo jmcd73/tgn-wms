@@ -7,7 +7,6 @@ App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
  */
 class User extends AppModel
 {
-
     /**
      * Display field
      *
@@ -40,7 +39,7 @@ class User extends AppModel
     public $validate = [
         'username' => [
             'notBlank' => [
-                'rule' => ['notBlank']
+                'rule' => ['notBlank'],
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
@@ -49,29 +48,29 @@ class User extends AppModel
             ],
             'isUnique' => [
                 'rule' => 'isUnique',
-                'message' => 'Username already exists! Please choose another or edit the existing one.'
-            ]
+                'message' => 'Username already exists! Please choose another or edit the existing one.',
+            ],
         ],
         'password' => [
             'notBlank' => [
-                'rule' => ['notBlank']
+                'rule' => ['notBlank'],
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
         'role' => [
             'notBlank' => [
-                'rule' => ['notBlank']
+                'rule' => ['notBlank'],
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
-        ]
+            ],
+        ],
     ];
 
     /**
@@ -81,7 +80,7 @@ class User extends AppModel
         'Pallet' => [
             'className' => 'Pallet',
             'foreignKey' => 'qty_user_id',
-            'dependent' => false
-        ]
+            'dependent' => false,
+        ],
     ];
 }

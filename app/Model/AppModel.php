@@ -34,7 +34,6 @@ App::uses('ConnectionManager', 'Model');
  */
 class AppModel extends Model
 {
-
     /**
      * @var array
      */
@@ -47,7 +46,7 @@ class AppModel extends Model
      */
     public function __construct($id = false, $table = null, $ds = null)
     {
-        $env = getenv('ENVIRONMENT') ?: 'HOME';
+        $env = getenv('ENVIRONMENT') ?: 'TEST';
 
         $db_connections = Configure::read('datasources');
 
@@ -69,12 +68,13 @@ class AppModel extends Model
     public function getLabelPrinterById($printerId)
     {
         $printerModel = ClassRegistry::init('Printer');
+
         $printer = $printerModel->find(
             'first',
             [
                 'conditions' => [
-                    'Printer.id' => $printerId
-                ]
+                    'Printer.id' => $printerId,
+                ],
             ]
         );
 
@@ -98,8 +98,8 @@ class AppModel extends Model
             'all',
             [
                 'conditions' => [
-                    'Printer.active' => 1
-                ]
+                    'Printer.active' => 1,
+                ],
             ]
         );
 
@@ -126,6 +126,7 @@ class AppModel extends Model
             '{n}.Printer.id',
             '{n}.Printer.name'
         );
+
         $printers['default'] = $default;
 
         return $printers;
@@ -144,8 +145,8 @@ class AppModel extends Model
             'first',
             [
                 'conditions' => [
-                    'name' => $settingname
-                ]
+                    'name' => $settingname,
+                ],
             ]
         );
 
@@ -155,7 +156,7 @@ class AppModel extends Model
                     'message' => __(
                         'Could not find setting in settings table named <strong>%s</strong>',
                         $settingname
-                    )
+                    ),
                 ],
                 '500'
             );
@@ -163,7 +164,7 @@ class AppModel extends Model
 
         $slug = $inComment ? 'comment' : 'setting';
 
-        # if it's an array then return the setting otherwise empty string
+        // if it's an array then return the setting otherwise empty string
 
         return is_array($setting) ? $setting['Setting'][$slug] : '';
     }
@@ -195,7 +196,7 @@ class AppModel extends Model
         return [
             'database' => $dataSource->config['database'],
             'config' => $this->useDbConfig,
-            'host' => $dataSource->config['host']
+            'host' => $dataSource->config['host'],
         ];
     }
 
@@ -268,9 +269,9 @@ class AppModel extends Model
                 $errorMessage = $this->formatValidationErrors($value, $errorMessage);
             } else {
                 if ($errorMessage) {
-                    $errorMessage .= sprintf(". %s: ", $value);
+                    $errorMessage .= sprintf('. %s: ', $value);
                 } else {
-                    $errorMessage = sprintf("%s", $value);
+                    $errorMessage = sprintf('%s', $value);
                 }
             }
         }
@@ -344,7 +345,7 @@ class AppModel extends Model
      */
     public function getDateTimeStamp()
     {
-        return date("Y-m-d H:i:s");
+        return date('Y-m-d H:i:s');
     }
 
     /**
@@ -355,7 +356,7 @@ class AppModel extends Model
      *     'mysl_date' => 'yyyy-MM-dd'
      * ]
      *
-     * returns the dates with the inital keys e.g.
+     * returns the dates with the Initial keys e.g.
      * [
      *     'bb_date' => '31/01/73',
      *     'mysql_date' => '1973-01-31'
@@ -429,8 +430,8 @@ class AppModel extends Model
             'first',
             [
                 'conditions' => [
-                    'ProductType.id' => $productTypeId
-                ]
+                    'ProductType.id' => $productTypeId,
+                ],
             ]
         );
 
@@ -442,7 +443,7 @@ class AppModel extends Model
             !$productTypeModel->save(
                 [
                     'id' => $productTypeId,
-                    'next_serial_number' => ++$serialNumber
+                    'next_serial_number' => ++$serialNumber,
                 ]
             )
         ) {
@@ -464,8 +465,8 @@ class AppModel extends Model
             'first',
             [
                 'conditions' => [
-                    'Help.controller_action' => $controllerAction
-                ]
+                    'Help.controller_action' => $controllerAction,
+                ],
             ]
         );
 

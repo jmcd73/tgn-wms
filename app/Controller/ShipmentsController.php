@@ -6,6 +6,7 @@ App::uses('AppController', 'Controller');
  *
  * @property Shipment $Shipment
  * @property PaginatorComponent $Paginator
+ * @property ReactEmbedComponent $ReactEmbed
  */
 class ShipmentsController extends AppController
 {
@@ -26,36 +27,6 @@ class ShipmentsController extends AppController
     }
 
     /**
-     * updateShipmentTypes action to bulk update shipments not used anymore
-     * @return void
-     */
-    public function updateShipmentTypes()
-    {
-        //$this->Shipment->recursive = -1;
-
-        //$this->Shipment->Behaviors->load('Containable');
-        $shipments = $this->Shipment->find('all', [
-            'contain' => [
-                'Pallet' => [
-                    'fields' => 'Pallet.id'
-                ]
-            ]
-        ]);
-
-        foreach ($shipments as $s) {
-            $ids = Hash::extract($s, 'Pallet.{n}.id');
-
-            unset($s['Pallet']);
-            $s['Shipment']['Pallet'] = $ids;
-
-            if ($this->Shipment->save($s)) {
-                $this->log('Updated ' . $s['Shipment']['id']);
-            }
-        }
-        $this->render(false);
-    }
-
-    /**
      * destinationLookup for react view
      * @return void
      */
@@ -65,13 +36,8 @@ class ShipmentsController extends AppController
 
         $json_output = $this->Shipment->destinationLookup($search_term);
 
-        $origin = $this->request->header('Origin');
-        $allowedOrigins = Configure::read('ALLOWED_ORIGINS');
-        if (in_array($origin, $allowedOrigins)) {
-            $this->response->header('Access-Control-Allow-Origin', $origin);
-        }
-
         $this->set(compact('json_output'));
+
         $this->set('_serialize', 'json_output');
     }
 
@@ -82,11 +48,15 @@ class ShipmentsController extends AppController
     public function openShipments()
     {
         $this->Shipment->recursive = -1;
+
         $productTypes = $this->Shipment->Pallet->Item->ProductType->find('all', [
             'conditions' => [
                 'ProductType.active' => 1,
-                'ProductType.enable_pick_app' => 1
-            ]
+                'ProductType.enable_pick_app' => 1,
+            ],
+            'fields' => [
+                'id',
+            ],
         ]);
 
         $productTypeIds = Hash::extract($productTypes, '{n}.ProductType.id');
@@ -96,26 +66,20 @@ class ShipmentsController extends AppController
                 [
                     'Shipment' => [
                         'id' => 0,
-                        'shipper' => "DISABLED:",
-                        'destination' => "Pick stock function is not enabled. Enable it on Admin => Product Types screen"
-                    ]
-                ]
+                        'shipper' => 'DISABLED:',
+                        'destination' => 'Pick stock function is not enabled. Enable it on Admin => Product Types screen',
+                    ],
+                ],
             ];
         } else {
             $shipments = $this->Shipment->find('all', [
                 'conditions' => [
                     'Shipment.shipped' => 0,
                     // 'Shipment.shipment_type' => 'marg',
-                     'Shipment.product_type_id IN' => $productTypeIds
+                    'Shipment.product_type_id IN' => $productTypeIds,
                 ],
-                'order' => ['Shipment.id' => 'desc']
+                'order' => ['Shipment.id' => 'desc'],
             ]);
-        }
-
-        $origin = $this->request->header('Origin');
-        $allowedOrigins = Configure::read('ALLOWED_ORIGINS');
-        if (in_array($origin, $allowedOrigins)) {
-            $this->response->header('Access-Control-Allow-Origin', $origin);
         }
 
         $this->set(compact('shipments'));
@@ -136,21 +100,21 @@ class ShipmentsController extends AppController
             'count',
             [
                 'conditions' => [
-                    'Shipment.shipped' => 0
-                ]
+                    'Shipment.shipped' => 0,
+                ],
             ]
         );
 
         $this->Paginator->settings = [
             'Shipment' => [
                 'order' => ['id' => 'desc'],
-                'contain' => ['ProductType']
-            ]
+                'contain' => ['ProductType'],
+            ],
         ];
         $productTypes = $this->Shipment->Pallet->Item->ProductType->find('all', [
             'conditions' => [
-                'ProductType.active' => 1
-            ]
+                'ProductType.active' => 1,
+            ],
         ]);
 
         $this->set(compact('count', 'productTypes'));
@@ -179,13 +143,13 @@ class ShipmentsController extends AppController
             'conditions' => ['Pallet.shipment_id' => $id],
             'contain' => [
                 'Item',
-                'Location'
+                'Location',
             ],
             'order' => [
                 'Item.code' => 'ASC',
                 'Location.location' => 'ASC',
-                'Pallet.pl_ref' => 'ASC'
-            ]
+                'Pallet.pl_ref' => 'ASC',
+            ],
         ];
 
         $pallets = $this->Shipment->Pallet->find('all', $pl_options);
@@ -200,19 +164,19 @@ class ShipmentsController extends AppController
                 'SUM(Pallet.qty) as Total',
                 'Pallet.item_id',
                 'Item.description',
-                'Item.code'
+                'Item.code',
             ],
             'contain' => [
-                'Item'
+                'Item',
             ],
             'group' => ['Item.code'],
-            'order' => ['Item.code' => 'ASC']
+            'order' => ['Item.code' => 'ASC'],
         ];
 
         $groups = $this->Shipment->Pallet->find('all', $pl_groups);
 
         $options = [
-            'conditions' => ['Shipment.' . $this->Shipment->primaryKey => $id]
+            'conditions' => ['Shipment.' . $this->Shipment->primaryKey => $id],
         ];
 
         $shipment = $this->Shipment->find('first', $options);
@@ -251,13 +215,13 @@ class ShipmentsController extends AppController
             'conditions' => ['Pallet.shipment_id' => $id],
             'contain' => [
                 'Item',
-                'Location'
+                'Location',
             ],
             'order' => [
                 'Item.code' => 'ASC',
                 'Location.location' => 'ASC',
-                'Pallet.pl_ref' => 'ASC'
-            ]
+                'Pallet.pl_ref' => 'ASC',
+            ],
         ];
 
         $pallets = $this->Shipment->Pallet->find('all', $pl_options);
@@ -269,21 +233,21 @@ class ShipmentsController extends AppController
             'fields' => [
                 'Pallet.id', 'COUNT(Pallet.item_id) as Pallets',
                 'SUM(Pallet.qty) as Total', 'Pallet.item_id',
-                'Item.description', 'Item.code'
+                'Item.description', 'Item.code',
             ],
             'contain' => [
                 'Item',
                 'TruckRegistration',
-                'Operator'
+                'Operator',
             ],
             'group' => ['Item.code'],
-            'order' => ['Item.code' => 'ASC']
+            'order' => ['Item.code' => 'ASC'],
         ];
 
         $groups = $this->Shipment->Pallet->find('all', $pl_groups);
 
         $options = [
-            'conditions' => ['Shipment.' . $this->Shipment->primaryKey => $id]
+            'conditions' => ['Shipment.' . $this->Shipment->primaryKey => $id],
         ];
 
         $shipment = $this->Shipment->find('first', $options);
@@ -313,18 +277,17 @@ class ShipmentsController extends AppController
             'contain' => [
                 'Pallet' => [
                     'Location' => [
-                        'fields' => ['Location.id', 'Location.location']
-                    ]
-                ]
-            ]];
-
-        $origin = $this->request->header('Origin');
-        $allowedOrigins = Configure::read('ALLOWED_ORIGINS');
-        if (in_array($origin, $allowedOrigins)) {
-            $this->response->header('Access-Control-Allow-Origin', $origin);
-        }
+                        'fields' => [
+                            'Location.id',
+                            'Location.location',
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
         $this->set('shipment', $this->Shipment->find('first', $options));
+
         $this->set('_serialize', ['shipment']);
     }
 
@@ -368,14 +331,6 @@ class ShipmentsController extends AppController
         $last = null;
         $error = null;
 
-        $origin = $this->request->header('Origin');
-
-        $allowedOrigins = Configure::read('ALLOWED_ORIGINS');
-
-        if (in_array($origin, $allowedOrigins)) {
-            $this->response->header('Access-Control-Allow-Origin', $origin);
-        }
-
         $perms = $this->Shipment->getViewPermNumber('view_in_shipments');
 
         if ($this->request->is('post')) {
@@ -396,8 +351,8 @@ class ShipmentsController extends AppController
                                 return [
                                     'Pallet' => [
                                         'id' => $val,
-                                        'shipment_id' => $this->Shipment->id
-                                    ]
+                                        'shipment_id' => $this->Shipment->id,
+                                    ],
                                 ];
                             },
                             $this->request->data['Pallet']
@@ -406,7 +361,7 @@ class ShipmentsController extends AppController
                         if ($this->Shipment->Pallet->saveMany($update_labels)) {
                             if (!$this->request->is('ajax')) {
                                 $this->Flash->success('The shipment ' . '<strong>' . h($shipper) . '</strong> has been saved.', [
-                                    'clear' => true
+                                    'clear' => true,
                                 ]);
                             } else {
                                 $last = $this->Shipment->findById($this->Shipment->id);
@@ -433,8 +388,8 @@ class ShipmentsController extends AppController
                 'Pallet.product_type_id' => $shipment_type,
                 'OR' => [
                     // not on hold
-                     'InventoryStatus.perms & ' . $perms,
-                    'Pallet.inventory_status_id' => 0
+                    'InventoryStatus.perms & ' . $perms,
+                    'Pallet.inventory_status_id' => 0,
                 ],
 
                 'Pallet.shipment_id' => 0,
@@ -442,18 +397,17 @@ class ShipmentsController extends AppController
 
                 'NOT' => [
                     // has been put away
-                     'Pallet.location_id' => 0
-                ]
-
+                    'Pallet.location_id' => 0,
+                ],
             ],
             'order' => [
                 'Pallet.item' => 'ASC',
-                'Pallet.pl_ref' => 'ASC'
+                'Pallet.pl_ref' => 'ASC',
             ],
             'contain' => ['InventoryStatus',
                 'Location' => [
-                    'fields' => ['Location.id', 'Location.location']
-                ]]
+                    'fields' => ['Location.id', 'Location.location'],
+                ], ],
         ];
 
         $shipment_labels = $this->Shipment->Pallet->find('all', $options);
@@ -462,7 +416,7 @@ class ShipmentsController extends AppController
         $shipment_labels = $this->Shipment->markDisabled($shipment_labels);
 
         $disable_footer = true;
-        $this->set('_serialize', ['error', 'last', 'shipment_labels']);
+
         $this->set(
             compact(
                 'error',
@@ -472,6 +426,7 @@ class ShipmentsController extends AppController
                 'pallet_count'
             )
         );
+        $this->set('_serialize', ['error', 'last', 'shipment_labels']);
     }
 
     /**
@@ -487,19 +442,20 @@ class ShipmentsController extends AppController
         if ($this->request->is(['post', 'put'])) {
             $shipment = $this->Shipment->find('first', [
                 'conditions' => [
-                    'Shipment.id' => $id
-                ]
+                    'Shipment.id' => $id,
+                ],
             ]);
 
             $data = [
                 'shipped' => !(bool)$shipment['Shipment']['shipped'],
-                'id' => $id
+                'id' => $id,
             ];
 
-            //unset($this->Shipment->validate['shipped']);
             $this->Shipment->set($shipment);
             if ($this->Shipment->save($data)) {
-                $this->Flash->success("Successfully toggled shipped state");
+                $toState = !(bool)$shipment['Shipment']['shipped'] ? 'shipped' : 'not-shipped';
+                $shipper = $shipment['Shipment']['shipper'];
+                $this->Flash->success(__('Shipment <strong>%s</strong> marked as <strong>%s</strong>', $shipper, $toState));
             } else {
                 $errorText = '';
 
@@ -525,12 +481,6 @@ class ShipmentsController extends AppController
     {
         $error = null;
 
-        $origin = $this->request->header('Origin');
-        $allowedOrigins = Configure::read('ALLOWED_ORIGINS');
-        if (in_array($origin, $allowedOrigins)) {
-            $this->response->header('Access-Control-Allow-Origin', $origin);
-        }
-
         if (!$this->Shipment->exists($id)) {
             throw new NotFoundException(__('Invalid shipment'));
         }
@@ -539,11 +489,11 @@ class ShipmentsController extends AppController
 
         $options = [
             'conditions' => [
-                'Shipment.' . $this->Shipment->primaryKey => $id
+                'Shipment.' . $this->Shipment->primaryKey => $id,
             ],
             'contain' => [
-                'Pallet.Location'
-            ]
+                'Pallet.Location',
+            ],
         ];
 
         $thisShipment = $this->Shipment->find('first', $options);
@@ -601,7 +551,7 @@ class ShipmentsController extends AppController
                     $this->Shipment->save(
                         [
                             'id' => $id,
-                            'pallet_count' => 0
+                            'pallet_count' => 0,
                         ]
                     );
                 }
@@ -654,7 +604,7 @@ class ShipmentsController extends AppController
             [
                 'error',
                 'thisShipment',
-                'shipment_labels'
+                'shipment_labels',
             ]
         );
     }
@@ -675,7 +625,7 @@ class ShipmentsController extends AppController
         $this->request->allowMethod('post', 'delete');
 
         $options = [
-            'conditions' => ['Pallet.shipment_id' => $this->Shipment->id]
+            'conditions' => ['Pallet.shipment_id' => $this->Shipment->id],
         ];
 
         if ($this->Shipment->Pallet->find('count', $options) > 0) {
@@ -685,8 +635,8 @@ class ShipmentsController extends AppController
             $this->Shipment->Pallet->updateAll(
                 [
                     //field to change and new values
-                     'Pallet.picked' => 0,
-                    'Pallet.shipment_id' => 0
+                    'Pallet.picked' => 0,
+                    'Pallet.shipment_id' => 0,
                 ],
                 // conditions
                 ['Pallet.shipment_id' => $id]

@@ -1,16 +1,15 @@
+<?php App::uses('SsccFormatter', 'Lib/Utility'); ?>
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            <h3><?php echo __('Pallet'); ?></h3>
+            <h3>
+                <?php echo __('Pallet'); ?>
+            </h3>
             <?php echo $this->Html->link(
-                    'Edit',
-                    [
-                        'controller' => 'Pallets',
-                        'action' => 'editPallet',
-                        $pallet['Pallet']['id']
-                    ], [
-                        'class' => 'mb2 btn btn-primary btn-xs edit'
-                ]); ?>
+    'Edit',
+    ['controller' => 'Pallets', 'action' => 'editPallet', $pallet['Pallet']['id']],
+    ['class' => 'mb2 btn btn-primary btn-xs edit']
+); ?>
         </div>
     </div>
     <div class="row">
@@ -52,14 +51,13 @@
                 <dd>
                     <?php echo h($pallet['Pallet']['qty_modified']); ?>
                 </dd>
-
                 <dt><?php echo __('Pl Ref'); ?></dt>
                 <dd>
                     <?php echo h($pallet['Pallet']['pl_ref']); ?>
                 </dd>
-                <dt><?php echo __('Serial Shipper Container Code'); ?></dt>
+                <dt title="Serial Shipper Container Code"><?php echo __('SSCC'); ?></dt>
                 <dd>
-                    <?php echo h($pallet['Pallet']['sscc_fmt']); ?>
+                    <?php echo h((new SsccFormatter($pallet['Pallet']['sscc']))->sscc); ?>
                 </dd>
             </dl>
         </div>
@@ -75,10 +73,9 @@
                 </dd>
                 <dt><?php echo __('Printer'); ?></dt>
                 <dd>
-                    <?php echo isset($pallet['Printer']['name']) ? h($pallet['Printer']['name']) : ""; ?>
+                    <?php echo isset($pallet['Printer']['name']) ? h($pallet['Printer']['name']) : ''; ?>
                 </dd>
-
-                <dt><?php echo __('Location Id'); ?></dt>
+                <dt><?php echo __('Location'); ?></dt>
                 <dd>
                     <?php echo h($pallet['Location']['location']); ?>
                 </dd>
@@ -123,17 +120,15 @@
                 <dd>
                     <?php echo h($pallet['Pallet']['min_days_life']); ?>
                 </dd>
-
                 <dt><?php echo __('Product Type'); ?></dt>
                 <dd>
                     <?php echo h($pallet['ProductType']['name']); ?>
                 </dd>
-                <dt><?php echo __('Inventory status note'); ?></dt>
+                <dt><?php echo __('Inventory Status Note'); ?></dt>
                 <dd>
                     <?php echo h($pallet['Pallet']['inventory_status_note']); ?>
                 </dd>
-
-                <dt><?php echo __('Inv. status note date time'); ?></dt>
+                <dt><?php echo __('Inv. Status Note Date'); ?></dt>
                 <dd>
                     <?php echo h($pallet['Pallet']['inventory_status_datetime']); ?>
                 </dd>
@@ -155,16 +150,18 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <h3><?php echo __("Cartons"); ?></h3>
+            <h3><?php echo __('Cartons'); ?></h3>
             <?php echo $this->Html->link(
-                    'Edit',
-                    [
-                        'controller' => 'Cartons',
-                        'action' => 'editPalletCartons',
-                        $pallet['Pallet']['id']
-                    ], [
-                        'class' => 'mb2 btn btn-primary btn-xs edit'
-                ]); ?>
+    'Edit',
+    [
+        'controller' => 'Cartons',
+        'action' => 'editPalletCartons',
+        $pallet['Pallet']['id'],
+    ],
+    [
+        'class' => 'mb2 btn btn-primary btn-xs edit',
+    ]
+); ?>
 
             <?php if (!empty($pallet['Carton'])): ?>
 

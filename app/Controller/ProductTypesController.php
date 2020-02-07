@@ -10,7 +10,6 @@ App::uses('AppController', 'Controller');
  */
 class ProductTypesController extends AppController
 {
-
     /**
      * Components
      *
@@ -113,8 +112,8 @@ class ProductTypesController extends AppController
                 'list',
                 [
                     'conditions' => [
-                        'Location.product_type_id' => $productType['ProductType']['id']
-                    ]
+                        'Location.product_type_id' => $productType['ProductType']['id'],
+                    ],
                 ]
             );
 

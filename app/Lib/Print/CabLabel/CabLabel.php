@@ -1,18 +1,16 @@
 <?php
 
-
 class CabLabel
 {
-
     /**
      * Company Name Header
-	 * @var string
+     * @var string
      */
     protected $companyName = 'Toggen';
 
     /**
      * Old QAD Product Codes uniquely identify Oil 6xxxx and Marg 5xxxx products
-	 * @var string
+     * @var string
      */
     protected $internalProductCode = ''; // 5xxxx or 6xxxx
 
@@ -20,45 +18,45 @@ class CabLabel
      * Product reference 8 digits
      * B1234567 for Bottling products
      * 12345678 for Marg Products
-	 * @var string
+     * @var string
      */
     protected $reference = '';
 
     /**
      * Serial Shipper Container Code
      * 18 Digit SSCC
-	 * @var string
+     * @var string
      */
     protected $sscc = '';
 
     /**
      * Product Description on label
-	 * @var string
+     * @var string
      */
     protected $description;
 
     /**
      * GTIN 14 or carton barcode
-	 * @var string
+     * @var string
      */
     protected $gtin14 = '';
     /**
      * Pallet Quantity
-	 * @var int
+     * @var int
      */
     protected $quantity = 0;
 
     /**
      * Best before date human readable
      * dd/mm/yy
-	 * @var date
+     * @var date
      */
     protected $bestBeforeHr = '';
 
     /**
      * Best before date barcode
      * yymmdd
-	 * @var date
+     * @var date
      */
     protected $bestBeforeBc = '';
 
@@ -66,50 +64,50 @@ class CabLabel
      * batch number
      * YDDDBB (Year ordinal day batch )
      * 903199 = 2019 Jan 31 Batch 99
-	 * @var int
+     * @var int
      */
     protected $batch = '';
 
     /**
      * Number of Copies of label to print
-	 * @var int
+     * @var int
      */
     protected $numLabels = 0;
 
     /**
      * hold format *TOKEN* => value array
-	 * @var object
+     * @var array
      */
     protected $findAndReplaceArray = [];
 
     /**
      * printContent
-	 * @var string
+     * @var string
      */
     public $printContent = '';
     /**
      * Template
-	 * @var string
+     * @var string
      */
     public $template = '';
 
     /**
      * Token map
      * Tokens in template mapping to class properties
-	 *
+     *
      */
     public $tokenMap = [];
 
     /**
-     * @param $labelValues
-     * @param null $template
+     * @param array $labelValues Array of values
+     * @param string $template Text Template
+     * @param object $replaceTokens Replace tokens
      */
     public function __construct(
-		Array $labelValues,
-		String $template,
-		Object $replaceTokens
-		)
-    {
+        array $labelValues,
+        string $template,
+        object $replaceTokens
+    ) {
         /**
          * set class properties
          */
@@ -120,7 +118,6 @@ class CabLabel
                 } else {
                     $this->$key = $value;
                 }
-
             }
         }
         $this->tokenMap = $replaceTokens;
@@ -134,8 +131,9 @@ class CabLabel
     public function createPrintContent()
     {
         $this->findAndReplaceArray = $this->formatReplaceArray();
+
         return $this->applyValuesToTemplate();
-	}
+    }
 
     /**
      * Returns an array indexed by replace tokens with the correct values
@@ -149,16 +147,10 @@ class CabLabel
         foreach ($this->tokenMap as $key => $value) {
             $tokenPropertyMapped[$key] = $this->$value;
         }
+
         return $tokenPropertyMapped;
     }
 
-    /**
-     * Takes an array of label values and the template and replaces the tokens with the label values
-     *
-     * @param array $label_values Pallet Values Array
-     * @param string $template CAB Language Print Template
-     * @return string
-     */
     public function applyValuesToTemplate()
     {
         // do the find and replace on the template
@@ -179,7 +171,7 @@ class CabLabel
     private function formatTemplate($template_string)
     {
         // dos2unix
-        $template_string_ret = str_replace("\r", "", $template_string);
+        $template_string_ret = str_replace("\r", '', $template_string);
         // add trailing newline if needed
         if (substr($template_string_ret, -1) !== "\n") {
             $template_string_ret .= "\n";

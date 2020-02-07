@@ -5,7 +5,6 @@ App::uses('AppController', 'Controller');
  */
 class TestsController extends AppController
 {
-
     /**
      * Scaffold
      *

@@ -61,7 +61,7 @@ if (getenv('CAKEPHP_DEBUG')) {
 Configure::write('Error', [
     'handler' => 'ErrorHandler::handleError',
     'level' => E_ALL & ~E_DEPRECATED,
-    'trace' => true
+    'trace' => true,
 ]);
 
 /**
@@ -87,7 +87,7 @@ Configure::write('Error', [
 Configure::write('Exception', [
     'handler' => 'ErrorHandler::handleException',
     'renderer' => 'ExceptionRenderer',
-    'log' => true
+    'log' => true,
 ]);
 
 /**
@@ -226,15 +226,15 @@ Configure::write('App.encoding', 'UTF-8');
  *
  */
 Configure::write('Session', [
-    'defaults' => 'php'
+    'defaults' => 'php',
 ]);
 
-$env = getenv("ENVIRONMENT");
+$env = getenv('ENVIRONMENT');
 if ($env) {
     Configure::write('Session', [
         'defaults' => 'php',
         'cookie' => 'TOGGEN_' . $env,
-        'timeout' => 4320
+        'timeout' => 4320,
     ]);
 }
 
@@ -391,7 +391,7 @@ Cache::config('_cake_core_', [
     'path' => CACHE . 'persistent' . DS,
     'serialize' => ($engine === 'File'),
     'duration' => $duration,
-    'mask' => 0666
+    'mask' => 0666,
 ]);
 
 /**
@@ -404,7 +404,7 @@ Cache::config('_cake_model_', [
     'path' => CACHE . 'models' . DS,
     'serialize' => ($engine === 'File'),
     'duration' => $duration,
-    'mask' => 0666
+    'mask' => 0666,
 ]);
 
 Configure::load('configuration');

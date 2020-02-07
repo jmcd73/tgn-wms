@@ -5,10 +5,10 @@ App::uses('AppController', 'Controller');
  *
  * @property Printer $Printer
  * @property PaginatorComponent $Paginator
+ * @property CrtlComponent $Ctrl
  */
 class PrintersController extends AppController
 {
-
     /**
      * Components
      *
@@ -65,6 +65,7 @@ class PrintersController extends AppController
         }
 
         $localPrinters = $this->Printer->getLocalPrinterList();
+
         $cupsUrl = $this->Printer->getCupsURL($this->request);
 
         $controllers = $this->Ctrl->formatForPrinterViews($showSelected = true);

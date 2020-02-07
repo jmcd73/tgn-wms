@@ -8,7 +8,6 @@ App::uses('AppModel', 'Model');
  */
 class PackSize extends AppModel
 {
-
     /**
      * Display field
      *
@@ -24,7 +23,7 @@ class PackSize extends AppModel
     public $validate = [
         'pack_size' => [
             'notEmpty' => [
-                'rule' => 'notBlank'
+                'rule' => 'notBlank',
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
@@ -33,9 +32,9 @@ class PackSize extends AppModel
             ],
             'isUnique' => [
                 'rule' => ['isUnique'],
-                'message' => "This value already exists. Please enter a different value"
-            ]
-        ]
+                'message' => 'This value already exists. Please enter a different value',
+            ],
+        ],
     ];
 
     //The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -57,7 +56,7 @@ class PackSize extends AppModel
             'offset' => '',
             'exclusive' => '',
             'finderQuery' => '',
-            'counterQuery' => ''
-        ]
+            'counterQuery' => '',
+        ],
     ];
 }

@@ -1,6 +1,7 @@
 <?php
 App::uses('AppModel', 'Model');
 App::uses('CakeText', 'Utility');
+App::uses('PrinterListTrait', 'Lib/Print');
 
 /**
  * Printer Model
@@ -8,6 +9,8 @@ App::uses('CakeText', 'Utility');
  */
 class Printer extends AppModel
 {
+    use PrinterListTrait;
+
     /**
      * getCupsURL
      * Return the Docker specific port for CUPS
@@ -18,7 +21,7 @@ class Printer extends AppModel
      */
     public function getCupsURL($request)
     {
-        $getEnv = getenv("CUPS_PORT");
+        $getEnv = getenv('CUPS_PORT');
 
         // if its not in a docker container then
         // return the default port
@@ -28,34 +31,12 @@ class Printer extends AppModel
         // scheme must be https to add printers
         $scheme = 'https';
         $host = $request->host();
-        $hostPart = explode(":", $host)[0];
+        $hostPart = explode(':', $host)[0];
 
         return sprintf('%s://%s:%s', $scheme, $hostPart, $cupsPort);
     }
 
     // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
-
-    /**
-     * Get Local Printer List
-     * @return mixed
-     */
-    public function getLocalPrinterList()
-    {
-        ob_start();
-        passthru("lpstat -a");
-        $var = ob_get_contents();
-        ob_end_clean(); //Use this instead of ob_flush()
-
-        $printerLine = array_filter(explode("\n", $var));
-
-        $printerList = [];
-
-        foreach ($printerLine as $printer) {
-            $printerList[] = explode(" ", $printer)[0];
-        }
-
-        return $printerList;
-    }
 
     /**
      * Display field
@@ -106,8 +87,8 @@ class Printer extends AppModel
     {
         $soptions = [
             'conditions' => [
-                'Printer.active' => 1
-            ]
+                'Printer.active' => 1,
+            ],
         ];
 
         if (isset($this->data['Printer']['id'])) {
@@ -117,7 +98,9 @@ class Printer extends AppModel
         $allFields = $this->find('all', $soptions);
 
         $matched = [];
-
+        if (!is_array($check['set_as_default_on_these_actions'])) {
+            return true;
+        }
         foreach ($check['set_as_default_on_these_actions'] as $checkThis) {
             foreach ($allFields as $field) {
                 if (
@@ -131,10 +114,10 @@ class Printer extends AppModel
                         array_push($matched[$field['Printer']['id']]['duplicates'], $checkThis);
                     } else {
                         $matched[$field['Printer']['id']] = [
-                            'duplicates' => [$checkThis]
+                            'duplicates' => [$checkThis],
                         ];
                     }
-                    $matched[$field['Printer']['id']]['printer'] = $field["Printer"]['name'];
+                    $matched[$field['Printer']['id']]['printer'] = $field['Printer']['name'];
                 }
             }
         }
@@ -163,29 +146,29 @@ class Printer extends AppModel
     public $validate = [
         'name' => [
             'notBlank' => [
-                'rule' => ['notBlank']
+                'rule' => ['notBlank'],
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
         'queue_name' => [
             'notBlank' => [
-                'rule' => ['notBlank']
+                'rule' => ['notBlank'],
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ]
+            ],
         ],
         'set_as_default_on_these_actions' => [
             'noDups' => [
                 'rule' => ['isControllerActionDuplicated'],
-                'message' => "This controller / action is already specified in another printer"
-            ]
-        ]
+                'message' => 'This controller / action is already specified in another printer',
+            ],
+        ],
     ];
 }

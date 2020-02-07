@@ -38,4 +38,46 @@ class ToggenHtmlHelper extends BootstrapHtmlHelper
 
         return 'class="' . trim(implode(' ', $classes)) . '"';
     }
+
+    public function printTemplateType($printTemplate)
+    {
+        $textTemplate = $printTemplate['PrintTemplate']['text_template'];
+        $glabelsTemplate = $printTemplate['PrintTemplate']['file_template'];
+
+        if (empty($textTemplate) && !empty($glabelsTemplate)) {
+            return 'file-pdf';
+        }
+
+        if (empty($glabelsTemplate) && !empty($textTemplate)) {
+            return 'file-code';
+        }
+
+        return false;
+    }
+
+    /**
+     *
+     * Create a Twitter Bootstrap icon.
+     *
+     * @param $icon The type of the icon (search, pencil, etc.)
+     * @param $opcions Options for icon
+     * @param $opcions['tag'] Tag use for the icon, "i" for default
+     * @param $opcions['font'] Font of the icon:
+     *                         "glyphicon" for default Twitter Bootstrap icon.
+     *                         "fa" for Font Awesome icon.
+     *
+    **/
+    public function icon($icon, array $options = [])
+    {
+        $tag = empty($options['tag']) ? 'i' : $options['tag'];
+        $font = 'glyphicon glyphicon-';
+        if (!empty($options['font']) && $options['font'] == 'fa') {
+            $font = 'fas fa-';
+        }
+        unset($options['tag'], $options['font']);
+
+        $options['class'] = empty($options['class']) ? ($font . $icon) : ($font . $icon . ' ' . $options['class']);
+
+        return $this->tag($tag, '', $options);
+    }
 }

@@ -1,7 +1,7 @@
 <?php 
 class AppSchema extends CakeSchema {
 
-	public $connection = 'tgn';
+	public $connection = 'base';
 
 	public function before($event = array()) {
 		return true;
