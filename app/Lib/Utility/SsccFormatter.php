@@ -10,10 +10,10 @@ class SsccFormatter
     }
 
     /**
-     * Format an SSCC to have a space
-     * 093115790028451382
-     * 0 9311579 002845138 2
+     * Format an SSCC to have a space between extension digit company prefix serial number and check digit
+     * 093115790028451382 becomes 0 9311579 002845138 2
      * @param string $sscc SSCC
+     *
      */
     protected function format($sscc)
     {

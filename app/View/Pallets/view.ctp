@@ -1,4 +1,3 @@
-<?php App::uses('SsccFormatter', 'Lib/Utility'); ?>
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
@@ -57,7 +56,7 @@
                 </dd>
                 <dt title="Serial Shipper Container Code"><?php echo __('SSCC'); ?></dt>
                 <dd>
-                    <?php echo h((new SsccFormatter($pallet['Pallet']['sscc']))->sscc); ?>
+                    <?php echo h($this->Html->sscc($pallet['Pallet']['sscc'])); ?>
                 </dd>
             </dl>
         </div>
