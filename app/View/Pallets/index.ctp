@@ -1,9 +1,8 @@
 <?php
-App::uses('SsccFormatter', 'Lib/Utility');
 
 //debug($pallets);?>
 <div class="labels index container-fluid">
-    <h3><?= __('Labels'); ?></h3>
+    <h3><?= __('Pallets'); ?></h3>
     <table class="table table-bordered table-condensed table-striped table-responsive">
         <thead>
             <tr>
@@ -35,7 +34,7 @@ App::uses('SsccFormatter', 'Lib/Utility');
                 <td><?= h($pallet['Pallet']['gtin14']); ?></td>
                 <td><?= h($pallet['Pallet']['qty']); ?></td>
                 <td><?= h($pallet['Pallet']['pl_ref']); ?></td>
-                <td><?= h((new SsccFormatter($pallet['Pallet']['sscc']))->sscc); ?></td>
+                <td><?= h($this->Html->sscc($pallet['Pallet']['sscc'])); ?></td>
                 <td><?= h($pallet['Pallet']['batch']); ?></td>
                 <td><?= h($pallet['Pallet']['production_line']); ?></td>
                 <td><?= h($pallet['Pallet']['printer']); ?></td>

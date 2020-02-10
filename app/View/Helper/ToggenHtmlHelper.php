@@ -21,6 +21,7 @@
  */
 
 App::uses('BootstrapHtmlHelper', 'Bootstrap3.View/Helper');
+App::uses('SsccFormatter', 'Lib/Utility');
 
 class ToggenHtmlHelper extends BootstrapHtmlHelper
 {
@@ -79,5 +80,16 @@ class ToggenHtmlHelper extends BootstrapHtmlHelper
         $options['class'] = empty($options['class']) ? ($font . $icon) : ($font . $icon . ' ' . $options['class']);
 
         return $this->tag($tag, '', $options);
+    }
+
+    /**
+     * Format a SSCC string and return it
+     *
+     * @param string $sscc SSCC String
+     * @return mixed
+     */
+    public function sscc($sscc)
+    {
+        return (new SsccFormatter($sscc))->sscc;
     }
 }
