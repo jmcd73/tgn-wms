@@ -395,6 +395,8 @@ class Label extends CakeObject
 
         $pdfPattern = '/(%PDF-1.5.*%%EOF)/s';
 
+        $this->log($results['stdout']);
+
         preg_match($pdfPattern, $results['stdout'], $matches);
 
         /**

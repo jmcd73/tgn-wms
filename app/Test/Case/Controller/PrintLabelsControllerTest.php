@@ -30,6 +30,7 @@ class PrintLabelsControllerTest extends ControllerTestCase
         parent::setUp();
         $this->PrintLabel = ClassRegistry::init('PrintLabel');
         $this->Item = ClassRegistry::init('Item');
+        $this->printerId = 4;
     }
 
     public function tearDown()
@@ -54,7 +55,7 @@ class PrintLabelsControllerTest extends ControllerTestCase
 
         $postData = [
             'PrintLabel' => [
-                'printer' => 1,
+                'printer' => $this->printerId,
                 'copies' => $expectedCopies,
                 'sequence-start' => 1,
                 'sequence-end' => 9,
@@ -97,7 +98,7 @@ class PrintLabelsControllerTest extends ControllerTestCase
 
         $data = [
             'PrintLabel' => [
-                'printer' => 1,
+                'printer' => $this->printerId,
                 'copies' => $expectedNumber,
             ],
         ];
@@ -136,7 +137,7 @@ class PrintLabelsControllerTest extends ControllerTestCase
 
         $data = [
             'PrintLabel' => [
-                'printerId' => 1,
+                'printerId' => $this->printerId,
                 'printer' => 'PDF Printer',
                 'number' => $expectedNumber,
                 'quantity' => $expectedNumber,
@@ -170,14 +171,14 @@ class PrintLabelsControllerTest extends ControllerTestCase
     public function testGlabelSampleLabels()
     {
         $data = [
-            'printer' => 1,
+            'printer' => $this->printerId,
             'copies' => 44,
             'print_action' => 'glabelSampleLabels',
         ];
 
         $printerDetails = [
             'Printer' => [
-                'id' => 1,
+                'id' => $this->printerId,
                 'active' => 1,
                 'name' => 'PDF Printer',
                 'options' => '',
@@ -224,7 +225,7 @@ class PrintLabelsControllerTest extends ControllerTestCase
         $expectedLprCmdCopies = 1;
 
         $data = [
-            'printer' => 1,
+            'printer' => $this->printerId,
             'copies' => $expectedCopies,
             'address' => $expectedAddress,
             'state' => $expectedState,
@@ -236,7 +237,7 @@ class PrintLabelsControllerTest extends ControllerTestCase
 
         $printerDetails = [
             'Printer' => [
-                'id' => 1,
+                'id' => $this->printerId,
                 'active' => 1,
                 'name' => 'PDF Printer',
                 'options' => '',
@@ -284,7 +285,7 @@ class PrintLabelsControllerTest extends ControllerTestCase
 
         $data = [
             'sending_co' => 'Toggen IT Services',
-            'printer' => 1,
+            'printer' => $this->printerId,
             'purchase_order' => $expectedPO,
             'copies' => $expectedCopies,
             'address' => $faker->company,
@@ -372,7 +373,7 @@ class PrintLabelsControllerTest extends ControllerTestCase
 
         $data = [
             'PrintLabel' => [
-                'printer' => 1,
+                'printer' => $this->printerId,
                 'copies' => $expectedNumber,
                 'batch' => $batch,
                 'productName' => $productName,
@@ -545,7 +546,7 @@ class PrintLabelsControllerTest extends ControllerTestCase
 
         $data = [
             'PrintLabel' => [
-                'printer' => 1,
+                'printer' => $this->printerId,
                 'copies' => 2,
                 'companyName' => $companyName,
                 'productName' => $productName,
