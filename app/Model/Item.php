@@ -1,7 +1,11 @@
 <?php
 
 App::uses('AppModel', 'Model');
+App::import('Vendor', 'BarcodeValidator', [
+    'file' => 'imelgrat' . DS . 'barcode-validator' . DS . 'src' . DS . 'barcode-validator.php',
+]);
 
+// vendors/imelgrat/barcode-validator/src/barcode-validator.php
 /**
  * Item Model
  *
@@ -120,6 +124,16 @@ class Item extends AppModel
         return preg_match($codeRegex, $value) === 1;
     }
 
+    public function isValidConsumerUnit($check)
+    {
+        return BarcodeValidator::IsValidEAN13(array_values($check)[0]);
+    }
+
+    public function isValidTradeUnit($check)
+    {
+        return BarcodeValidator::IsValidEAN14(array_values($check)[0]);
+    }
+
     /**
      * Validation rules
      *
@@ -193,10 +207,18 @@ class Item extends AppModel
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ],
         ],
+
         'print_template_id' => [
             'printTemplate' => [
                 'rule' => 'notBlank',
                 'message' => 'All products require a pallet label print template',
+            ],
+        ],
+        'consumer_unit' => [
+            'consumerUnit' => [
+                'rule' => 'isValidConsumerUnit',
+                'message' => 'Must be a valid barcode',
+                'allowEmpty' => true,
             ],
         ],
         'trade_unit' => [
@@ -207,6 +229,10 @@ class Item extends AppModel
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
+            ],
+            'isValidBarcode' => [
+                'rule' => 'isValidTradeUnit',
+                'message' => 'Must be a valid barcode',
             ],
         ],
         'pack_size_id' => [
