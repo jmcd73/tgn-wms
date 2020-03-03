@@ -68,7 +68,7 @@ class AppModel extends Model
     public function getLabelPrinterById($printerId)
     {
         $printerModel = ClassRegistry::init('Printer');
-
+        $this->log('inside getLabelPrinterById');
         $printer = $printerModel->find(
             'first',
             [
