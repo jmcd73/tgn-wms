@@ -188,7 +188,7 @@ class Label extends CakeObject
      */
     public function setPdfOutFile($rootDir)
     {
-        $this->outFile = '/dev/stdout';
+        $this->outFile = tempnam($rootDir, 'glabels');
     }
 
     /**
@@ -392,17 +392,19 @@ class Label extends CakeObject
         if ($results['return_value'] !== 0) {
             return $results;
         }
+        /*
+                $pdfPattern = '/(%PDF-1.5.*%%EOF)/s';
 
-        $pdfPattern = '/(%PDF-1.5.*%%EOF)/s';
+                $this->log($results['stdout']);
 
-        $this->log($results['stdout']);
-
-        preg_match($pdfPattern, $results['stdout'], $matches);
-
+                preg_match($pdfPattern, $results['stdout'], $matches);
+         */
         /**
          * This grabs the PDF file out of the PDF
          */
-        $this->setPrintContent($matches[0]);
+        $this->setPrintContent(file_get_contents($this->getPdfOutFile()));
+
+        unlink($this->getPdfOutFile());
 
         return $this->sendPdfToLpr($printerDetails);
     }
