@@ -13,36 +13,32 @@ class Setting extends AppModel
     public $displayField = 'name';
 
     /**
-     * @param string $refname setting name
-     * @param string $productType 'sscc'
+     * @param string $settingName setting name
+     * @param int $companyPrefix the GS1 company prefix
+     *
      * @return string a number with leading zeros
      */
-    public function getReferenceNumber($refname, $productType = null)
+    public function getReferenceNumber($settingName, $companyPrefix)
     {
-        $ref = $this->find(
-            'first',
-            [
-                'conditions' => [
-                    'name' => $refname,
-                ],
-            ]
-        );
+        $next_val = $this->getSetting($settingName) + 1;
 
-        $next_val = $ref['Setting']['setting'] + 1;
+        $companyPrefixLength = strlen($companyPrefix);
 
-        switch ($productType) {
-            case 'sscc':
-                $fmt = '%09d';
-                break;
-            default:
-                break;
-        }
+        $fmt = '%0' . (16 - $companyPrefixLength) . 'd';
 
-        $this->id = $ref['Setting']['id'];
+        $saveThis = [
+            'id' => $this->settingId,
+            'setting' => $next_val,
+        ];
 
-        $this->saveField('setting', $next_val, false);
+        $this->save($saveThis, false);
 
         return sprintf($fmt, $next_val);
+    }
+
+    public function getCompanyPrefix()
+    {
+        return $this->getSetting(Configure::read('SSCC_COMPANY_PREFIX'));
     }
 
     /**

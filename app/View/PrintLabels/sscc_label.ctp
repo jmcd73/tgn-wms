@@ -41,8 +41,7 @@
                 </dd>
                 <dt><?=__('Sscc'); ?></dt>
                 <dd>
-                    <?=h($palletRecord['Pallet']['sscc']); ?>
-
+                    <?=$this->Html->sscc($palletRecord['Pallet']['sscc']); ?>
                 </dd>
                 <dt><?=__('Batch'); ?></dt>
                 <dd>
