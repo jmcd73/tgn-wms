@@ -60,14 +60,13 @@ class ToggenHtmlHelper extends BootstrapHtmlHelper
      *
      * Create a Twitter Bootstrap icon.
      *
-     * @param $icon The type of the icon (search, pencil, etc.)
-     * @param $opcions Options for icon
-     * @param $opcions['tag'] Tag use for the icon, "i" for default
-     * @param $opcions['font'] Font of the icon:
+     * @param string $icon The type of the icon (search, pencil, etc.)
+     * @param array $options Options for icon
+     * @param $options['tag'] Tag use for the icon, "i" for default
+     * @param $options['font'] Font of the icon:
      *                         "glyphicon" for default Twitter Bootstrap icon.
-     *                         "fa" for Font Awesome icon.
-     *
-    **/
+     *                         "fa" for Font Awesome icon.*
+     */
     public function icon($icon, array $options = [])
     {
         $tag = empty($options['tag']) ? 'i' : $options['tag'];
@@ -90,6 +89,8 @@ class ToggenHtmlHelper extends BootstrapHtmlHelper
      */
     public function sscc($sscc)
     {
-        return (new SsccFormatter($sscc))->sscc;
+        $companyPrefix = ClassRegistry::init('Setting')->getCompanyPrefix();
+
+        return (new SsccFormatter($sscc, $companyPrefix))->sscc;
     }
 }

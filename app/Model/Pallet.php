@@ -857,14 +857,17 @@ class Pallet extends AppModel
     public function generateSSCC()
     {
         $settings = ClassRegistry::init('Setting');
-        $sscc_ext = $this->getSetting('sscc_extension_digit');
-        $sscc_co = $this->getSetting('sscc_company_prefix');
-        $sscc_ref = $settings->getReferenceNumber('sscc_ref', 'sscc');
 
-        return $sscc_ext . $sscc_co . $sscc_ref;
+        $ssccExtensionDigit = $this->getSetting(Configure::read('SSCC_EXTENSION_DIGIT'));
+
+        $ssccCompanyPrefix = $settings->getCompanyPrefix();
+
+        $ssccReferenceNumber = $settings->getReferenceNumber(Configure::read('SSCC_REF'), $ssccCompanyPrefix);
+
+        return $ssccExtensionDigit . $ssccCompanyPrefix . $ssccReferenceNumber;
     }
 
-    // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
+    //phpcs:enable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
 
     /**
      * when fed a barcode number returns the GS1 checkdigit number

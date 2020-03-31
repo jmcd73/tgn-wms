@@ -1,6 +1,11 @@
 <?php
 $config = [
-    'companyName' => 'The Toggen Partnership',
+    // setting in settings table that holds the GS1 Company Prefix for use with
+    // SSCC labels
+    'SSCC_COMPANY_PREFIX' => 'sscc_company_prefix',
+    'SSCC_EXTENSION_DIGIT' => 'sscc_extension_digit',
+    'SSCC_REF' => 'sscc_ref',
+    'companyName' => 'Toggen Systems',
     'applicationName' => 'Toggen WMS',
     'ALLOWED_METHODS' => ['PUT', 'POST'],
     'ALLOWED_ORIGINS' => ['http://localhost:3000', 'http://localhost:8082'],

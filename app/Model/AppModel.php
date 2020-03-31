@@ -38,6 +38,7 @@ class AppModel extends Model
      * @var array
      */
     public $actsAs = ['Containable'];
+    public $settingId = null;
 
     /**
      * @param bool $id ID
@@ -68,7 +69,7 @@ class AppModel extends Model
     public function getLabelPrinterById($printerId)
     {
         $printerModel = ClassRegistry::init('Printer');
-        $this->log('inside getLabelPrinterById');
+
         $printer = $printerModel->find(
             'first',
             [
@@ -138,7 +139,7 @@ class AppModel extends Model
      * @param bool $inComment some settings are stored in the comment field as they have CR or JSON
      * @return string
      */
-    public function getSetting(string $settingname, bool $inComment = false)
+    public function getSetting($settingname, bool $inComment = false)
     {
         $settingModel = ClassRegistry::init('Setting');
         $setting = $settingModel->find(
@@ -161,6 +162,8 @@ class AppModel extends Model
                 '500'
             );
         }
+
+        $this->settingId = $setting['Setting']['id'];
 
         $slug = $inComment ? 'comment' : 'setting';
 
@@ -221,11 +224,7 @@ class AppModel extends Model
      */
     public function arrayToMysqlDate($date = [])
     {
-        if (is_array($date)) {
-            $return_date = $date['year'] . '-' . $date['month'] . '-' . $date['day'];
-        } else {
-            $return_date = $date;
-        }
+        $return_date = is_array($date) ? $date['year'] . '-' . $date['month'] . '-' . $date['day'] : $date;
 
         $ret = new DateTime($return_date);
 
@@ -278,26 +277,6 @@ class AppModel extends Model
 
         return $errorMessage;
     }
-
-    /* public function formatValidationErrors($validationErrors = [])
-    {
-    $errorMessage = null;
-    // get Validation errors and append them into a string
-
-    foreach ($validationErrors as $key => $value) {
-    if ($errorMessage) {
-    $errorMessage .= sprintf(". <strong>%s: </strong>", $key);
-    } else {
-    $errorMessage = sprintf("<strong>%s: </strong>", $key);
-    }
-
-    foreach ($value as $i => $j) {
-    $errorMessage .= $j;
-    }
-    };
-
-    return $errorMessage;
-    } */
 
     /**
      * @param datetime $date_time Y-m-d H:i:s
