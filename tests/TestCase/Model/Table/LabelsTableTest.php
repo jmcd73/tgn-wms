@@ -1,0 +1,81 @@
+<?php
+declare(strict_types=1);
+
+namespace App\Test\TestCase\Model\Table;
+
+use App\Model\Table\LabelsTable;
+use Cake\ORM\TableRegistry;
+use Cake\TestSuite\TestCase;
+
+/**
+ * App\Model\Table\LabelsTable Test Case
+ */
+class LabelsTableTest extends TestCase
+{
+    /**
+     * Test subject
+     *
+     * @var \App\Model\Table\LabelsTable
+     */
+    protected $Labels;
+
+    /**
+     * Fixtures
+     *
+     * @var array
+     */
+    protected $fixtures = [
+        'app.Labels',
+        'app.ProductionLines',
+        'app.Items',
+        'app.Printers',
+        'app.Locations',
+        'app.Shipments',
+        'app.InventoryStatuses',
+        'app.ProductTypes',
+    ];
+
+    /**
+     * setUp method
+     *
+     * @return void
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+        $config = TableRegistry::getTableLocator()->exists('Labels') ? [] : ['className' => LabelsTable::class];
+        $this->Labels = TableRegistry::getTableLocator()->get('Labels', $config);
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    public function tearDown(): void
+    {
+        unset($this->Labels);
+
+        parent::tearDown();
+    }
+
+    /**
+     * Test validationDefault method
+     *
+     * @return void
+     */
+    public function testValidationDefault(): void
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     */
+    public function testBuildRules(): void
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+}

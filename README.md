@@ -1,56 +1,53 @@
-# Toggen WMS
-This is a project that I have been working on for a number of years.
+# CakePHP Application Skeleton
 
-It was orginally coded for, and is still used in a production food manufacturing environment
+[![Build Status](https://img.shields.io/travis/cakephp/app/master.svg?style=flat-square)](https://travis-ci.org/cakephp/app)
+[![Total Downloads](https://img.shields.io/packagist/dt/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app)
+[![PHPStan](https://img.shields.io/badge/PHPStan-level%207-brightgreen.svg?style=flat-square)](https://github.com/phpstan/phpstan)
 
-It uses open source components to provide simple pallet and label printing and product production and dispatch workflow
+A skeleton for creating applications with [CakePHP](https://cakephp.org) 4.x.
 
-This github release has largely been rewritten and improved
-
-## Features
-* Product database for item data (GTIN13/14 barcode, weights, qauntity)
-* Locations, Inventory Status, Pack sizes
-* Very simple warehousing
-    * Can be configured so pallets 'move' directly to a default location or use simple put-away
-    * Minimum days life calculation so old product isn't sent out unless QA unholds it
-    * Dispatch PDF Pick slips
-    * Location usage / free space screen
-* Inventory statuses WAIT HOLD etc for QA
-* Bulk inventory status update screen
-* Settings table to manage Company Name, GS1 company prefix
-* Configure multiple product types, production lines  & printers
-* Numbering and coding
-    * Batch numbers based on ordinal day of year YDDDBB (e.g Last digit of year eg 9 day 105 batch 22)
-* Printing
-    * gLabels-batch printing
-    * GS1 Compliant SSCC labels to CAB Printers
-    * Zebra and CAB Printer Command Language Printing
-    * Endpoints to serve Product Lists as JSON or XML for external systems
-
-## Open source technologies
-### Docker development environment
-* PHP7.3
-* Apache
-* MySQL or MariaDB
-* Ubuntu 18.04 LTS
-* CUPS 2.2.x
-* CUPS-PDF
-* Supervisord
-
-### Application packages
-* [CakePHP 2.10.9](https://cakephp.org/)
-* [TCPDF](https://tcpdf.org/)
-* Bootstrap v3.4.1
-* [CakePHP 2.x Helpers for Bootstrap 3](https://github.com/Holt59/cakephp-bootstrap3-helpers)
-* ReactJS Embedded in CakePHP Views
-    * Shipment document add/edit screen
-    * Warehouse pallet pick screen
-* GLabels Barcode and Label Printing
+The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
 
 ## Installation
-See [docs/INSTALL.md](docs/INSTALL.md)
+
+1. Download [Composer](https://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
+2. Run `php composer.phar create-project --prefer-dist cakephp/app [app_name]`.
+
+If Composer is installed globally, run
+
+```bash
+composer create-project --prefer-dist cakephp/app
+```
+
+In case you want to use a custom app dir name (e.g. `/myapp/`):
+
+```bash
+composer create-project --prefer-dist cakephp/app myapp
+```
+
+You can now either use your machine's webserver to view the default home page, or start
+up the built-in webserver with:
+
+```bash
+bin/cake server -p 8765
+```
+
+Then visit `http://localhost:8765` to see the welcome page.
+
+## Update
+
+Since this skeleton is a starting point for your application and various files
+would have been modified as per your needs, there isn't a way to provide
+automated upgrades, so you have to do any updates manually.
 
 ## Configuration
-See [docs/SETUP.md](docs/SETUP.md)
 
+Read and edit the environment specific `config/app_local.php` and setup the 
+`'Datasources'` and any other configuration relevant for your application.
+Other environment agnostic settings can be changed in `config/app.php`.
 
+## Layout
+
+The app skeleton uses [Milligram](https://milligram.io/) (v1.3) minimalist CSS
+framework by default. You can, however, replace it with any other library or
+custom styles.

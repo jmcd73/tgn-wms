@@ -1,0 +1,1281 @@
+2020-04-01 04:35:53 Notice: Notice (8): Undefined variable: LabelFactory in [/Users/jmcd/sites/tgn-wms-cakephp4/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:38:45 Notice: Notice (8): Undefined variable: LabelFactory in [/Users/jmcd/sites/tgn-wms-cakephp4/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:39:06 Notice: Notice (8): Undefined variable: LabelFactory in [/Users/jmcd/sites/tgn-wms-cakephp4/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:39:06 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 46
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:39:06 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 58
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:39:06 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testAllClassesExist() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 67
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:39:06 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testPrintCountIsCorrect() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 78
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:39:37 Notice: Notice (8): Undefined variable: LabelFactory in [/Users/jmcd/sites/tgn-wms-cakephp4/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:39:37 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 46
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:39:37 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 58
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:39:37 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testAllClassesExist() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 67
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:39:37 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testPrintCountIsCorrect() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 78
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:40:28 Notice: Notice (8): Undefined variable: LabelFactory in [/Users/jmcd/sites/tgn-wms-cakephp4/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:40:28 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 46
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:40:28 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 58
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:40:28 Notice: Notice (8): Undefined index: bogusAction in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 58
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:40:28 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testAllClassesExist() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 67
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:40:28 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testPrintCountIsCorrect() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 78
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:40:53 Notice: Notice (8): Undefined variable: LabelFactory in [/Users/jmcd/sites/tgn-wms-cakephp4/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:40:53 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 46
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:40:53 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 58
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:40:53 Notice: Notice (8): Undefined index: bogusAction in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 58
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:40:53 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testAllClassesExist() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 67
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:40:53 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testPrintCountIsCorrect() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 78
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:41:03 Notice: Notice (8): Undefined variable: LabelFactory in [/Users/jmcd/sites/tgn-wms-cakephp4/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:41:03 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 46
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:41:03 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 58
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:41:03 Notice: Notice (8): Undefined index: bogusAction in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 58
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:41:03 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testAllClassesExist() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 67
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:41:03 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testPrintCountIsCorrect() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 78
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:41:30 Notice: Notice (8): Undefined variable: LabelFactory in [/Users/jmcd/sites/tgn-wms-cakephp4/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:41:30 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 46
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:41:30 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 58
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:41:30 Notice: Notice (8): Undefined index: bogusAction in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 58
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:41:30 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testAllClassesExist() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 67
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:41:30 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testPrintCountIsCorrect() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 78
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:42:05 Notice: Notice (8): Undefined variable: LabelFactory in [/Users/jmcd/sites/tgn-wms-cakephp4/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:42:05 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 46
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:42:05 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 58
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:42:05 Notice: Notice (8): Undefined index: bogusAction in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 58
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:42:05 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testAllClassesExist() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 67
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:42:05 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testPrintCountIsCorrect() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 78
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:42:20 Notice: Notice (8): Undefined variable: LabelFactory in [/Users/jmcd/sites/tgn-wms-cakephp4/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:42:20 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 46
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:42:20 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 58
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:42:20 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testAllClassesExist() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 67
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:42:20 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testPrintCountIsCorrect() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 78
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:42:44 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:42:44 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 57
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:42:44 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testAllClassesExist() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 66
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:42:44 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testPrintCountIsCorrect() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 77
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:42:50 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:42:50 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 57
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:42:50 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testAllClassesExist() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 66
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:42:50 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testPrintCountIsCorrect() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 77
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:44:17 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:44:17 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 57
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:44:17 Notice: Notice (8): Undefined index: bogusAction in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 57
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:44:17 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testAllClassesExist() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 66
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:44:17 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testPrintCountIsCorrect() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 77
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:44:31 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:44:31 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 57
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:44:31 Notice: Notice (8): Undefined index: bogusAction in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 57
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:44:31 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testAllClassesExist() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 66
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:44:31 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testPrintCountIsCorrect() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 77
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:45:09 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:45:09 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 57
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:45:09 Notice: Notice (8): Undefined index: bogusAction in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 57
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:45:09 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testAllClassesExist() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 66
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:45:09 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testPrintCountIsCorrect() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 77
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:45:28 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryWorks() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 45
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:45:28 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 57
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:45:28 Notice: Notice (8): Undefined index: bogusAction in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testLabelFactoryThrows() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 57
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:45:28 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testAllClassesExist() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 66
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 04:45:28 Notice: Deprecated (8192): Non-static method App\Lib\PrintLabels\LabelFactory::log() should not be called statically in [/Users/jmcd/sites/tgn-wms-cakephp4/src/Lib/PrintLabels/LabelFactory.php, line 48]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Lib\PrintLabels\LabelFactory::create() - APP/Lib/PrintLabels/LabelFactory.php, line 48
+App\Test\TestCase\Lib\Printing\LabelFactoryTest::testPrintCountIsCorrect() - ROOT/tests/TestCase/Lib/Printing/LabelFactoryTest.php, line 77
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - /Users/jmcd/.composer/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - /Users/jmcd/.composer/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
+2020-04-01 21:09:36 Notice: Notice (8): Undefined property: App\Test\TestCase\Model\Behavior\TgnUtilsBehaviorTest::$TgnUtils in [/Users/jmcd/sites/tgn-wms-cakephp4/tests/TestCase/Model/Behavior/TgnUtilsBehaviorTest.php, line 190]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 188
+App\Test\TestCase\Model\Behavior\TgnUtilsBehaviorTest::testFormatYymmdd() - ROOT/tests/TestCase/Model/Behavior/TgnUtilsBehaviorTest.php, line 190
+PHPUnit\Framework\TestCase::runTest() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1415
+PHPUnit\Framework\TestCase::runBare() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 1035
+PHPUnit\Framework\TestResult::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestResult.php, line 691
+PHPUnit\Framework\TestCase::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestCase.php, line 763
+PHPUnit\Framework\TestSuite::run() - ROOT/vendor/phpunit/phpunit/src/Framework/TestSuite.php, line 597
+PHPUnit\TextUI\TestRunner::doRun() - ROOT/vendor/phpunit/phpunit/src/TextUI/TestRunner.php, line 621
+PHPUnit\TextUI\Command::run() - ROOT/vendor/phpunit/phpunit/src/TextUI/Command.php, line 200
+PHPUnit\TextUI\Command::main() - ROOT/vendor/phpunit/phpunit/src/TextUI/Command.php, line 159
+[main] - ROOT/vendor/phpunit/phpunit/phpunit, line 61
+
+
+
