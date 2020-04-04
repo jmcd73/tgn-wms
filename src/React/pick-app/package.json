@@ -1,0 +1,30 @@
+{
+  "name": "pick-app",
+  "version": "0.2.0",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "js-cookie": "^2.2.1",
+    "react": "^16.13.1",
+    "react-app-polyfill": "^0.1.3",
+    "react-bootstrap": "^0.32.4",
+    "react-dom": "^16.13.1",
+    "react-scripts": "^3.4.1",
+    "whatwg-fetch": "^3.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build && rm -rf ../../../webroot/pick-app && cp -rv build ../../../webroot/pick-app",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

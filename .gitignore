@@ -8,6 +8,7 @@ phpinfo.php
 .htaccess
 .config/
 .vscode/settings.json
+vendor/
 vendors/
 app/tmp
 .htaccess
@@ -28,3 +29,4 @@ dev/scripted upgrade/sql/pallets-snapshot-*
 dev/scratch/
 dev/scratch/compactIsArray.php
 dev/scripted upgrade/sql/mysql-bin*
+old/
