@@ -45,9 +45,9 @@
             <td><?= h($carton->modified) ?></td>
             <td><?= $carton->has('user') ? $this->Html->link($carton->user->id, ['controller' => 'Users', 'action' => 'view', $carton->user->id]) : '' ?></td>
             <td class="actions">
-                <?= $this->Html->link(__('View'), ['action' => 'view', $carton->id], ['title' => __('View'), 'class' => 'btn btn-secondary']) ?>
-                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $carton->id], ['title' => __('Edit'), 'class' => 'btn btn-secondary']) ?>
-                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $carton->id], ['confirm' => __('Are you sure you want to delete # {0}?', $carton->id), 'title' => __('Delete'), 'class' => 'btn btn-danger']) ?>
+                <?= $this->Html->link(__('View'), ['action' => 'view', $carton->id], ['title' => __('View'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $carton->id], ['title' => __('Edit'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $carton->id], ['confirm' => __('Are you sure you want to delete # {0}?', $carton->id), 'title' => __('Delete'), 'class' => 'btn btn-danger btn-sm mb-1']) ?>
             </td>
         </tr>
         <?php endforeach; ?>

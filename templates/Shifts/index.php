@@ -45,9 +45,9 @@
             <td><?= h($shift->stop_time) ?></td>
             <td><?= $shift->has('product_type') ? $this->Html->link($shift->product_type->name, ['controller' => 'ProductTypes', 'action' => 'view', $shift->product_type->id]) : '' ?></td>
             <td class="actions">
-                <?= $this->Html->link(__('View'), ['action' => 'view', $shift->id], ['title' => __('View'), 'class' => 'btn btn-secondary']) ?>
-                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $shift->id], ['title' => __('Edit'), 'class' => 'btn btn-secondary']) ?>
-                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $shift->id], ['confirm' => __('Are you sure you want to delete # {0}?', $shift->id), 'title' => __('Delete'), 'class' => 'btn btn-danger']) ?>
+                <?= $this->Html->link(__('View'), ['action' => 'view', $shift->id], ['title' => __('View'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $shift->id], ['title' => __('Edit'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $shift->id], ['confirm' => __('Are you sure you want to delete # {0}?', $shift->id), 'title' => __('Delete'), 'class' => 'btn btn-danger btn-sm mb-1']) ?>
             </td>
         </tr>
         <?php endforeach; ?>

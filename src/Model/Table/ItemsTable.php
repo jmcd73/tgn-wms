@@ -72,9 +72,6 @@ class ItemsTable extends Table
         $this->hasMany('Cartons', [
             'foreignKey' => 'item_id',
         ]);
-        $this->hasMany('Labels', [
-            'foreignKey' => 'item_id',
-        ]);
         $this->hasMany('Pallets.s', [
             'foreignKey' => 'item_id',
         ]);

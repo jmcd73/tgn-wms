@@ -60,9 +60,6 @@ class ProductTypesTable extends Table
         $this->hasMany('Items', [
             'foreignKey' => 'product_type_id',
         ]);
-        $this->hasMany('Labels', [
-            'foreignKey' => 'product_type_id',
-        ]);
         $this->hasMany('Locations', [
             'foreignKey' => 'product_type_id',
         ]);

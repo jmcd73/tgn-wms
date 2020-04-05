@@ -34,7 +34,7 @@ class InventoryStatusesController extends AppController
     public function view($id = null)
     {
         $inventoryStatus = $this->InventoryStatuses->get($id, [
-            'contain' => ['Labels', 'Pallets', 'ProductTypes'],
+            'contain' => ['Pallets', 'ProductTypes'],
         ]);
 
         $this->set('inventoryStatus', $inventoryStatus);

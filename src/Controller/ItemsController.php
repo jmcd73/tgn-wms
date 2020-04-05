@@ -52,7 +52,7 @@ class ItemsController extends AppController
     public function view($id = null)
     {
         $item = $this->Items->get($id, [
-            'contain' => ['PackSizes', 'ProductTypes', 'PrintTemplates', 'Cartons', 'Labels', 'Pallets'],
+            'contain' => ['PackSizes', 'ProductTypes', 'PrintTemplates', 'Cartons',  'Pallets'],
         ]);
 
         $this->set('item', $item);

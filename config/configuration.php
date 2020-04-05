@@ -4,6 +4,7 @@ $appName = 'Toggen WMS';
 $companyName = 'Toggen Systems';
 
 return [
+    'timezones' => DateTimeZone::AUSTRALIA, // extras with a pipe | DateTimeZone::EUROPE,
     'Ctrl' => [
         'printControllersActions' => [
             'Pallets' => [
@@ -23,10 +24,6 @@ return [
                 'sampleLabels',
                 'ssccLabel', ],
         ], ],
-    'App' => [
-        'title' => $appName,
-        'author' => $companyName,
-    ],
     // setting in settings table that holds the GS1 Company Prefix for use with
     // SSCC labels
     'SSCC_COMPANY_PREFIX' => 'sscc_company_prefix',

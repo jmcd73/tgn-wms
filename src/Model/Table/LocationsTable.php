@@ -54,9 +54,7 @@ class LocationsTable extends Table
             'foreignKey' => 'product_type_id',
             'joinType' => 'INNER',
         ]);
-        $this->hasMany('Labels', [
-            'foreignKey' => 'location_id',
-        ]);
+
         $this->hasMany('Pallets', [
             'foreignKey' => 'location_id',
         ]);

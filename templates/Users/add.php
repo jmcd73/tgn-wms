@@ -9,8 +9,10 @@
 
 <?php $this->start('tb_actions'); ?>
 <li><?= $this->Html->link(__('List Users'), ['action' => 'index'], ['class' => 'nav-link']) ?></li>
-<li><?= $this->Html->link(__('List Cartons'), ['controller' => 'Cartons', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
-<li><?= $this->Html->link(__('New Carton'), ['controller' => 'Cartons', 'action' => 'add'], ['class' => 'nav-link']) ?></li>
+<li><?= $this->Html->link(__('List Cartons'), ['controller' => 'Cartons', 'action' => 'index'], ['class' => 'nav-link']) ?>
+</li>
+<li><?= $this->Html->link(__('New Carton'), ['controller' => 'Cartons', 'action' => 'add'], ['class' => 'nav-link']) ?>
+</li>
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', '<ul class="nav flex-column">' . $this->fetch('tb_actions') . '</ul>'); ?>
 
@@ -24,6 +26,9 @@
             echo $this->Form->control('password');
             echo $this->Form->control('role');
             echo $this->Form->control('full_name');
+            echo $this->Form->control('timezone', [
+                'empty' => '(select)',
+            ]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

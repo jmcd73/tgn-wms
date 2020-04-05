@@ -52,9 +52,7 @@ class ProductionLinesTable extends Table
         $this->belongsTo('ProductTypes', [
             'foreignKey' => 'product_type_id',
         ]);
-        $this->hasMany('Labels', [
-            'foreignKey' => 'production_line_id',
-        ]);
+
         $this->hasMany('Pallets', [
             'foreignKey' => 'production_line_id',
         ]);

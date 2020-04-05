@@ -3,7 +3,7 @@ $(function () {
   //      console.log($(this).is(':checked'));
   //  })
 
-  $("#PalletChangeTo").change(function (e) {
+  $("#change-to").change(function (e) {
     console.log("select change" + $(this).val());
     form = $(this).closest("form");
     $val = $(this).val();
@@ -20,11 +20,11 @@ $(function () {
       console.log("inChecked === 0 true if block");
       $(this).prop("checked", true);
       $(this).data("checked", 1);
-      tr.addClass("success");
+      tr.addClass("table-success");
     } else {
       console.log("inChecked in false if block");
       $(this).prop("checked", false);
-      tr.removeClass("success");
+      tr.removeClass("table-success");
       tr.find('input[type="radio"]').each(function () {
         $(this).data("checked", 0);
       });

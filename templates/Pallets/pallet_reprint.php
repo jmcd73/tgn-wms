@@ -1,7 +1,5 @@
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
-
 <div class="container">
-
     <div class="row">
         <div class="col-md-6 col-lg-6 col-sm-6">
             <h3><?=__('Reprint Label'); ?></h3>
@@ -46,39 +44,36 @@
         </div>
         <div class="col-md-6 col-lg-6 col-sm-6">
             <?=$this->Form->create($pallet); ?>
-            <?=$this->Form->hidden('Pallet.id') ?>
-
+            <?=$this->Form->hidden('id') ?>
             <h4 class="tpad">Printer</h4>
-
-            <?=$this->Form->control(
-    'printer_id',
-    [
-        'type' => 'radio',
-        'default' => $printers['default'] ? $printers['default'] : '',
-        'options' => $printers['printers'],
-        'legend' => false,
-    ]
-); ?>
+            <?=
+            $this->Form->control(
+                'printer_id',
+                [
+                    'type' => 'radio',
+                    'default' => $printers['default'] ? $printers['default'] : '',
+                    'options' => $printers['printers'],
+                    'legend' => false,
+                ]
+            ); ?>
             <h4 class="tpad">Label Copies</h4>
-            <?= $this->Form->control(
-    'copies',
-    [
-        'type' => 'radio',
-        'legend' => false,
-        'options' => $labelCopiesList,
-        'default' => $inputDefaultCopies,
-    ]
-); ?>
+            <?=
+            $this->Form->control(
+                'copies',
+                [
+                    'type' => 'radio',
+                    'legend' => false,
+                    'options' => $labelCopiesList,
+                    'default' => $inputDefaultCopies,
+                ]
+            ); ?>
             <?php echo $this->Form->control('refer', [
                 'type' => 'hidden',
                 'value' => $refer,
             ]); ?>
-            <?=$this->Form->end([
-                'label' => 'Reprint',
-                'bootstrap-type' => 'primary',
-                'bootstrap-size' => 'lg',
-                'class' => 'tpad',
-            ]); ?>
+            <?php echo $this->Form->submit('Reprint'); ?>
+
+            <?=$this->Form->end(); ?>
         </div>
     </div>
 </div>

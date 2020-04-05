@@ -1,7 +1,6 @@
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 
 <?php $this->start('tb_actions'); ?>
-
 <?php
 echo $this->Form->create();
 echo $this->Form->control(
@@ -13,16 +12,13 @@ echo $this->Form->control(
 echo $this->Form->submit();
 echo $this->Form->end();
 ?>
-
-
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', '<div class="col">' . $this->fetch('tb_actions') . '</div>'); ?>
-
 
 <div class="container-fluid">
     <div class="col">
         <?php if (!empty($shift_date)): ?>
-        <h4>Shift Report for&nbsp;<?php echo $this->Time->format($shift_date, 'D d M Y'); ?></h4>
+        <h4>Shift Report for&nbsp;<?php echo h($shift_date); ?></h4>
         <?php endif; ?>
         <?php if (!empty($reports)): ?>
         <?php foreach ($reports as $report): ?>
@@ -66,7 +62,7 @@ echo $this->Form->end();
             </table>
             <?php else: ?>
             <div class="panel-body">
-                <?php echo $this->element('Flash/error', ['message' => 'No production data', 'key' => 'test']); ?>
+                <?php echo $this->element('flash/error', ['message' => 'No production data', 'key' => 'test']); ?>
             </div>
             <?php endif; ?>
 
@@ -101,9 +97,10 @@ echo $this->Form->end();
                         $qtyPrevious = 0;
                     ?>
 
-                    <?php $palletTotal = $carton['pallet']['items']['quantity'];
-    $cartonTotal += $carton['count'];
-$qtyPrevious = $carton['pallet']['qty_previous'] ?>
+                    <?php
+                    $palletTotal = $carton['pallet']['items']['quantity'];
+                    $cartonTotal += $carton['count'];
+                    $qtyPrevious = $carton['pallet']['qty_previous'] ?>
                     <tr>
                         <td><?php echo $carton['pallet']['production_lines']['name']; ?></td>
                         <td><?php echo $carton['pallet']['item']; ?></td>
@@ -114,26 +111,26 @@ $qtyPrevious = $carton['pallet']['qty_previous'] ?>
                         <td><?php echo $carton['production_date']; ?></td>
                         <td><?php echo $carton['best_before']; ?></td>
                         <td><?php echo $this->Html->link(
-    'Edit',
-    [
-        'controller' => 'Cartons',
-        'action' => 'editPalletCartons',
-        $carton['Pallet']['id'],
-    ],
-    ['class' => 'btn btn-link btn-xs edit']
-); ?>
+                        'Edit',
+                        [
+                            'controller' => 'Cartons',
+                            'action' => 'editPalletCartons',
+                            $carton['Pallet']['id'],
+                        ],
+                        ['class' => 'btn btn-link btn-xs edit']
+                    ); ?>
                         </td>
                     </tr>
 
                     <?php $movement = $cartonTotal - $qtyPrevious; ?>
 
                     <?php if ($cartonTotal == $qtyPrevious) {
-    $movementClass = 'movement-none';
-} elseif ($movement < 0) {
-    $movementClass = 'movement-down';
-} else {
-    $movementClass = 'movement-up';
-}; //?>
+                        $movementClass = 'movement-none';
+                    } elseif ($movement < 0) {
+                        $movementClass = 'movement-down';
+                    } else {
+                        $movementClass = 'movement-up';
+                    }; //?>
 
                     <tr>
                         <td colspan="4" class="text-right">
@@ -159,7 +156,9 @@ $qtyPrevious = $carton['pallet']['qty_previous'] ?>
             </table>
             <?php else: ?>
             <div class="panel-body">
-                <?php echo $this->element('Flash/error', ['message' => 'No part or changed quantity pallets during shift', 'key' => 'test']); ?>
+                <?php echo $this->element('flash/default', ['message' => 'No part or changed quantity pallets during shift',
+                    'class' => 'alert alert-warning',
+                    'key' => 'test', ]); ?>
             </div>
             <?php endif; ?>
 

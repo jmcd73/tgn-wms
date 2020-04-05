@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Core\Configure;
+use DateTimeZone;
+
 /**
  * Users Controller
  *
@@ -57,7 +60,11 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
-        $this->set(compact('user'));
+        $timezones = DateTimeZone::listIdentifiers(Configure::read('timezones'));
+
+        $timezones = array_combine($timezones, $timezones);
+
+        $this->set(compact('user', 'timezones'));
     }
 
     /**
@@ -81,7 +88,12 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
-        $this->set(compact('user'));
+
+        $timezones = DateTimeZone::listIdentifiers(Configure::read('timezones'));
+
+        $timezones = array_combine($timezones, $timezones);
+
+        $this->set(compact('user', 'timezones'));
     }
 
     /**

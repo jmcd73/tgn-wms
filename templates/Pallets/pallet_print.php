@@ -33,9 +33,7 @@ $this->Html->script(
 </ul>
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', '<div class="col">' . $this->fetch('tb_actions') . '</div>'); ?>
-<?php if (empty($productType)): ?>
-<p>Select a product type</p>
-<?php else: ?>
+<?php if (!empty($productType)): ?>
 <div <?= 'class="' . join(' ', [
     'container',
     $this->request->getParam('controller'),
@@ -48,19 +46,19 @@ $this->Html->script(
                 <?= __('Print {0} Pallet Labels', Inflector::humanize($productType->name)); ?>
 
                 <?= $this->Html->link(
-            $this->Html->icon('question-circle', [
-                'iconSet' => 'far',
-                'prefix' => 'fa',
-            ]),
-            [
-                'controller' => 'pages',
-                'action' => 'display',
-                'pallet_print_help',
-            ],
-            [
-                'escape' => false,
-            ]
-        ); ?></h3>
+    $this->Html->icon('question-circle', [
+        'iconSet' => 'far',
+        'prefix' => 'fa',
+    ]),
+    [
+        'controller' => 'pages',
+        'action' => 'display',
+        'pallet_print_help',
+    ],
+    [
+        'escape' => false,
+    ]
+); ?></h3>
         </div>
     </div>
     <div class="row">
@@ -92,27 +90,27 @@ $this->Html->script(
                 'empty' => '(select)',
             ]); ?>
             <?php echo $this->Form->control(
-                        'production_line',
-                        [
-                            'options' => $productionLines,
-                            'empty' => '(select)',
-                        ]
-                    ); ?>
+                'production_line',
+                [
+                    'options' => $productionLines,
+                    'empty' => '(select)',
+                ]
+            ); ?>
             <?php echo $this->Form->hidden('productType', ['value' => $productType->id, 'class' => 'productType']); ?>
             <?php echo $this->Form->control('part_pallet-' . $key, [
                 'label' => 'Part Pallet',
                 'type' => 'checkbox',
                 'data-queryurl' => $this->Url->build(['controller' => 'items', 'action' => 'product']), ]); ?>
             <?php echo $this->Form->control(
-                            'qty',
-                            [
-                                'class' => 'qty',
-                                'type' => 'select',
-                                'templates' => [
-                                    'inputContainer' => '<div class="form-group tgn-qty {{type}}{{required}}">{{content}}{{help}}</div>',
-                                ],
-                            ]
-                        ); ?>
+                    'qty',
+                    [
+                        'class' => 'qty',
+                        'type' => 'select',
+                        'templates' => [
+                            'inputContainer' => '<div class="form-group tgn-qty {{type}}{{required}}">{{content}}{{help}}</div>',
+                        ],
+                    ]
+                ); ?>
             <?php echo $this->Form->control(
                     'batch_no',
                     [

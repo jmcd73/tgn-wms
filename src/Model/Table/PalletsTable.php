@@ -257,78 +257,17 @@ class PalletsTable extends Table
      */
     public function locationSpaceUsageOptions($filter, $productTypeId = 'all')
     {
-        /*  $this->virtualFields['Pallets'] = 'COUNT(Pallets.id)';
-         $this->virtualFields['hasSpace'] = 'COUNT(Pallets.id) < Locations.pallet_capacity';
-         $this->virtualFields['LocationId'] = 'Locations.id';
-         $this->virtualFields['pallet_capacity'] = 'Locations.pallet_capacity';
-         $this->virtualFields['Location'] = 'Locations.location';
-
-         $options = [
-             'recursive' => -1,
-             'fields' => [
-                 'COUNT(Pallets.id) AS Pallet__Pallets',
-                 'COUNT(Pallets.id) < Locations.pallet_capacity as Pallet__hasSpace',
-                 'Locations.id  AS Pallet__LocationId',
-                 'Locations.pallet_capacity AS Pallet__pallet_capacity',
-                 'Locations.location AS Pallet__Location',
-             ],
-             'joins' => [
-                 [
-                     'table' => 'shipments',
-                     'alias' => 'Shipment',
-                     'type' => 'LEFT',
-                     'conditions' => [
-                         'Pallets.shipment_id = Shipments.id',
-                         'Shipments.shipped' => 0,
-                     ],
-                 ],
-                 [
-                     'table' => 'locations',
-                     'alias' => 'Location',
-                     'type' => 'RIGHT',
-                     'conditions' => [
-                         '( 	Pallets.location_id = Locations.id AND
-                             Pallets.location_id <> 0 AND
-                             Pallets.inventory_status_id <> 2 AND
-                             Pallets.picked <> true ) AND
-                         (
-                             ( Pallets.shipment_id = 0 ) OR
-                             ( Pallets.shipment_id <> 0 AND Shipments.shipped IS NOT NULL))',
-                     ],
-                 ],
-             ],
-             'order' => [
-                 'Locations.location' => 'ASC',
-             ],
-             'group' => [
-                 'Locations.id',
-             ],
-         ];
-
-         $having = [
-             'having' => [
-                 'Locations.pallet_capacity > COUNT(Pallets.id)',
-             ],
-         ];
-
-         if ($productTypeId !== 'all') {
-             $options['conditions'] = [
-                 'Locations.product_type_id' => $productTypeId,
-             ];
-         }
-
-         if ($filter === 'available') {
-             $options += $having;
-         }
-         if ($extraOptions) {
-             $options += $extraOptions;
-         }
-
-         return $options; */
-
         $query = $this->find();
+        //'COUNT(Pallets.id) < L.pallet_capacity'
 
-        $query->join(
+        $query->select([
+            'pallets' => $query->func()->count('Pallets.id'),
+            'hasSpace' => '(COUNT(Pallets.id) < L.pallet_capacity)',
+            //'(COUNT(Pallets.id) < L.pallet_capacity)',
+            'location_id' => 'L.id',
+            'pallet_capacity' => 'L.pallet_capacity',
+            'location' => 'L.location',
+        ])->join(
             [
                 'S' => [
                     'table' => 'shipments',
@@ -352,24 +291,23 @@ class PalletsTable extends Table
                     ],
                 ],
             ]
-        );
-
-        $query->select([
-            'Pallet__Pallets' => 'COUNT(Pallets.id)',
-            'Pallet__hasSpace' => 'COUNT(Pallets.id) < L.pallet_capacity',
-            'Pallet__LocationId' => 'L.id',
-            'Pallet__pallet_capacity' => 'L.pallet_capacity',
-            'Pallet__Location' => 'L.location',
-        ])->group(
+        )->group(
             [
                 'L.id',
             ]
-        )->orderAsc('L.location');
+        );
 
-        if ($filter === 'available') {
-            $query->having([
-                'L.pallet_capacity > COUNT(Pallets.id)',
-            ]);
+        switch ($filter) {
+            case 'available':
+                $query->having([
+                    'L.pallet_capacity > COUNT(Pallets.id)',
+                ]);
+                break;
+            case 'full':
+                $query->having([
+                    'L.pallet_capacity <= COUNT(Pallets.id)',
+                ]);
+                break;
         }
 
         if (is_numeric($productTypeId)) {
@@ -377,7 +315,7 @@ class PalletsTable extends Table
                 'L.product_type_id' => $productTypeId,
             ]);
         }
-        $this->log(print_r(get_defined_vars(), true));
+
         return $query;
     }
 
@@ -407,6 +345,7 @@ class PalletsTable extends Table
             $minutes = $shift['shift_minutes'];
 
             $start_date_time = $queryDate . ' ' . $start_time;
+            tog(['start_time' => $start_time, 'start_date_time' => $start_date_time, 'minutes' => $minutes]);
 
             $end_date_time = $this->addMinutesToDateTime($start_date_time, $minutes);
 
@@ -503,7 +442,6 @@ class PalletsTable extends Table
         $array_keys = array_keys($pallets);
 
         $last = end($array_keys);
-        $this->log(print_r($pallets, true));
 
         foreach ($pallets as $key => $pallet) {
             $line = $pallet['production_line'];
@@ -514,9 +452,12 @@ class PalletsTable extends Table
                 $record_num++;
                 $index = $key - 1;
                 if (isset($pallets[$index])) {
-                    $report[$record_num - 1]['last_pallet'] = $pallets[$index]['Pallet']['created'];
+                    $report[$record_num - 1]['last_pallet'] = $pallets[$index]['created'];
 
-                    $report[$record_num - 1]['run_time'] = $this->getDateTimeDiff($report[$record_num - 1]['first_pallet'], $report[$record_num - 1]['last_pallet']);
+                    $report[$record_num - 1]['run_time'] = $this->getDateTimeDiff(
+                        $report[$record_num - 1]['first_pallet'],
+                        $report[$record_num - 1]['last_pallet']
+                    );
 
                     $report[$record_num - 1]['pallets'] = $this->palletsDotCartons(
                         $report[$record_num - 1]['carton_total'],
@@ -528,8 +469,8 @@ class PalletsTable extends Table
             }
             if ($changed_product) {
                 $report[$record_num]['report_date'] = $date;
-                $report[$record_num]['shift_id'] = $shift['Shift']['id'];
-                $report[$record_num]['shift'] = $shift['Shift']['name'];
+                $report[$record_num]['shift_id'] = $shift['id'];
+                $report[$record_num]['shift'] = $shift['name'];
                 $report[$record_num]['standard_pl_qty'] = $pallet['items']['quantity'];
                 $report[$record_num]['production_line'] = $pallet['production_line'];
                 $report[$record_num]['item'] = $pallet['item'];
@@ -816,9 +757,7 @@ class PalletsTable extends Table
     {
         $query = $this->locationSpaceUsageOptions($filter, $productTypeId);
 
-        $available = $query->toArray();
-        $this->log('Available: ' . print_r($available, true));
-        $availableLocations = Hash::combine($available, '{n}.Pallet.LocationId', '{n}.Pallet.Location', $groupPath = null);
+        $availableLocations = $query->combine('location_id', 'location')->toArray();
 
         return $availableLocations;
     }
@@ -1023,5 +962,23 @@ class PalletsTable extends Table
                 throw new Exception('Could not save Carton record in Pallet.php afterSave method');
             }
         }
+    }
+
+    /**
+    * @param array $sndata $this->data
+    * @return mixed
+    */
+    public function inventoryStatusNote($sndata)
+    {
+        $inventory_status_note = '';
+
+        if (
+            isset($sndata['inventory_status_note_global'])
+            && !empty($sndata['inventory_status_note_global'])
+        ) {
+            $inventory_status_note = $sndata['inventory_status_note_global'];
+        }
+
+        return $inventory_status_note;
     }
 }

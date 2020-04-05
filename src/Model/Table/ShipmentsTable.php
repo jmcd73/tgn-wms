@@ -52,9 +52,7 @@ class ShipmentsTable extends Table
         $this->belongsTo('ProductTypes', [
             'foreignKey' => 'product_type_id',
         ]);
-        $this->hasMany('Labels', [
-            'foreignKey' => 'shipment_id',
-        ]);
+
         $this->hasMany('Pallets', [
             'foreignKey' => 'shipment_id',
         ]);

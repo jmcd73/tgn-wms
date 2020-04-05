@@ -61,9 +61,9 @@
             <td><?= $printTemplate->has('parent_print_template') ? $this->Html->link($printTemplate->parent_print_template->name, ['controller' => 'PrintTemplates', 'action' => 'view', $printTemplate->parent_print_template->id]) : '' ?></td>
             <td><?= h($printTemplate->replace_tokens) ?></td>
             <td class="actions">
-                <?= $this->Html->link(__('View'), ['action' => 'view', $printTemplate->id], ['title' => __('View'), 'class' => 'btn btn-secondary']) ?>
-                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $printTemplate->id], ['title' => __('Edit'), 'class' => 'btn btn-secondary']) ?>
-                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $printTemplate->id], ['confirm' => __('Are you sure you want to delete # {0}?', $printTemplate->id), 'title' => __('Delete'), 'class' => 'btn btn-danger']) ?>
+                <?= $this->Html->link(__('View'), ['action' => 'view', $printTemplate->id], ['title' => __('View'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $printTemplate->id], ['title' => __('Edit'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $printTemplate->id], ['confirm' => __('Are you sure you want to delete # {0}?', $printTemplate->id), 'title' => __('Delete'), 'class' => 'btn btn-danger btn-sm mb-1']) ?>
             </td>
         </tr>
         <?php endforeach; ?>

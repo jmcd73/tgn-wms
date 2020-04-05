@@ -8,13 +8,18 @@
 
 <?php $this->start('tb_actions'); ?>
 <li><?= $this->Html->link(__('Edit Menu'), ['action' => 'edit', $menu->id], ['class' => 'nav-link']) ?></li>
-<li><?= $this->Form->postLink(__('Delete Menu'), ['action' => 'delete', $menu->id], ['confirm' => __('Are you sure you want to delete # {0}?', $menu->id), 'class' => 'nav-link']) ?></li>
+<li><?= $this->Form->postLink(__('Delete Menu'), ['action' => 'delete', $menu->id], ['confirm' => __('Are you sure you want to delete # {0}?', $menu->id), 'class' => 'nav-link']) ?>
+</li>
 <li><?= $this->Html->link(__('List Menus'), ['action' => 'index'], ['class' => 'nav-link']) ?> </li>
 <li><?= $this->Html->link(__('New Menu'), ['action' => 'add'], ['class' => 'nav-link']) ?> </li>
-<li><?= $this->Html->link(__('List Parent Menus'), ['controller' => 'Menus', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
-<li><?= $this->Html->link(__('New Parent Menu'), ['controller' => 'Menus', 'action' => 'add'], ['class' => 'nav-link']) ?></li>
-<li><?= $this->Html->link(__('List Child Menus'), ['controller' => 'Menus', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
-<li><?= $this->Html->link(__('New Child Menu'), ['controller' => 'Menus', 'action' => 'add'], ['class' => 'nav-link']) ?></li>
+<li><?= $this->Html->link(__('List Parent Menus'), ['controller' => 'Menus', 'action' => 'index'], ['class' => 'nav-link']) ?>
+</li>
+<li><?= $this->Html->link(__('New Parent Menu'), ['controller' => 'Menus', 'action' => 'add'], ['class' => 'nav-link']) ?>
+</li>
+<li><?= $this->Html->link(__('List Child Menus'), ['controller' => 'Menus', 'action' => 'index'], ['class' => 'nav-link']) ?>
+</li>
+<li><?= $this->Html->link(__('New Child Menu'), ['controller' => 'Menus', 'action' => 'add'], ['class' => 'nav-link']) ?>
+</li>
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', '<ul class="nav flex-column">' . $this->fetch('tb_actions') . '</ul>'); ?>
 
@@ -44,7 +49,8 @@
             </tr>
             <tr>
                 <th scope="row"><?= __('Parent Menu') ?></th>
-                <td><?= $menu->has('parent_menu') ? $this->Html->link($menu->parent_menu->name, ['controller' => 'Menus', 'action' => 'view', $menu->parent_menu->id]) : '' ?></td>
+                <td><?= $menu->has('parent_menu') ? $this->Html->link($menu->parent_menu->name, ['controller' => 'Menus', 'action' => 'view', $menu->parent_menu->id]) : '' ?>
+                </td>
             </tr>
             <tr>
                 <th scope="row"><?= __('Bs Url') ?></th>
@@ -137,9 +143,37 @@
                     <td><?= h($childMenus->bs_url) ?></td>
                     <td><?= h($childMenus->extra_args) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['controller' => 'Menus', 'action' => 'view', $childMenus->id], ['class' => 'btn btn-secondary']) ?>
-                        <?= $this->Html->link(__('Edit'), ['controller' => 'Menus', 'action' => 'edit', $childMenus->id], ['class' => 'btn btn-secondary']) ?>
-                        <?= $this->Form->postLink( __('Delete'), ['controller' => 'Menus', 'action' => 'delete', $childMenus->id], ['confirm' => __('Are you sure you want to delete # {0}?', $childMenus->id), 'class' => 'btn btn-danger']) ?>
+                        <?php
+                                echo $this->Form->create(null, [
+                                    'style' => 'width: 120px',
+                                    'url' => [
+                                        'action' => 'move',
+                                        $childMenus->id,
+                                    ],
+                                ]);
+                                echo $this->Form->control('amount', [
+                                    'prepend' => $this->Form->button(
+                                        '',
+                                        [
+                                            'type' => 'submit',
+                                            'name' => 'moveUp',
+                                            'class' => 'move-up',
+                                        ]
+                                    ),
+                                    'append' => $this->Form->button(
+                                        '',
+                                        [
+                                            'type' => 'submit',
+                                            'name' => 'moveDown',
+                                            'class' => 'move-down',
+                                        ]
+                                    ),
+                                ]);
+                                echo $this->Form->end();
+                            ?>
+                        <?= $this->Html->link(__('View'), ['controller' => 'Menus', 'action' => 'view', $childMenus->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                        <?= $this->Html->link(__('Edit'), ['controller' => 'Menus', 'action' => 'edit', $childMenus->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                        <?= $this->Form->postLink(__('Delete'), ['controller' => 'Menus', 'action' => 'delete', $childMenus->id], ['confirm' => __('Are you sure you want to delete # {0}?', $childMenus->id), 'class' => 'btn btn-danger btn-sm mb-1']) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

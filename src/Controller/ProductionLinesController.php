@@ -37,7 +37,7 @@ class ProductionLinesController extends AppController
     public function view($id = null)
     {
         $productionLine = $this->ProductionLines->get($id, [
-            'contain' => ['Printers', 'ProductTypes', 'Labels', 'Pallets'],
+            'contain' => ['Printers', 'ProductTypes',  'Pallets'],
         ]);
 
         $this->set('productionLine', $productionLine);

@@ -742,3 +742,17 @@ table.cartons.table-bordered > tbody > tr:last-child:not(:only-child) > td {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
 }
+
+button.move-up::before {
+  font-family: "Font awesome 5 Free";
+  font-weight: 900;
+
+  content: "\f0d8";
+}
+
+button.move-down::before {
+  font-family: "Font awesome 5 Free";
+  font-weight: 900;
+
+  content: "\f0d7";
+}
