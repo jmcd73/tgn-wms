@@ -13,24 +13,24 @@
 
 <table class="table table-striped">
     <thead>
-    <tr>
-        <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-        <th scope="col"><?= $this->Paginator->sort('active') ?></th>
-        <th scope="col"><?= $this->Paginator->sort('divider') ?></th>
-        <th scope="col"><?= $this->Paginator->sort('header') ?></th>
-        <th scope="col"><?= $this->Paginator->sort('admin_menu') ?></th>
-        <th scope="col"><?= $this->Paginator->sort('name') ?></th>
-        <th scope="col"><?= $this->Paginator->sort('description') ?></th>
-        <th scope="col"><?= $this->Paginator->sort('url') ?></th>
-        <th scope="col"><?= $this->Paginator->sort('options') ?></th>
-        <th scope="col"><?= $this->Paginator->sort('title') ?></th>
-        <th scope="col"><?= $this->Paginator->sort('parent_id') ?></th>
-        <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
-        <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-        <th scope="col"><?= $this->Paginator->sort('bs_url') ?></th>
-        <th scope="col"><?= $this->Paginator->sort('extra_args') ?></th>
-        <th scope="col" class="actions"><?= __('Actions') ?></th>
-    </tr>
+        <tr>
+            <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('active') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('divider') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('header') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('admin_menu') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('name') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('description') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('url') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('options') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('title') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('parent_id') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('created') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('bs_url') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('extra_args') ?></th>
+            <th scope="col" class="actions"><?= __('Actions') ?></th>
+        </tr>
     </thead>
     <tbody>
         <?php foreach ($menus as $menu) : ?>
@@ -45,15 +45,45 @@
             <td><?= h($menu->url) ?></td>
             <td><?= h($menu->options) ?></td>
             <td><?= h($menu->title) ?></td>
-            <td><?= $menu->has('parent_menu') ? $this->Html->link($menu->parent_menu->name, ['controller' => 'Menus', 'action' => 'view', $menu->parent_menu->id]) : '' ?></td>
+            <td><?= $menu->has('parent_menu') ? $this->Html->link($menu->parent_menu->name, ['controller' => 'Menus', 'action' => 'view', $menu->parent_menu->id]) : '' ?>
+            </td>
             <td><?= h($menu->modified) ?></td>
             <td><?= h($menu->created) ?></td>
             <td><?= h($menu->bs_url) ?></td>
             <td><?= h($menu->extra_args) ?></td>
             <td class="actions">
-                <?= $this->Html->link(__('View'), ['action' => 'view', $menu->id], ['title' => __('View'), 'class' => 'btn btn-secondary']) ?>
-                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $menu->id], ['title' => __('Edit'), 'class' => 'btn btn-secondary']) ?>
-                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $menu->id], ['confirm' => __('Are you sure you want to delete # {0}?', $menu->id), 'title' => __('Delete'), 'class' => 'btn btn-danger']) ?>
+                <?php
+                                echo $this->Form->create(null, [
+                                    'style' => 'width: 120px;',
+                                    'url' => [
+                                        'action' => 'move',
+                                        $menu->id,
+                                    ],
+                                ]);
+                                echo $this->Form->control('amount', [
+                                    'label' => false,
+                                    'prepend' => $this->Form->button(
+                                        '',
+                                        [
+                                            'type' => 'submit',
+                                            'name' => 'moveUp',
+                                            'class' => 'move-up',
+                                        ]
+                                    ),
+                                    'append' => $this->Form->button(
+                                        '',
+                                        [
+                                            'type' => 'submit',
+                                            'name' => 'moveDown',
+                                            'class' => 'move-down',
+                                        ]
+                                    ),
+                                ]);
+                                echo $this->Form->end();
+                            ?>
+                <?= $this->Html->link(__('View'), ['action' => 'view', $menu->id], ['title' => __('View'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $menu->id], ['title' => __('Edit'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $menu->id], ['confirm' => __('Are you sure you want to delete # {0}?', $menu->id), 'title' => __('Delete'), 'class' => 'btn btn-danger btn-sm mb-1']) ?>
             </td>
         </tr>
         <?php endforeach; ?>
@@ -67,5 +97,6 @@
         <?= $this->Paginator->next(__('Next') . ' >') ?>
         <?= $this->Paginator->last(__('Last') . ' >>') ?>
     </ul>
-    <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+    <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?>
+    </p>
 </div>

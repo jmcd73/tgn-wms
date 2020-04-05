@@ -319,8 +319,7 @@ class TgnUtilsBehavior extends Behavior
      */
     public function addMinutesToDateTime($date_time, $minutes)
     {
-        $this->log((string)$date_time);
-
+        tog(getTypeName($date_time));
         $dateTime = new \DateTime($date_time);
         $add_minutes = '+ ' . $minutes . ' minutes';
         $dateTime->modify($add_minutes);

@@ -27,9 +27,9 @@
             <td><?= h($help->controller_action) ?></td>
             <td><?= h($help->markdown_document) ?></td>
             <td class="actions">
-                <?= $this->Html->link(__('View'), ['action' => 'view', $help->id], ['title' => __('View'), 'class' => 'btn btn-secondary']) ?>
-                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $help->id], ['title' => __('Edit'), 'class' => 'btn btn-secondary']) ?>
-                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $help->id], ['confirm' => __('Are you sure you want to delete # {0}?', $help->id), 'title' => __('Delete'), 'class' => 'btn btn-danger']) ?>
+                <?= $this->Html->link(__('View'), ['action' => 'view', $help->id], ['title' => __('View'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $help->id], ['title' => __('Edit'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $help->id], ['confirm' => __('Are you sure you want to delete # {0}?', $help->id), 'title' => __('Delete'), 'class' => 'btn btn-danger btn-sm mb-1']) ?>
             </td>
         </tr>
         <?php endforeach; ?>

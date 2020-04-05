@@ -114,8 +114,8 @@ use App\View\Helper\ToggenHelper;
                     <td <?php echo $this->Toggen->buildClass($cls); ?>>
                         <?php echo $this->Html->tag(
                             'span',
-                            h($pallet['print_date']),
-                            ['title' => 'Cooldown date: ' . h($pallet['cooldown_date']), 'style' => 'cursor: crosshair;']
+                            h($pallet['print_date']->i18nFormat(null, $user->timezone)),
+                            ['title' => 'Cooldown date: ' . h($pallet['cooldown_date']->i18nFormat(null, $user->timezone)), 'style' => 'cursor: crosshair;']
                         ); ?></td>
                     <td <?php echo $this->Toggen->buildClass($cls); ?>>
                         <?php echo h($pallet['pl_age']); ?></td>

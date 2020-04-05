@@ -40,6 +40,7 @@ class User extends Entity
         'modified' => true,
         'full_name' => true,
         'cartons' => true,
+        'timezone' => true,
     ];
 
     /**

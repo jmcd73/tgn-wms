@@ -244,7 +244,7 @@
                                 ]
                             );
                             ?>
-                            <?php echo $this->Html->link(__('View'), ['action' => 'view', $pallet['id']], ['class' => 'btn btn-secondary view  mb-1 btn-sm']); ?>
+                            <?php echo $this->Html->link(__('View'), ['action' => 'view', $pallet['id']], ['class' => 'btn btn-secondary btn-sm mb-1 view  mb-1 btn-sm']); ?>
                             <?php echo $this->Html->link(__('Reprint'), ['action' => 'palletReprint', $pallet['id']], ['class' => 'btn  mb-1  btn-secondary reprint btn-sm']); ?>
                             <?php if ($isLoggedIn && isset($user['role']) && $user['role'] === 'admin'): ?>
                             <?php echo $this->Html->link(__('Glabels Reprint'), [

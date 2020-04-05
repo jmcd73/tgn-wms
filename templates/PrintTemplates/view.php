@@ -163,9 +163,9 @@
                     <td><?= h($items->created) ?></td>
                     <td><?= h($items->modified) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['controller' => 'Items', 'action' => 'view', $items->id], ['class' => 'btn btn-secondary']) ?>
-                        <?= $this->Html->link(__('Edit'), ['controller' => 'Items', 'action' => 'edit', $items->id], ['class' => 'btn btn-secondary']) ?>
-                        <?= $this->Form->postLink( __('Delete'), ['controller' => 'Items', 'action' => 'delete', $items->id], ['confirm' => __('Are you sure you want to delete # {0}?', $items->id), 'class' => 'btn btn-danger']) ?>
+                        <?= $this->Html->link(__('View'), ['controller' => 'Items', 'action' => 'view', $items->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                        <?= $this->Html->link(__('Edit'), ['controller' => 'Items', 'action' => 'edit', $items->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                        <?= $this->Form->postLink( __('Delete'), ['controller' => 'Items', 'action' => 'delete', $items->id], ['confirm' => __('Are you sure you want to delete # {0}?', $items->id), 'class' => 'btn btn-danger btn-sm mb-1']) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -226,9 +226,9 @@
                     <td><?= h($childPrintTemplates->rght) ?></td>
                     <td><?= h($childPrintTemplates->replace_tokens) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['controller' => 'PrintTemplates', 'action' => 'view', $childPrintTemplates->id], ['class' => 'btn btn-secondary']) ?>
-                        <?= $this->Html->link(__('Edit'), ['controller' => 'PrintTemplates', 'action' => 'edit', $childPrintTemplates->id], ['class' => 'btn btn-secondary']) ?>
-                        <?= $this->Form->postLink( __('Delete'), ['controller' => 'PrintTemplates', 'action' => 'delete', $childPrintTemplates->id], ['confirm' => __('Are you sure you want to delete # {0}?', $childPrintTemplates->id), 'class' => 'btn btn-danger']) ?>
+                        <?= $this->Html->link(__('View'), ['controller' => 'PrintTemplates', 'action' => 'view', $childPrintTemplates->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                        <?= $this->Html->link(__('Edit'), ['controller' => 'PrintTemplates', 'action' => 'edit', $childPrintTemplates->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                        <?= $this->Form->postLink( __('Delete'), ['controller' => 'PrintTemplates', 'action' => 'delete', $childPrintTemplates->id], ['confirm' => __('Are you sure you want to delete # {0}?', $childPrintTemplates->id), 'class' => 'btn btn-danger btn-sm mb-1']) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

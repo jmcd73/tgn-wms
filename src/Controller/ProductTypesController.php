@@ -37,7 +37,7 @@ class ProductTypesController extends AppController
     public function view($id = null)
     {
         $productType = $this->ProductTypes->get($id, [
-            'contain' => ['InventoryStatuses', 'Locations', 'Items', 'Labels', 'Pallets', 'ProductionLines', 'Shifts', 'Shipments'],
+            'contain' => ['InventoryStatuses', 'Locations', 'Items',  'Pallets', 'ProductionLines', 'Shifts', 'Shipments'],
         ]);
 
         $this->set('productType', $productType);

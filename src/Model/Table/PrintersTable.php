@@ -45,9 +45,6 @@ class PrintersTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->hasMany('Labels', [
-            'foreignKey' => 'printer_id',
-        ]);
         $this->hasMany('Pallets', [
             'foreignKey' => 'printer_id',
         ]);

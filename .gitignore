@@ -30,3 +30,5 @@ dev/scratch/
 dev/scratch/compactIsArray.php
 dev/scripted upgrade/sql/mysql-bin*
 old/
+logs/*
+tmp/*

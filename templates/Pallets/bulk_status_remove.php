@@ -33,29 +33,30 @@ echo $this->Html->script(
         'align' => 'inline',
     ]);?>
 
-    <?php echo $this->Form->control('inventory_status_note_global', [
-        'type' => 'text',
-        'label' => 'Inventory status note',
-        'class' => 'mt-2 mb-2 mx-sm-3',
-    ]); ?>
-    <?php if ($showBulkChangeToSelect): ?>
-
-
-    <?php echo $this->Form->control('change_to', [
-        'type' => 'select',
-        'label' => 'Change all to',
-        'options' => $status_list,
-        'class' => 'mt-2 mb-2',
-        'empty' => '(select)', ]);
+    <div class="offset-lg-7 col">
+        <div class="row">
+            <?php echo $this->Form->control('inventory_status_note_global', [
+                'type' => 'text',
+                'label' => 'Inventory status note',
+                'class' => 'mt-2 mb-2 mx-sm-3',
+            ]); ?>
+            <?php if ($showBulkChangeToSelect): ?>
+            <?php echo $this->Form->control('change_to', [
+                'type' => 'select',
+                'label' => 'Change all to',
+                'options' => $status_list,
+                'class' => 'mt-2 mb-2',
+                'empty' => '(select)', ]);
                 ?>
-
-    <?php endif; ?>
-    <table class="table table-bordered table-condensed table-striped table-responsive">
+            <?php endif; ?>
+        </div>
+    </div>
+    <table class="table table-bordered table-condensed table-striped">
         <thead>
             <tr>
                 <th><?php echo $this->Paginator->sort('item_id'); ?></th>
                 <th><?php echo $this->Paginator->sort('description'); ?></th>
-                <th><?php echo $this->Paginator->sort('best_before', 'BBefore', ['title' => 'Best Before']); ?></th>
+                <th><?php echo $this->Paginator->sort('bb_date', 'Best Before', ['title' => 'Best Before']); ?></th>
                 <th><?php echo $this->Paginator->sort('qty'); ?></th>
                 <th><?php echo $this->Paginator->sort('pl_ref'); ?></th>
                 <th><?php echo $this->Paginator->sort('batch'); ?></th>
@@ -71,16 +72,16 @@ echo $this->Html->script(
             <?php foreach ($pallets as $k => $pallet): ?>
 
             <tr>
-                <td><?php echo $pallet['items']['code']; ?></td>
-                <td><?php echo $pallet['description']; ?></td>
-                <td><?php echo $pallet['best_before']; ?></td>
-                <td><?php echo $pallet['qty']; ?></td>
-                <td><?php echo $pallet['pl_ref']; ?></td>
-                <td><?php echo $pallet['batch']; ?></td>
+                <td><?php echo h($pallet['items']['code']); ?></td>
+                <td><?php echo h($pallet['description']); ?></td>
+                <td><?php echo h($pallet['bb_date']); ?></td>
+                <td><?php echo h($pallet['qty']); ?></td>
+                <td><?php echo h($pallet['pl_ref']); ?></td>
+                <td><?php echo h($pallet['batch']); ?></td>
                 <td><?php echo h($pallet['print_date']); ?></td>
-                <td><?php echo $pallet['location']['location']; ?></td>
-                <td><?php echo $pallet['inventory_status']['name']; ?></td>
-                <td><?php echo $pallet['inventory_status_note']; ?></td>
+                <td><?php echo h($pallet['location']['location']); ?></td>
+                <td><?php echo h($pallet['inventory_status']['name']); ?></td>
+                <td><?php echo h($pallet['inventory_status_note']); ?></td>
                 <td>
                     <?php
                     /**
@@ -88,13 +89,18 @@ echo $this->Html->script(
                      * so long to render that execution timeouts occur
                      */
                 ?>
-                    <?php  foreach ($status_list as $key => $value): ?>
+
+                    <?php echo $this->Form->control('pallets.' . $k . '.inventory_status_id', [
+                        'type' => 'radio',
+                        'options' => $status_list,
+                    ]); ?>
+                    <!-- <?php  foreach ($status_list as $key => $value): ?>
                     <label class="radio-inline">
                         <input type="radio" data-checked="0" name="data[Pallet][<?= $k; ?>][inventory_status_id]"
                             value="<?= $key; ?>"><?= $value; ?>
                     </label>
-                    <?php endforeach; ?>
-                    <?php  echo $this->Form->control('Pallet.' . $k . '.id', [
+                    <?php endforeach; ?> -->
+                    <?php  echo $this->Form->control('pallets.' . $k . '.id', [
                         'type' => 'hidden',
                         'value' => $pallet['id'],
                     ]);  ?>
@@ -103,11 +109,11 @@ echo $this->Html->script(
             <?php endforeach; ?>
         </tbody>
     </table>
-    <p><?php echo $this->Paginator->counter(
+
+    <div class="paginator">
+        <p><?php echo $this->Paginator->counter(
                         'Page {{page}} of {{pages}}, showing {{current}} records out of {{count}} total, starting on record {{start}}, ending on {{end}}'
-                    );?>
-    </p>
-    <div class="pagination pagination-large">
+                    );?></p>
         <ul class="pagination">
             <?php
             echo $this->Paginator->first('&laquo; first', ['escape' => false, 'tag' => 'li']);

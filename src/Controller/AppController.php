@@ -59,8 +59,16 @@ class AppController extends Controller
     public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
-        $this->Authentication->addUnauthenticatedActions(['index', 'view']);
+        // $this->Authentication->addUnauthenticatedActions(['index', 'view']);
         $menuTable = $this->getTableLocator()->get('Menus');
+        $result = $this->Authentication->getResult();
+        if ($result->isValid()) {
+            $user = $this->Authentication->getIdentity();
+            $this->set(compact('user'));
+        } else {
+            //  pr($result->getErrors());
+          //  pr($result->getStatus());
+        }
 
         $isAdmin = true;
         $isLoggedIn = true;

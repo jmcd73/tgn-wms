@@ -12,10 +12,6 @@
 </li>
 <li><?= $this->Html->link(__('List Printers'), ['action' => 'index'], ['class' => 'nav-link']) ?> </li>
 <li><?= $this->Html->link(__('New Printer'), ['action' => 'add'], ['class' => 'nav-link']) ?> </li>
-<li><?= $this->Html->link(__('List Labels'), ['controller' => 'Labels', 'action' => 'index'], ['class' => 'nav-link']) ?>
-</li>
-<li><?= $this->Html->link(__('New Label'), ['controller' => 'Labels', 'action' => 'add'], ['class' => 'nav-link']) ?>
-</li>
 <li><?= $this->Html->link(__('List Pallets'), ['controller' => 'Pallets', 'action' => 'index'], ['class' => 'nav-link']) ?>
 </li>
 <li><?= $this->Html->link(__('New Pallet'), ['controller' => 'Pallets', 'action' => 'add'], ['class' => 'nav-link']) ?>
@@ -56,87 +52,6 @@
                 <td><?= $printer->active ? __('Yes') : __('No'); ?></td>
             </tr>
         </table>
-    </div>
-    <div class="related">
-        <h4><?= __('Related Labels') ?></h4>
-        <?php if (!empty($printer->labels)): ?>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <tr>
-                    <th scope="col"><?= __('Id') ?></th>
-                    <th scope="col"><?= __('Production Line Id') ?></th>
-                    <th scope="col"><?= __('Item') ?></th>
-                    <th scope="col"><?= __('Description') ?></th>
-                    <th scope="col"><?= __('Item Id') ?></th>
-                    <th scope="col"><?= __('Best Before') ?></th>
-                    <th scope="col"><?= __('Bb Date') ?></th>
-                    <th scope="col"><?= __('Gtin14') ?></th>
-                    <th scope="col"><?= __('Qty User Id') ?></th>
-                    <th scope="col"><?= __('Qty') ?></th>
-                    <th scope="col"><?= __('Qty Previous') ?></th>
-                    <th scope="col"><?= __('Qty Modified') ?></th>
-                    <th scope="col"><?= __('Pl Ref') ?></th>
-                    <th scope="col"><?= __('Sscc') ?></th>
-                    <th scope="col"><?= __('Batch') ?></th>
-                    <th scope="col"><?= __('Printer Id') ?></th>
-                    <th scope="col"><?= __('Print Date') ?></th>
-                    <th scope="col"><?= __('Cooldown Date') ?></th>
-                    <th scope="col"><?= __('Min Days Life') ?></th>
-                    <th scope="col"><?= __('Production Line') ?></th>
-                    <th scope="col"><?= __('Location Id') ?></th>
-                    <th scope="col"><?= __('Shipment Id') ?></th>
-                    <th scope="col"><?= __('Inventory Status Id') ?></th>
-                    <th scope="col"><?= __('Inventory Status Note') ?></th>
-                    <th scope="col"><?= __('Inventory Status Datetime') ?></th>
-                    <th scope="col"><?= __('Created') ?></th>
-                    <th scope="col"><?= __('Modified') ?></th>
-                    <th scope="col"><?= __('Ship Low Date') ?></th>
-                    <th scope="col"><?= __('Picked') ?></th>
-                    <th scope="col"><?= __('Product Type Id') ?></th>
-                    <th scope="col" class="actions"><?= __('Actions') ?></th>
-                </tr>
-                <?php foreach ($printer->labels as $labels): ?>
-                <tr>
-                    <td><?= h($labels->id) ?></td>
-                    <td><?= h($labels->production_line_id) ?></td>
-                    <td><?= h($labels->item) ?></td>
-                    <td><?= h($labels->description) ?></td>
-                    <td><?= h($labels->item_id) ?></td>
-                    <td><?= h($labels->best_before) ?></td>
-                    <td><?= h($labels->bb_date) ?></td>
-                    <td><?= h($labels->gtin14) ?></td>
-                    <td><?= h($labels->qty_user_id) ?></td>
-                    <td><?= h($labels->qty) ?></td>
-                    <td><?= h($labels->qty_previous) ?></td>
-                    <td><?= h($labels->qty_modified) ?></td>
-                    <td><?= h($labels->pl_ref) ?></td>
-                    <td><?= h($labels->sscc) ?></td>
-                    <td><?= h($labels->batch) ?></td>
-                    <td><?= h($labels->printer_id) ?></td>
-                    <td><?= h($labels->print_date) ?></td>
-                    <td><?= h($labels->cooldown_date) ?></td>
-                    <td><?= h($labels->min_days_life) ?></td>
-                    <td><?= h($labels->production_line) ?></td>
-                    <td><?= h($labels->location_id) ?></td>
-                    <td><?= h($labels->shipment_id) ?></td>
-                    <td><?= h($labels->inventory_status_id) ?></td>
-                    <td><?= h($labels->inventory_status_note) ?></td>
-                    <td><?= h($labels->inventory_status_datetime) ?></td>
-                    <td><?= h($labels->created) ?></td>
-                    <td><?= h($labels->modified) ?></td>
-                    <td><?= h($labels->ship_low_date) ?></td>
-                    <td><?= h($labels->picked) ?></td>
-                    <td><?= h($labels->product_type_id) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['controller' => 'Labels', 'action' => 'view', $labels->id], ['class' => 'btn btn-secondary']) ?>
-                        <?= $this->Html->link(__('Edit'), ['controller' => 'Labels', 'action' => 'edit', $labels->id], ['class' => 'btn btn-secondary']) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['controller' => 'Labels', 'action' => 'delete', $labels->id], ['confirm' => __('Are you sure you want to delete # {0}?', $labels->id), 'class' => 'btn btn-danger']) ?>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </table>
-        </div>
-        <?php endif; ?>
     </div>
     <div class="related">
         <h4><?= __('Related Pallets') ?></h4>
@@ -211,9 +126,9 @@
                     <td><?= h($pallets->picked) ?></td>
                     <td><?= h($pallets->product_type_id) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['controller' => 'Pallets', 'action' => 'view', $pallets->id], ['class' => 'btn btn-secondary']) ?>
-                        <?= $this->Html->link(__('Edit'), ['controller' => 'Pallets', 'action' => 'edit', $pallets->id], ['class' => 'btn btn-secondary']) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['controller' => 'Pallets', 'action' => 'delete', $pallets->id], ['confirm' => __('Are you sure you want to delete # {0}?', $pallets->id), 'class' => 'btn btn-danger']) ?>
+                        <?= $this->Html->link(__('View'), ['controller' => 'Pallets', 'action' => 'view', $pallets->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                        <?= $this->Html->link(__('Edit'), ['controller' => 'Pallets', 'action' => 'edit', $pallets->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                        <?= $this->Form->postLink(__('Delete'), ['controller' => 'Pallets', 'action' => 'delete', $pallets->id], ['confirm' => __('Are you sure you want to delete # {0}?', $pallets->id), 'class' => 'btn btn-danger btn-sm mb-1']) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -242,9 +157,9 @@
                     <td><?= h($productionLines->name) ?></td>
                     <td><?= h($productionLines->product_type_id) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['controller' => 'ProductionLines', 'action' => 'view', $productionLines->id], ['class' => 'btn btn-secondary']) ?>
-                        <?= $this->Html->link(__('Edit'), ['controller' => 'ProductionLines', 'action' => 'edit', $productionLines->id], ['class' => 'btn btn-secondary']) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['controller' => 'ProductionLines', 'action' => 'delete', $productionLines->id], ['confirm' => __('Are you sure you want to delete # {0}?', $productionLines->id), 'class' => 'btn btn-danger']) ?>
+                        <?= $this->Html->link(__('View'), ['controller' => 'ProductionLines', 'action' => 'view', $productionLines->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                        <?= $this->Html->link(__('Edit'), ['controller' => 'ProductionLines', 'action' => 'edit', $productionLines->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                        <?= $this->Form->postLink(__('Delete'), ['controller' => 'ProductionLines', 'action' => 'delete', $productionLines->id], ['confirm' => __('Are you sure you want to delete # {0}?', $productionLines->id), 'class' => 'btn btn-danger btn-sm mb-1']) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

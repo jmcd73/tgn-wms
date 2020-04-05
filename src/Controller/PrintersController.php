@@ -43,7 +43,7 @@ class PrintersController extends AppController
     public function view($id = null)
     {
         $printer = $this->Printers->get($id, [
-            'contain' => ['Labels', 'Pallets', 'ProductionLines'],
+            'contain' => [ 'Pallets', 'ProductionLines'],
         ]);
 
         $this->set('printer', $printer);

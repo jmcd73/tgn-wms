@@ -121,7 +121,7 @@ class MenusTable extends Table
             ->scalar('bs_url')
             ->maxLength('bs_url', 255)
             ->requirePresence('bs_url', 'create')
-            ->notEmptyString('bs_url');
+            ->allowEmptyString('bs_url');
 
         $validator
             ->scalar('extra_args')

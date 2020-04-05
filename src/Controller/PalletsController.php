@@ -52,9 +52,11 @@ class PalletsController extends AppController
         $isPrintDebugMode = Configure::read('pallet_print_debug');
 
         if (!$productTypeId) {
+            $this->Flash->error('Select a product type from the actions on the left');
             $this->set(compact('productTypes'));
             return;
         }
+
         $productType = $this->Pallets->Items->ProductTypes->get($productTypeId);
 
         // if the product_type has a default save location defined
@@ -425,27 +427,41 @@ class PalletsController extends AppController
     public function bulkStatusRemove($status_id = null)
     {
         $view_perms = $this->Pallets->getViewPermNumber('view_in_remove_status');
+        $setNoteKey = 'set-note';
 
-        if ($this->request->is(['POST', 'PUT']) && !empty($this->request->getData()['Pallet'])) {
-            $inventory_status_note = $this->Pallets->inventoryStatusNote($this->request->getData()['Pallet']);
+        if ($this->request->is(['POST', 'PUT'])) {
+            $inventory_status_note = $this->Pallets->inventoryStatusNote($this->request->getData());
 
             $update_statuses = [];
-            foreach ($this->request->getData()['Pallet'] as $pallet) {
-                if (isset($pallet['inventory_status_id'])) {
+            $updateStatusIds = [];
+            $data = $this->request->getData();
+
+            foreach ($data['pallets'] as $pallet) {
+                if (isset($pallet['inventory_status_id']) && ((is_numeric($pallet['inventory_status_id']) &&
+                $pallet['inventory_status_id'] >= 0) || $pallet['inventory_status_id'] === $setNoteKey)
+               ) {
                     $pallet['inventory_status_note'] = $inventory_status_note;
+                    if ($pallet['inventory_status_id'] === $setNoteKey) {
+                        unset($pallet['inventory_status_id']);
+                    }
                     $update_statuses[] = $pallet;
+                    $updateStatusIds[] = $pallet['id'];
                 }
             }
 
             if (!empty($update_statuses)) {
+                $entities = $this->Pallets->find('all')
+                    ->whereInList('id', $updateStatusIds);
+
+                $patched = $this->Pallets->patchEntities($entities, $update_statuses);
+
                 if (
                     $this->Pallets->saveMany(
-                        $update_statuses,
-                        ['validate' => false]
+                        $patched
                     )
                 ) {
                     $this->Flash->success(__('The data has been saved.'));
-                    $this->request->getData()['Pallet']['inventory_status_note_global'] = '';
+                    return $this->redirect($this->request->referer());
                 };
             }
         }
@@ -500,11 +516,12 @@ class PalletsController extends AppController
             ])->count();
         }
 
-        $status_list[0] = 'No Status';
+        $status_list[0] = 'Remove status';
 
         unset($status_list[$status_id]);
 
         ksort($status_list);
+        $status_list[$setNoteKey] = 'Set note';
 
         $disable_footer = true;
 
@@ -746,11 +763,18 @@ class PalletsController extends AppController
         $viewOptions = [
             'limit' => 800,
             'maxLimit' => 3000,
+            'sortWhitelist' => [
+                'location', 'pallets', 'hasSpace', 'pallet_capacity',
+            ],
         ];
-        $options = $this->Pallets->locationSpaceUsageOptions($filter, 'all', $viewOptions);
-        $this->paginate = $options;
+        // filter 'all', 'available'
+        // productTypeId 'all' or id or productType
 
-        $locations = $this->Paginator->paginate();
+        $query = $this->Pallets->locationSpaceUsageOptions($filter, 'all');
+
+        $this->paginate = $viewOptions;
+
+        $locations = $this->paginate($query);
 
         $this->set(compact('locations', 'filter'));
     }
@@ -1118,8 +1142,6 @@ class PalletsController extends AppController
      */
     public function palletReprint($id = null)
     {
-        $this->Pallets->recursive = -1;
-
         if (!$this->Pallets->exists($id)) {
             throw new NotFoundException(__('Invalid label'));
         }
@@ -1449,7 +1471,7 @@ class PalletsController extends AppController
         $options = $this->Pallets->getViewOptions($containSettings);
 
         if (!empty($filter_value) && $lookup_field !== 'dont_ship') {
-            $options['conditions']['Pallets.' . $lookup_field] = $filter_value;
+            $options['conditions']['Pallets.' . $lookup_field] = $sqlValue;
         }
 
         $limit = Configure::read('onhandPageSize');

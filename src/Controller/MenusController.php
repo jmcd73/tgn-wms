@@ -108,4 +108,32 @@ class MenusController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    /**
+     * @param int $id ID of menu
+     * @param int $delta how much to move up or down
+     * @return mixed
+     */
+    public function move($id = null, $delta = 1)
+    {
+        $this->request->allowMethod(['post', 'put']);
+
+        $data = $this->request->getData();
+
+        $menu = $this->Menus->get($id);
+
+        if (is_numeric($data['amount'])) {
+            $delta = $data['amount'];
+        }
+
+        $action = isset($data['moveUp']) ? 'moveUp' : 'moveDown';
+
+        if ($this->Menus->$action($menu, abs($delta))) {
+            $this->Flash->success($action . ' success!');
+        } else {
+            $this->Flash->error('The category could not be moved up. Please, try again.');
+        }
+
+        return $this->redirect($this->referer());
+    }
 }

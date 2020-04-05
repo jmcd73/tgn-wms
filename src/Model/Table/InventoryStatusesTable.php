@@ -45,9 +45,6 @@ class InventoryStatusesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->hasMany('Labels', [
-            'foreignKey' => 'inventory_status_id',
-        ]);
         $this->hasMany('Pallets', [
             'foreignKey' => 'inventory_status_id',
         ]);

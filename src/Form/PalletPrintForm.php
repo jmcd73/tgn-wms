@@ -56,7 +56,9 @@ class PalletPrintForm extends Form
      */
     public function validationDefault(Validator $validator):Validator
     {
-        $validator->notBlank('batch_no', 'Please select a batch')
+        $validator
+        ->notBlank('batch_no', 'Please select a batch')
+        ->notEmptyString('batch_no', 'Please select a batch')
         ->notBlank('item', 'Item cannot be empty')
         ->notBlank('production_line', 'Production line is required');
 

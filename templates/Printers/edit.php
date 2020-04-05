@@ -2,7 +2,6 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Printer $printer
- * @var \App\Model\Entity\Label[]|\Cake\Collection\CollectionInterface $labels
  * @var \App\Model\Entity\Pallet[]|\Cake\Collection\CollectionInterface $pallets
  * @var \App\Model\Entity\ProductionLine[]|\Cake\Collection\CollectionInterface $productionLines
  */
@@ -13,10 +12,6 @@
 <li><?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $printer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $printer->id), 'class' => 'nav-link']) ?>
 </li>
 <li><?= $this->Html->link(__('List Printers'), ['action' => 'index'], ['class' => 'nav-link']) ?></li>
-<li><?= $this->Html->link(__('List Labels'), ['controller' => 'Labels', 'action' => 'index'], ['class' => 'nav-link']) ?>
-</li>
-<li><?= $this->Html->link(__('New Label'), ['controller' => 'Labels', 'action' => 'add'], ['class' => 'nav-link']) ?>
-</li>
 <li><?= $this->Html->link(__('List Pallets'), ['controller' => 'Pallets', 'action' => 'index'], ['class' => 'nav-link']) ?>
 </li>
 <li><?= $this->Html->link(__('New Pallet'), ['controller' => 'Pallets', 'action' => 'add'], ['class' => 'nav-link']) ?>
