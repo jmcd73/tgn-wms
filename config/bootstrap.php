@@ -217,4 +217,15 @@ ServerRequest::addDetector('tablet', function ($request) {
 //Inflector::rules('uninflected', ['dontinflectme']);
 //Inflector::rules('transliteration', ['/å/' => 'aa']);
 
-TypeFactory::map('time', \Cake\Database\Type\StringType::class);
+/**
+ * This was for gettting a time as a string I have changed the time field to be a string
+ */
+
+//TypeFactory::map('time', \Cake\Database\Type\StringType::class);
+
+if (!function_exists('tog')) {
+    function tog($obj)
+    {
+        Log::write(LOG_ERR, 'TOG' . "\n" . print_r($obj, true) . "\n");
+    }
+}
