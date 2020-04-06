@@ -70,6 +70,7 @@ class PalletsController extends AppController
                 [
                     'conditions' => [
                         'product_type_id' => $productTypeId,
+                        'active' => 1,
                     ],
                 ]
             );

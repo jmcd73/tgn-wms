@@ -18,7 +18,7 @@ class App extends Component {
       shipments: [],
       shipment: {},
       message: "",
-      showAlert: false
+      showAlert: false,
     };
     this.selectOnChange = this.selectOnChange.bind(this);
     this.fetchShipperPallets = this.fetchShipperPallets.bind(this);
@@ -52,7 +52,7 @@ class App extends Component {
           }
           return null;
         })
-        .filter(x => x);
+        .filter((x) => x);
 
       const allArePicked = labels.every((obj, idx) => {
         return obj.picked;
@@ -64,9 +64,9 @@ class App extends Component {
       ...this.state,
       shipment: {
         ...this.state.shipment,
-        pallets: [...labels]
+        pallets: [...labels],
       },
-      ...pickedState
+      ...pickedState,
     };
 
     this.setState(newState);
@@ -79,11 +79,11 @@ class App extends Component {
         "X-CSRF-Token": window.csrfToken,
         Accept: "application/json",
         "Content-Type": "application/json",
-        "X-Requested-With": "XMLHttpRequest"
+        "X-Requested-With": "XMLHttpRequest",
       },
-      body: JSON.stringify(ids)
+      body: JSON.stringify(ids),
     })
-      .then(r => {
+      .then((r) => {
         if (r.ok) {
           return r.json();
         }
@@ -96,12 +96,12 @@ class App extends Component {
             r.statusText
         );
       })
-      .then(d => {
+      .then((d) => {
         this.setState(
           {
             message: d.message,
             messageResult: d.result,
-            showAlert: true
+            showAlert: true,
           },
           () => {
             setTimeout(() => {
@@ -110,11 +110,11 @@ class App extends Component {
           }
         );
       })
-      .catch(e => {
+      .catch((e) => {
         this.setState({
           message: e.message || "error updating picked status",
           messageResult: "danger",
-          showAlert: true
+          showAlert: true,
         });
       });
   }
@@ -126,26 +126,26 @@ class App extends Component {
       mode: "cors",
       crendentials: "include",
       headers: {
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
-      .then(r => {
+      .then((r) => {
         if (r.ok) {
           return r.json();
         }
         throw new Error("failed to request " + fetchShipperPalletsUrl);
       })
-      .then(d => {
+      .then((d) => {
         this.setState({ shipment: d });
-        const allArePicked = d.pallets.every(label => {
+        const allArePicked = d.pallets.every((label) => {
           return label.picked;
         });
 
         this.setState({
-          allPicked: allArePicked
+          allPicked: allArePicked,
         });
       })
-      .catch(e => {});
+      .catch((e) => {});
   }
 
   selectOnChange(e) {
@@ -163,10 +163,10 @@ class App extends Component {
       mode: "cors",
       crendentials: "include",
       headers: {
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
-      .then(r => {
+      .then((r) => {
         if (r.ok) {
           return r.json();
         }
@@ -179,21 +179,21 @@ class App extends Component {
             r.statusText
         );
       })
-      .then(d => {
+      .then((d) => {
         if (d.shipments.length === 0) {
           this.setState({
-            selectMessage: "Reload the page to check for new shippers"
+            selectMessage: "Reload the page to check for new shippers",
           });
         } else {
           this.setState(d);
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
         this.setState({
           message: e.message,
           messageResult: "danger",
-          showAlert: true
+          showAlert: true,
         });
       });
   }
@@ -207,13 +207,13 @@ class App extends Component {
     let allPicked = false;
 
     if (pallets) {
-      pallets.sort(function(a, b) {
+      pallets.sort(function (a, b) {
         if (a.location.location < b.location.location) return -1;
         if (a.location.location > b.location.location) return 1;
         return 0;
       });
       palletsCount = pallets.length;
-      palletsPicked = pallets.filter(x => {
+      palletsPicked = pallets.filter((x) => {
         //console.log(x);
         return x.picked === true;
       }).length;
@@ -281,7 +281,7 @@ class App extends Component {
 
                   <Checkbox
                     checked={this.state.allPicked}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.togglePicked(null, !this.state.allPicked, true)
                     }
                   >
@@ -316,7 +316,7 @@ class App extends Component {
                       </p>
                       <Checkbox
                         checked={isPicked}
-                        onChange={e => {
+                        onChange={(e) => {
                           this.togglePicked(value.id, e.target.checked);
                         }}
                       >

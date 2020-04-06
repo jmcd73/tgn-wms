@@ -83,11 +83,6 @@ class MenusTable extends Table
             ->notEmptyString('divider');
 
         $validator
-            ->boolean('header')
-            ->requirePresence('header', 'create')
-            ->notEmptyString('header');
-
-        $validator
             ->boolean('admin_menu')
             ->requirePresence('admin_menu', 'create')
             ->notEmptyString('admin_menu');
@@ -105,6 +100,7 @@ class MenusTable extends Table
         $validator
             ->scalar('url')
             ->maxLength('url', 254)
+            ->url('url', 'Please enter a valid internet address (e.g. https://example.com)')
             ->allowEmptyString('url');
 
         $validator

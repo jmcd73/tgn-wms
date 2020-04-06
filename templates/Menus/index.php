@@ -17,18 +17,16 @@
             <th scope="col"><?= $this->Paginator->sort('id') ?></th>
             <th scope="col"><?= $this->Paginator->sort('active') ?></th>
             <th scope="col"><?= $this->Paginator->sort('divider') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('header') ?></th>
             <th scope="col"><?= $this->Paginator->sort('admin_menu') ?></th>
             <th scope="col"><?= $this->Paginator->sort('name') ?></th>
             <th scope="col"><?= $this->Paginator->sort('description') ?></th>
             <th scope="col"><?= $this->Paginator->sort('url') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('options') ?></th>
             <th scope="col"><?= $this->Paginator->sort('title') ?></th>
             <th scope="col"><?= $this->Paginator->sort('parent_id') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('created') ?></th>
             <th scope="col"><?= $this->Paginator->sort('bs_url') ?></th>
             <th scope="col"><?= $this->Paginator->sort('extra_args') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('created') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>
     </thead>
@@ -38,19 +36,17 @@
             <td><?= $this->Number->format($menu->id) ?></td>
             <td><?= h($menu->active) ?></td>
             <td><?= h($menu->divider) ?></td>
-            <td><?= h($menu->header) ?></td>
             <td><?= h($menu->admin_menu) ?></td>
             <td><?= h($menu->name) ?></td>
             <td><?= h($menu->description) ?></td>
             <td><?= h($menu->url) ?></td>
-            <td><?= h($menu->options) ?></td>
             <td><?= h($menu->title) ?></td>
             <td><?= $menu->has('parent_menu') ? $this->Html->link($menu->parent_menu->name, ['controller' => 'Menus', 'action' => 'view', $menu->parent_menu->id]) : '' ?>
             </td>
-            <td><?= h($menu->modified) ?></td>
-            <td><?= h($menu->created) ?></td>
             <td><?= h($menu->bs_url) ?></td>
             <td><?= h($menu->extra_args) ?></td>
+            <td><?= h($menu->modified) ?></td>
+            <td><?= h($menu->created) ?></td>
             <td class="actions">
                 <?php
                                 echo $this->Form->create(null, [

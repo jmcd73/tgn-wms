@@ -1,23 +1,26 @@
 import React from "react";
 import "./App.css";
-import PanelGroup from "react-bootstrap/lib/PanelGroup";
-import Panel from "react-bootstrap/lib/Panel";
-import FormControl from "react-bootstrap/lib/FormControl";
-import FormGroup from "react-bootstrap/lib/FormGroup";
-import ControlLabel from "react-bootstrap/lib/ControlLabel";
-import Col from "react-bootstrap/lib/Col";
-import Row from "react-bootstrap/lib/Row";
-import Checkbox from "react-bootstrap/lib/Checkbox";
-import Badge from "react-bootstrap/lib/Badge";
-import Button from "react-bootstrap/lib/Button";
-import Glyphicon from "react-bootstrap/lib/Glyphicon";
+
+import Card from "react-bootstrap/Card";
+import FormControl from "react-bootstrap/FormControl";
+import FormGroup from "react-bootstrap/FormGroup";
+import FormLabel from "react-bootstrap/FormLabel";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import FormCheck from "react-bootstrap/FormCheck";
+import Badge from "react-bootstrap/Badge";
+import Button from "react-bootstrap/Button";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBan } from "@fortawesome/free-solid-svg-icons";
+
 import { withRouter } from "react-router";
 import PulseLoader from "react-spinners/PulseLoader";
-import HelpBlock from "react-bootstrap/lib/HelpBlock";
+import FormText from "react-bootstrap/FormText";
 import Wrap from "./Wrap";
 import WrapCheckbox from "./WrapCheckbox";
 import AlertMessage from "./AlertMessage";
-import Form from "react-bootstrap/lib/Form";
+import Form from "react-bootstrap/Form";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 
 // import queryString from "query-string";
@@ -46,7 +49,7 @@ class App extends React.Component {
         shipper: "",
         destination: "",
         product_type_id: "",
-        labelIds: []
+        labelIds: [],
       },
       isLoading: false,
       productType: 0,
@@ -55,10 +58,10 @@ class App extends React.Component {
       loadedData: [],
       options: [],
       productTypes: [],
-      baseUrl: this.props.baseUrl
+      baseUrl: this.props.baseUrl,
     };
     this.state = {
-      ...this.defaults
+      ...this.defaults,
     };
 
     this.setProductType = this.setProductType.bind(this);
@@ -76,7 +79,7 @@ class App extends React.Component {
 
   setShipmentDetail(key, value) {
     this.setState({
-      shipment: { ...this.state.shipment, [key]: value }
+      shipment: { ...this.state.shipment, [key]: value },
     });
   }
 
@@ -88,36 +91,24 @@ class App extends React.Component {
     this.setState({
       ...this.defaults,
       loading: true,
-      productType: productType || ""
+      productType: productType || "",
     });
 
-    const suffix = [operation, productType, id].filter(x => x);
+    const suffix = [operation, productType, id].filter((x) => x);
     const url = this.state.baseUrl + "Shipments/" + suffix.join("/");
-
+    console.log("fetching", url);
     fetch(url, {
       headers: {
         Accept: "application/json",
-        "X-Requested-With": "XMLHttpRequest"
-      }
+        "X-Requested-With": "XMLHttpRequest",
+      },
     })
-      .then(resp => {
+      .then((resp) => {
         return resp.json();
       })
-      .then(d => {
+      .then((d) => {
         const codeDescs = this.createCodeDescriptions(d.shipment_labels);
-        console.log(d);
-        this.setState({
-          loadedData: d.shipment_labels,
-          isExpanded: [...codeDescs].fill(false),
-          products: codeDescs,
-          shipment: { ...this.state.shipment, operation: operation },
-          loading: false
-        });
-        if (d.type) {
-          this.setState({
-            productType: d.type
-          });
-        }
+
         if (d.thisShipment) {
           const {
             shipper,
@@ -125,43 +116,54 @@ class App extends React.Component {
             shipped,
             shipment_type,
             product_type_id,
-            id
-          } = d.thisShipment.Shipment;
-          const { Pallet } = d.thisShipment;
-          const loadedData = Pallet.map(value => {
-            const location = { ...value.Location };
-            delete value.Location;
+            id,
+            pallets,
+          } = d.thisShipment;
+
+          const loadedData = pallets.map((value) => {
+            const location = { ...value.location };
+
+            delete value.location;
             return {
-              Pallet: value,
-              Location: location
+              ...value,
+              location,
             };
           });
-          const labelIds = Pallet.map(value => {
+
+          const labelIds = pallets.map((value) => {
             return value.id;
           });
 
-          this.setState({
+          let state = {
             loadedData: loadedData.concat(d.shipment_labels),
+            isExpanded: [...codeDescs].fill(false),
+            products: codeDescs,
+            loading: false,
             shipmentTypeDisabled: true,
-            productType: product_type_id,
             shipment: {
               ...this.state.shipment,
+              operation: operation,
               shipment_type,
               shipped,
               id,
               shipper,
               product_type_id,
               destination,
-              labelIds
-            }
-          });
+              labelIds,
+            },
+          };
+
+          if (product_type_id) {
+            state.productType = product_type_id;
+          }
+          this.setState(state);
         }
       })
-      .catch(e => console.log(e));
+      .catch((e) => console.log(e));
   }
 
   buildCodeDescString(labelObject) {
-    return labelObject.Pallet.item + " " + labelObject.Pallet.description;
+    return labelObject.item + " " + labelObject.description;
   }
   /**
    *
@@ -171,7 +173,7 @@ class App extends React.Component {
     let { products, loadedData } = this.state;
 
     const codeDesc = this.buildCodeDescString(labelObject);
-    const { item_id: itemId } = labelObject.Pallet;
+    const { item_id: itemId } = labelObject;
     this.updateSingleLabelCount(
       codeDesc,
       this.getSingleItemLabelCount(loadedData, itemId)
@@ -179,21 +181,21 @@ class App extends React.Component {
 
     if (products.indexOf(codeDesc) === -1) {
       this.setState({
-        products: [codeDesc, ...products]
+        products: [codeDesc, ...products],
       });
     }
   }
 
   getSingleItemLabelCount(productArray, itemId) {
     return productArray.filter((value, index) => {
-      return value.Pallet.item_id === itemId;
+      return value.item_id === itemId;
     }).length;
   }
   updateSingleLabelCount(itemString, count) {
     let labelCounts = { ...this.state.labelCounts };
 
     this.setState({
-      labelCounts: { ...labelCounts, [itemString]: count }
+      labelCounts: { ...labelCounts, [itemString]: count },
     });
   }
   createCodeDescriptions(productArray = []) {
@@ -212,7 +214,7 @@ class App extends React.Component {
       return accum;
     }, []);
     this.setState({
-      labelCounts: { ...this.state.labelCounts, ...labelCounts }
+      labelCounts: { ...this.state.labelCounts, ...labelCounts },
     });
     return codeDesc;
   }
@@ -220,7 +222,7 @@ class App extends React.Component {
     const loadedData = this.state.loadedData;
 
     const labelList = loadedData.reduce((accum, current, idx) => {
-      const codeDesc = current.Pallet.item + " " + current.Pallet.description;
+      const codeDesc = current.item + " " + current.description;
       if (codeDesc === productTitle) {
         accum.push(current);
       }
@@ -249,7 +251,7 @@ class App extends React.Component {
   submitData() {
     this.setState({
       errors: {},
-      loading: true
+      loading: true,
     });
     const { baseUrl, productType } = this.state;
 
@@ -259,54 +261,53 @@ class App extends React.Component {
       shipped,
       id,
       destination,
-      labelIds
+      labelIds,
     } = this.state.shipment;
 
-    const parts = [operation, id].filter(x => x);
+    const parts = [operation, id].filter((x) => x);
 
     const url = baseUrl + "Shipments/" + parts.join("/");
 
     let postObject = {
-      Shipment: {
-        shipper: shipper,
-        destination: destination,
-        shipped: shipped,
-        product_type_id: productType
-      },
-      Pallet: labelIds
+      shipper: shipper,
+      destination: destination,
+      shipped: shipped,
+      product_type_id: productType,
+      pallets: labelIds,
     };
 
     switch (operation) {
-      case "add":
+      case "add-shipment":
         break;
-      case "edit":
-        postObject.Shipment.id = id;
-        const labels = labelIds.map(cur => {
+      case "edit-shipment":
+        postObject.id = id;
+        const labels = labelIds.map((cur) => {
           return { shipment_id: id, id: cur };
         });
-        postObject = { ...postObject, Pallet: labels };
-        console.log("postObject", postObject);
+        postObject = { ...postObject, pallets: labels };
         break;
       default:
         console.log("it broken");
     }
 
-    fetch(url, {
+    let fetchOptions = {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       mode: "cors", // no-cors, cors, *same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
       credentials: "same-origin", // include, *same-origin, omit
       headers: {
+        "X-CSRF-Token": window.csrfToken,
         "Content-Type": "application/json",
         Accept: "application/json",
-        "X-Requested-With": "XMLHttpRequest"
+        "X-Requested-With": "XMLHttpRequest",
       },
-      redirect: "error", // manual, *follow, error
-      //referrer: "no-referrer", // no-referrer, *client
-      body: JSON.stringify(postObject) // body data type must match "Content-Type" header
-    })
-      .then(response => response.json())
-      .then(d => {
+      redirect: "error",
+      body: JSON.stringify(postObject),
+    };
+
+    fetch(url, fetchOptions)
+      .then((response) => response.json())
+      .then((d) => {
         /**
                  *  "error": {
         "shipper": [
@@ -316,17 +317,17 @@ class App extends React.Component {
                  */
         if (d.error) {
           // eslint-disable-next-line array-callback-return
-          Object.keys(d.error).map(fieldName => {
+          Object.keys(d.error).map((fieldName) => {
             this.setState({
               errors: {
                 ...this.state.errors,
-                [fieldName]: d.error[fieldName].join(", ")
-              }
+                [fieldName]: d.error[fieldName].join(", "),
+              },
             });
           });
         } else {
           this.setState({
-            redirect: true
+            redirect: true,
           });
         }
         this.setState({ loading: false });
@@ -337,8 +338,8 @@ class App extends React.Component {
     this.setState({
       shipment: {
         ...this.state.shipment,
-        shipped: !this.state.shipment.shipped
-      }
+        shipped: !this.state.shipment.shipped,
+      },
     });
   }
 
@@ -352,13 +353,13 @@ class App extends React.Component {
       labelIds.push(labelId);
     }
     if (!isAdd) {
-      labelIds = labelIds.filter(value => {
+      labelIds = labelIds.filter((value) => {
         return value !== labelId;
       });
     }
 
     this.setState({
-      shipment: { ...shipment, labelIds: labelIds }
+      shipment: { ...shipment, labelIds: labelIds },
     });
   }
   setProductType(e) {
@@ -382,7 +383,7 @@ class App extends React.Component {
     let id = null;
 
     switch (operation) {
-      case "add": {
+      case "add-shipment": {
         if (!typeOrId) {
           productType = this.state.productType;
         } else {
@@ -390,18 +391,18 @@ class App extends React.Component {
         }
         break;
       }
-      case "edit": {
+      case "edit-shipment": {
         if (!isNaN(typeOrId)) {
           console.log("typeOrId isInteger");
           id = typeOrId;
         }
         this.setState({
-          shipmentTypeDisabled: true
+          shipmentTypeDisabled: true,
         });
         break;
       }
       default:
-        operation = "add";
+        operation = "add-shipment";
         productType = this.state.productType;
     }
 
@@ -418,36 +419,36 @@ class App extends React.Component {
   componentDidMount() {
     const { operation, productType, id } = this.parseRouterArgs();
 
+    console.log({ operation, productType, id });
     this.setState({
-      baseUrl: this.props.baseUrl
+      baseUrl: this.props.baseUrl,
     });
     this.fetchData(operation, productType, id);
-
     this.getProductType(productType);
   }
 
   getProductType(productType) {
     const url = this.state.baseUrl + `ProductTypes/view/${productType}`;
-    console.log("pt", productType);
+    console.log("fetching", url);
     if (productType) {
       fetch(url, {
         headers: {
           Accept: "application/json",
-          "X-Requested-With": "XMLHttpRequest"
-        }
+          "X-Requested-With": "XMLHttpRequest",
+        },
       })
-        .then(resp => {
+        .then((resp) => {
           return resp.json();
         })
-        .then(d => {
+        .then((d) => {
           if (d.productType.ProductType) {
             this.setState({
-              productTypeName: d.productType.ProductType.name
+              productTypeName: d.productType.ProductType.name,
             });
           }
           console.log("pt", d);
         })
-        .catch(e => {
+        .catch((e) => {
           throw e;
         });
     }
@@ -455,23 +456,31 @@ class App extends React.Component {
 
   getLabelObject(id) {
     const { loadedData } = this.state;
+    console.log("getLabelObject ID", id, loadedData);
     const ret = loadedData.filter((current, idx) => {
-      return current.Pallet.id === id;
+      return current.id === id;
     });
     return ret;
   }
   buildLabelString(labelObject) {
-    const { Location, Pallet } = labelObject;
-    const { location } = Location;
-    const { item, best_before, pl_ref, qty, description } = Pallet;
-
-    const stringValues = [
+    const {
       location,
       item,
       best_before,
       pl_ref,
       qty,
-      description
+      description,
+    } = labelObject;
+
+    const locationName = location.location;
+
+    const stringValues = [
+      locationName,
+      item,
+      best_before,
+      pl_ref,
+      qty,
+      description,
     ];
     return stringValues.join(", ");
   }
@@ -486,7 +495,7 @@ class App extends React.Component {
       productTypeName,
       loading,
       errors,
-      baseUrl
+      baseUrl,
     } = this.state;
 
     const shipperError = errors["shipper"] || "";
@@ -495,7 +504,7 @@ class App extends React.Component {
     const { labelIds, shipper, shipped, operation } = shipment;
     const selectedCount = labelIds.length;
     let labelsOnShipment = null;
-    let classes = ["checkbox", "fixed", "pallet-list"];
+    let classes = ["FormCheck", "fixed", "pallet-list"];
     let spinner = null;
     if (loading) {
       spinner = (
@@ -513,16 +522,15 @@ class App extends React.Component {
       labelsOnShipment = labelIds.map((id, idx) => {
         const labelObject = this.getLabelObject(id)[0];
         return (
-          <Checkbox
+          <FormCheck
             bsClass={classes.join(" ")}
-            key={labelObject.Pallet.pl_ref}
+            key={labelObject.pl_ref}
             checked
-            onChange={e =>
-              this.addRemoveLabel(e.target.checked, labelObject.Pallet.id)
+            label={this.buildLabelString(labelObject)}
+            onChange={(e) =>
+              this.addRemoveLabel(e.target.checked, labelObject.id)
             }
-          >
-            {this.buildLabelString(labelObject)}
-          </Checkbox>
+          />
         );
       });
     }
@@ -548,9 +556,9 @@ class App extends React.Component {
             >{`${operation} ${productTypeName} Shipment`}</h3>
           </Col>
         </Row>
-        <Row className="bpad">
+        <Row className="mb-3">
           <Col lg={12}>
-            <Form onSubmit={e => e.preventDefault()}>
+            <Form onSubmit={(e) => e.preventDefault()}>
               <Row>
                 <Col lg={3}>
                   <FormGroup
@@ -558,17 +566,17 @@ class App extends React.Component {
                     bsSize="sm"
                     controlId="shipper"
                   >
-                    <ControlLabel>Shipment</ControlLabel>{" "}
+                    <FormLabel>Shipment</FormLabel>{" "}
                     <FormControl
                       type="text"
                       value={shipper}
                       placeholder="Shipment"
-                      onChange={e => {
+                      onChange={(e) => {
                         const { shipper, ...newState } = this.state.errors;
                         this.setState({
                           errors: {
-                            ...newState
-                          }
+                            ...newState,
+                          },
                         });
 
                         this.setShipmentDetail(e.target.id, e.target.value);
@@ -576,7 +584,7 @@ class App extends React.Component {
                       required="required"
                     />
                     <FormControl.Feedback />
-                    <HelpBlock>{shipperError}</HelpBlock>
+                    <FormText>{shipperError}</FormText>
                   </FormGroup>
                 </Col>
                 <Col lg={3}>
@@ -585,45 +593,45 @@ class App extends React.Component {
                     bsSize={"sm"}
                     validationState={this.getValidationState("destination")}
                   >
-                    <ControlLabel>Destination</ControlLabel>
+                    <FormLabel>Destination</FormLabel>
                     <AsyncTypeahead
                       placeholder="Destination"
                       isLoading={this.state.isLoading}
                       id="destination"
                       name="destination"
                       selected={[this.state.shipment.destination]}
-                      onChange={selected => {
+                      onChange={(selected) => {
                         if (selected.length > 0) {
                           let destination = selected[0].value;
                           this.setShipmentDetail("destination", destination);
                         }
                       }}
-                      onInputChange={destination => {
+                      onInputChange={(destination) => {
                         this.setShipmentDetail("destination", destination);
                       }}
-                      onSearch={query => {
+                      onSearch={(query) => {
                         this.setState({ isLoading: true });
                         fetch(
                           `${this.state.baseUrl}Shipments/destinationLookup?term=${query}`,
                           {
                             headers: {
-                              Accept: "application/json"
-                            }
+                              Accept: "application/json",
+                            },
                           }
                         )
-                          .then(resp => resp.json())
-                          .then(json => {
+                          .then((resp) => resp.json())
+                          .then((json) => {
                             console.log(json);
                             this.setState({
                               isLoading: false,
-                              options: json
+                              options: json,
                             });
                           });
                       }}
                       labelKey="value"
                       options={this.state.options}
                     />
-                    <HelpBlock>{destinationError}</HelpBlock>
+                    <FormText>{destinationError}</FormText>
                   </FormGroup>
                 </Col>
                 <Col lg={4}>
@@ -631,14 +639,13 @@ class App extends React.Component {
                     className="cb-shipped"
                     validationState={this.getValidationState("shipped")}
                   >
-                    <Checkbox
+                    <FormCheck
                       validationState={this.getValidationState("shipped")}
                       checked={shipped}
                       onChange={this.toggleShipped}
-                    >
-                      Shipped
-                    </Checkbox>
-                    <HelpBlock>{shippedError}</HelpBlock>
+                      label="Shipped"
+                    />
+                    <FormText>{shippedError}</FormText>
                   </FormGroup>
                 </Col>
               </Row>
@@ -661,9 +668,9 @@ class App extends React.Component {
         </Row>
 
         <Row>
-          <Col lg={6}>
+          <Col>
             <div className="pre-scrollable">
-              <PanelGroup
+              <div
                 id="accordion-controlled-example"
                 activeKey={this.state.activeKey}
                 onSelect={this.updateActiveKey}
@@ -671,85 +678,90 @@ class App extends React.Component {
                 {products &&
                   products.map((product, idx) => {
                     return (
-                      <Panel
+                      <Card
                         key={`panel-${idx}`}
                         eventKey={`panel-${idx}`}
                         expanded={isExpanded[idx]}
-                        onToggle={b => {
+                        onToggle={(b) => {
                           this.toggleIsExpanded(b, idx);
                         }}
                       >
-                        <Panel.Heading>
-                          <Panel.Title
+                        <Card.Header>
+                          <Card.Title
                             onClick={() => this.getLabelList(product)}
                             toggle
                           >
                             {product}{" "}
                             {labelCounts[product] && (
-                              <Badge>{labelCounts[product]}</Badge>
+                              <Badge variant="primary">
+                                {labelCounts[product]}
+                              </Badge>
                             )}
-                          </Panel.Title>
-                        </Panel.Heading>
-                        <Panel.Body collapsible>
+                          </Card.Title>
+                        </Card.Header>
+                        <Card.Body>
                           {labelLists[product] &&
                             labelLists[product].map((value, idx) => {
                               let icon = null;
-                              let checkboxClasses = classes.slice();
+                              let FormCheckClasses = classes.slice();
                               const checked =
-                                this.state.shipment.labelIds.indexOf(
-                                  value.Pallet.id
-                                ) > -1;
+                                this.state.shipment.labelIds.indexOf(value.id) >
+                                -1;
                               let style = {};
-                              if (!!+value.Pallet.disabled) {
-                                checkboxClasses.push("bg-danger");
+                              if (value.disabled) {
+                                FormCheckClasses.push("bg-danger");
                                 icon = (
                                   <>
-                                    <Glyphicon glyph="ban-circle" />{" "}
+                                    <FontAwesomeIcon icon={faBan} />{" "}
                                   </>
                                 );
                                 style = { pointerEvents: "none" };
                               }
+                              let labelText = this.buildLabelString(value);
+                              if (icon) {
+                                labelText = icon + labelText;
+                              }
+
                               return (
                                 <WrapCheckbox
-                                  key={value.Pallet.pl_ref}
-                                  childKey={value.Pallet.pl_ref}
-                                  disabled={value.Pallet.disabled}
+                                  key={value.pl_ref}
+                                  childKey={value.pl_ref}
+                                  disabled={value.disabled}
                                 >
-                                  <Checkbox
-                                    bsClass={checkboxClasses.join(" ")}
-                                    disabled={value.Pallet.disabled}
+                                  <FormCheck
+                                    bsClass={FormCheckClasses.join(" ")}
+                                    disabled={value.disabled}
                                     checked={checked}
                                     style={style}
-                                    key={value.Pallet.pl_ref}
-                                    onChange={e =>
+                                    key={value.pl_ref}
+                                    onChange={(e) =>
                                       this.addRemoveLabel(
                                         e.target.checked,
-                                        value.Pallet.id
+                                        value.id
                                       )
                                     }
-                                  >
-                                    {icon}
-                                    {this.buildLabelString(value)}
-                                  </Checkbox>
+                                    label={labelText}
+                                  />
                                 </WrapCheckbox>
                               );
                             })}
-                        </Panel.Body>
-                      </Panel>
+                        </Card.Body>
+                      </Card>
                     );
                   })}
-              </PanelGroup>
+              </div>
             </div>
           </Col>
-          <Col lg={6}>
-            <Panel>
-              <Panel.Heading>
-                <Panel.Title componentClass="h3">
-                  Currently On Shipment <Badge>{selectedCount}</Badge>
-                </Panel.Title>
-              </Panel.Heading>
-              <Panel.Body>{labelsOnShipment}</Panel.Body>
-            </Panel>
+          <Col>
+            <Card>
+              <Card.Header>
+                <Card.Title>
+                  Currently On Shipment{" "}
+                  <Badge variant="primary">{selectedCount}</Badge>
+                </Card.Title>
+              </Card.Header>
+              <Card.Body>{labelsOnShipment}</Card.Body>
+            </Card>
           </Col>
         </Row>
       </Wrap>

@@ -7,11 +7,19 @@ namespace App\Controller;
  * Menus Controller
  *
  * @property \App\Model\Table\MenusTable $Menus
+ * @property \App\Controller\Component\CtrlComponent $Ctrl
  *
  * @method \App\Model\Entity\Menu[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class MenusController extends AppController
 {
+    public function initialize(): void
+    {
+        parent::initialize();
+
+        $this->loadComponent('Ctrl');
+    }
+
     /**
      * Index method
      *
@@ -58,10 +66,14 @@ class MenusController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             }
+            pr($menu->getErrors());
             $this->Flash->error(__('The menu could not be saved. Please, try again.'));
         }
-        $parentMenus = $this->Menus->ParentMenus->find('list', ['limit' => 200]);
-        $this->set(compact('menu', 'parentMenus'));
+        $parentMenus = $this->Menus->ParentMenus->find('treeList', [
+            'spacer' => '&nbsp;&nbsp;',
+            'limit' => 200, ]);
+        $bsUrls = $this->Ctrl->getMenuActions();
+        $this->set(compact('menu', 'parentMenus', 'bsUrls'));
     }
 
     /**
@@ -85,8 +97,11 @@ class MenusController extends AppController
             }
             $this->Flash->error(__('The menu could not be saved. Please, try again.'));
         }
-        $parentMenus = $this->Menus->ParentMenus->find('list', ['limit' => 200]);
-        $this->set(compact('menu', 'parentMenus'));
+        $parentMenus = $this->Menus->ParentMenus->find('treeList', [
+            'spacer' => '&nbsp;&nbsp;',
+            'limit' => 200, ]);
+        $bsUrls = $this->Ctrl->getMenuActions();
+        $this->set(compact('menu', 'parentMenus', 'bsUrls'));
     }
 
     /**

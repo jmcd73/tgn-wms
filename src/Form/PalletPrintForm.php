@@ -58,9 +58,12 @@ class PalletPrintForm extends Form
     {
         $validator
         ->notBlank('batch_no', 'Please select a batch')
+        ->requirePresence('batch_no', 'Please select a batch')
         ->notEmptyString('batch_no', 'Please select a batch')
-        ->notBlank('item', 'Item cannot be empty')
-        ->notBlank('production_line', 'Production line is required');
+        ->notBlank('item', 'Please select an Item')
+        ->requirePresence('item', 'Please select an Item')
+        ->notBlank('production_line', 'Please select a production line')
+        ->requirePresence('production_line', true, 'Please select a production line');
 
         return $validator;
     }
