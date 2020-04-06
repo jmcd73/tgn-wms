@@ -31,6 +31,8 @@ use Cake\Core\Configure;
 use Cake\Core\Exception\MissingPluginException;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
+use Cake\Http\Middleware\BodyParserMiddleware;
+use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
@@ -82,6 +84,8 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
      */
     public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue
     {
+        $bodies = new BodyParserMiddleware();
+
         $middlewareQueue
             // Catch any exceptions in the lower layers,
             // and make an error page/response
@@ -92,6 +96,8 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
                 'cacheTime' => Configure::read('Asset.cacheTime'),
             ]))
 
+            ->add(new HttpOptionsMiddleware())
+
             // Add routing middleware.
             // If you have a large number of routes connected, turning on routes
             // caching in production could improve performance. For that when
@@ -100,8 +106,10 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             // `new RoutingMiddleware($this, '_cake_routes_')`
             ->add(new RoutingMiddleware($this))
             ->add(new AuthenticationMiddleware($this))
-          //  ->add(new AuthorizationMiddleware($this))
-            ->add(new HttpOptionsMiddleware($this));
+            ->add($bodies);
+        // Ensure routing middleware is added to the queue before CSRF protection middleware.
+
+        //  ->add(new AuthorizationMiddleware($this))
 
         return $middlewareQueue;
     }
