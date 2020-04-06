@@ -20,6 +20,7 @@
     "components/jquery": "^3.4",
     "friendsofcake/bootstrap-ui": "dev-cake-4-bs-4",
     "mobiledetect/mobiledetectlib": "^2.8",
+    "tecnickcom/tcpdf": "^6.3",
     "twbs/bootstrap": "3.3.7"
   },
   "require-dev": {

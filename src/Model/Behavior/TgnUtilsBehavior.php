@@ -319,7 +319,6 @@ class TgnUtilsBehavior extends Behavior
      */
     public function addMinutesToDateTime($date_time, $minutes)
     {
-        tog(getTypeName($date_time));
         $dateTime = new \DateTime($date_time);
         $add_minutes = '+ ' . $minutes . ' minutes';
         $dateTime->modify($add_minutes);
@@ -440,5 +439,19 @@ class TgnUtilsBehavior extends Behavior
         }
 
         return $errorMessage;
+    }
+
+    /**
+     * getViewPermNumber returns the perm number when given the text
+     * make globally available to all models
+     * @param array $perm Perm
+     * @return mixed
+     */
+    public function getViewPermNumber($perm = null)
+    {
+        $perms = Configure::read('StockViewPerms');
+        $key = array_search($perm, array_column($perms, 'slug'));
+
+        return $perms[$key]['value'];
     }
 }

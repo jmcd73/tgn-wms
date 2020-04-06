@@ -91,4 +91,19 @@ class CtrlComponent extends Component
         }
         return $flattened;
     }
+
+    public function getMenuActions()
+    {
+        $controllersWithActions = $this->getResources();
+        $flattened = [];
+
+        foreach ($controllersWithActions as $cA) {
+            foreach ($cA as $controller => $actions) {
+                foreach ($actions as $action) {
+                    $flattened[] = $controller . '::' . $action;
+                }
+            }
+        }
+        return array_combine($flattened, $flattened);
+    }
 }

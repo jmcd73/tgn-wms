@@ -23,7 +23,7 @@ class HttpOptionsMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-
+        $response = $response->withHeader('X-Toggen', 'James McDonald');
         $response = $response
             ->withHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
             ->withHeader('Access-Control-Allow-Credentials', 'true');
@@ -32,7 +32,7 @@ class HttpOptionsMiddleware implements MiddlewareInterface
             $method = $request->getHeader('Access-Control-Request-Method');
             $headers = $request->getHeader('Access-Control-Request-Headers');
             $allowed = empty($method) ? 'GET, POST, PUT, DELETE' : $method;
-
+            tog('IN OPTIONS');
             $response = $response
                     ->withHeader('Access-Control-Allow-Headers', $headers)
                     ->withHeader('Access-Control-Allow-Methods', $allowed)

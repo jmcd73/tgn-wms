@@ -10,8 +10,10 @@
 
 <?php $this->start('tb_actions'); ?>
 <li><?= $this->Html->link(__('List Menus'), ['action' => 'index'], ['class' => 'nav-link']) ?></li>
-<li><?= $this->Html->link(__('List Parent Menus'), ['controller' => 'Menus', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
-<li><?= $this->Html->link(__('New Parent Menu'), ['controller' => 'Menus', 'action' => 'add'], ['class' => 'nav-link']) ?></li>
+<li><?= $this->Html->link(__('List Parent Menus'), ['controller' => 'Menus', 'action' => 'index'], ['class' => 'nav-link']) ?>
+</li>
+<li><?= $this->Html->link(__('New Parent Menu'), ['controller' => 'Menus', 'action' => 'add'], ['class' => 'nav-link']) ?>
+</li>
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', '<ul class="nav flex-column">' . $this->fetch('tb_actions') . '</ul>'); ?>
 
@@ -20,18 +22,16 @@
     <fieldset>
         <legend><?= __('Add Menu') ?></legend>
         <?php
-            echo $this->Form->control('active');
+            echo $this->Form->control('active', [
+                'default' => 1,
+            ]);
             echo $this->Form->control('divider');
-            echo $this->Form->control('header');
             echo $this->Form->control('admin_menu');
             echo $this->Form->control('name');
             echo $this->Form->control('description');
             echo $this->Form->control('url');
-            echo $this->Form->control('options');
             echo $this->Form->control('title');
-            echo $this->Form->control('parent_id', ['options' => $parentMenus, 'empty' => true]);
-            echo $this->Form->control('lft');
-            echo $this->Form->control('rght');
+            echo $this->Form->control('parent_id', ['options' => $parentMenus, 'empty' => true, 'escape' => false]);
             echo $this->Form->control('bs_url');
             echo $this->Form->control('extra_args');
         ?>

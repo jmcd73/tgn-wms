@@ -345,7 +345,6 @@ class PalletsTable extends Table
             $minutes = $shift['shift_minutes'];
 
             $start_date_time = $queryDate . ' ' . $start_time;
-            tog(['start_time' => $start_time, 'start_date_time' => $start_date_time, 'minutes' => $minutes]);
 
             $end_date_time = $this->addMinutesToDateTime($start_date_time, $minutes);
 
@@ -853,20 +852,6 @@ class PalletsTable extends Table
         //ksort($item_codes, SORT_REGULAR);
 
         return $prepend + $item_codes_list;
-    }
-
-    /**
-     * getViewPermNumber returns the perm number when given the text
-     * make globally available to all models
-     * @param array $perm Perm
-     * @return mixed
-     */
-    public function getViewPermNumber($perm = null)
-    {
-        $perms = Configure::read('StockViewPerms');
-        $key = array_search($perm, array_column($perms, 'slug'));
-
-        return $perms[$key]['value'];
     }
 
     /**

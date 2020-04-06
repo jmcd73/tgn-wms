@@ -22,14 +22,31 @@ use Cake\Core\Configure;
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <?php foreach ($menu->children as $child): ?>
-                    <?php list($controller, $action) = explode('::', $child->bs_url); ?>
+                    <?php
+                        // has valid external URL
+                        $options = [
+                            'class' => 'dropdown-item',
+                        ];
+
+                        if ($child->hasValue('title')) {
+                            $options['title'] = $child->title;
+                        }
+
+                        if ($child->hasValue('url')) {
+                            $url = $child->url;
+                        } else {
+                            list($controller, $action) = explode('::', $child->bs_url);
+                            $url = ['controller' => $controller,
+                                'action' => $action,
+                            ];
+                            if ($child->hasValue('extra_args')) {
+                                $extraArgs = $child->extra_args;
+                                array_push($url, $extraArgs);
+                            }
+                        }?>
+
                     <?= $child->divider ? '<div class="dropdown-divider"></div>' : ''; ?>
-                    <?= $this->Html->link($child->name, [
-                        'controller' => $controller,
-                        'action' => $action,
-                    ], [
-                        'class' => 'dropdown-item',
-                    ]); ?>
+                    <?= $this->Html->link($child->name, $url, $options); ?>
 
 
                     <?php endforeach; ?>
@@ -37,12 +54,27 @@ use Cake\Core\Configure;
             </li>
             <?php endforeach; ?>
         </ul>
+
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0 mr-4">
-            <li><a href="/users/logout" title="Click here to logout">Admin User</li>
-            <li><?=
-                $this->Html->link('Help', ['controller' => 'Pages', 'action' => 'display', 'help'], [
-                    'class' => 'ml-3',
-                ]); ?></li>
+            <?php if ($user): ?>
+            <li class="nav-item">
+                <?php echo  $this->Html->link(
+                            $user->get('full_name') . ' ' . $this->Html->icon('sign-out-alt'),
+                            ['controller' => 'users', 'action' => 'logout'],
+                            ['title' => 'Logout',
+                                'escape' => false, 'class' => 'nav-link', ]
+                        ) ;?>
+            </li>
+            <?php endif; ?>
+            <li class="nav-item"><?=
+                $this->Html->link(
+                    'Help ' . $this->Html->icon('question-circle'),
+                    ['controller' => 'Pages', 'action' => 'display', 'help'],
+                    [
+                        'class' => 'nav-link',
+                        'escape' => false,
+                    ]
+                ); ?></li>
         </ul>
     </div>
 </nav>

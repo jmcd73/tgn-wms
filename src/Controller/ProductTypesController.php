@@ -41,6 +41,7 @@ class ProductTypesController extends AppController
         ]);
 
         $this->set('productType', $productType);
+        $this->set('_serialize', ['productType']);
     }
 
     /**

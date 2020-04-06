@@ -46,6 +46,7 @@ class ShipmentsTable extends Table
         $this->setTable('shipments');
         $this->setDisplayField('shipper');
         $this->setPrimaryKey('id');
+        $this->addBehavior('TgnUtils');
 
         $this->addBehavior('Timestamp');
 
@@ -77,18 +78,6 @@ class ShipmentsTable extends Table
             ->notEmptyString('shipper');
 
         $validator
-            ->scalar('con_note')
-            ->maxLength('con_note', 50)
-            ->requirePresence('con_note', 'create')
-            ->notEmptyString('con_note');
-
-        $validator
-            ->scalar('shipment_type')
-            ->maxLength('shipment_type', 20)
-            ->requirePresence('shipment_type', 'create')
-            ->notEmptyString('shipment_type');
-
-        $validator
             ->scalar('destination')
             ->maxLength('destination', 250)
             ->requirePresence('destination', 'create')
@@ -96,37 +85,12 @@ class ShipmentsTable extends Table
 
         $validator
             ->integer('pallet_count')
-            ->requirePresence('pallet_count', 'create')
-            ->notEmptyString('pallet_count');
+            ->allowEmptyString('pallet_count');
 
         $validator
             ->boolean('shipped')
-            ->requirePresence('shipped', 'create')
-            ->notEmptyString('shipped');
-
-        $validator
-            ->dateTime('time_start')
-            ->allowEmptyDateTime('time_start');
-
-        $validator
-            ->dateTime('time_finish')
-            ->allowEmptyDateTime('time_finish');
-
-        $validator
-            ->integer('time_total')
-            ->allowEmptyString('time_total');
-
-        $validator
-            ->integer('truck_temp')
-            ->allowEmptyString('truck_temp');
-
-        $validator
-            ->integer('dock_temp')
-            ->allowEmptyString('dock_temp');
-
-        $validator
-            ->integer('product_temp')
-            ->allowEmptyString('product_temp');
+            ->requirePresence('shipped', 'update')
+            ->allowEmpty('shipped');
 
         return $validator;
     }
@@ -143,5 +107,70 @@ class ShipmentsTable extends Table
         $rules->add($rules->existsIn(['product_type_id'], 'ProductTypes'));
 
         return $rules;
+    }
+
+    /**
+     * markDisabled creates and returns an array of items for the Form->input control to disable
+     * @param array $shipment_labels array of pallets
+     * @return array
+     */
+    public function markDisabled($shipment_labels = [])
+    {
+        foreach ($shipment_labels as $key => $ret) {
+            if ($shipment_labels[$key]['dont_ship'] && !$shipment_labels[$key]['ship_low_date']) {
+                $shipment_labels[$key]['disabled'] = true;
+            } else {
+                $shipment_labels[$key]['disabled'] = false;
+            }
+        }
+
+        return $shipment_labels;
+    }
+
+    /**
+     * getShipmentLabelOptions creates an options array for a find call
+     * @param int $id of shipment
+     * @param int $productTypeId id of product type we lookup for
+     *
+     * @return array
+     */
+    public function getShipmentLabelOptions($id, $productTypeId)
+    {
+        $perms = $this->getViewPermNumber('view_in_shipments');
+
+        // in english
+        // select all pallets that have a blank inventory status
+        // or allowed
+        // and also the current shipment id or a blank ID.
+        $options = [
+            'conditions' => [
+                'OR' => [
+                    'InventoryStatuses.perms & ' . $perms,
+                    'Pallets.inventory_status_id' => 0, // not on hold
+                ],
+                'AND' => [
+                    'OR' => [
+                        'Pallets.product_type_id' => $productTypeId,
+                        'Pallets.shipment_id = ' . $id,
+                    ],
+                ],
+                'NOT' => [
+                    'Pallets.location_id' => 0, // has been put away
+                ],
+            ],
+            'order' => [
+                'FIELD ( Pallets.shipment_id,' . $id . ',0)',
+                'Pallets.item' => 'ASC',
+                'Pallets.pl_ref' => 'ASC',
+            ],
+            'contain' => [
+                'Locations' => [
+                    'fields' => ['Locations.id', 'Locations.location'],
+                ],
+                'InventoryStatuses',
+            ],
+        ];
+
+        return $options;
     }
 }

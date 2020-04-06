@@ -7,6 +7,11 @@
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 
 <?php $this->start('tb_actions'); ?>
+<?php foreach ($productTypes as $key => $productType): ?>
+<li class="nav-item">
+    <?= $this->Html->link('Add ' . $productType, ['action' => 'process', 'add-shipment', $key], ['class' => 'nav-link']); ?>
+</li>
+<?php endforeach; ?>
 <li><?= $this->Html->link(__('New Shipment'), ['action' => 'add'], ['class' => 'nav-link']) ?></li>
 <li><?= $this->Html->link(__('List Product Types'), ['controller' => 'ProductTypes', 'action' => 'index'], ['class' => 'nav-link']) ?>
 </li>
@@ -44,8 +49,9 @@
             <td><?= h($shipment->created) ?></td>
             <td><?= h($shipment->modified) ?></td>
             <td class="actions">
+                <?= $this->Html->link(__('PDF'), ['action' => 'pdfPickList', $shipment->id], ['title' => __('PDF Pick List'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
                 <?= $this->Html->link(__('View'), ['action' => 'view', $shipment->id], ['title' => __('View'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
-                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $shipment->id], ['title' => __('Edit'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                <?= $this->Html->link(__('Edit'), ['action' => 'process', 'edit-shipment', $shipment->id], ['title' => __('Edit'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
                 <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $shipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $shipment->id), 'title' => __('Delete'), 'class' => 'btn btn-danger btn-sm mb-1']) ?>
             </td>
         </tr>

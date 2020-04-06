@@ -99,4 +99,9 @@ class Pallet extends Entity
     {
         return $this->item . ' - ' . $this->description;
     }
+
+    protected function _getDisabled()
+    {
+        return $this->dont_ship && !$this->ship_low_date;
+    }
 }
