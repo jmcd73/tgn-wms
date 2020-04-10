@@ -9,9 +9,13 @@ use Cake\Validation\Validator;
 
 /**
  * CustomPrint Form.
+ *
  */
 class CustomPrintForm extends Form
 {
+    private $formName = '';
+    private $copies = 20;
+
     /**
      * Builds the schema for the modelless form
      *
@@ -20,18 +24,31 @@ class CustomPrintForm extends Form
      */
     protected function _buildSchema(Schema $schema): Schema
     {
-        return $schema->addField('copies', 'integer')->addField('printer', 'integer');
+        return $schema->addField($this->prependFormName() . 'copies', 'integer')
+            ->addField($this->prependFormName() . 'printer', 'integer')
+            ->addField($this->prependFormName() . 'name', 'string')
+            ->addField('formName', 'string');
     }
 
-    /**
-     * Form validation builder
-     *
-     * @param \Cake\Validation\Validator $validator to use against the form
-     * @return \Cake\Validation\Validator
-     */
-    protected function _buildValidator(Validator $validator): Validator
+    private function prependFormName()
     {
-        return $validator;
+        if (!empty($this->formName) && is_string($this->formName)) {
+            return $this->formName . '.';
+        }
+    }
+
+    public function setCopies($copies)
+    {
+        if (is_numeric($copies)) {
+            $this->copies = $copies;
+        }
+        return $this;
+    }
+
+    public function setFormName($name)
+    {
+        $this->formName = $name;
+        return $this;
     }
 
     /**
@@ -42,8 +59,13 @@ class CustomPrintForm extends Form
     */
     public function validationDefault(Validator $validator):Validator
     {
-        $validator->notBlank('printer', 'Please select a printer')
-        ->notBlank('copies', 'Item cannot be empty');
+        $fieldValidator = new Validator();
+        $fieldValidator->notEmptyString('printer', 'Please select a printer')
+        ->notEmptyString('copies', 'Copies cannot be empty')
+        ->notBlank('copies', 'Please enter the copies')
+        ->lessThan('copies', $this->copies, 'Less must be less than ' . $this->copies);
+
+        $validator->addNested($this->formName, $fieldValidator);
 
         return $validator;
     }

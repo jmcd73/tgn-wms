@@ -62,11 +62,12 @@ class ItemsTable extends Table
             'joinType' => 'INNER',
         ]);
         $this->belongsTo('PrintTemplates', [
-            'foreignKey' => 'print_template_id',
+            'foreignKey' => 'pallet_template_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('CartonLabels', [
-            'foreignKey' => 'carton_label_id',
+        $this->belongsTo('CartonTemplates', [
+            'className' => 'PrintTemplates',
+            'foreignKey' => 'carton_template_id',
             'joinType' => 'INNER',
         ]);
         $this->hasMany('Cartons', [
@@ -174,8 +175,8 @@ class ItemsTable extends Table
         $rules->add($rules->isUnique(['code']));
         $rules->add($rules->existsIn(['pack_size_id'], 'PackSizes'));
         $rules->add($rules->existsIn(['product_type_id'], 'ProductTypes'));
-        $rules->add($rules->existsIn(['print_template_id'], 'PrintTemplates'));
-        $rules->add($rules->existsIn(['carton_label_id'], 'CartonLabels'));
+        $rules->add($rules->existsIn(['pallet_template_id'], 'PrintTemplates'));
+        $rules->add($rules->existsIn(['carton_template_id'], 'CartonLabels'));
 
         return $rules;
     }

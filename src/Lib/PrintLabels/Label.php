@@ -404,9 +404,10 @@ class Label
         /**
          * This grabs the PDF file out of the PDF
          */
+
         $this->setPrintContent(file_get_contents($this->getPdfOutFile()));
 
-        unlink($this->getPdfOutFile());
+        //unlink($this->getPdfOutFile());
 
         return $this->sendPdfToLpr($printerDetails);
     }

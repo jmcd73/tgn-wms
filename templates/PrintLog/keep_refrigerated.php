@@ -1,14 +1,12 @@
+<?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
+
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-lg-6">
-
-            <?= $this->Form->create(null, [
-                'horizontal' => true,
-            ]); ?>
-            <h4>Keep Refrigerated</h4>
+            <?= $this->Form->create($form); ?>
             <span id="error"></span>
 
-            <?= $this->Form->input('printer', [
+            <?= $this->Form->control('printer', [
                 'placeholder' => 'Enter a number',
                 'type' => 'radio',
                 'inline' => true,
@@ -17,19 +15,20 @@
                 'options' => $printers['printers'],
                 'default' => $printers['default'] ? $printers['default'] : '',
             ]);?>
-            <?= $this->Form->input('copies', [
+            <?= $this->Form->control('copies', [
                 'placeholder' => 'Enter a number',
+                'class' => 'mb-4',
             ]); ?>
 
-            <?= $this->Form->end('Submit'); ?>
+            <?= $this->Form->button('Submit'); ?>
+            <?= $this->Form->end(); ?>
         </div>
         <div class="col-md-6 col-lg-6">
-            <h4>Example</h4>
-            <?= $this->Html->image($template->image, [
-                'class' => 'img-responsive',
+            <?= $this->element('printImage/card', [
+                'name' => $template->details['name'],
+                'description' => $template->details['description'],
+                'image' => $template->image,
             ]); ?>
-            <h5>Instructions</h5>
-            <p>You have to select a printer, enter the number of copies</p>
         </div>
     </div>
 </div>

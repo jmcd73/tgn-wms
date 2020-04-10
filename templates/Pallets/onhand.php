@@ -28,17 +28,17 @@ use App\View\Helper\ToggenHelper;
     ]);
     echo $this->Form->submit('Search');
     echo $this->Form->end(); ?>
-    <h4 class="mt-4">Colour Legend</h4>
+    <h4 class="mt-4"><?= __('Colour Legend');?></h4>
     <div class="bg-danger alert" role="alert">
-        <?php echo $this->Html->tag('span', '', ['class' => 'glyphicon glyphicon-ban-circle', 'aria-hidden' => 'true']); ?>
+        <?= $this->Html->icon('ban'); ?>
         Can't ship low dated
     </div>
     <div class="alert bg-warning">
-        <?php echo $this->Html->tag('span', '', ['class' => 'glyphicon glyphicon-ok-circle', 'aria-hidden' => 'true']); ?>
+        <?= $this->Html->icon('check-circle', ['iconSet' => 'far']); ?>
         Low dated but shippable
     </div>
     <div class="bg-info alert">
-        <?php echo $this->Html->tag('span', '', ['class' => 'wi wi-thermometer', 'aria-hidden' => 'true']); ?>
+        <?= $this->Html->icon('thermometer-half'); ?>
         On cooldown
         <span class="label label-primary"><?php echo $cooldown; ?> hours</span>
     </div>
@@ -58,7 +58,7 @@ use App\View\Helper\ToggenHelper;
                 </span>
             </small>
         </p>
-        <table class="table table-bordered table-condensed table-striped table-responsive">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th><?php echo $this->Paginator->sort('location_id'); ?></th>
@@ -66,8 +66,8 @@ use App\View\Helper\ToggenHelper;
                     <th><?php echo $this->Paginator->sort('description'); ?></th>
                     <th><?php echo $this->Paginator->sort('pl_ref'); ?></th>
                     <th><?php echo $this->Paginator->sort('print_date'); ?></th>
-                    <th><?php echo $this->Paginator->sort('pl_age', null, ['title' => 'Pallet age in hours']); ?></th>
-                    <th><?php echo $this->Paginator->sort('bb_date', 'Best before', ['title' => 'dd/mm/yy']); ?></th>
+                    <th><?php echo $this->Paginator->sort('pl_age'); ?></th>
+                    <th><?php echo $this->Paginator->sort('bb_date', 'Best before'); ?></th>
                     <th><?php echo $this->Paginator->sort('batch'); ?></th>
                     <th><?php echo $this->Paginator->sort('qty'); ?></th>
                     <th><?php echo $this->Paginator->sort('shipment_id', 'Alloc'); ?></th>
@@ -118,9 +118,9 @@ use App\View\Helper\ToggenHelper;
                             ['title' => 'Cooldown date: ' . h($pallet['cooldown_date']->i18nFormat(null, $user->timezone)), 'style' => 'cursor: crosshair;']
                         ); ?></td>
                     <td <?php echo $this->Toggen->buildClass($cls); ?>>
-                        <?php echo h($pallet['pl_age']); ?></td>
+                        <?php echo h($this->Time->timeAgoInWords($pallet['print_date'])); ?></td>
                     <td <?php echo $this->Toggen->buildClass($cls); ?>>
-                        <?php echo h($pallet['bb_date']); ?>
+                        <?php echo h($pallet['bb_date']->i18nFormat(null, $user->timezone)); ?>
                     </td>
                     <td <?php echo $this->Toggen->buildClass($cls); ?>>
                         <?php echo h($pallet['batch']); ?></td>
@@ -128,14 +128,15 @@ use App\View\Helper\ToggenHelper;
                         <?php echo h($pallet['qty']); ?>
                     </td>
                     <td <?php echo $this->Toggen->buildClass($cls); ?>>
-                        <?php if ($pallet['shipment']['shipper']) {
+                        <?php if ($pallet->has('shipment')) {
                             echo $this->Html->link(
-                                $pallet['shipment']['shipper'],
+                                $pallet->shipment->shipper,
                                 [
                                     'controller' => 'shipments',
-                                    'action' => 'addApp',
-                                    'edit',
-                                    $pallet['shipment']['id'], ],
+                                    'action' => 'process',
+                                    'edit-shipment',
+                                    $pallet->shipment->id,
+                                ],
                                 [
                                     'class' => 'btn edit btn-xs',
                                     'title' => 'Edit Shipment',
@@ -145,7 +146,7 @@ use App\View\Helper\ToggenHelper;
                         ?></td>
 
                     <td <?php echo $this->Toggen->buildClass($cls); ?>>
-                        <?php echo h($pallet['InventoryStatus']['name']); ?>
+                        <?= $pallet->has('inventory_status') ? h($pallet->inventory_status->name) : ''; ?>
                         <?php if (!empty($pallet['inventory_status_note'])): ?>
                         <p class="x-small" title="<?php echo $pallet['inventory_status_note']; ?>">
                             <?php echo $this->Text->truncate($pallet['inventory_status_note'], 14); ?>
@@ -199,4 +200,4 @@ use App\View\Helper\ToggenHelper;
     </div>
 </div>
 
-<?php echo $this->element('pallet_cartons_edit_modal'); ?>
+<?php echo $this->element('modals/pallet_cartons_edit_modal'); ?>

@@ -182,8 +182,8 @@
                     <td><?= h($items->days_life) ?></td>
                     <td><?= h($items->min_days_life) ?></td>
                     <td><?= h($items->item_comment) ?></td>
-                    <td><?= h($items->print_template_id) ?></td>
-                    <td><?= h($items->carton_label_id) ?></td>
+                    <td><?= h($items->pallet_template_id) ?></td>
+                    <td><?= h($items->carton_template_id) ?></td>
                     <td><?= h($items->pallet_label_copies) ?></td>
                     <td><?= h($items->created) ?></td>
                     <td><?= h($items->modified) ?></td>

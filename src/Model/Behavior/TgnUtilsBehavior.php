@@ -246,15 +246,17 @@ class TgnUtilsBehavior extends Behavior
      *     'bb_date' => '31/01/73',
      *     'mysql_date' => '1973-01-31'
      * ]
-     * @param string $dateString The date as a string
+     * @param \Cake\I18n\FrozenTime $dateObject The date as a string
      * @param array $dateFormats As above example
      * @return array of date strings
      */
-    public function formatLabelDates($dateString, $dateFormats)
+    public function formatLabelDates($dateObject, $dateFormats)
     {
+        //tog([$dateString, $dateFormats]);
+
         $dates = [];
         foreach ($dateFormats as $k => $v) {
-            $dates[$k] = date($v, $dateString);
+            $dates[$k] = $dateObject->format($v);
         }
 
         return $dates;
@@ -293,7 +295,7 @@ class TgnUtilsBehavior extends Behavior
      * @param string $format PHP date format
      * @return date
      */
-    public function formatYymmdd($date, $format = '%y%m%d')
+    public function formatYymmdd($date, $format = 'ymd')
     {
         $date = new FrozenDate($date);
         return $date->format($format);

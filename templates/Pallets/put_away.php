@@ -58,9 +58,7 @@ echo $this->Form->control('pl_ref', [
     </div>
 
     <div class="row">
-        <div class="col-md-2 col-sm-0 col-sm-2 col-lg-2">
-        </div>
-        <div class="col-md-5 col-sm-6 col-lg-5">
+        <div class="offset-lg-2 col-4">
             <?php
             echo $this->Form->control(
     'location_id',
@@ -68,15 +66,10 @@ echo $this->Form->control('pl_ref', [
         'label' => 'Available Locations',
         'empty' => '(Please select an location)',
         'options' => $availableLocations,
-        'class' => 'toggen',
-        'append' => $this->Form->submit('Put-away', [
-            'class' => 'btn btn-primary toggen-btn-appended',
-        ]),
+        'custom' => true,
+        'append' => $this->Form->button('Put-away', ['type' => 'submit']),
     ]
 ); ?>
-        </div>
-        <div class="col-md-2 col-sm-6 col-lg-2">
-
         </div>
     </div>
     <?=$this->Form->end(); ?>

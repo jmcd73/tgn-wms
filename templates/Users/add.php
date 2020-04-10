@@ -17,7 +17,7 @@
 <?php $this->assign('tb_sidebar', '<ul class="nav flex-column">' . $this->fetch('tb_actions') . '</ul>'); ?>
 
 <div class="users form content">
-    <?= $this->Form->create($user) ?>
+    <?= $this->Form->create($user, ['autocomplete' => 'off']) ?>
     <fieldset>
         <legend><?= __('Add User') ?></legend>
         <?php

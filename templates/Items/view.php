@@ -104,7 +104,7 @@
             </tr>
             <tr>
                 <th scope="row"><?= __('Carton Label Id') ?></th>
-                <td><?= $this->Number->format($item->carton_label_id) ?></td>
+                <td><?= $this->Number->format($item->carton_template_id) ?></td>
             </tr>
             <tr>
                 <th scope="row"><?= __('Pallet Label Copies') ?></th>

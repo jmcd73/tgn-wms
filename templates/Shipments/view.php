@@ -7,19 +7,12 @@
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 
 <?php $this->start('tb_actions'); ?>
-<li><?= $this->Html->link(__('Edit Shipment'), ['action' => 'edit', $shipment->id], ['class' => 'nav-link']) ?></li>
+<li><?= $this->Html->link(__('Edit Shipment'), ['action' => 'process', 'edit-shipment', $shipment->id], ['class' => 'nav-link']) ?>
+</li>
 <li><?= $this->Form->postLink(__('Delete Shipment'), ['action' => 'delete', $shipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $shipment->id), 'class' => 'nav-link']) ?>
 </li>
 <li><?= $this->Html->link(__('List Shipments'), ['action' => 'index'], ['class' => 'nav-link']) ?> </li>
-<li><?= $this->Html->link(__('New Shipment'), ['action' => 'add'], ['class' => 'nav-link']) ?> </li>
-<li><?= $this->Html->link(__('List Product Types'), ['controller' => 'ProductTypes', 'action' => 'index'], ['class' => 'nav-link']) ?>
-</li>
-<li><?= $this->Html->link(__('New Product Type'), ['controller' => 'ProductTypes', 'action' => 'add'], ['class' => 'nav-link']) ?>
-</li>
-<li><?= $this->Html->link(__('List Pallets'), ['controller' => 'Pallets', 'action' => 'index'], ['class' => 'nav-link']) ?>
-</li>
-<li><?= $this->Html->link(__('New Pallet'), ['controller' => 'Pallets', 'action' => 'add'], ['class' => 'nav-link']) ?>
-</li>
+
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', '<ul class="nav flex-column">' . $this->fetch('tb_actions') . '</ul>'); ?>
 
@@ -33,7 +26,7 @@
             </tr>
             <tr>
                 <th scope="row"><?= __('Product Type') ?></th>
-                <td><?= $shipment->has('product_type') ? $this->Html->link($shipment->product_type->name, ['controller' => 'ProductTypes', 'action' => 'view', $shipment->product_type->id]) : '' ?>
+                <td><?= $shipment->has('product_type') ? h($shipment->product_type->name) : '' ?>
                 </td>
             </tr>
             <tr>

@@ -17,7 +17,8 @@ trait ResultTrait
         array $saveData
     ) {
         if ($printResult['return_value'] === 0) {
-            $this->PrintLog->save($saveData);
+            $newEntity = $this->PrintLog->newEntity($saveData);
+            $savedEntity = $this->PrintLog->save($newEntity);
 
             $message = __(
                 'Sent <strong>{0}</strong> to printer <strong>{1}</strong>',
@@ -27,7 +28,7 @@ trait ResultTrait
 
             $this->Flash->success($message, ['escape' => false]);
 
-            return $this->redirect(['action' => 'completed', $this->PrintLog->id]);
+            return $this->redirect(['action' => 'completed', $savedEntity->id]);
         } else {
             $message = __(
                 'Failed sending <strong>{0}</strong> to printer <strong>{1}</strong> - <strong>{2}</strong>',
@@ -36,6 +37,9 @@ trait ResultTrait
                 $printResult['stderr']
             );
             $this->Flash->error($message, ['escape' => false]);
+            $controller = $this->request->getParam('controller');
+            $action = $this->request->getParam('action');
+            return $this->redirect(['controller' => $controller, 'action' => $action]);
         }
     }
 }

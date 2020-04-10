@@ -2,18 +2,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-12">
-            <h4>Pallet Transport Labels</h4>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-3">
-
-            <?=$this->Html->image($template->image, [
-                'class' => 'card-img-top',
-            ]);?>
-        </div>
-        <div class="col">
+        <div class="col-6">
             <?=$this->Form->create($shippingLabel, [
                 'align' => 'horizontal',
             ]);?>
@@ -68,8 +57,14 @@
             <?= $this->Form->submit('Print');?>
             <?=$this->Form->end();?>
         </div>
+        <div class="col-3">
+            <?= $this->element('printImage/card', [
+                'name' => $template->details['name'],
+                'description' => $template->details['description'],
+                'image' => $template->image,
+            ]); ?>
 
+        </div>
     </div>
-</div>
 </div>
 </div>

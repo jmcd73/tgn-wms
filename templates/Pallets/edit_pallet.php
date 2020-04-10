@@ -19,14 +19,16 @@
                     <div class="col">
                         <h3><?= __('Move or Edit'); ?></h3>
                         <?php
-                    echo $this->Form->control('shipment_id', [
-                        'empty' => true,
-                        'style' => '-moz-appearance: none;-webkit-appearance: none;appearance: none;',
-                        'disabled' => 'disabled', ]);
-                    echo $this->Form->control('item', ['disabled' => 'disabled']);
-                    echo $this->Form->control('description', ['disabled' => 'disabled']);
-                    echo $this->Form->control('pl_ref', ['disabled' => 'disabled']);
-                    ?>
+                        if ($pallet->shipment_id != 0) {
+                            echo $this->Form->control('shipment_id', [
+                                'empty' => true,
+                                'style' => '-moz-appearance: none;-webkit-appearance: none;appearance: none;',
+                                'disabled' => 'disabled', ]);
+                        }
+                        echo $this->Form->control('item', ['disabled' => 'disabled']);
+                        echo $this->Form->control('description', ['disabled' => 'disabled']);
+                        echo $this->Form->control('pl_ref', ['disabled' => 'disabled']);
+                        ?>
                     </div>
                 </div>
 

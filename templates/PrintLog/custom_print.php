@@ -7,34 +7,37 @@
         </div>
     </div>
     <div class="row">
-        <?php foreach ($customPrints as $key_val => $cust_print): ?>
-        <?php $decodedData = $cust_print['decoded']; ?>
+        <?php foreach ($customPrints as $customPrint): ?>
+        <?php $formName = $customPrint['formName']; ?>
         <div class="col-4">
             <div class="card">
                 <div class="card-body">
                     <?=
                     $this->Html->image(
-                        $decodedData['image'],
+                        $customPrint['comment']['image'],
                         [
-                            'alt' => $decodedData['description'],
+                            'alt' => $customPrint['comment']['description'],
                             'class' => 'card-img-top mb-3',
                         ]
                     ); ?>
 
-                    <h5 class="text-uppercase"><?=$decodedData['description']; ?></h5>
+                    <h5 class="text-uppercase"><?=$customPrint['comment']['description']; ?></h5>
                     <?=
                     $this->Form->create(
-                        $forms[$cust_print['id']],
+                        $forms[$formName],
                         [
-                            'url' => [
-                                'controller' => 'PrintLabels',
-                                'action' => 'customPrint', ],
-                            'id' => 'CustomPrint' . $cust_print['id'],
+                            'method' => 'POST',
+                            'valueSources' => ['context'],
+
+                            'id' => $formName,
                         ]
                     ); ?>
+                    <?= $this->Form->hidden('formName', [
+                        'value' => $formName,
+                    ]); ?>
                     <?=
                     $this->Form->control(
-                        'printer',
+                        $formName . '.printer',
                         [
                             'options' => $printers['printers'],
                             'default' => $printers['default'] ? $printers['default'] : '',
@@ -43,28 +46,28 @@
                     ); ?>
                     <?=
                     $this->Form->hidden(
-                        'name',
+                        $formName . '.name',
                         [
-                            'value' => $cust_print['name'],
+                            'value' => $customPrint['name'],
                         ]
                     );?>
-
-                    <?=$this->Form->hidden('id', ['value' => $cust_print['id']]); ?>
+                    <?=$this->Form->hidden($formName . '.id', ['value' => $customPrint['id']]); ?>
                     <?=
                     $this->Form->control(
-                        'copies',
+                        $formName . '.copies',
                         [
                             'label' => 'Enter quantity to print',
+                            'id' => 'copies-' . $customPrint['id'],
                         ]
                     ); ?>
-                    <?=$this->Form->hidden('template', [
-                        'value' => $decodedData['template'], ]); ?>
-                    <?=$this->Form->hidden('code', [
-                        'value' => $decodedData['code'], ]); ?>
-                    <?php if (isset($cust_print['decoded']['csv'])): ?>
-                    <?php foreach ($cust_print['decoded']['csv'] as $key => $csv): ?>
+                    <?=$this->Form->hidden($formName . '.template', [
+                        'value' => $customPrint['comment']['template'], ]); ?>
+                    <?=$this->Form->hidden($formName . '.code', [
+                        'value' => $customPrint['comment']['code'], ]); ?>
+                    <?php if (isset($customPrint['comment']['csv'])): ?>
+                    <?php foreach ($customPrint['comment']['csv'] as $key => $csv): ?>
                     <?=$this->Form->hidden(
-                            'csv.' . $key,
+                            $formName . '.csv.' . $key,
                             ['value' => $csv]
                         ); ?>
                     <?php endforeach; ?>

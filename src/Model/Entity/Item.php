@@ -24,8 +24,8 @@ use Cake\ORM\Entity;
  * @property int|null $days_life
  * @property int $min_days_life
  * @property string $item_comment
- * @property int $print_template_id
- * @property int $carton_label_id
+ * @property int $pallet_template_id
+ * @property int $carton_template_id
  * @property int|null $pallet_label_copies
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenTime|null $modified
@@ -69,8 +69,8 @@ class Item extends Entity
         'days_life' => true,
         'min_days_life' => true,
         'item_comment' => true,
-        'print_template_id' => true,
-        'carton_label_id' => true,
+        'pallet_template_id' => true,
+        'carton_template_id' => true,
         'pallet_label_copies' => true,
         'created' => true,
         'modified' => true,

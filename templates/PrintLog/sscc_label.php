@@ -1,96 +1,94 @@
-<div class="container">
+<?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 
+<div class="container">
     <div class="row">
-        <div class="col-md-6 col-lg-6 col-sm-6">
+        <div class="col-sm-5">
             <h3><?=__('Reprint Label'); ?></h3>
-            <dl class="dl-horizontal">
-                <!-- <dt><?=__('Id'); ?></dt>
-                    <dd>
-                <?=h($palletRecord['Pallet']['id']); ?>
+            <dl class="row">
+                <!-- <dt class="col-sm-3"><?=__('Id'); ?></dt>
+                    <dd class="col-sm-9">
+                <?=h($pallet['id']); ?>
 
                     </dd> -->
-                <dt><?=__('Item'); ?></dt>
-                <dd>
-                    <?=h($palletRecord['Pallet']['item']); ?>
+                <dt class="col-sm-3"><?=__('Item'); ?></dt>
+                <dd class="col-sm-9">
+                    <?=h($pallet['item']); ?>
 
                 </dd>
-                <dt><?=__('Description'); ?></dt>
-                <dd>
-                    <?=h($palletRecord['Pallet']['description']); ?>
+                <dt class="col-sm-3"><?=__('Description'); ?></dt>
+                <dd class="col-sm-9">
+                    <?=h($pallet['description']); ?>
 
                 </dd>
-                <dt><?=__('Best Before'); ?></dt>
-                <dd>
-                    <?=h($palletRecord['Pallet']['best_before']); ?>
+                <dt class="col-sm-3"><?=__('Best Before'); ?></dt>
+                <dd class="col-sm-9">
+                    <?=h($pallet['bb_date']); ?>
 
                 </dd>
-                <dt><?=__('Gtin14'); ?></dt>
-                <dd>
-                    <?=h($palletRecord['Pallet']['gtin14']); ?>
+                <dt class="col-sm-3"><?=__('Gtin14'); ?></dt>
+                <dd class="col-sm-9">
+                    <?=h($pallet['gtin14']); ?>
 
                 </dd>
-                <dt><?=__('Qty'); ?></dt>
-                <dd>
-                    <?=h($palletRecord['Pallet']['qty']); ?>
+                <dt class="col-sm-3"><?=__('Qty'); ?></dt>
+                <dd class="col-sm-9">
+                    <?=h($pallet['qty']); ?>
 
                 </dd>
-                <dt><?=__('Pl Ref'); ?></dt>
-                <dd>
-                    <?=h($palletRecord['Pallet']['pl_ref']); ?>
+                <dt class="col-sm-3"><?=__('Pl Ref'); ?></dt>
+                <dd class="col-sm-9">
+                    <?=h($pallet['pl_ref']); ?>
 
                 </dd>
-                <dt><?=__('Sscc'); ?></dt>
-                <dd>
-                    <?=$this->Html->sscc($palletRecord['Pallet']['sscc']); ?>
+                <dt class="col-sm-3"><?=__('Sscc'); ?></dt>
+                <dd class="col-sm-9">
+                    <?= h($pallet['sscc']); ?>
                 </dd>
-                <dt><?=__('Batch'); ?></dt>
-                <dd>
-                    <?=h($palletRecord['Pallet']['batch']); ?>
+                <dt class="col-sm-3"><?=__('Batch'); ?></dt>
+                <dd class="col-sm-9">
+                    <?=h($pallet['batch']); ?>
 
                 </dd>
-                <dt><?=__('Print Date'); ?></dt>
-                <dd>
-                    <?=h($palletRecord['Pallet']['print_date']); ?>
+                <dt class="col-sm-3"><?=__('Print Date'); ?></dt>
+                <dd class="col-sm-9">
+                    <?=h($pallet['print_date']); ?>
 
                 </dd>
 
             </dl>
         </div>
         <div class="col-md-6 col-lg-6 col-sm-6">
-            <?=$this->Form->create('Pallet'); ?>
-            <?=$this->Form->hidden('Pallet.id') ?>
+            <?=$this->Form->create($pallet); ?>
+            <?=$this->Form->hidden('id') ?>
 
             <h4 class="tpad">Printer</h4>
 
-            <?=$this->Form->input(
-    'printer_id',
-    [
-        'type' => 'radio',
-        'default' => $printers['default'] ? $printers['default'] : '',
-        'options' => $printers['printers'],
-        'legend' => false,
-    ]
-); ?>
+            <?=
+            $this->Form->control(
+                'printer_id',
+                [
+                    'type' => 'radio',
+                    'default' => $printers['default'] ? $printers['default'] : '',
+                    'options' => $printers['printers'],
+                    'legend' => false,
+                ]
+            ); ?>
             <h4 class="tpad">Label Copies</h4>
-            <?= $this->Form->input(
-    'copies',
-    [
-        'type' => 'radio',
-        'legend' => false,
-        'options' => $labelCopiesList,
-        'default' => $inputDefaultCopies,
-    ]
-); ?>
-            <?php echo $this->Form->input('refer', [
+            <?= $this->Form->control(
+                'copies',
+                [
+                    'type' => 'radio',
+                    'legend' => false,
+                    'options' => $labelCopiesList,
+                    'default' => $inputDefaultCopies,
+                ]
+            ); ?>
+            <?php echo $this->Form->control('refer', [
                 'type' => 'hidden',
                 'value' => $refer,
             ]); ?>
-            <?=$this->Form->end([
-                'label' => 'Reprint',
-                'bootstrap-type' => 'primary',
-                'bootstrap-size' => 'lg',
-                'class' => 'tpad',
-            ]); ?>
+            <?= $this->Form->submit('Print'); ?>
+            <?=$this->Form->end(); ?>
         </div>
     </div>
 </div>

@@ -35,7 +35,7 @@ class ItemsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['PackSizes', 'ProductTypes', 'PrintTemplates'],
+            'contain' => ['PackSizes', 'ProductTypes', 'PrintTemplates', 'CartonTemplates'],
         ];
         $items = $this->paginate($this->Items);
 
@@ -105,7 +105,8 @@ class ItemsController extends AppController
         $packSizes = $this->Items->PackSizes->find('list', ['limit' => 200]);
         $productTypes = $this->Items->ProductTypes->find('list', ['limit' => 200]);
         $printTemplates = $this->Items->PrintTemplates->find('list', ['limit' => 200]);
-        $this->set(compact('item', 'packSizes', 'productTypes', 'printTemplates'));
+        $cartonTemplates = $this->Items->CartonTemplates->find('list');
+        $this->set(compact('item', 'packSizes', 'productTypes', 'printTemplates', 'cartonTemplates'));
     }
 
     /**
@@ -126,5 +127,28 @@ class ItemsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+    * @param int $code item code
+    * @return void
+    */
+    public function productListByCode($code = null)
+    {
+        $search_term = $this->request->getQuery('term');
+
+        $options = [
+            'conditions' => [
+                'code LIKE' => '%' . $search_term . '%',
+            ],
+            'order' => [
+                'code' => 'ASC',
+            ],
+        ];
+        $json_output = $this->Items->find('all', $options);
+
+        // $this->autoRender = false;
+        $this->set(compact('json_output'));
+        $this->set('_serialize', 'json_output');
     }
 }
