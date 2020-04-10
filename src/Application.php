@@ -33,9 +33,11 @@ use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
+use Cake\Http\Middleware\EncryptedCookieMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
+use Cake\Utility\Security;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -72,7 +74,6 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         if (Configure::read('debug')) {
             $this->addPlugin('DebugKit');
         }
-
         // Load more plugins here
     }
 
@@ -105,6 +106,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             // using it's second constructor argument:
             // `new RoutingMiddleware($this, '_cake_routes_')`
             ->add(new RoutingMiddleware($this))
+            ->add(new EncryptedCookieMiddleware(['remember-me'], Security::getSalt()))
             ->add(new AuthenticationMiddleware($this))
             ->add($bodies);
         // Ensure routing middleware is added to the queue before CSRF protection middleware.
@@ -154,7 +156,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         // Configure form data check to pick email and password
         $authenticationService->loadAuthenticator('Authentication.Form', [
             'fields' => [
-                'username' => 'email',
+                'username' => 'username',
                 'password' => 'password',
             ],
             'loginUrl' => '/users/login',
