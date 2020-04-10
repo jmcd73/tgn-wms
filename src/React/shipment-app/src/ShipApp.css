@@ -1,0 +1,13 @@
+.card-body.open {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.toggen-header.card-header,
+input.form-check-input,
+label.form-check-label {
+  cursor: pointer;
+}
+
+.cb-shipped {
+  margin-top: 38px;
+}

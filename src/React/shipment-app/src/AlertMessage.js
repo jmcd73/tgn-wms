@@ -11,7 +11,7 @@ import {
 import "./AlertMessage.css";
 import { CSSTransition } from "react-transition-group";
 const AlertMessage = (props) => {
-  const { bsStyle, strongText, normalText, onDismiss } = props;
+  const { variant, strongText, normalText, onDismiss } = props;
   const options = {
     success: { icon: faCheckCircle },
     warning: { icon: faExclamation },
@@ -26,9 +26,9 @@ const AlertMessage = (props) => {
       classNames="toggen"
       unmountOnExit
     >
-      <Alert onDismiss={onDismiss} bsStyle={bsStyle}>
+      <Alert onDismiss={onDismiss} variant={variant}>
         <strong>
-          <FontAwesomeIcon icon={options[bsStyle].icon} /> {strongText}{" "}
+          <FontAwesomeIcon icon={options[variant].icon} /> {strongText}{" "}
         </strong>{" "}
         {normalText}
       </Alert>

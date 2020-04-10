@@ -2,14 +2,14 @@
   text-align: center;
 }
 .bpad {
-	margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 .tpad {
-	margin-top: 20px;
+  margin-top: 20px;
 }
 
 .cb-shipped {
-	margin-top: 30px;
+  margin-top: 30px;
 }
 
 .App-logo {
@@ -19,24 +19,22 @@
 }
 
 .navpad {
-	margin-top: 60px;
+  margin-top: 60px;
 }
 div.checkbox.pallet-list:nth-child(even) {
-	background: #f9f9f9;
-	border-top: 1px solid #ddd;
-	border-bottom: 1px solid #ddd;
-
-	 }
-	 div.checkbox.pallet-list.bg-danger {
-		 background:#E97451	;
-		 padding: 4px 8px;
-	 }
-
+  background: #f9f9f9;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+div.checkbox.pallet-list.bg-danger {
+  background: #e97451;
+  padding: 4px 8px;
+}
 
 .fixed {
-	font-family: 'Droid Sans Mono', monospace;
+  font-family: "Droid Sans Mono", monospace;
 
-	font-size: 1em;
+  font-size: 1em;
 }
 .App-header {
   background-color: #282c34;
@@ -60,4 +58,8 @@ div.checkbox.pallet-list:nth-child(even) {
   to {
     transform: rotate(360deg);
   }
+}
+
+.card-body.open {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
