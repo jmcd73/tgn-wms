@@ -34,6 +34,13 @@ return [
     'ALLOWED_METHODS' => ['PUT', 'POST'],
     'ALLOWED_ORIGINS' => ['http://localhost:3000', 'http://localhost:8082'],
     'labelMaxCopies' => 400,
+    'App' => [
+        'title' => 'Toggen',
+    ],
+    'PalletsLookup' => [
+        'limit' => 20,
+        'maxLimit' => 30,
+    ],
     'MaxShippingLabels' => 70,
     'LabelsRolesActions' => [
         [
