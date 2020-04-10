@@ -105,6 +105,7 @@ class ShipmentsTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['product_type_id'], 'ProductTypes'));
+        $rules->add($rules->isUnique(['shipper'], 'Shipper number must be unique'));
 
         return $rules;
     }

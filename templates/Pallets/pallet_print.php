@@ -133,6 +133,5 @@ $this->Html->script(
         <?php endforeach; ?>
     </div>
 </div>
-
-<?= $this->element('pallet_print_modal');?>
+<?= $this->element('modals/pallet_print_modal');?>
 <?php endif;?>

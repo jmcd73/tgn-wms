@@ -30,7 +30,7 @@
             echo $this->Form->control('pallet_capacity');
             echo $this->Form->control('is_hidden');
             echo $this->Form->control('description');
-            echo $this->Form->control('product_type_id');
+            echo $this->Form->control('product_type_id', ['empty' => '(select)']);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

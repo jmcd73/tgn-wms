@@ -1,3 +1,4 @@
+<?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 <?php
 
 echo $this->Html->css([
@@ -14,7 +15,7 @@ echo $this->Html->scriptBlock('hljs.initHighlightingOnLoad();', ['block' => 'fro
 ?>
 
 <div class="container">
-   <!--  <dl class="dl-horizontal">
+    <!--  <dl class="dl-horizontal">
         <dt>Print Type</dt>
         <dd> <?= $completed['PrintLabel']['print_action']; ?></dd>
         <dt>Print Data</dt>
@@ -37,18 +38,18 @@ echo $this->Html->scriptBlock('hljs.initHighlightingOnLoad();', ['block' => 'fro
     <div class="row">
         <div class="col-lg-3"></div>
         <div class="col-lg-3 col-md-4 col-sm-12 text-center">
-    <?= $this->Html->link('Back to ' . $completed['PrintLabel']['print_action'], [
-        'action' => $completed['PrintLabel']['print_action'],
-    ], [
-        'class' => 'btn btn-link',
-    ]); ?>
-    </div>
-    <div class="col-lg-3 col-md-4 col-sm-12 text-center">
-    <?= $this->Html->link('Print another type of label', [
-        'action' => 'labelChooser',
-    ], [
-        'class' => 'btn btn-link',
-    ]); ?>
-    </div>
+            <?= $this->Html->link('Back to ' . $completed['print_action'], [
+                'action' => $completed['print_action'],
+            ], [
+                'class' => 'btn btn-link',
+            ]); ?>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-12 text-center">
+            <?= $this->Html->link('Print another type of label', [
+                'action' => 'labelChooser',
+            ], [
+                'class' => 'btn btn-link',
+            ]); ?>
+        </div>
     </div>
 </div>

@@ -2,7 +2,7 @@
 <div class="pallets container index">
 
     <h3><?php echo __('Pallets'); ?></h3>
-    <table class="table table-bordered table-condensed table-striped table-responsive">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th><?php echo $this->Paginator->sort('pl_ref'); ?></th>
@@ -14,7 +14,7 @@
 
                         <thead>
                             <tr>
-                                <th colspan="3" style="border-bottom: 0px;">Cartons</th>
+                                <th colspan="3" style="border-bottom: 0px; border-top: 0px;">Cartons</th>
                             </tr>
                             <tr class="small">
                                 <th style="border-bottom: 0px;">Prod Date</th>
@@ -39,9 +39,9 @@
                 <td><?php echo h($pallet['pl_ref']); ?></td>
                 <td><?php echo h($pallet['items']['code']); ?></td>
                 <td><?php echo h($pallet['description']); ?></td>
-                <td><?php echo h($pallet['inventory_status']['name']); ?></td>
+                <td><?= $pallet->has('inventory_status') ? $pallet->inventory_status->name : ''; ?></td>
                 <td style="padding-left: 0px; padding-right: 0px; padding-top: 0px; padding-bottom: 0px;">
-                    <table class="cartons table small table-bordered"
+                    <table class="cartons table small table-striped"
                         style="margin-bottom: 0px; background-color: inherit;">
 
                         <tbody>
@@ -65,29 +65,31 @@
 
                 <td><?php echo h($pallet['print_date']); ?></td>
                 <td><?php echo h($pallet['bb_date']); ?></td>
-                <td><?php echo h($pallet['shipment']['shipper']); ?></td>
+                <td><?= $pallet->has('shipment') ? $pallet->shipment->shipper : ''; ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(
-    __('View'),
-    [
-        'action' => 'view',
-        $pallet['id'],
-    ],
-    [
-        'class' => 'btn btn-link btn-xs view',
-    ]
-); ?>
-                    <?= $this->Html->link(
-    __('Edit'),
-    [
-        'controller' => 'Cartons',
-        'action' => 'editPalletCartons',
-        $pallet['id'],
-    ],
-    [
-        'class' => 'btn btn-link btn-xs edit',
-    ]
-); ?>
+                    <?=
+                    $this->Html->link(
+                        __('View'),
+                        [
+                            'action' => 'view',
+                            $pallet['id'],
+                        ],
+                        [
+                            'class' => 'btn btn-link btn-xs view',
+                        ]
+                    ); ?>
+                    <?=
+                    $this->Html->link(
+                        __('Edit'),
+                        [
+                            'controller' => 'Cartons',
+                            'action' => 'editPalletCartons',
+                            $pallet['id'],
+                        ],
+                        [
+                            'class' => 'btn btn-link btn-xs edit',
+                        ]
+                    ); ?>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -95,8 +97,8 @@
     </table>
     <p>
         <?php echo $this->Paginator->counter(
-    'Page {{page}} of {{pages}}, showing {{current}} records out of {{count}} total, starting on record {{start}}, ending on {{end}}'
-); ?>
+                        'Page {{page}} of {{pages}}, showing {{current}} records out of {{count}} total, starting on record {{start}}, ending on {{end}}'
+                    ); ?>
     </p>
     <div class="pagination pagination-large">
         <ul class="pagination">

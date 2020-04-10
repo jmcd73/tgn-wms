@@ -14,11 +14,22 @@
 <?php if ($pallets): ?>
 <div class="container">
     <div class="col-lg-12">
-        <h4><?php echo
-            __('There are <span class="label label-default">{0}</span> pallets to put away', $this->Paginator->counter('{{count}}'));
-            ?> </h4>
+        <?php $count = $this->Paginator->counter('{{count}}'); ?>
+        <?php
+            $token_0 = 'are';
+            $token_1 = sprintf('<span class="badge badge-info">%d</span>', $count);
+            $token_2 = 'pallets';
+        if ($count == 1) {
+            $token_0 = 'is';
+            $token_2 = 'pallet';
+        } elseif ($count == 0) {
+            $token_1 = 'no';
+        } ?>
+        <h5><?php echo
+            __('There {0} {1} {2} to put away', $token_0, $token_1, $token_2);
+            ?> </h5>
         <?php //echo $this->Html->link(__('Oil put-away'), array('controller' => 'pallets', 'action' => 'unassigned_pallets', 'putawayoil'), array('title' => "Click to move oil pallets to bottling"));?>
-        <table class="table table-hover table-bordered table-striped table-condensed">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th><?php echo $this->Paginator->sort('item'); ?></th>

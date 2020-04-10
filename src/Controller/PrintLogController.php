@@ -3,8 +3,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Form\BigNumberForm;
+use App\Form\CrossdockLabelForm;
 use App\Form\CustomPrintForm;
+use App\Form\KeepRefrigeratedForm;
+use App\Form\SampleLabelForm;
 use App\Form\ShippingLabelsForm;
+use App\Form\ShippingLabelsGenericForm;
 use App\Lib\Exception\MissingConfigurationException;
 use App\Lib\PrintLabels\LabelFactory;
 use App\Lib\PrintLabels\ResultTrait;
@@ -12,6 +17,7 @@ use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
+use ShippingLabelGeneric;
 
 /**
  * PrintLog Controller
@@ -153,12 +159,7 @@ class PrintLogController extends AppController
      */
     public function completed($printLogId = null)
     {
-        if (!$this->PrintLog->exists($printLogId)) {
-            throw new NotFoundException(__('Invalid item'));
-        }
-        $options = ['conditions' => ['PrintLabel.' . $this->PrintLog->primaryKey => $printLogId]];
-
-        $completed = $this->PrintLog->find('first', $options);
+        $completed = $this->PrintLog->get($printLogId);
 
         $this->set(compact('completed'));
     }
@@ -171,39 +172,39 @@ class PrintLogController extends AppController
     public function printCartonLabels()
     {
         if ($this->request->is(['POST', 'PUT'])) {
-            $formData = $this->request->data;
+            $data = $this->request->getData();
 
-            $printTemplate = $this->Item->find('first', [
-                'conditions' => [
-                    'Item.trade_unit' => $formData['barcode'],
-                ],
-                'contain' => [
-                    'CartonLabel',
-                ],
-            ]);
+            $itemsTable = TableRegistry::get('Items');
 
-            $printerDetails = $this->PrintLog->getLabelPrinterById($formData['printer_id']);
+            $printTemplate = $itemsTable->find()
+            ->where([
+                'Items.trade_unit' => $data['barcode'],
+            ])->
+                contain([
+                    'CartonTemplates',
+                ])->first()->toArray();
+
+            $printerDetails = $this->PrintLog->getLabelPrinterById($data['printer_id']);
 
             $printResult = LabelFactory::create($this->request->getParam('action'))
-                ->format($printTemplate['CartonLabel'], $formData)
+                ->format($printTemplate['carton_template'], $data)
                     ->print($printerDetails);
 
             if ($printResult['return_value'] == 0) {
                 $logData = $this->PrintLog->formatPrintLogData(
-                    $this->request->data['print_action'],
-                    $this->request->data
+                    $data['print_action'],
+                    $data
                 );
                 $newEntity = $this->PrintLog->newEntity($logData);
                 $this->PrintLog->save($newEntity);
             }
 
-            $replyData = $this->request->data + $printResult;
+            $replyData = $data + $printResult;
+            $replyData['name'] = $printerDetails['name'];
 
             $this->set('data', $replyData);
             $this->set('_serialize', ['data']);
         }
-
-        //$this->autoRender = false;
     }
 
     /**
@@ -213,11 +214,26 @@ class PrintLogController extends AppController
      */
     public function cartonPrint()
     {
-        $printers = $this->PrintLog->getLabelPrinters($this->request->getParam('controller'), $this->request->getParam('action'));
+        $controller = $this->request->getParam('controller');
+        $action = $this->request->getParam('action');
+        $printers = $this->PrintLog->getLabelPrinters(
+            $controller,
+            $action
+        );
 
-        $print_action = $this->request->getParam('action');
+        $template = $this->PrintLog->getGlabelsDetail(
+            $controller,
+            $action
+        );
 
-        $this->set(compact('print_action', 'printers'));
+        $printTemplate = TableRegistry::get('PrintTemplates')->find()->where([
+            'print_controller' => $controller,
+            'print_action' => $action,
+            'active' => 1,
+        ])->first()->toArray();
+
+        $this->set('print_action', $action);
+        $this->set(compact('printers', 'printTemplate', 'template'));
     }
 
     /**
@@ -227,23 +243,26 @@ class PrintLogController extends AppController
      */
     public function crossdockLabels()
     {
+        $controller = $this->request->getParam('controller');
+        $action = $this->request->getParam('action');
+
         $template = $this->PrintLog->getGlabelsDetail(
-            $this->request->getParam('controller'),
-            $this->request->getParam('action')
+            $controller,
+            $action
         );
 
+        $form = new CrossdockLabelForm();
+
         if ($this->request->is(['POST', 'PUT'])) {
-            $this->PrintLog->set($this->request->data);
+            $data = $this->request->getData();
 
-            if ($this->PrintLog->validates()) {
-                $dataNoModel = $this->request->data['PrintLabel'];
-
+            if ($form->validate($data)) {
                 $saveData = $this->PrintLog->formatPrintLogData(
-                    $this->request->getParam('action'),
-                    $dataNoModel
+                    $action,
+                    $data
                 );
 
-                $glabelsData = $dataNoModel + $saveData;
+                $glabelsData = $data + $saveData;
 
                 unset($glabelsData['print_data']);
 
@@ -251,7 +270,7 @@ class PrintLogController extends AppController
                     $glabelsData['printer']
                 );
 
-                $printResult = LabelFactory::create($this->request->getParam('action'))
+                $printResult = LabelFactory::create($action)
                     ->format($glabelsData)
                         ->print($printerDetails, $template->file_path);
 
@@ -270,13 +289,13 @@ class PrintLogController extends AppController
         $sequence = $this->PrintLog->createSequenceList($maxShippingLabels);
 
         $printers = $this->PrintLog->getLabelPrinters(
-            $this->request->getParam('controller'),
-            $this->request->getParam('action')
+            $controller,
+            $action
         );
 
         $companyName = Configure::read('companyName');
 
-        $this->set(compact('template', 'companyName', 'sequence', 'printers'));
+        $this->set(compact('template', 'companyName', 'sequence', 'printers', 'form'));
     }
 
     /**
@@ -288,31 +307,28 @@ class PrintLogController extends AppController
         $maxShippingLabels = $this->PrintLog->getSetting('MaxShippingLabels');
 
         $shippingLabel = new ShippingLabelsForm();
-        //$shippingLabel = null;
+
+        $controller = $this->request->getParam('controller');
+        $action = $this->request->getParam('action');
 
         $template = $this->PrintLog->getGlabelsDetail(
-            $this->request->getParam('controller'),
-            $this->request->getParam('action')
+            $controller,
+            $action
         );
 
         if ($this->request->is(['POST', 'PUT'])) {
-            if ($shippingLabel->validate($this->request->getData())) {
+            $data = $this->request->getData();
+            if ($shippingLabel->validate($data)) {
                 $saveData = $this->PrintLog->formatPrintLogData(
-                    $this->request->getParam('action'),
-                    $this->request->getData()
+                    $action,
+                    $data
                 );
 
-                $this->log(print_r($saveData, true));
-                $newEntity = $this->PrintLog->newEntity($saveData);
-
-                $this->PrintLog->save($newEntity);
-
-                $printerDetails = $this->PrintLog->getLabelPrinterById($this->request->getData()['printer']);
+                $printerDetails = $this->PrintLog->getLabelPrinterById($data['printer']);
 
                 $printResult = LabelFactory::create($this->request->getParam('action'))
                         ->format($this->request->getData())
                             ->print($printerDetails, $template->file_path);
-                //$this->log(get_defined_vars());
 
                 $this->handlePrintResult(
                     $printResult,
@@ -341,31 +357,33 @@ class PrintLogController extends AppController
      */
     public function shippingLabelsGeneric()
     {
+        $controller = $this->request->getParam('controller');
+        $action = $this->request->getParam('action');
         $printers = $this->PrintLog->getLabelPrinters(
-            $this->request->getParam('controller'),
-            $this->request->getParam('action')
+            $controller,
+            $action
         );
 
         /**
           * @var GlabelsTemplate $template Glabels Configuration
           */
         $template = $this->PrintLog->getGlabelsDetail(
-            $this->request->getParam('controller'),
-            $this->request->getParam('action')
+            $controller,
+            $action
         );
 
+        $form = new ShippingLabelsGenericForm();
+
         if ($this->request->is(['POST', 'PUT'])) {
-            $this->PrintLog->set($this->request->data);
+            $data = $this->request->getData();
 
-            $dataNoModel = $this->request->data['PrintLabel'];
-
-            if ($this->PrintLog->validates()) {
+            if ($form->validate($data)) {
                 $saveData = $this->PrintLog->formatPrintLogData(
                     $this->request->getParam('action'),
-                    $dataNoModel
+                    $data
                 );
 
-                $glabelsData = $dataNoModel + $saveData;
+                $glabelsData = $data + $saveData;
                 unset($glabelsData['print_data']);
 
                 $printerDetails = $this->PrintLog->getLabelPrinterById($glabelsData['printer']);
@@ -385,7 +403,7 @@ class PrintLogController extends AppController
             }
         }
 
-        $this->set(compact('template', 'printers'));
+        $this->set(compact('template', 'printers', 'form'));
     }
 
     /**
@@ -394,6 +412,8 @@ class PrintLogController extends AppController
      */
     public function keepRefrigerated()
     {
+        $form = new KeepRefrigeratedForm();
+
         $printers = $this->PrintLog->getLabelPrinters(
             $this->request->getParam('controller'),
             $this->request->getParam('action')
@@ -405,17 +425,14 @@ class PrintLogController extends AppController
         );
 
         if ($this->request->is(['POST', 'PUT'])) {
-            $this->PrintLog->set($this->request->data);
-
-            $dataNoModel = $this->request->data['PrintLabel'];
-
-            if ($this->PrintLog->validates()) {
+            $data = $this->request->getData();
+            if ($form->validate($data)) {
                 $saveData = $this->PrintLog->formatPrintLogData(
                     $this->request->getParam('action'),
-                    $dataNoModel
+                    $data
                 );
 
-                $glabelsData = $dataNoModel + $saveData;
+                $glabelsData = $data + $saveData;
 
                 unset($glabelsData['print_data']);
 
@@ -438,7 +455,7 @@ class PrintLogController extends AppController
             }
         }
 
-        $this->set(compact('template', 'printers'));
+        $this->set(compact('template', 'printers', 'form'));
     }
 
     /**
@@ -447,6 +464,8 @@ class PrintLogController extends AppController
      */
     public function glabelSampleLabels()
     {
+        $glabelsSample = new KeepRefrigeratedForm();
+
         $printers = $this->PrintLog->getLabelPrinters(
             $this->request->getParam('controller'),
             $this->request->getParam('action')
@@ -458,16 +477,15 @@ class PrintLogController extends AppController
         );
 
         if ($this->request->is(['POST', 'PUT'])) {
-            $this->PrintLog->set($this->request->data);
-            $dataNoModel = $this->request->data['PrintLabel'];
+            $data = $this->request->getData();
 
-            if ($this->PrintLog->validates()) {
+            if ($glabelsSample->validate($data)) {
                 $saveData = $this->PrintLog->formatPrintLogData(
                     $this->request->getParam('action'),
-                    $dataNoModel
+                    $data
                 );
 
-                $glabelsData = $dataNoModel + $saveData;
+                $glabelsData = $data + $saveData;
 
                 unset($glabelsData['print_data']);
 
@@ -492,7 +510,7 @@ class PrintLogController extends AppController
             }
         }
 
-        $this->set(compact('template', 'printers'));
+        $this->set(compact('template', 'printers', 'glabelsSample'));
     }
 
     /**
@@ -502,6 +520,7 @@ class PrintLogController extends AppController
      */
     public function bigNumber()
     {
+        $bigNumber = new BigNumberForm();
         $printers = $this->PrintLog->getLabelPrinters(
             $this->request->getParam('controller'),
             $this->request->getParam('action')
@@ -511,20 +530,21 @@ class PrintLogController extends AppController
 
         $printer = $printers['printers'][$printerId];
 
-        $printTemplate = $this->PrintTemplate->find(
-            'first',
-            [
-                'conditions' => [
-                    'PrintTemplate.print_action' => 'bigNumber',
-                    'PrintTemplate.active' => 1,
+        $printTemplatesTable = TableRegistry::get('PrintTemplates');
+        $printTemplate = $printTemplatesTable->find()
+            ->where(
+                [
+                    'PrintTemplates.print_action' => 'bigNumber',
+                    'PrintTemplates.active' => 1,
                 ],
-            ]
-        );
+            )->first()->toArray();
+
+        $exampleImage = $printTemplate['example_image'];
 
         $glabelsRoot = $this->PrintLog->getSetting('GLABELS_ROOT');
 
         if ($this->request->is(['POST', 'PUT'])) {
-            $formData = $this->request->data['PrintLabel'];
+            $formData = $this->request->getData();
 
             $printerDetails = $this->PrintLog->getLabelPrinterById(
                 $formData['printerId']
@@ -532,11 +552,11 @@ class PrintLogController extends AppController
 
             $saveData = $this->PrintLog->formatPrintLogData(
                 $this->request->getParam('action'),
-                $this->request->data['PrintLabel']
+                $formData
             );
 
             $printResult = LabelFactory::create($this->request->getParam('action'))
-                ->format($printTemplate['PrintTemplate'], $formData)
+                ->format($printTemplate, $formData)
                     ->print($printerDetails);
 
             $this->handlePrintResult(
@@ -547,9 +567,7 @@ class PrintLogController extends AppController
             );
         }
 
-        $exampleImage = $printTemplate['PrintTemplate']['example_image'];
-
-        $this->set(compact('printer', 'printerId', 'exampleImage', 'glabelsRoot'));
+        $this->set(compact('printer', 'printerId', 'exampleImage', 'glabelsRoot', 'printTemplate'));
     }
 
     /**
@@ -564,39 +582,49 @@ class PrintLogController extends AppController
             ],
         ];
         $settings = TableRegistry::get('Settings');
+
         $customPrints = $settings->find('all', $conditions)->toArray();
 
+        $forms = [];
+
         foreach ($customPrints as $key => $customPrint) {
-            $customPrints[$key]['decoded'] = json_decode($customPrint['comment'], true);
-            $forms[$customPrint['id']] = new CustomPrintForm();
+            $formName = 'form-' . $customPrint['id'];
+
+            $decodedComment = json_decode($customPrint['comment'], true);
+
+            $customPrints[$key]['comment'] = $decodedComment;
+
+            $copies = isset($decodedComment['copies']) && is_numeric($decodedComment['copies']) ? $decodedComment['copies'] : null;
+
+            $forms[$formName] = (new CustomPrintForm())->setFormName($formName)->setCopies($copies);
+
+            $customPrints[$key]['formName'] = $formName;
         }
 
         $action = $this->request->getParam('action');
+        $controller = $this->request->getParam('controller');
 
         if ($this->request->is(['POST', 'PUT'])) {
             $data = $this->request->getData();
-            $id = $data['id'];
+            $formName = $data['formName'];
 
-            if ($forms[$id]->validate($data)) {
+            if ($forms[$formName]->validate($data)) {
                 $saveData = $this->PrintLog->formatPrintLogData(
                     $action,
-                    $data
+                    $data[$formName]
                 );
 
-                $newEntity = $this->PrintLog->newEntity($saveData);
-                $this->PrintLog->save($newEntity);
-
-                $glabelsData = $data + $saveData;
+                $glabelsData = $data[$formName] + $saveData;
 
                 $printerDetails = $this->PrintLog->getLabelPrinterById(
-                    $glabelsData['printer']
+                    $data[$formName]['printer']
                 );
-                $this->log(print_r([$printerDetails, $action, $data], true));
+
                 $printResult = LabelFactory::create($action)
-                    ->format($data)
+                    ->format($glabelsData)
                         ->print(
                             $printerDetails,
-                            WWW_ROOT . $data['template']
+                            WWW_ROOT . $data[$formName]['template']
                         );
 
                 $printTemplate['name'] = 'Custom Print';
@@ -608,16 +636,18 @@ class PrintLogController extends AppController
                     $saveData
                 );
             } else {
-                $this->Flash->error('Invalid data');
+                $this->Flash->error('Invalid data!');
+                $forms[$formName]->setData($this->request->getData());
+                $forms[$formName]->setErrors($forms[$formName]->getErrors());
             }
         }
 
         $printers = $this->PrintLog->getLabelPrinters(
-            $this->request->getParam('controller'),
+            $controller,
             $action
         );
 
-        $this->set(compact('customPrints', 'printers', 'forms'));
+        $this->set(compact('forms', 'printers', 'customPrints'));
     }
 
     /**
@@ -626,14 +656,21 @@ class PrintLogController extends AppController
      */
     public function sampleLabels()
     {
+        $form = new SampleLabelForm();
+
         $maxShippingLabels = $this->PrintLog->getSetting('MaxShippingLabels');
+        $controller = $this->request->getParam('controller');
+        $action = $this->request->getParam('action');
 
         $template = $this->PrintLog->getGlabelsDetail(
-            $this->request->getParam('controller'),
-            $this->request->getParam('action')
+            $controller,
+            $action
         );
 
-        $printers = $this->PrintLog->getLabelPrinters($this->request->getParam('controller'), $this->request->getParam('action'));
+        $printers = $this->PrintLog->getLabelPrinters(
+            $controller,
+            $action
+        );
 
         $sequence = $this->PrintLog->createSequenceList(
             $maxShippingLabels,
@@ -644,24 +681,15 @@ class PrintLogController extends AppController
         );
 
         if ($this->request->is(['POST', 'PUT'])) {
-            $this->PrintLog->set($this->request->data);
-
-            if ($this->PrintLog->validates()) {
-                $dataNoModel = $this->request->data['PrintLabel'];
+            $data = $this->request->getData();
+            if ($form->validate($data)) {
                 $saveData = $this->PrintLog->formatPrintLogData(
-                    $this->request->getParam('action'),
-                    $dataNoModel
+                    $action,
+                    $data
                 );
-                $glabelsData = $dataNoModel + $saveData;
-
-                $printerDetails = $this->Printer->find(
-                    'first',
-                    [
-                        'conditions' => [
-                            'id' => $glabelsData['printer'],
-                        ],
-                    ]
-                );
+                $glabelsData = $data + $saveData;
+                $printersTable = TableRegistry::get('Printers');
+                $printerDetails = $printersTable->get($glabelsData['printer'])->toArray();
 
                 $printResult = LabelFactory::create($this->request->getParam('action'))
                     ->format($glabelsData)
@@ -678,19 +706,15 @@ class PrintLogController extends AppController
             }
         }
 
-        $this->set(compact('sequence', 'template', 'printers'));
+        $this->set(compact('sequence', 'template', 'printers', 'form'));
     }
 
     public function ssccLabel($id = null)
     {
-        $pallet = TableRegistry::get('Pallet');
+        $palletTable = TableRegistry::get('Pallets');
+
         if ($id === null) {
-            return $this->redirect([
-                'action' => 'labelChooser',
-            ]);
-        }
-        if (!$pallet->exists($id)) {
-            throw new NotFoundException(__('Invalid Pallet'));
+            return $this->redirect($this->referer());
         }
 
         $options = [
@@ -702,46 +726,48 @@ class PrintLogController extends AppController
             ],
         ];
 
-        $palletRecord = $pallet->get($id, $options);
+        $pallet = $palletTable->get($id, $options);
 
-        $pallet->getValidator()->add('printer_id', 'required', [
+        $palletTable->getValidator()->add('printer_id', 'required', [
             'rule' => 'notBlank',
             'message' => 'Please select a printer',
         ]);
 
         if ($this->request->is(['post', 'put'])) {
-            $pallet_ref = $palletRecord['pl_ref'];
+            $data = $this->request->getData();
 
-            $replaceTokens = json_decode($palletRecord['Item']['PrintTemplate']['replace_tokens']);
+            $pallet_ref = $pallet['pl_ref'];
 
-            if (!isset($palletRecord['Item']['PrintTemplate']) || empty($palletRecord['Item']['PrintTemplate'])) {
-                throw new MissingConfigurationException(__('Please configure a print template for item %s', $pallet['Pallet']['item']));
+            $replaceTokens = json_decode($pallet['items']['print_template']['replace_tokens']);
+
+            if (!isset($pallet['items']['print_template']) || empty($pallet['items']['print_template'])) {
+                throw new MissingConfigurationException(__('Please configure a print template for item %s', $pallet['item']));
             }
 
             // get the printer queue name
-            $printerId = $this->request->data['Pallet']['printer_id'];
+            $printerId = $data['printer_id'];
 
-            $printerDetails = $pallet->getLabelPrinterById($printerId);
+            $printerDetails = $palletTable->getLabelPrinterById($printerId);
 
-            $bestBeforeBc = $this->PrintLog->formatYymmdd($palletRecord['Pallet']['bb_date']);
+            $bestBeforeBc = $this->PrintLog->formatYymmdd($pallet['bb_date']);
 
             $cabLabelData = [
-                'printDate' => $palletRecord['Pallet']['print_date'],
+                'printDate' => $pallet['print_date'],
                 'companyName' => Configure::read('companyName'),
-                'internalProductCode' => $palletRecord['Item']['code'],
-                'reference' => $palletRecord['Pallet']['pl_ref'],
-                'sscc' => $palletRecord['Pallet']['sscc'],
-                'description' => $palletRecord['Item']['description'],
-                'gtin14' => $palletRecord['Pallet']['gtin14'],
-                'quantity' => $palletRecord['Pallet']['qty'],
-                'bestBeforeHr' => $palletRecord['Pallet']['best_before'],
+                'internalProductCode' => $pallet['items']['code'],
+                'reference' => $pallet['pl_ref'],
+                'sscc' => $pallet['sscc'],
+                'description' => $pallet['items']['description'],
+                'gtin14' => $pallet['gtin14'],
+                'quantity' => $pallet['qty'],
+                'bestBeforeHr' => $pallet['best_before'],
                 'bestBeforeBc' => $bestBeforeBc,
-                'batch' => $palletRecord['Pallet']['batch'],
-                'numLabels' => $this->request->data['Pallet']['copies'],
-                'ssccBarcode' => '[00]' . $palletRecord['Pallet']['sscc'],
-                'itemBarcode' => '[02]' . $palletRecord['Pallet']['gtin14'] .
-                    '[15]' . $bestBeforeBc . '[10]' . $palletRecord['Pallet']['batch'] .
-                    '[37]' . $palletRecord['Pallet']['qty'],
+                'batch' => $pallet['batch'],
+                'numLabels' => $data['copies'],
+                'ssccBarcode' => '[00]' . $pallet['sscc'],
+                'itemBarcode' => '[02]' . $pallet['gtin14'] .
+                    '[15]' . $bestBeforeBc . '[10]' . $pallet['batch'] .
+                    '[37]' . $pallet['qty'],
             ];
 
             $saveData = $this->PrintLog->formatPrintLogData(
@@ -768,17 +794,16 @@ class PrintLogController extends AppController
             );
         }
 
-        $printers = $pallet->getLabelPrinters(
+        $printers = $palletTable->getLabelPrinters(
             $this->request->getParam('controller'),
             $this->request->getParam('action')
         );
 
         // unset this as the default printer is configured
         // for the reprint Controller/Action in Printers
-        unset($palletRecord['Pallet']['printer_id']);
 
-        $labelCopies = $palletRecord['Item']['pallet_label_copies'] > 0
-            ? $palletRecord['Item']['pallet_label_copies']
+        $labelCopies = $pallet['pallet_label_copies'] > 0
+            ? $pallet['pallet_label_copies']
             : $this->PrintLog->getSetting('sscc_default_label_copies');
 
         $tag = 'Pallet';
@@ -794,16 +819,14 @@ class PrintLogController extends AppController
             $labelCopiesList[$i] = $i . ' ' . $tag;
         }
 
-        $this->request->data = $palletRecord;
-
-        $refer = $this->referer();
+        $refer = $this->request->referer();
 
         $inputDefaultCopies = $this->PrintLog->getSetting('sscc_default_label_copies');
 
         $this->set(
             compact(
                 'labelCopiesList',
-                'palletRecord',
+                'pallet',
                 'printers',
                 'refer',
                 'inputDefaultCopies'

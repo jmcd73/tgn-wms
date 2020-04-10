@@ -56,7 +56,11 @@ class PrintTemplatesTable extends Table
             'foreignKey' => 'parent_id',
         ]);
         $this->hasMany('Items', [
-            'foreignKey' => 'print_template_id',
+            'foreignKey' => 'pallet_template_id',
+        ]);
+        $this->hasMany('CartonTemplates', [
+            'className' => 'Items',
+            'foreign_key' => 'carton_template_id',
         ]);
         $this->hasMany('ChildPrintTemplates', [
             'className' => 'PrintTemplates',

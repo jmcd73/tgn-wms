@@ -45,7 +45,6 @@ class Printer extends Entity
 
     protected function _getArrayOfActions()
     {
-        $this->log(print_r($this->set_as_default_on_these_actions, true));
         return explode("\n", $this->set_as_default_on_these_actions);
     }
 }

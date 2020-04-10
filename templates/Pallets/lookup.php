@@ -23,29 +23,21 @@
 <?php $this->start('tb_actions'); ?>
 <h4><?php echo __('Search'); ?></h4>
 <?php echo $this->Form->create(
-    ['schema' => [
-        'item_id_select' => ['type' => 'string'],
-        'Lookup.bb_date' => ['type' => 'string'],
-        'pl_ref' => ['type' => 'string'],
-        'batch' => ['type' => 'string'],
-        'inventory_status_id' => ['type' => 'integer'],
-        'print_date' => ['type' => 'string'],
-        'location_id' => ['type' => 'integer'],
-        'shipment_id' => ['type' => 'integer'],
-    ],
-        'defaults' => $searchForm, ],
+    $searchForm,
     [
+        'valueSources' => ['query', 'context'],
         'class' => 'mb-2',
         'id' => 'searchForm',
         'url' => [
-            'controller' => 'pallets',
+            'controller' => 'Pallets',
             'action' => 'lookupSearch',
         ],
     ]
 );?>
 
-<?php echo $this->Form->control(
-    'Lookup.item_id_select',
+<?php
+echo $this->Form->control(
+    'item_id_select',
     [
         'label' => false,
         'inline' => true,
@@ -62,19 +54,17 @@
                     //echo $this->Form->hidden('Skip.item_id', ['id' => 'item_id']);
 
                     echo $this->Form->control(
-                        'Lookup.bb_date',
+                        'bb_date',
                         [
                             'label' => false,
-                            'type' => 'text',
                             'placeholder' => 'Best Before',
-                            'type' => 'text',
                             'id' => 'bb_date',
                             'inline' => true,
                         ]
                     );
 
                     echo $this->Form->control(
-                        'Lookup.pl_ref',
+                        'pl_ref',
                         [
                             'id' => 'pl_ref',
                             'label' => false,
@@ -93,7 +83,7 @@
                     );
 
                     echo $this->Form->control(
-                        'Lookup.batch',
+                        'batch',
                         [
                             'id' => 'batch',
                             'data-submit_url' => $this->Url->build([
@@ -107,7 +97,7 @@
                         ]
                     );
                     echo $this->Form->control(
-                        'Lookup.inventory_status_id',
+                        'inventory_status_id',
                         [
                             'type' => 'select',
                             'options' => $statuses,
@@ -115,10 +105,9 @@
                             'label' => false,
                         ]
                     );
-                    echo $this->Form->input(
-                        'Lookup.print_date',
+                    echo $this->Form->control(
+                        'print_date',
                         [
-                            'type' => 'text',
                             'id' => 'print_date',
                             'class' => 'mb-3',
                             'label' => false,
@@ -126,7 +115,7 @@
                         ]
                     );
                     echo $this->Form->control(
-                        'Lookup.location_id',
+                        'location_id',
                         [
                             'type' => 'select',
                             'options' => $locations,
@@ -136,7 +125,7 @@
                         ]
                     );
                     echo $this->Form->control(
-                        'Lookup.shipment_id',
+                        'shipment_id',
                         [
                             'type' => 'select',
                             'class' => 'form-control',
@@ -147,15 +136,12 @@
                     );
                 ?>
 
-<?php
-                echo $this->Form->submit('Search');
-
-            ?>
+<?php echo $this->Form->submit('Search'); ?>
 
 <?php
                 echo $this->Form->control('reset', [
-                    'class' => 'mt-3',
-                    'type' => 'button',
+                    'class' => 'mt-3 btn btn-secondary',
+                    'type' => 'reset',
                     'id' => 'resetButton',
                     'label' => false,
                 ]);
@@ -171,15 +157,14 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <h3><?php
-                    echo __('Search Results');
-
-                ?> <span class="badge"><?php echo $this->Paginator->counter('{{count}}'); ?></span></h3>
-            <table class="table table-bordered table-condensed table-striped table-responsive">
+        <div class="col">
+            <h3>
+                <?= __('Search Results'); ?>
+                <?=  $this->Html->badge($this->Paginator->counter('{{count}}')); ?>
+            </h3>
+            <table class="table table-striped">
                 <thead>
                     <tr>
-
                         <th><?php echo $this->Paginator->sort('item_id'); ?></th>
                         <th><?php echo $this->Paginator->sort('description'); ?></th>
                         <th><?php echo $this->Paginator->sort('bb_date', 'Best Before'); ?></th>
@@ -194,32 +179,33 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (!empty($pallets)): ?>
+                    <?php if ($pallets): ?>
+
                     <?php foreach ($pallets as $pallet): ?>
-                    <tr<?php
-    if ($pallet['dont_ship']) {
-        echo 'class="lowdate"';
-    }
-?>>
+                    <tr <?php
+                        if ($pallet['dont_ship']) {
+                            echo 'class="lowdate"';
+                        }
+                        ?>>
 
                         <td><?php echo h($pallet['item']); ?></td>
                         <td><?php echo h($pallet['description']); ?></td>
-                        <td><?php echo $this->Time->format($pallet['bb_date'], 'd/M/y'); ?></td>
+                        <td><?php echo h($pallet['bb_date']->i18nFormat(null, $user->timezone)); ?></td>
                         <td><?php echo h($pallet['qty']); ?></td>
                         <td><?php echo h($pallet['pl_ref']); ?></td>
                         <td><?php echo h($pallet['batch']); ?></td>
-                        <td><?php echo h($pallet['print_date']); ?></td>
-                        <td><?php echo h($pallet['inventory_status']['name']); ?></td>
-                        <td><?php echo h($pallet['location']['location']); ?></td>
-                        <td><?php
-                                echo $this->Html->link(
-    h($pallet['shipment']['shipper']),
-    [
-        'controller' => 'shipments',
-        'action' => 'view',
-        $pallet['shipment']['id'],
-    ]
-);
+                        <td><?php echo h($pallet['print_date']->i18nFormat(null, $user->timezone)); ?></td>
+                        <td><?= $pallet->has('inventory_status') ? h($pallet->inventory_status->name) : ''; ?></td>
+                        <td><?= $pallet->has('location') ? h($pallet->location->location) : ''; ?></td>
+                        <td><?= $pallet->has('shipment') ?
+                              $this->Html->link(
+                                  h($pallet->shipment->shipper),
+                                  [
+                                      'controller' => 'shipments',
+                                      'action' => 'view',
+                                      $pallet->shipment->id,
+                                  ]
+                              ) : '';
                             ?></td>
                         <td class="actions">
                             <?php echo $this->Html->link(
@@ -252,21 +238,17 @@
                                 'action' => 'ssccLabel', $pallet['id'], ], ['class' => 'btn reprint btn-secondary btn-sm']); ?>
                             <?php endif; ?>
                         </td>
-                        </tr>
-                        <?php endforeach; ?>
-                        <?php else: ?>
-                        <tr>
-                            <td colspan="11">
-                                <div class="text-center">
-                                    <h3><?php
-                                            echo __('Clear the search form and try again');
-
-                                        ?></h3>
-                                </div>
-                            </td>
-                        </tr>
-                        <?php endif; ?>
-
+                    </tr>
+                    <?php endforeach; ?>
+                    <?php else: ?>
+                    <tr>
+                        <td colspan="11">
+                            <div class="text-center">
+                                <h3><?= __('Clear the search form and try again'); ?></h3>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
             <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?>
@@ -286,4 +268,4 @@
     </div>
 </div>
 
-<?php echo $this->element('pallet_cartons_edit_modal'); ?>
+<?php echo $this->element('modals/pallet_cartons_edit_modal'); ?>

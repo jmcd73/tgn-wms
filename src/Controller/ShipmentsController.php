@@ -223,9 +223,10 @@ class ShipmentsController extends AppController
         $perms = $this->Shipments->Pallets->getViewPermNumber('view_in_shipments');
 
         if ($this->request->is('post')) {
-            $data = json_decode($this->request->input(), true);
+            $data = $this->request->getParsedBody();
 
             $pallets = $data['pallets'];
+
             unset($data['pallets']);
 
             $newEntity = $this->Shipments->newEntity($data);
@@ -244,22 +245,27 @@ class ShipmentsController extends AppController
 
             $palletData = [];
 
-            foreach ($pallets as $pallet) {
-                $palletData[] = [
-                    'id' => $pallet,
-                    'shipment_id' => $shipmentId,
-                ];
-            }
+            if (!empty($pallets)) {
+                tog('Inside check empputy pallets');
+                foreach ($pallets as $pallet) {
+                    $palletData[] = [
+                        'id' => $pallet,
+                        'shipment_id' => $shipmentId,
+                    ];
+                }
 
-            $palletRecords = $this->Shipments->Pallets->find()
+                $palletRecords = $this->Shipments->Pallets->find()
             ->whereInList('id', $pallets)->toList();
 
-            $palletEntities = $this->Shipments->Pallets->patchEntities($palletRecords, $palletData);
+                $palletEntities = $this->Shipments->Pallets->patchEntities($palletRecords, $palletData);
 
-            $result = $this->Shipments->Pallets->saveMany($palletEntities);
+                $result = $this->Shipments->Pallets->saveMany($palletEntities);
+                return $this->response->withStringBody(json_encode([
+                    $shipment, $palletData, $result, ]))->withType('application/json');
+            }
 
             return $this->response->withStringBody(json_encode([
-                $shipment, $palletData, $result, ]))->withType('application/json');
+                $shipment, ]))->withType('application/json');
         }
 
         $options = [
@@ -299,7 +305,7 @@ class ShipmentsController extends AppController
                 'shipment_labels',
             )
         );
-        $this->set('_serialize', ['hijames', 'error', 'last', 'shipment_labels']);
+        $this->set('_serialize', ['error', 'last', 'shipment_labels']);
     }
 
     /**
@@ -392,7 +398,6 @@ class ShipmentsController extends AppController
             $currentPalletIds = Hash::extract($pallets, '{n}.id');
 
             $removeShipmentIds = array_diff($originalPalletIds, $currentPalletIds);
-            tog(['rsi' => $removeShipmentIds, 'orig' => $originalPalletIds, 'curr' => $currentPalletIds]);
 
             $patched = $this->Shipments->patchEntity($thisShipment, $data);
 
@@ -402,8 +407,6 @@ class ShipmentsController extends AppController
             ]);
 
             if ($removeShipmentIds) {
-                tog('Remove shipment IDs from Pallets');
-                tog($removeShipmentIds);
                 // remove pallets from shipment if needed
                 $this->Shipments->Pallets->updateAll(['shipment_id' => 0], [
                     'id IN ' => $removeShipmentIds,
@@ -411,7 +414,6 @@ class ShipmentsController extends AppController
             }
 
             if ($currentPalletIds) {
-                tog('Save current Pallets');
                 $palletEntities = $this->Shipments->Pallets->find()->whereInList('id', $currentPalletIds);
 
                 $patchedEntities = $this->Shipments->Pallets->patchEntities($palletEntities, $pallets);
@@ -434,80 +436,6 @@ class ShipmentsController extends AppController
                 ];
             }
             return $this->response->withStringBody(json_encode($shipment))->withType('application/json');
-
-            /*             $shipper = $this->request->data['Shipment']['shipper'];
-
-                    if ($this->Shipments->saveAll($this->request->data)) {
-                        if (!empty($this->request->data['Pallet'])) {
-                            $requestedLabelIdsOnShipment = Hash::extract($this->request->data['Pallet'], '{n}.id');
-
-                            $previousLabels = Hash::extract(
-                                $thisShipment,
-                                'Pallet'
-                            );
-
-                            $previousIds = Hash::extract(
-                                $thisShipment,
-                                'Pallet.id'
-                            );
-
-                            $previousWithoutRequested = array_filter(
-                                $previousLabels,
-                                function ($val) use ($requestedLabelIdsOnShipment) {
-                                    return !in_array(
-                                        $val['id'],
-                                        $requestedLabelIdsOnShipment
-                                    );
-                                }
-                            );
-
-                            $pwor = array_map(
-                                function ($val) {
-                                    $val['picked'] = 0;
-                                    $val['shipment_id'] = 0;
-
-                                    return $val;
-                                },
-                                $previousWithoutRequested
-                            );
-
-                            // this removes labels that have been deselected
-                            // and removes 'picked'
-                            if ($pwor) {
-                                $this->Shipments->Pallets->saveAll($pwor);
-                            }
-                        } else {
-                            // if there are no labels then remove them all
-                            $this->Shipments->Pallets->updateAll(
-                                ['Pallet.shipment_id' => 0],
-                                ['Pallet.shipment_id' => $id]
-                            );
-
-                            // and update counterCache to be zero`
-                            $this->Shipments->save(
-                                [
-                                    'id' => $id,
-                                    'pallet_count' => 0,
-                                ]
-                            );
-                        }
-
-                        if (!$this->request->is('ajax')) {
-                            $this->Flash->success('The shipment <strong>' . h($shipper) . '</strong> has been saved.');
-
-                            return $this->redirect(
-                                $this->request->data['Shipment']['referer']
-                            );
-                        }
-                    } else {
-                        if (!$this->request->is('ajax')) {
-                            $this->Flash->error('The shipment <strong>' . h($shipper) . '</strong> could not be saved. Please, try again.');
-                        } else {
-                            $error = $this->Shipments->validationErrors;
-                        }
-                    }
-                } else {
-                    $this->request->data = $thisShipment; */
         }
         $productTypeId = $thisShipment->product_type_id;
 
@@ -571,7 +499,7 @@ class ShipmentsController extends AppController
             ->contain(['Items'])->group(['Items.code'])
             ->order(['Items.code' => 'ASC'])->toArray();
 
-        $pallets = $this->Shipments->Pallets->find('')
+        $pallets = $this->Shipments->Pallets->find()
             ->where(['shipment_id' => $id])
             ->contain(['Locations'])
             ->toArray();

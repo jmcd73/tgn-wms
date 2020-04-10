@@ -22,7 +22,7 @@ class PalletPrintForm extends Form
     {
         return $schema->addField('batch_no', 'string')
         ->addField('item', 'string')
-        ->addField('production_line', 'string')->addField('email', 'email');
+        ->addField('production_line', 'string');
     }
 
     /*

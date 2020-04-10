@@ -1,30 +1,32 @@
-$(function() {
+$(function () {
   // when inputs change re-write the cookies
 
-  $(":input:not(:checkbox)").change(function() {
+  $(":input:not(:checkbox)").change(function () {
     form = $(this).closest("form");
     setCookieValuesFromForm(form);
   });
 
   // reads product type from form, stores data as cookies
-  $("form.pallet-print").each(function() {
+  $("form.pallet-print").each(function () {
     setFormValuesFromCookies(this);
   });
 
   // when submitting set a cookie to the value of the forms
   // so on reload the values can be set to the saved values
-  $("form.pallet-print").on("submit", function(e) {
+  $("form.pallet-print").on("submit", function (e) {
     form = $(this);
-    form.each(function() {
+    form.each(function () {
       setCookieValuesFromForm(form);
     });
+    $("#dialog").modal("hide");
+
     console.log(new Date().toLocaleString() + " submit called");
   });
 
   // this is the ok/print dialog
   $("#dialog")
     .off("show.bs.modal")
-    .on("show.bs.modal", function(event) {
+    .on("show.bs.modal", function (event) {
       var item = $(event.relatedTarget);
 
       var formName = item.data("formname");
@@ -44,7 +46,7 @@ $(function() {
       // stop multiple form submits
       $("button.print")
         .off("click")
-        .on("click", function() {
+        .on("click", function () {
           $("#" + formName).submit();
         });
     });
@@ -52,10 +54,8 @@ $(function() {
   // when item number select changes
   // disable the qty control if it is there and hide it
   // uncheck the part pallet checkbox too
-  $("select.form-control.item").change(function() {
-    qty = $(this)
-      .closest("form")
-      .find("select.form-control.qty");
+  $("select.form-control.item").change(function () {
+    qty = $(this).closest("form").find("select.form-control.qty");
 
     qty.attr("disabled", true);
 
@@ -63,25 +63,19 @@ $(function() {
 
     qty_div.hide(400);
 
-    part_pallet = $(this)
-      .closest("form")
-      .find('input[type="checkbox"]');
+    part_pallet = $(this).closest("form").find('input[type="checkbox"]');
     part_pallet.prop("checked", false);
   });
 
   // part pallet checkbox
-  $('input[type="checkbox"]').change(function() {
+  $('input[type="checkbox"]').change(function () {
     checked = $(this).prop("checked");
 
-    itemselect = $(this)
-      .closest("form")
-      .find("select.form-control.item");
+    itemselect = $(this).closest("form").find("select.form-control.item");
 
     item_id = itemselect.val();
 
-    qty = $(this)
-      .closest("form")
-      .find("select.form-control.qty");
+    qty = $(this).closest("form").find("select.form-control.qty");
 
     if (checked) {
       qty.attr("disabled", false);
@@ -97,7 +91,7 @@ $(function() {
 
       $.get(
         queryurl + "/" + item_id,
-        function(data) {
+        function (data) {
           var options = "";
           pallet_qty = data.quantity;
           window.console && console.log("pallet_qty :" + pallet_qty);
@@ -127,7 +121,7 @@ function setFormValuesFromCookies(form) {
   // set controls to cookie values
   $(form)
     .find(":input:visible")
-    .each(function() {
+    .each(function () {
       control_name = $(this).prop("name");
       //console.log(control_name);
       if (control_name) {
@@ -148,14 +142,14 @@ function setCookieValuesFromForm(form) {
 
   $(form)
     .find(":input:visible")
-    .each(function() {
+    .each(function () {
       control_name = $(this).prop("name");
 
       if (control_name) {
         // store only the form controls we want
         // window.console && console.log('submit ' + $(this).prop('name') + ' : ' + $(this).val());
         $.cookie(pt + "-" + formNameVal + "-" + control_name, $(this).val(), {
-          expires: 999
+          expires: 999,
         });
       }
     });

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Core\Configure;
+use Cake\Http\Cookie\Cookie;
 use DateTimeZone;
 
 /**
@@ -128,22 +129,57 @@ class UsersController extends AppController
     {
         // $this->Authorization->skipAuthorization();
         $this->request->allowMethod(['get', 'post']);
-        $result = $this->Authentication->getResult();
-        // regardless of POST or GET, redirect if user is logged in
-        if ($result->isValid()) {
-            // redirect to /articles after login success
-            $redirect = $this->request->getQuery('redirect', [
-                'controller' => 'Pages',
-                'action' => 'display',
-                'index',
-            ]);
 
-            return $this->redirect($redirect);
+        $result = $this->Authentication->getResult();
+
+        if ($this->request->is('POST')) {
+            // regardless of POST or GET, redirect if user is logged in
+            if ($result->isValid()) {
+                // redirect to /articles after login success
+                $redirect = $this->request->getQuery('redirect', [
+                    'controller' => 'Pages',
+                    'action' => 'display',
+                    'index',
+                ]);
+                if ((bool) $this->request->getData()['remember-me'] === true) {
+                    $this->response = $this->response->withCookie(
+                        new Cookie(
+                            'remember-me',
+                            [
+                                'remember-me' => 1,
+                                'username' => $this->request->getData()['username'],
+                            ]
+                        )
+                    );
+                } else {
+                    $cookies = $this->request->getCookieCollection();
+                    if ($cookies->has('remember-me')) {
+                        $this->response = $this->response->withCookie(
+                            ( new Cookie('remember-me', '', (   new \DateTime())->setDate(1973, 1, 31)))
+                        );
+                    }
+                }
+                return $this->redirect($redirect);
+            }
         }
+
+        $rememberMe = false;
+        $username = '';
+
+        if ($this->request->is('GET')) {
+            $rememberMe = $this->request->getCookie('remember-me');
+
+            if (isset($rememberMe['username'])) {
+                $username = $rememberMe['username'];
+                $this->set('username', $username);
+            }
+        }
+
         // display error if user submitted and authentication failed
         if ($this->request->is('post') && !$result->isValid()) {
             $this->Flash->error(__('Invalid username or password'));
         }
+        $this->set(compact('rememberMe'));
     }
 
     public function logout()

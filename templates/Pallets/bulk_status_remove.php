@@ -80,7 +80,7 @@ echo $this->Html->script(
                 <td><?php echo h($pallet['batch']); ?></td>
                 <td><?php echo h($pallet['print_date']); ?></td>
                 <td><?php echo h($pallet['location']['location']); ?></td>
-                <td><?php echo h($pallet['inventory_status']['name']); ?></td>
+                <td><?= $pallet->has('inventory_status') ? h($pallet['inventory_status']['name']) : ''; ?></td>
                 <td><?php echo h($pallet['inventory_status_note']); ?></td>
                 <td>
                     <?php
@@ -125,5 +125,5 @@ echo $this->Html->script(
         </ul>
     </div>
 </div>
-<?php echo $this->element('shipment_footer'); ?>
+<?php echo $this->element('nav/shipment_footer'); ?>
 <?php  $this->Form->end(); ?>

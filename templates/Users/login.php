@@ -28,20 +28,27 @@ $this->append('css', $this->Html->css('signin')); ?>
 
         ?>
 
-                <?= $this->Form->control('email', [
+                <?php $usernameOptions = [
                     'label' => ['class' => 'sr-only'],
                     'type' => 'email',
                     'placeholder' => 'Email address',
                     'autofocus' => '',
-                ]) ?>
+                    'autocomplete' => 'username',
+                ];
+                if (!empty($username)) {
+                    $usernameOptions['value'] = $username;
+                } ?>
+                <?= $this->Form->control('username', $usernameOptions) ?>
                 <?= $this->Form->control('password', [
                     'label' => false,
                     'type' => 'password',
                     'placeholder' => 'Password',
                     'required' => true,
+                    'autocomplete' => 'current-password',
                 ]) ?>
                 <?= $this->Form->control('remember-me', [
                     'type' => 'checkbox',
+                    'checked' => $rememberMe,
                 ]); ?>
 
                 <?= $this->Form->button('Sign in', [

@@ -75,7 +75,6 @@ class PalletsTable extends Table
         ]);
         $this->belongsTo('Items', [
             'foreignKey' => 'item_id',
-            'joinType' => 'INNER',
             'propertyName' => 'items',
         ]);
         $this->belongsTo('Printers', [
@@ -616,22 +615,20 @@ class PalletsTable extends Table
     {
         $options = [];
 
-        foreach ($this->_stripBlankValues($passed_args) as $arg_key => $args) {
+        foreach ($this->_stripBlankValues($passed_args) as $searchKey => $searchValue) {
             // only interested in Lookup.xxx not page=2 etc
-            if (strpos($arg_key, 'Lookup_') !== false) {
-                $search_value = str_replace('Lookup_', '', $arg_key);
-                switch ($search_value) {
+
+            switch ($searchKey) {
                     case 'item_id_select':
-                        $options[] = ['Pallets.item' => $args];
+                        $options[] = ['item' => $searchValue];
                         break;
                     case 'print_date':
-                        $options[] = [$search_value . ' LIKE ' => $args . '%'];
+                        $options[] = [$searchKey . ' LIKE ' => $searchValue . '%'];
                         break;
                     default:
-                        $options[] = [$search_value => $args];
+                        $options[] = [$searchKey => $searchValue];
                         break;
                 }
-            }
         }
 
         return $options;

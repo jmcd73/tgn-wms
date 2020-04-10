@@ -104,13 +104,12 @@ use Cake\Http\Exception\NotFoundException;
             //string str_pad ( string $input , int $pad_length [, string $pad_string = " " [, int $pad_type = STR_PAD_RIGHT ]] )
             $pdf->Write(0, '  ' . $group['code'], '', 0, 'L', true, 0, false, false, 0);
             $palletDescription = '  ' . str_pad($group['description'], 30, ' ', STR_PAD_RIGHT);
-            $palletsCartons = str_repeat(' ', 9) . str_pad($group['pallet_count'], 12, ' ', STR_PAD_LEFT) . str_repeat(' ', 3) . str_pad($group['Total'], 5, ' ', STR_PAD_LEFT);
+            $palletsCartons = str_repeat(' ', 9) . str_pad($group['pallet_count'], 12, ' ', STR_PAD_LEFT) . str_repeat(' ', 3) . str_pad($group['total'], 5, ' ', STR_PAD_LEFT);
             $concatDescCount = $palletDescription . $palletsCartons;
             $pdf->Write(0, $concatDescCount, '', 0, 'L', true, 0, false, false, 0);
             //str_repeat(' ', 9) . str_pad($group['0']['Pallets'], 12, ' ', STR_PAD_LEFT) . str_repeat(' ', 3) . str_pad($group['0']['Total'], 5, ' ' , STR_PAD_LEFT)
 
             foreach ($pallets as $pallet):
-                tog($pallet);
 
                 if ($pallet['item_id'] == $group['item_id']):
                     $pdf->Write(

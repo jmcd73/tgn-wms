@@ -22,7 +22,7 @@ class SampleLabel extends Label implements GlabelInterface
 
     public function print($printerDetails, $glabelsTemplateFullPath)
     {
-        return $this->glabelsBatchPrint($glabelsTemplateFullPath, $printerDetails['Printer']['queue_name']);
+        return $this->glabelsBatchPrint($glabelsTemplateFullPath, $printerDetails['queue_name']);
     }
 
     public function format($labelData)

@@ -58,8 +58,8 @@
             echo $this->Form->control('days_life');
             echo $this->Form->control('min_days_life');
             echo $this->Form->control('item_comment');
-            echo $this->Form->control('print_template_id', ['options' => $printTemplates]);
-            echo $this->Form->control('carton_label_id');
+            echo $this->Form->control('pallet_template_id', ['options' => $printTemplates]);
+            echo $this->Form->control('carton_template_id', ['options' => $printTemplates]);
             echo $this->Form->control('pallet_label_copies');
         ?>
     </fieldset>

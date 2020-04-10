@@ -29,7 +29,7 @@
 <div class="container">
 
     <div class="col">
-        <table class="table table-bordered">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('location'); ?></th>

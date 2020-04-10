@@ -1,14 +1,13 @@
-<div class="container">
+<?php use Cake\Core\Configure;
 
+?>
+<?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
+<div class="container">
     <div class="row">
-        <div class="col-md-9">
-            <?= $this->Form->create(null, [
-                'horizontal' => true,
-            ]); ?>
-            <h4>Pallet Transport Labels</h4>
+        <div class="col-md-6">
+            <?= $this->Form->create($form, ['align' => 'horizontal']); ?>
             <span id="error"></span>
-            <?php $i = 0; ?>
-            <?= $this->Form->input('printer', [
+            <?= $this->Form->control('printer', [
                 'type' => 'radio',
                 'inline' => true,
                 'label' => 'Printer',
@@ -16,83 +15,66 @@
                 'options' => $printers['printers'],
                 'default' => $printers['default'] ? $printers['default'] : '',
             ]); ?>
-
-
-            <?= $this->Form->input('copies', [
+            <?= $this->Form->control('copies', [
                 'placeholder' => 'Enter a number',
             ]);?>
-
-            <?= $this->Form->input('companyName', [
+            <?= $this->Form->control('companyName', [
                 'maxlength' => 48,
                 'size' => 48,
-                'autocomplete' => 'off',
+
                 'default' => Configure::read('companyName'),
                 'placeholder' => 'Company Name',
             ]); ?>
-            <?= $this->Form->input('productName', [
+            <?= $this->Form->control('productName', [
                 'maxlength' => 48,
                 'size' => 48,
-                'autocomplete' => 'off',
+
                 'placeholder' => 'Product Name',
             ]); ?>
-
-            <?= $this->Form->input('productDescription', [
+            <?= $this->Form->control('productDescription', [
                 'maxlength' => 48,
                 'size' => 48,
-                'autocomplete' => 'off',
+
                 'placeholder' => 'Product Description',
             ]); ?>
-
-            <?= $this->Form->input('genericLine1', [
+            <?= $this->Form->control('genericLine1', [
                 'label' => 'Line 1',
-
                 'maxlength' => 48,
                 'size' => 48,
-                'autocomplete' => 'off',
+
                 'placeholder' => 'Line 1',
             ]); ?>
-
-            <?= $this->Form->input('genericLine2', [
+            <?= $this->Form->control('genericLine2', [
                 'label' => 'Line 2',
-
                 'maxlength' => 48,
                 'size' => 48,
-                'autocomplete' => 'off',
+
                 'placeholder' => 'Line 2',
             ]); ?>
-            <?= $this->Form->input('genericLine3', [
+            <?= $this->Form->control('genericLine3', [
                 'label' => 'Line 3',
-
                 'maxlength' => 48,
                 'size' => 48,
-                'autocomplete' => 'off',
+
                 'placeholder' => 'Line 3',
             ]); ?>
-
-
-            <?= $this->Form->input('genericLine4', [
+            <?= $this->Form->control('genericLine4', [
                 'label' => 'Line 4',
-
                 'maxlength' => 48,
                 'size' => 48,
-                'autocomplete' => 'off',
+
                 'placeholder' => 'Line 4',
             ]); ?>
-
-
-
-
-
-            <?= $this->Form->end([
-                'label' => 'Print',
-                'bootstrap-type' => 'primary',
-            ]); ?>
+            <?= $this->Form->submit('Print'); ?>
+            <?= $this->Form->end(); ?>
         </div>
-        <div class="col-md-3">
-            <h4>Example</h4>
-            <?= $this->Html->image($template->image); ?>
-            <p>You have to select a printer, enter the number of copies (defaults to 1) and at least fill in one field
-            </p>
+        <div class="col-md-4">
+            <?= $this->element('printImage/card', [
+                'name' => $template->details['name'],
+                'description' => $template->details['description'],
+                'image' => $template->image,
+            ]); ?>
+
         </div>
     </div>
 </div>

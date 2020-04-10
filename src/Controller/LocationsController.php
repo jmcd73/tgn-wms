@@ -57,7 +57,9 @@ class LocationsController extends AppController
             }
             $this->Flash->error(__('The location could not be saved. Please, try again.'));
         }
-        $this->set(compact('location'));
+        $productTypes = $this->Locations->ProductTypes->find('list');
+
+        $this->set(compact('location', 'productTypes'));
     }
 
     /**

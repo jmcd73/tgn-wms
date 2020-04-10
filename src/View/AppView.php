@@ -49,5 +49,6 @@ class AppView extends UIView
         $this->loadHelper('Flash', ['className' => 'BootstrapUI.Flash']);
         $this->loadHelper('Paginator', ['className' => 'BootstrapUI.Paginator']);
         $this->loadHelper('Authentication.Identity');
+        $this->loadHelper('Toggen');
     }
 }
