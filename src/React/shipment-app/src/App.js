@@ -1,6 +1,4 @@
 import React from "react";
-import "./App.css";
-
 import Card from "react-bootstrap/Card";
 import FormControl from "react-bootstrap/FormControl";
 import FormGroup from "react-bootstrap/FormGroup";
@@ -21,7 +19,9 @@ import Wrap from "./Wrap";
 import WrapCheckbox from "./WrapCheckbox";
 import AlertMessage from "./AlertMessage";
 import Form from "react-bootstrap/Form";
+
 import "react-bootstrap-typeahead/css/Typeahead.css";
+import "./ShipApp.css";
 
 // import queryString from "query-string";
 
@@ -32,7 +32,7 @@ class App extends React.Component {
     super(props);
 
     this.defaults = {
-      isExpanded: [],
+      isExpanded: {},
       products: [],
       shipmentTypeDisabled: false,
       labelLists: {},
@@ -41,6 +41,7 @@ class App extends React.Component {
       labelCounts: {},
       showAlert: false,
       errors: {},
+      operationName: "",
       shipment: {
         operation: "",
         id: "",
@@ -51,7 +52,7 @@ class App extends React.Component {
         product_type_id: "",
         labelIds: [],
       },
-      isLoading: false,
+      isTypeAheadLoading: false,
       productType: 0,
       productTypeName: "",
       activeKey: 99999,
@@ -87,16 +88,16 @@ class App extends React.Component {
     this.setState({ activeKey: n });
   }
 
-  fetchData(operation, productType, id) {
+  fetchData(operation, productTypeOrId) {
     this.setState({
       ...this.defaults,
       loading: true,
-      productType: productType || "",
     });
 
-    const suffix = [operation, productType, id].filter((x) => x);
+    const suffix = [operation, productTypeOrId].filter((x) => x);
+
     const url = this.state.baseUrl + "Shipments/" + suffix.join("/");
-    console.log("fetching", url);
+
     fetch(url, {
       headers: {
         Accept: "application/json",
@@ -107,73 +108,70 @@ class App extends React.Component {
         return resp.json();
       })
       .then((d) => {
-        const codeDescs = this.createCodeDescriptions(d.shipment_labels);
-
-        if (d.thisShipment) {
-          const {
-            shipper,
-            destination,
-            shipped,
-            shipment_type,
-            product_type_id,
-            id,
-            pallets,
-          } = d.thisShipment;
-
-          const loadedData = pallets.map((value) => {
-            const location = { ...value.location };
-
-            delete value.location;
-            return {
-              ...value,
-              location,
-            };
-          });
-
-          const labelIds = pallets.map((value) => {
-            return value.id;
-          });
-
-          let state = {
-            loadedData: loadedData.concat(d.shipment_labels),
-            isExpanded: [...codeDescs].fill(false),
-            products: codeDescs,
-            loading: false,
-            shipmentTypeDisabled: true,
-            shipment: {
-              ...this.state.shipment,
-              operation: operation,
-              shipment_type,
-              shipped,
-              id,
-              shipper,
-              product_type_id,
-              destination,
-              labelIds,
-            },
-          };
-
-          if (product_type_id) {
-            state.productType = product_type_id;
-          }
-          this.setState(state);
+        let allPallets = [];
+        let operationName = "";
+        switch (operation) {
+          case "add-shipment":
+            operationName = "Add";
+            allPallets = d["shipment_labels"];
+            this.setState({
+              operationName,
+              productType: productTypeOrId,
+              loadedData: allPallets,
+              shipment: {
+                ...this.state.shipment,
+                operation,
+              },
+            });
+            break;
+          case "edit-shipment":
+            operationName = "Edit";
+            const thisShipmentPallets = d["thisShipment"]["pallets"];
+            allPallets = thisShipmentPallets.concat(d.shipment_labels);
+            this.setState({
+              operationName,
+              loadedData: allPallets,
+            });
+            const labelIds = thisShipmentPallets.map((pallet) => {
+              return pallet.id;
+            });
+            this.setState({
+              productType: d["thisShipment"]["product_type_id"],
+              shipment: {
+                ...this.state.shipment,
+                ...d.thisShipment,
+                operation,
+                labelIds: labelIds,
+              },
+            });
+            break;
+          default:
+            break;
         }
+
+        allPallets.forEach((pl) => {
+          this.updateCodeDescriptions(pl);
+        });
+
+        this.setState({
+          loading: false,
+        });
       })
       .catch((e) => console.log(e));
   }
 
-  buildCodeDescString(labelObject) {
-    return labelObject.item + " " + labelObject.description;
+  buildCodeDescString(palletObject) {
+    return palletObject.item + " " + palletObject.description;
   }
   /**
    *
-   * @param {*} labelObject
+   * @param {*} palletObject
    */
-  updateCodeDescriptions(labelObject) {
-    let { products, loadedData } = this.state;
+  updateCodeDescriptions(palletObject) {
+    let { products, loadedData, isExpanded } = this.state;
 
-    const codeDesc = this.buildCodeDescString(labelObject);
-    const { item_id: itemId } = labelObject;
+    const codeDesc = this.buildCodeDescString(palletObject);
+    const { item_id: itemId } = palletObject;
     this.updateSingleLabelCount(
       codeDesc,
       this.getSingleItemLabelCount(loadedData, itemId)
@@ -181,6 +179,10 @@ class App extends React.Component {
 
     if (products.indexOf(codeDesc) === -1) {
       this.setState({
+        isExpanded: {
+          ...isExpanded,
+          [codeDesc]: false,
+        },
         products: [codeDesc, ...products],
       });
     }
@@ -219,6 +221,7 @@ class App extends React.Component {
     return codeDesc;
   }
   getLabelList(productTitle) {
+    console.log("getLabelList");
     const loadedData = this.state.loadedData;
 
     const labelList = loadedData.reduce((accum, current, idx) => {
@@ -232,9 +235,18 @@ class App extends React.Component {
     let newLabelList = { ...currentLabelList, [productTitle]: labelList };
     this.setState({ labelLists: newLabelList });
   }
-  toggleIsExpanded(b, idx) {
-    let isExpanded = [...this.state.isExpanded];
-    isExpanded[idx] = b;
+  toggleIsExpanded(product, idx) {
+    let isExpanded = { ...this.state.isExpanded };
+
+    Object.keys(isExpanded).forEach((key) => {
+      if (key === product) {
+        isExpanded[key] = !isExpanded[key];
+      } else {
+        isExpanded[key] = false;
+      }
+    });
+    //isExpanded[product] = !isExpanded[product];
+    console.log("toggleExpanded", isExpanded, product);
     this.setState({ isExpanded: isExpanded });
   }
 
@@ -264,10 +276,6 @@ class App extends React.Component {
       labelIds,
     } = this.state.shipment;
 
-    const parts = [operation, id].filter((x) => x);
-
-    const url = baseUrl + "Shipments/" + parts.join("/");
-
     let postObject = {
       shipper: shipper,
       destination: destination,
@@ -275,11 +283,13 @@ class App extends React.Component {
       product_type_id: productType,
       pallets: labelIds,
     };
-
+    let urlArg = "";
     switch (operation) {
       case "add-shipment":
+        urlArg = productType;
         break;
       case "edit-shipment":
+        urlArg = id;
         postObject.id = id;
         const labels = labelIds.map((cur) => {
           return { shipment_id: id, id: cur };
@@ -289,6 +299,10 @@ class App extends React.Component {
       default:
         console.log("it broken");
     }
+
+    const parts = [operation, urlArg].filter((x) => x);
+
+    const url = baseUrl + "Shipments/" + parts.join("/");
 
     let fetchOptions = {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -321,7 +335,7 @@ class App extends React.Component {
             this.setState({
               errors: {
                 ...this.state.errors,
-                [fieldName]: d.error[fieldName].join(", "),
+                [fieldName]: d.error[fieldName],
               },
             });
           });
@@ -371,42 +385,16 @@ class App extends React.Component {
     }
     if (this.state.productType !== productType) {
       this.setState({ productType: productType });
-      const { operation, id } = this.parseRouterArgs();
-      this.fetchData(operation, productType, id);
+      const { operation, productTypeOrId } = this.parseRouterArgs();
+      this.fetchData(operation, productTypeOrId);
     }
   }
 
   parseRouterArgs() {
     // gotta fix this it's ugggggly move it out of here
-    let { operation, typeOrId } = this.props.match.params;
-    let productType = null;
-    let id = null;
+    let { operation, productTypeOrId } = this.props.match.params;
 
-    switch (operation) {
-      case "add-shipment": {
-        if (!typeOrId) {
-          productType = this.state.productType;
-        } else {
-          productType = typeOrId;
-        }
-        break;
-      }
-      case "edit-shipment": {
-        if (!isNaN(typeOrId)) {
-          console.log("typeOrId isInteger");
-          id = typeOrId;
-        }
-        this.setState({
-          shipmentTypeDisabled: true,
-        });
-        break;
-      }
-      default:
-        operation = "add-shipment";
-        productType = this.state.productType;
-    }
-
-    return { operation: operation, productType: productType, id: id };
+    return { operation, productTypeOrId };
   }
 
   getValidationState(fieldName) {
@@ -417,19 +405,16 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    const { operation, productType, id } = this.parseRouterArgs();
-
-    console.log({ operation, productType, id });
+    const { operation, productTypeOrId } = this.parseRouterArgs();
     this.setState({
       baseUrl: this.props.baseUrl,
     });
-    this.fetchData(operation, productType, id);
-    this.getProductType(productType);
+    this.fetchData(operation, productTypeOrId);
   }
 
   getProductType(productType) {
     const url = this.state.baseUrl + `ProductTypes/view/${productType}`;
-    console.log("fetching", url);
+
     if (productType) {
       fetch(url, {
         headers: {
@@ -454,15 +439,28 @@ class App extends React.Component {
     }
   }
 
+  formatErrors(fieldName) {
+    let errors = [];
+    if (this.state.errors[fieldName]) {
+      let obj = this.state.errors[fieldName];
+
+      errors = Object.keys(obj).map((key) => {
+        return obj[key];
+      });
+    }
+
+    return errors.join(", ");
+  }
+
   getLabelObject(id) {
     const { loadedData } = this.state;
-    console.log("getLabelObject ID", id, loadedData);
+
     const ret = loadedData.filter((current, idx) => {
       return current.id === id;
     });
     return ret;
   }
-  buildLabelString(labelObject) {
+  buildLabelString(palletObject) {
     const {
       location,
       item,
@@ -470,7 +468,7 @@ class App extends React.Component {
       pl_ref,
       qty,
       description,
-    } = labelObject;
+    } = palletObject;
 
     const locationName = location.location;
 
@@ -496,11 +494,12 @@ class App extends React.Component {
       loading,
       errors,
       baseUrl,
+      operationName,
     } = this.state;
 
-    const shipperError = errors["shipper"] || "";
-    const shippedError = errors["shipped"] || "";
-    const destinationError = errors["destination"] || "";
+    const shipperError = this.formatErrors("shipper");
+    const shippedError = this.formatErrors("shipped");
+    const destinationError = this.formatErrors("destination");
     const { labelIds, shipper, shipped, operation } = shipment;
     const selectedCount = labelIds.length;
     let labelsOnShipment = null;
@@ -520,15 +519,15 @@ class App extends React.Component {
 
     if (labelIds) {
       labelsOnShipment = labelIds.map((id, idx) => {
-        const labelObject = this.getLabelObject(id)[0];
+        const palletObject = this.getLabelObject(id)[0];
         return (
           <FormCheck
-            bsClass={classes.join(" ")}
-            key={labelObject.pl_ref}
+            key={palletObject.pl_ref}
+            id={`checkbox-{id}`}
             checked
-            label={this.buildLabelString(labelObject)}
+            label={this.buildLabelString(palletObject)}
             onChange={(e) =>
-              this.addRemoveLabel(e.target.checked, labelObject.id)
+              this.addRemoveLabel(e.target.checked, palletObject.id)
             }
           />
         );
@@ -546,221 +545,206 @@ class App extends React.Component {
             <AlertMessage
               strongText="bold this"
               normalText="Message that"
-              bsStyle="info"
+              variant="info"
               show={showAlert}
               onDismiss={this.toggleAlert}
             />
-
-            <h3
-              style={{ textTransform: "capitalize" }}
-            >{`${operation} ${productTypeName} Shipment`}</h3>
+            <h3>{operationName} Shipment</h3>
           </Col>
         </Row>
-        <Row className="mb-3">
+        <Row>
           <Col lg={12}>
-            <Form onSubmit={(e) => e.preventDefault()}>
-              <Row>
-                <Col lg={3}>
-                  <FormGroup
-                    validationState={this.getValidationState("shipper")}
-                    bsSize="sm"
-                    controlId="shipper"
-                  >
-                    <FormLabel>Shipment</FormLabel>{" "}
-                    <FormControl
-                      type="text"
-                      value={shipper}
-                      placeholder="Shipment"
-                      onChange={(e) => {
-                        const { shipper, ...newState } = this.state.errors;
-                        this.setState({
-                          errors: {
-                            ...newState,
-                          },
-                        });
+            <Form.Row onSubmit={(e) => e.preventDefault()}>
+              <Col lg={3}>
+                <FormGroup controlId="shipper">
+                  <FormLabel>Shipment</FormLabel>{" "}
+                  <FormControl
+                    type="text"
+                    value={shipper}
+                    isValid={this.getValidationState("shipper")}
+                    placeholder="Shipment"
+                    onChange={(e) => {
+                      const { shipper, ...newState } = this.state.errors;
+                      this.setState({
+                        errors: {
+                          ...newState,
+                        },
+                      });
 
-                        this.setShipmentDetail(e.target.id, e.target.value);
-                      }}
-                      required="required"
-                    />
-                    <FormControl.Feedback />
-                    <FormText>{shipperError}</FormText>
-                  </FormGroup>
-                </Col>
-                <Col lg={3}>
-                  <FormGroup
-                    controlId="destination"
-                    bsSize={"sm"}
-                    validationState={this.getValidationState("destination")}
-                  >
-                    <FormLabel>Destination</FormLabel>
-                    <AsyncTypeahead
-                      placeholder="Destination"
-                      isLoading={this.state.isLoading}
-                      id="destination"
-                      name="destination"
-                      selected={[this.state.shipment.destination]}
-                      onChange={(selected) => {
-                        if (selected.length > 0) {
-                          let destination = selected[0].value;
-                          this.setShipmentDetail("destination", destination);
-                        }
-                      }}
-                      onInputChange={(destination) => {
+                      this.setShipmentDetail(e.target.id, e.target.value);
+                    }}
+                    required="required"
+                  />
+                  <FormControl.Feedback />
+                  <FormText>{shipperError}</FormText>
+                </FormGroup>
+              </Col>
+              <Col lg={3}>
+                <FormGroup controlId="destination">
+                  <FormLabel>Destination</FormLabel>
+                  <AsyncTypeahead
+                    placeholder="Destination"
+                    isLoading={this.state.isTypeAheadLoading}
+                    id="destination"
+                    name="destination"
+                    isValid={this.getValidationState("destination")}
+                    selected={[this.state.shipment.destination]}
+                    onChange={(selected) => {
+                      if (selected.length > 0) {
+                        let destination = selected[0].value;
                         this.setShipmentDetail("destination", destination);
-                      }}
-                      onSearch={(query) => {
-                        this.setState({ isLoading: true });
-                        fetch(
-                          `${this.state.baseUrl}Shipments/destinationLookup?term=${query}`,
-                          {
-                            headers: {
-                              Accept: "application/json",
-                            },
-                          }
-                        )
-                          .then((resp) => resp.json())
-                          .then((json) => {
-                            console.log(json);
-                            this.setState({
-                              isLoading: false,
-                              options: json,
-                            });
+                      }
+                    }}
+                    onInputChange={(destination) => {
+                      this.setShipmentDetail("destination", destination);
+                    }}
+                    onSearch={(query) => {
+                      this.setState({ isTypeAheadLoading: true });
+                      fetch(
+                        `${this.state.baseUrl}Shipments/destinationLookup?term=${query}`,
+                        {
+                          headers: {
+                            Accept: "application/json",
+                          },
+                        }
+                      )
+                        .then((resp) => resp.json())
+                        .then((json) => {
+                          console.log(json);
+                          this.setState({
+                            isTypeAheadLoading: false,
+                            options: json,
                           });
-                      }}
-                      labelKey="value"
-                      options={this.state.options}
-                    />
-                    <FormText>{destinationError}</FormText>
-                  </FormGroup>
-                </Col>
-                <Col lg={4}>
-                  <FormGroup
-                    className="cb-shipped"
-                    validationState={this.getValidationState("shipped")}
-                  >
-                    <FormCheck
-                      validationState={this.getValidationState("shipped")}
-                      checked={shipped}
-                      onChange={this.toggleShipped}
-                      label="Shipped"
-                    />
-                    <FormText>{shippedError}</FormText>
-                  </FormGroup>
-                </Col>
-              </Row>
-              <Row>
-                <Col lg={6}>
-                  <Button
-                    bsStyle="primary"
-                    bsSize="sm"
-                    className="my-btn"
-                    onClick={this.submitData}
-                    type="submit"
-                  >
-                    Submit
-                  </Button>
-                </Col>
-                <Col lg={6}>{spinner}</Col>
-              </Row>
-            </Form>
+                        });
+                    }}
+                    labelKey="value"
+                    options={this.state.options}
+                  />
+                  <FormText>{destinationError}</FormText>
+                </FormGroup>
+              </Col>
+            </Form.Row>
           </Col>
         </Row>
-
+        <Row>
+          <Col lg={1}>
+            <FormGroup validation={this.getValidationState("shipped")}>
+              <FormCheck
+                validation={this.getValidationState("shipped")}
+                checked={shipped}
+                id="shipped"
+                onChange={this.toggleShipped}
+                label="Shipped"
+              />
+              <FormText>{shippedError}</FormText>
+            </FormGroup>
+          </Col>
+          <Col lg={5} className="mb-3">
+            <Button
+              variant="primary"
+              size="sm"
+              className="my-btn"
+              onClick={this.submitData}
+              type="submit"
+            >
+              Submit
+            </Button>
+          </Col>
+          <Col lg={6}>{spinner}</Col>
+        </Row>
         <Row>
           <Col>
             <div className="pre-scrollable">
-              <div
-                id="accordion-controlled-example"
-                activeKey={this.state.activeKey}
-                onSelect={this.updateActiveKey}
-              >
-                {products &&
-                  products.map((product, idx) => {
-                    return (
-                      <Card
-                        key={`panel-${idx}`}
-                        eventKey={`panel-${idx}`}
-                        expanded={isExpanded[idx]}
-                        onToggle={(b) => {
-                          this.toggleIsExpanded(b, idx);
-                        }}
-                      >
-                        <Card.Header>
-                          <Card.Title
-                            onClick={() => this.getLabelList(product)}
-                            toggle
+              <div className="card-container">
+                <Card key={`card-top-level`}>
+                  {products &&
+                    products.map((product, idx) => {
+                      return (
+                        <>
+                          <Card.Header
+                            onClick={() => {
+                              this.getLabelList(product);
+                              this.toggleIsExpanded(product, idx);
+                            }}
+                            as="h5"
+                            className="toggen-header"
+                            key={`header-{idx}`}
                           >
+                            {" "}
                             {product}{" "}
                             {labelCounts[product] && (
                               <Badge variant="primary">
                                 {labelCounts[product]}
                               </Badge>
                             )}
-                          </Card.Title>
-                        </Card.Header>
-                        <Card.Body>
-                          {labelLists[product] &&
-                            labelLists[product].map((value, idx) => {
-                              let icon = null;
-                              let FormCheckClasses = classes.slice();
-                              const checked =
-                                this.state.shipment.labelIds.indexOf(value.id) >
-                                -1;
-                              let style = {};
-                              if (value.disabled) {
-                                FormCheckClasses.push("bg-danger");
-                                icon = (
-                                  <>
-                                    <FontAwesomeIcon icon={faBan} />{" "}
-                                  </>
-                                );
-                                style = { pointerEvents: "none" };
-                              }
-                              let labelText = this.buildLabelString(value);
-                              if (icon) {
-                                labelText = icon + labelText;
-                              }
+                          </Card.Header>
+                          {labelLists[product] && isExpanded[product] && (
+                            <Card.Body
+                              className={isExpanded[product] && "open"}
+                            >
+                              {labelLists[product].map((value, idx) => {
+                                let icon = null;
+                                let FormCheckClasses = classes.slice();
+                                const checked =
+                                  this.state.shipment.labelIds.indexOf(
+                                    value.id
+                                  ) > -1;
+                                let style = {};
+                                if (value.disabled) {
+                                  FormCheckClasses.push("bg-danger");
+                                  icon = (
+                                    <>
+                                      <FontAwesomeIcon icon={faBan} />{" "}
+                                    </>
+                                  );
+                                  style = { pointerEvents: "none" };
+                                }
+                                let labelText = this.buildLabelString(value);
+                                if (icon) {
+                                  labelText = icon + labelText;
+                                }
 
-                              return (
-                                <WrapCheckbox
-                                  key={value.pl_ref}
-                                  childKey={value.pl_ref}
-                                  disabled={value.disabled}
-                                >
-                                  <FormCheck
-                                    bsClass={FormCheckClasses.join(" ")}
-                                    disabled={value.disabled}
-                                    checked={checked}
-                                    style={style}
+                                return (
+                                  <WrapCheckbox
                                     key={value.pl_ref}
-                                    onChange={(e) =>
-                                      this.addRemoveLabel(
-                                        e.target.checked,
-                                        value.id
-                                      )
-                                    }
-                                    label={labelText}
-                                  />
-                                </WrapCheckbox>
-                              );
-                            })}
-                        </Card.Body>
-                      </Card>
-                    );
-                  })}
+                                    childKey={value.pl_ref}
+                                    disabled={value.disabled}
+                                  >
+                                    <FormCheck
+                                      disabled={value.disabled}
+                                      checked={checked}
+                                      style={style}
+                                      key={value.pl_ref}
+                                      id={value.pl_ref}
+                                      onChange={(e) =>
+                                        this.addRemoveLabel(
+                                          e.target.checked,
+                                          value.id
+                                        )
+                                      }
+                                      label={labelText}
+                                    />
+                                  </WrapCheckbox>
+                                );
+                              })}
+                            </Card.Body>
+                          )}
+                        </>
+                      );
+                    })}
+                </Card>
               </div>
             </div>
           </Col>
           <Col>
             <Card>
-              <Card.Header>
-                <Card.Title>
-                  Currently On Shipment{" "}
-                  <Badge variant="primary">{selectedCount}</Badge>
-                </Card.Title>
+              <Card.Header as="h5">
+                Currently On Shipment{" "}
+                <Badge variant="primary">{selectedCount}</Badge>
               </Card.Header>
-              <Card.Body>{labelsOnShipment}</Card.Body>
+              {labelsOnShipment.length > 0 && (
+                <Card.Body>{labelsOnShipment}</Card.Body>
+              )}
             </Card>
           </Col>
         </Row>
