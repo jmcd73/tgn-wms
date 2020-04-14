@@ -57,10 +57,6 @@
                 <td><?= h($productType->name) ?></td>
             </tr>
             <tr>
-                <th scope="row"><?= __('Code Prefix') ?></th>
-                <td><?= h($productType->code_prefix) ?></td>
-            </tr>
-            <tr>
                 <th scope="row"><?= __('Storage Temperature') ?></th>
                 <td><?= h($productType->storage_temperature) ?></td>
             </tr>

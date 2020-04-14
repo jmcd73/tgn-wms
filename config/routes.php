@@ -51,13 +51,13 @@ $routes->scope('/', function (RouteBuilder $builder) {
     ]);
 
     // Token check will be skipped when callback returns `true`.
-    $csrf->whitelistCallback(function ($request) {
-        // Skip token check for API URLs.
-        // if ($request->getParam('prefix') === 'Api') {
-        return true;
-        // }
-    });
-
+    /*   $csrf->whitelistCallback(function ($request) {
+          // Skip token check for API URLs.
+          // if ($request->getParam('prefix') === 'Api') {
+          return true;
+          // }
+      });
+ */
     // Register scoped middleware for in scopes.
     $builder->registerMiddleware('csrf', $csrf);
 

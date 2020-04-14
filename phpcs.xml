@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="CakePHP 2.x Coding" xsi:noNamespaceSchemaLocation="phpcs.xsd">
-    <description>The coding standard for CakePHP 2.x Toggen</description>
-    <config name="installed_paths" value="vendors/cakephp/cakephp-codesniffer" />
+    <description>The coding standard for CakePHP 4.x Toggen</description>
+    <config name="installed_paths" value="vendor/cakephp/cakephp-codesniffer" />
     <exclude-pattern>vendor/*</exclude-pattern>
+    <exclude-pattern>old/*</exclude-pattern>
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <exclude-pattern>vendors/sebastian/diff/tests/ParserTest.php</exclude-pattern>
-
     <rule ref="CakePHP">
         <!-- don't worry about use and namespace missing -->
         <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
@@ -16,5 +16,4 @@
         <exclude name="Generic.Formatting.NoSpaceAfterCast.SpaceFound"/>
         <exclude name="CakePHP.Commenting.FunctionComment.Missing"/>
     </rule>
-
 </ruleset>

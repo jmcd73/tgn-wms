@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Core\Configure;
+use Cake\Http\Exception\NotFoundException;
 use Cake\Utility\Hash;
 
 /**
@@ -51,7 +52,7 @@ class ShipmentsController extends AppController
     public function view($id = null)
     {
         $shipment = $this->Shipments->get($id, [
-            'contain' => ['ProductTypes',  'Pallets' => ['Locations']],
+            'contain' => ['ProductTypes', 'Pallets' => ['Locations']],
         ]);
 
         $this->set('shipment', $shipment);
@@ -119,40 +120,41 @@ class ShipmentsController extends AppController
         $shipment = $this->Shipments->get($id);
         $shipper = $shipment->shipper;
 
-        if ($shipment->shipped) {
-            $this->Flash->error(__('This shipment is marked as shipped it cannot be deleted'));
-            return $this->redirect($this->request->referer());
-        }
-
         if ($this->Shipments->delete($shipment)) {
             $pallets = $this->Shipments->Pallets->updateAll(['shipment_id' => 0], ['shipment_id' => $id]);
-            $this->Flash->success(__('The shipment "{0}" has been deleted and {1} pallets released to stock', $shipper, $pallets));
+            $this->Flash->success(__(
+                'The shipment "{0}" has been deleted and {1} pallets released to stock',
+                $shipper,
+                $pallets
+            ));
         } else {
-            $this->Flash->error(__('The shipment could not be deleted. Please, try again.'));
+            $errors = $this->Shipments->formatValidationErrors($shipment->getErrors());
+            $this->Flash->error($errors);
         }
 
         return $this->redirect(['action' => 'index']);
     }
 
     /**
-    * pickStock React SPA
-    *
-    * @return void
-    */
+     * pickStock React SPA
+     *
+     * @return void
+     */
     public function pickStock()
     {
         list($js, $css) = $this->ReactEmbed->getAssets(
             'pick-app'
         );
+
         $baseUrl = $this->request->getAttribute('webroot');
 
         $this->set(compact('js', 'css', 'baseUrl'));
     }
 
     /**
-    * openShipments
-    * @return void
-    */
+     * openShipments
+     * @return void
+     */
     public function openShipments()
     {
         $this->Shipments->recursive = -1;
@@ -224,7 +226,7 @@ class ShipmentsController extends AppController
 
         if ($this->request->is('post')) {
             $data = $this->request->getParsedBody();
-
+            tog('shipment data', $data);
             $pallets = $data['pallets'];
 
             unset($data['pallets']);
@@ -238,6 +240,7 @@ class ShipmentsController extends AppController
                     'data' => $data,
                     'error' => $newEntity->getErrors(),
                 ];
+
                 return $this->response->withStringBody(json_encode($shipment))->withType('application/json');
             }
 
@@ -246,7 +249,6 @@ class ShipmentsController extends AppController
             $palletData = [];
 
             if (!empty($pallets)) {
-                tog('Inside check empputy pallets');
                 foreach ($pallets as $pallet) {
                     $palletData[] = [
                         'id' => $pallet,
@@ -255,11 +257,12 @@ class ShipmentsController extends AppController
                 }
 
                 $palletRecords = $this->Shipments->Pallets->find()
-            ->whereInList('id', $pallets)->toList();
+                    ->whereInList('id', $pallets)->toList();
 
                 $palletEntities = $this->Shipments->Pallets->patchEntities($palletRecords, $palletData);
 
                 $result = $this->Shipments->Pallets->saveMany($palletEntities);
+
                 return $this->response->withStringBody(json_encode([
                     $shipment, $palletData, $result, ]))->withType('application/json');
             }
@@ -319,30 +322,28 @@ class ShipmentsController extends AppController
         }
 
         if ($this->request->is(['post', 'put'])) {
-            $shipment = $this->Shipments->find('first', [
-                'conditions' => [
-                    'Shipment.id' => $id,
-                ],
-            ]);
+            $shipment = $this->Shipments->get($id);
 
             $data = [
-                'shipped' => !(bool)$shipment['Shipment']['shipped'],
+                'shipped' => !(bool)$shipment->shipped,
                 'id' => $id,
             ];
 
-            $this->Shipments->set($shipment);
-            if ($this->Shipments->save($data)) {
-                $toState = !(bool)$shipment['Shipment']['shipped'] ? 'shipped' : 'not-shipped';
-                $shipper = $shipment['Shipment']['shipper'];
-                $this->Flash->success(__('Shipment <strong>%s</strong> marked as <strong>%s</strong>', $shipper, $toState));
+            $patched = $this->Shipments->patchEntity($shipment, $data);
+
+            if ($this->Shipments->save($patched)) {
+                $toState = $patched->shipped ? 'shipped' : 'not-shipped';
+
+                $this->Flash->success(
+                    __('Shipment <strong>{0}</strong> marked as <strong>{1}</strong>', $shipment->shipper, $toState),
+                    ['escape' => false]
+                );
             } else {
                 $errorText = '';
 
-                $ve = $this->Shipments->validationErrors;
-                foreach (array_keys($ve) as $ak) {
-                    $errorText .= join(' ', $ve[$ak]);
-                };
-                $this->Flash->error('Failed to toggle shipped state. ' . $errorText);
+                $errors = $this->Shipments->formatValidationErrors($patched->getErrors()) ;
+
+                $this->Flash->error($errors);
             }
 
             return $this->redirect(['action' => 'index']);
@@ -372,7 +373,7 @@ class ShipmentsController extends AppController
     /**
      * edit method
      *
-     * @throws NotFoundException
+     * @throws \Cake\Http\Exception\NotFoundException
      * @param string $id Shipment ID
      * @return mixed
      */

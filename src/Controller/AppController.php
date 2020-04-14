@@ -18,7 +18,9 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Core\Configure;
 use Cake\Event\EventInterface;
+use Cake\ORM\TableRegistry;
 
 /**
  * Application Controller
@@ -30,6 +32,12 @@ use Cake\Event\EventInterface;
  */
 class AppController extends Controller
 {
+    protected $controllerActionsToSkip = [
+        'menus' => 'buildMenu',
+        'toolbar_access' => 'history_state',
+        //'Pages' => 'display',
+    ];
+
     /**
      * Initialization hook method.
      *
@@ -45,6 +53,9 @@ class AppController extends Controller
 
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
+
+        $ctrlSettings = Configure::read('Ctrl.printControllersActions');
+        $this->loadComponent('Ctrl', $ctrlSettings);
 
         /*
          * Enable the following component for recommended CakePHP form protection settings.
@@ -86,5 +97,34 @@ class AppController extends Controller
             ])->orderAsc('lft');
 
         $this->set(compact('menuTree', 'isAdmin', 'isLoggedIn'));
+
+        $controller = $this->request->getParam('controller');
+        $action = $this->request->getParam('action');
+
+        if ($this->allowGetHelpPage($controller, $action)) {
+            $controllerAction = $controller . '::' . $action;
+            $helpTable = TableRegistry::get('Help');
+
+            $this->set(
+                'helpPage',
+                $helpTable
+                     ->getHelpPage($controllerAction)
+            );
+        }
+    }
+
+    protected function allowGetHelpPage($controller, $action)
+    {
+        if ($this->request->is(['PUT', 'POST'])) {
+            return false;
+        }
+
+        foreach ($this->controllerActionsToSkip as $key => $value) {
+            if ($controller === $key && $action === $value) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

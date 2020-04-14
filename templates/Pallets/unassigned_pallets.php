@@ -12,7 +12,7 @@
 ?>
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 <?php if ($pallets): ?>
-<div class="container">
+<div class="row">
     <div class="col-lg-12">
         <?php $count = $this->Paginator->counter('{{count}}'); ?>
         <?php
@@ -84,11 +84,10 @@
                 ?>
             </ul>
         </div>
-
     </div>
-
-
 </div>
+
+
 <?php endif; ?>
 
 <?php // debug($last_pallet);?>

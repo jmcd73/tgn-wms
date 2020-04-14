@@ -12,9 +12,11 @@ use Cake\Core\Configure;
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <?php foreach ($menuTree as $menu): ?>
-            <?php if ($menu->admin_menu && !$isAdmin) {
-    continue;
-} ?>
+            <?php
+            if ($menu->admin_menu && !$isAdmin) {
+                continue;
+            } ?>
+            <?php if ($menu->hasValue('children')): ?>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
@@ -47,11 +49,18 @@ use Cake\Core\Configure;
 
                     <?= $child->divider ? '<div class="dropdown-divider"></div>' : ''; ?>
                     <?= $this->Html->link($child->name, $url, $options); ?>
-
-
                     <?php endforeach; ?>
                 </div>
             </li>
+            <?php else: ?>
+            <li class="nav-item">
+                <?php     list($controller, $action) = explode('::', $child->bs_url);
+                            $url = ['controller' => $controller,
+                                'action' => $action,
+                            ]; ?>
+                <?php echo $this->Html->link($menu->name, $url, ['class' => 'nav-link']); ?>
+            </li>
+            <?php endif; ?>
             <?php endforeach; ?>
         </ul>
 
@@ -59,11 +68,11 @@ use Cake\Core\Configure;
             <?php if ($user): ?>
             <li class="nav-item">
                 <?php echo  $this->Html->link(
-                            $user->get('full_name') . ' ' . $this->Html->icon('sign-out-alt'),
-                            ['controller' => 'users', 'action' => 'logout'],
-                            ['title' => 'Logout',
-                                'escape' => false, 'class' => 'nav-link', ]
-                        ) ;?>
+                                $user->get('full_name') . ' ' . $this->Html->icon('sign-out-alt'),
+                                ['controller' => 'users', 'action' => 'logout'],
+                                ['title' => 'Logout',
+                                    'escape' => false, 'class' => 'nav-link', ]
+                            ) ;?>
             </li>
             <?php endif; ?>
             <li class="nav-item"><?=

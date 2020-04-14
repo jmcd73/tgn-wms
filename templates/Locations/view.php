@@ -87,7 +87,6 @@
                     <td><?= h($productTypes->inventory_status_id) ?></td>
                     <td><?= h($productTypes->location_id) ?></td>
                     <td><?= h($productTypes->name) ?></td>
-                    <td><?= h($productTypes->code_prefix) ?></td>
                     <td><?= h($productTypes->storage_temperature) ?></td>
                     <td><?= h($productTypes->code_regex) ?></td>
                     <td><?= h($productTypes->code_regex_description) ?></td>

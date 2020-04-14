@@ -27,9 +27,9 @@ $(function () {
   $("#dialog")
     .off("show.bs.modal")
     .on("show.bs.modal", function (event) {
-      var item = $(event.relatedTarget);
+      var button = $(event.relatedTarget);
 
-      var formName = item.data("formname");
+      var formName = button.data("formname");
 
       var form = $("#" + formName);
 
@@ -44,7 +44,7 @@ $(function () {
 
       // de-register click and add it back to
       // stop multiple form submits
-      $("button.print")
+      $("button.modal-print")
         .off("click")
         .on("click", function () {
           $("#" + formName).submit();
@@ -114,8 +114,8 @@ $(function () {
 });
 
 function setFormValuesFromCookies(form) {
-  var productType = $(form).find("input.productType");
-  pt = productType.val();
+  var productTypeInput = $(form).find("input.productType");
+  productTypeId = productTypeInput.val();
   var formNameVal = $(form).attr("id");
   //console.log('setFormValuesFromCookies', formNameVal);
   // set controls to cookie values
@@ -125,7 +125,8 @@ function setFormValuesFromCookies(form) {
       control_name = $(this).prop("name");
       //console.log(control_name);
       if (control_name) {
-        control_name_pt = pt + "-" + formNameVal + "-" + control_name;
+        control_name_pt =
+          productTypeId + "-" + formNameVal + "-" + control_name;
         //console.log(control_name_pt);
         $(this).val($.cookie(control_name_pt));
       }

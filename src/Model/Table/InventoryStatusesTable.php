@@ -3,9 +3,14 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use ArrayObject;
+use Cake\Core\Configure;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\EventInterface;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
 /**
@@ -66,9 +71,8 @@ class InventoryStatusesTable extends Table
             ->allowEmptyString('id', null, 'create');
 
         $validator
-            ->integer('perms')
             ->requirePresence('perms', 'create')
-            ->notEmptyString('perms');
+            ->allowEmptyArray('perms');
 
         $validator
             ->scalar('name')
@@ -87,5 +91,35 @@ class InventoryStatusesTable extends Table
             ->allowEmptyString('allow_bulk_status_change');
 
         return $validator;
+    }
+
+    /**
+     * Display field
+     *
+     * @var string
+     */
+    public $displayField = 'name';
+
+    /**
+     * @return mixed
+     */
+    public function createStockViewPermsList()
+    {
+        $stockViewPerms = Configure::read('StockViewPerms');
+
+        /*  foreach ($stockViewPerms as $k => $v) {
+             $new_array[$stockViewPerms[$k]['value']] = Inflector::humanize($stockViewPerms[$k]['display']);
+         } */
+
+        return Hash::combine($stockViewPerms, '{n}.value', '{n}.display');
+    }
+
+    public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options)
+    {
+        if (is_array($entity->perms)) {
+            $entity->perms = array_sum($entity->perms);
+        }
+
+        return $entity;
     }
 }

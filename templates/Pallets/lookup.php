@@ -153,51 +153,48 @@ echo $this->Form->control(
 <?php $this->assign('tb_sidebar', '<div class="col">' . $this->fetch('tb_actions') . '</div>'); ?>
 
 <!-- end sidebar -->
+<div class="row">
+    <div class="col">
+        <h3>
+            <?= __('Search Results'); ?>
+            <?=  $this->Html->badge($this->Paginator->counter('{{count}}')); ?>
+        </h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th><?php echo $this->Paginator->sort('item_id'); ?></th>
+                    <th><?php echo $this->Paginator->sort('description'); ?></th>
+                    <th><?php echo $this->Paginator->sort('bb_date', 'Best Before'); ?></th>
+                    <th><?php echo $this->Paginator->sort('qty'); ?></th>
+                    <th><?php echo $this->Paginator->sort('pl_ref'); ?></th>
+                    <th><?php echo $this->Paginator->sort('batch'); ?></th>
+                    <th><?php echo $this->Paginator->sort('print_date'); ?></th>
+                    <th><?php echo $this->Paginator->sort('inventory_status_id'); ?></th>
+                    <th><?php echo $this->Paginator->sort('location_id'); ?></th>
+                    <th><?php echo $this->Paginator->sort('shipment_id'); ?></th>
+                    <th class="actions"><?php echo __('Actions'); ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if ($pallets): ?>
 
-
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <h3>
-                <?= __('Search Results'); ?>
-                <?=  $this->Html->badge($this->Paginator->counter('{{count}}')); ?>
-            </h3>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th><?php echo $this->Paginator->sort('item_id'); ?></th>
-                        <th><?php echo $this->Paginator->sort('description'); ?></th>
-                        <th><?php echo $this->Paginator->sort('bb_date', 'Best Before'); ?></th>
-                        <th><?php echo $this->Paginator->sort('qty'); ?></th>
-                        <th><?php echo $this->Paginator->sort('pl_ref'); ?></th>
-                        <th><?php echo $this->Paginator->sort('batch'); ?></th>
-                        <th><?php echo $this->Paginator->sort('print_date'); ?></th>
-                        <th><?php echo $this->Paginator->sort('inventory_status_id'); ?></th>
-                        <th><?php echo $this->Paginator->sort('location_id'); ?></th>
-                        <th><?php echo $this->Paginator->sort('shipment_id'); ?></th>
-                        <th class="actions"><?php echo __('Actions'); ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if ($pallets): ?>
-
-                    <?php foreach ($pallets as $pallet): ?>
-                    <tr <?php
+                <?php foreach ($pallets as $pallet): ?>
+                <tr <?php
                         if ($pallet['dont_ship']) {
                             echo 'class="lowdate"';
                         }
                         ?>>
 
-                        <td><?php echo h($pallet['item']); ?></td>
-                        <td><?php echo h($pallet['description']); ?></td>
-                        <td><?php echo h($pallet['bb_date']->i18nFormat(null, $user->timezone)); ?></td>
-                        <td><?php echo h($pallet['qty']); ?></td>
-                        <td><?php echo h($pallet['pl_ref']); ?></td>
-                        <td><?php echo h($pallet['batch']); ?></td>
-                        <td><?php echo h($pallet['print_date']->i18nFormat(null, $user->timezone)); ?></td>
-                        <td><?= $pallet->has('inventory_status') ? h($pallet->inventory_status->name) : ''; ?></td>
-                        <td><?= $pallet->has('location') ? h($pallet->location->location) : ''; ?></td>
-                        <td><?= $pallet->has('shipment') ?
+                    <td><?php echo h($pallet['item']); ?></td>
+                    <td><?php echo h($pallet['description']); ?></td>
+                    <td><?php echo h($pallet['bb_date']->i18nFormat(null, $user->timezone)); ?></td>
+                    <td><?php echo h($pallet['qty']); ?></td>
+                    <td><?php echo h($pallet['pl_ref']); ?></td>
+                    <td><?php echo h($pallet['batch']); ?></td>
+                    <td><?php echo h($pallet['print_date']->i18nFormat(null, $user->timezone)); ?></td>
+                    <td><?= $pallet->has('inventory_status') ? h($pallet->inventory_status->name) : ''; ?></td>
+                    <td><?= $pallet->has('location') ? h($pallet->location->location) : ''; ?></td>
+                    <td><?= $pallet->has('shipment') ?
                               $this->Html->link(
                                   h($pallet->shipment->shipper),
                                   [
@@ -207,8 +204,8 @@ echo $this->Form->control(
                                   ]
                               ) : '';
                             ?></td>
-                        <td class="actions">
-                            <?php echo $this->Html->link(
+                    <td class="actions">
+                        <?php echo $this->Html->link(
                                 __('Edit'),
                                 '#',
                                 [
@@ -230,40 +227,39 @@ echo $this->Form->control(
                                 ]
                             );
                             ?>
-                            <?php echo $this->Html->link(__('View'), ['action' => 'view', $pallet['id']], ['class' => 'btn btn-secondary btn-sm mb-1 view  mb-1 btn-sm']); ?>
-                            <?php echo $this->Html->link(__('Reprint'), ['action' => 'palletReprint', $pallet['id']], ['class' => 'btn  mb-1  btn-secondary reprint btn-sm']); ?>
-                            <?php if ($isLoggedIn && isset($user['role']) && $user['role'] === 'admin'): ?>
-                            <?php echo $this->Html->link(__('Glabels Reprint'), [
-                                'controller' => 'PrintLabels',
-                                'action' => 'ssccLabel', $pallet['id'], ], ['class' => 'btn reprint btn-secondary btn-sm']); ?>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                    <?php else: ?>
-                    <tr>
-                        <td colspan="11">
-                            <div class="text-center">
-                                <h3><?= __('Clear the search form and try again'); ?></h3>
-                            </div>
-                        </td>
-                    </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-            <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?>
-            </p>
-            <div class="pagination pagination-large">
-                <ul class="pagination">
-                    <?php
+                        <?php echo $this->Html->link(__('View'), ['action' => 'view', $pallet['id']], ['class' => 'btn btn-secondary btn-sm mb-1 view  mb-1 btn-sm']); ?>
+                        <?php echo $this->Html->link(__('Reprint'), ['action' => 'palletReprint', $pallet['id']], ['class' => 'btn  mb-1  btn-secondary reprint btn-sm']); ?>
+                        <?php if ($isLoggedIn && isset($user['role']) && $user['role'] === 'admin'): ?>
+                        <?php echo $this->Html->link(__('Glabels Reprint'), [
+                            'controller' => 'PrintLabels',
+                            'action' => 'ssccLabel', $pallet['id'], ], ['class' => 'btn reprint btn-secondary btn-sm']); ?>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+                <?php else: ?>
+                <tr>
+                    <td colspan="11">
+                        <div class="text-center">
+                            <h3><?= __('Clear the search form and try again'); ?></h3>
+                        </div>
+                    </td>
+                </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?>
+        </p>
+        <div class="pagination pagination-large">
+            <ul class="pagination">
+                <?php
                         echo $this->Paginator->first('&laquo; first', ['escape' => false, 'tag' => 'li']);
                         echo $this->Paginator->prev('&lsaquo; ' . __('previous'), ['escape' => false, 'tag' => 'li'], null, ['tag' => 'li', 'class' => 'disabled', 'disabledTag' => 'a']);
                         echo $this->Paginator->numbers(['separator' => '', 'currentTag' => 'a', 'currentClass' => 'active', 'tag' => 'li', 'first' => 1, 'ellipsis' => null]);
                         echo $this->Paginator->next(__('next') . ' &rsaquo;', ['escape' => false, 'tag' => 'li'], null, ['tag' => 'li', 'class' => 'disabled', 'disabledTag' => 'a']);
                         echo $this->Paginator->last('last &raquo;', ['escape' => false, 'tag' => 'li']);
                     ?>
-                </ul>
-            </div>
+            </ul>
         </div>
     </div>
 </div>

@@ -57,6 +57,7 @@ if (!$this->fetch('tb_flash')) {
     if (isset($this->Flash)) {
         echo $this->Flash->render();
     }
+
     $this->end();
 }
 if (!$this->fetch('tb_body_end')) {
@@ -66,17 +67,17 @@ if (!$this->fetch('tb_body_end')) {
 }
 
 /**
- * Prepend `meta` block with `author` and `favicon`.
- */
+* Prepend `meta` block with `author` and `favicon`.
+*/
 if (Configure::check('App.author')) {
     $this->prepend('meta', $this->Html->meta('author', null, ['name' => 'author', 'content' => Configure::read('App.author')]));
 }
 $this->prepend('meta', $this->Html->meta('favicon.ico', '/favicon.ico', ['type' => 'icon']));
 
 /**
- * Prepend `css` block with Bootstrap stylesheets
- * Change to bootstrap.min to use the compressed version
- */
+* Prepend `css` block with Bootstrap stylesheets
+* Change to bootstrap.min to use the compressed version
+*/
 if (Configure::read('debug')) {
     $this->prepend('css', $this->Html->css(['BootstrapUI.bootstrap']));
 } else {
@@ -84,13 +85,14 @@ if (Configure::read('debug')) {
 }
 
 /**
- * Prepend `script` block with jQuery, Popper and Bootstrap scripts
- * Change jquery.min and bootstrap.min to use the compressed version
- */
+* Prepend `script` block with jQuery, Popper and Bootstrap scripts
+* Change jquery.min and bootstrap.min to use the compressed version
+*/
 if (Configure::read('debug')) {
     $this->prepend('script', $this->Html->script(['BootstrapUI.jquery', 'BootstrapUI.popper', 'BootstrapUI.bootstrap']));
 } else {
-    $this->prepend('script', $this->Html->script(['BootstrapUI.jquery.min', 'BootstrapUI.popper.min', 'BootstrapUI.bootstrap.min']));
+    $this->prepend('script', $this->Html->script(['BootstrapUI.jquery.min', 'BootstrapUI.popper.min',
+        'BootstrapUI.bootstrap.min', ]));
 }
 
 ?>

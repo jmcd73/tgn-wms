@@ -9,15 +9,9 @@
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 
 <?php $this->start('tb_actions'); ?>
+<li><?= $this->Html->link(__('New Printer'), ['action' => 'add'], ['class' => 'nav-link']) ?></li>
 <li><?= $this->Html->link(__('List Printers'), ['action' => 'index'], ['class' => 'nav-link']) ?></li>
-<li><?= $this->Html->link(__('List Pallets'), ['controller' => 'Pallets', 'action' => 'index'], ['class' => 'nav-link']) ?>
-</li>
-<li><?= $this->Html->link(__('New Pallet'), ['controller' => 'Pallets', 'action' => 'add'], ['class' => 'nav-link']) ?>
-</li>
-<li><?= $this->Html->link(__('List Production Lines'), ['controller' => 'ProductionLines', 'action' => 'index'], ['class' => 'nav-link']) ?>
-</li>
-<li><?= $this->Html->link(__('New Production Line'), ['controller' => 'ProductionLines', 'action' => 'add'], ['class' => 'nav-link']) ?>
-</li>
+
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', '<ul class="nav flex-column">' . $this->fetch('tb_actions') . '</ul>'); ?>
 
@@ -29,8 +23,14 @@
             echo $this->Form->control('active');
             echo $this->Form->control('name');
             echo $this->Form->control('options');
-            echo $this->Form->control('queue_name');
-            echo $this->Form->control('set_as_default_on_these_actions');
+            echo $this->Form->control(
+                'queue_name'
+            );
+            echo $this->Form->control('set_as_default_on_these_actions', [
+                'type' => 'select',
+                'multiple' => 'checkbox',
+            ]);
+
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

@@ -16,8 +16,10 @@ declare(strict_types=1);
 
 namespace App\View;
 
-use App\View\Helper\ToggenHtmlHelper;
-use BootstrapUI\View\UIView;
+use App\View\Helper\HtmlHelper;
+//use BootstrapUI\View\UIView;
+use App\View\UIViewTrait;
+use Cake\View\View;
 
 /**
  * Application View
@@ -26,8 +28,10 @@ use BootstrapUI\View\UIView;
  *
  * @link https://book.cakephp.org/4/en/views.html#the-app-view
  */
-class AppView extends UIView
+class AppView extends View
 {
+    use UIViewTrait;
+
     /**
      * Initialization hook method.
      *
@@ -43,12 +47,14 @@ class AppView extends UIView
         /*$this->loadHelper('Html', [
             'className' => 'ToggenHtml',
         ]);*/
+
+        $this->initializeUI();
+
         $this->layout = 'TwitterBootstrap/toggen-default';
-        $this->loadHelper('Html', ['className' => 'BootstrapUI.Html']);
+        $this->loadHelper('Html', ['className' => 'App\View\Helper\HtmlHelper']);
         $this->loadHelper('Form', ['className' => 'BootstrapUI.Form']);
         $this->loadHelper('Flash', ['className' => 'BootstrapUI.Flash']);
         $this->loadHelper('Paginator', ['className' => 'BootstrapUI.Paginator']);
         $this->loadHelper('Authentication.Identity');
-        $this->loadHelper('Toggen');
     }
 }

@@ -28,7 +28,11 @@
     <fieldset>
         <legend><?= __('Edit Inventory Status') ?></legend>
         <?php
-            echo $this->Form->control('perms');
+             echo $this->Form->control('perms', [
+                 'multiple' => 'checkbox',
+                 'options' => $stockViewPerms,
+                 'value' => $inventoryStatus->permArray,
+             ]);
             echo $this->Form->control('name');
             echo $this->Form->control('comment');
             echo $this->Form->control('allow_bulk_status_change');

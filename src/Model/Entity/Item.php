@@ -39,7 +39,7 @@ use Cake\ORM\Entity;
  */
 class Item extends Entity
 {
-    protected function _getFullName()
+    protected function _getCodeDesc()
     {
         return $this->code . ' - ' . $this->description;
     }

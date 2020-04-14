@@ -15,19 +15,19 @@ echo $this->Form->end();
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', '<div class="col">' . $this->fetch('tb_actions') . '</div>'); ?>
 
-<div class="container-fluid">
+<div class="row">
     <div class="col">
         <?php if (!empty($shift_date)): ?>
-        <h4>Shift Report for&nbsp;<?php echo h($shift_date); ?></h4>
+        <h4>Shift Report for&nbsp;<?php echo $this->Time->format($shift_date, 'd/M/Y'); ?></h4>
         <?php endif; ?>
         <?php if (!empty($reports)): ?>
         <?php foreach ($reports as $report): ?>
-        <?php $panelType = !empty($report['report']) ? 'primary' : 'warning' ?>
-        <div class="panel panel-<?php echo $panelType; ?>">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?php echo $report['shift']['name']; ?> -
+        <?php $panelType = !empty($report['report']) ? 'bg-primary' : 'bg-warning' ?>
+        <div class="card mb-3">
+            <div class="card-header <?=  $panelType; ?>">
+                <h5><?php echo $report['shift']['name']; ?> -
                     <?php echo $this->Time->format($report['shift']['start_time'], 'h:mm a'); ?> to
-                    <?php echo $this->Time->format($report['shift']['stop_time'], 'h:mm a'); ?></h3>
+                    <?php echo $this->Time->format($report['shift']['stop_time'], 'h:mm a'); ?></h5>
             </div>
             <?php if (!empty($report['report'])): ?>
             <table class="table table-striped table-condensed">
@@ -61,20 +61,20 @@ echo $this->Form->end();
                 </tbody>
             </table>
             <?php else: ?>
-            <div class="panel-body">
+            <div class="card-body">
                 <?php echo $this->element('flash/error', ['message' => 'No production data', 'key' => 'test']); ?>
             </div>
             <?php endif; ?>
 
         </div>
 
-        <?php $panelType = empty($report['Cartons']) ? 'warning' : 'info' ?>
-        <div class="panel panel-<?php echo $panelType; ?>">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?php echo $report['shift']['name']; ?> - Part or changed pallets</h3>
+        <?php $panelType = empty($report['Cartons']) ? 'bg-warning' : 'bg-info' ?>
+        <div class="card mb-3">
+            <div class="card-header <?php echo $panelType; ?>">
+                <h6><?php echo $report['shift']['name']; ?> - Part or changed pallets</h6>
             </div>
             <?php if (!empty($report['Cartons'])): ?>
-            <table class="table table-striped table-condensed">
+            <table class="card-table table">
                 <thead>
                     <tr>
                         <th>Line</th>
@@ -134,7 +134,6 @@ echo $this->Form->end();
 
                     <tr>
                         <td colspan="4" class="text-right">
-
                             <div class="small pallet-info"><strong>Full Pallet Qty</strong><span
                                     class="secondary-text"><?php echo $palletTotal; ?></span></div>
                             <div class="small pallet-info"><strong>Qty Previous</strong><span
@@ -155,13 +154,12 @@ echo $this->Form->end();
                 </tbody>
             </table>
             <?php else: ?>
-            <div class="panel-body">
+            <div class="card-body">
                 <?php echo $this->element('flash/default', ['message' => 'No part or changed quantity pallets during shift',
-                    'class' => 'alert alert-warning',
-                    'key' => 'test', ]); ?>
+                'class' => 'alert alert-warning',
+                'key' => 'test', ]); ?>
             </div>
             <?php endif; ?>
-
         </div>
         <?php endforeach; ?>
         <?php endif; ?>

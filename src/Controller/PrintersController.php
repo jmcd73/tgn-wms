@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Lib\PrintLabels\PrinterListTrait;
 use Cake\Core\Configure;
 
 /**
@@ -14,11 +15,11 @@ use Cake\Core\Configure;
  */
 class PrintersController extends AppController
 {
+    use PrinterListTrait;
+
     public function initialize(): void
     {
         parent::initialize();
-        $ctrlSettings = Configure::read('Ctrl.printControllersActions');
-        $this->loadComponent('Ctrl', $ctrlSettings);
     }
 
     /**
@@ -43,7 +44,7 @@ class PrintersController extends AppController
     public function view($id = null)
     {
         $printer = $this->Printers->get($id, [
-            'contain' => [ 'Pallets', 'ProductionLines'],
+            'contain' => ['Pallets', 'ProductionLines'],
         ]);
 
         $this->set('printer', $printer);
@@ -66,7 +67,14 @@ class PrintersController extends AppController
             }
             $this->Flash->error(__('The printer could not be saved. Please, try again.'));
         }
-        $this->set(compact('printer'));
+
+        $a = $this->Ctrl->getPrintActions();
+
+        $setAsDefaultOnTheseActions = array_combine($a, $a);
+
+        $queueNames = $this->getLocalPrinterList();
+
+        $this->set(compact('printer', 'queueNames', 'setAsDefaultOnTheseActions'));
     }
 
     /**
@@ -86,8 +94,6 @@ class PrintersController extends AppController
 
             $data['set_as_default_on_these_actions'] = implode("\n", $data['set_as_default_on_these_actions']);
 
-            $this->log(print_r($data, true));
-
             $printer = $this->Printers->patchEntity($printer, $data);
             if ($this->Printers->save($printer)) {
                 $this->Flash->success(__('The printer has been saved.'));
@@ -96,11 +102,14 @@ class PrintersController extends AppController
             }
             $this->Flash->error(__('The printer could not be saved. Please, try again.'));
         }
+
         $a = $this->Ctrl->getPrintActions();
 
         $setAsDefaultOnTheseActions = array_combine($a, $a);
 
-        $this->set(compact('printer', 'setAsDefaultOnTheseActions'));
+        $queueNames = $this->getLocalPrinterList();
+
+        $this->set(compact('printer', 'setAsDefaultOnTheseActions', 'queueNames'));
     }
 
     /**

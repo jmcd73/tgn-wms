@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "87b60fc7f6c18a24078ffe8984857487",
+    "content-hash": "7f21d594e297d86d08bb03e5689b2e87",
     "packages": [
         {
             "name": "aura/intl",
@@ -457,16 +457,16 @@
         },
         {
             "name": "composer/ca-bundle",
-            "version": "1.2.6",
+            "version": "1.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/ca-bundle.git",
-                "reference": "47fe531de31fca4a1b997f87308e7d7804348f7e"
+                "reference": "95c63ab2117a72f48f5a55da9740a3273d45b7fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/47fe531de31fca4a1b997f87308e7d7804348f7e",
-                "reference": "47fe531de31fca4a1b997f87308e7d7804348f7e",
+                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/95c63ab2117a72f48f5a55da9740a3273d45b7fd",
+                "reference": "95c63ab2117a72f48f5a55da9740a3273d45b7fd",
                 "shasum": ""
             },
             "require": {
@@ -509,7 +509,53 @@
                 "ssl",
                 "tls"
             ],
-            "time": "2020-01-13T10:02:55+00:00"
+            "time": "2020-04-08T08:27:21+00:00"
+        },
+        {
+            "name": "erusev/parsedown",
+            "version": "1.7.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/erusev/parsedown.git",
+                "reference": "cb17b6477dfff935958ba01325f2e8a2bfa6dab3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/cb17b6477dfff935958ba01325f2e8a2bfa6dab3",
+                "reference": "cb17b6477dfff935958ba01325f2e8a2bfa6dab3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.35"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Parsedown": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Emanuil Rusev",
+                    "email": "hello@erusev.com",
+                    "homepage": "http://erusev.com"
+                }
+            ],
+            "description": "Parser for Markdown.",
+            "homepage": "http://parsedown.org",
+            "keywords": [
+                "markdown",
+                "parser"
+            ],
+            "time": "2019-12-30T22:54:17+00:00"
         },
         {
             "name": "friendsofcake/bootstrap-ui",
@@ -517,12 +563,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfCake/bootstrap-ui.git",
-                "reference": "2a282b15956d90a5a03f3bac023e0a1022fbcdf0"
+                "reference": "c26c30b9cd25471b5f8227b5eb4716c90070e3b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfCake/bootstrap-ui/zipball/2a282b15956d90a5a03f3bac023e0a1022fbcdf0",
-                "reference": "2a282b15956d90a5a03f3bac023e0a1022fbcdf0",
+                "url": "https://api.github.com/repos/FriendsOfCake/bootstrap-ui/zipball/c26c30b9cd25471b5f8227b5eb4716c90070e3b1",
+                "reference": "c26c30b9cd25471b5f8227b5eb4716c90070e3b1",
                 "shasum": ""
             },
             "require": {
@@ -593,7 +639,7 @@
                 "issues": "http://github.com/friendsofcake/bootstrap-ui/issues",
                 "source": "http://github.com/friendsofcake/bootstrap-ui"
             },
-            "time": "2020-02-12T21:18:15+00:00"
+            "time": "2020-04-12T09:57:02+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
@@ -1249,12 +1295,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/phinx.git",
-                "reference": "2b0eab89915dabd83832c50ea0ff482e6a6d1a9d"
+                "reference": "8b0e2f1bd7a0cf047bdbfcbb766cac3012f12e7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/phinx/zipball/2b0eab89915dabd83832c50ea0ff482e6a6d1a9d",
-                "reference": "2b0eab89915dabd83832c50ea0ff482e6a6d1a9d",
+                "url": "https://api.github.com/repos/cakephp/phinx/zipball/8b0e2f1bd7a0cf047bdbfcbb766cac3012f12e7a",
+                "reference": "8b0e2f1bd7a0cf047bdbfcbb766cac3012f12e7a",
                 "shasum": ""
             },
             "require": {
@@ -1321,7 +1367,7 @@
                 "migrations",
                 "phinx"
             ],
-            "time": "2020-04-06T12:48:29+00:00"
+            "time": "2020-04-08T21:37:04+00:00"
         },
         {
             "name": "symfony/config",
@@ -1863,16 +1909,16 @@
     "packages-dev": [
         {
             "name": "cakephp/bake",
-            "version": "2.0.8",
+            "version": "2.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/bake.git",
-                "reference": "c88883ed23d51d99b9310722f2bb92674fd4d830"
+                "reference": "a44c9562dd611219fef0f93ab0bb3e2739e4e3e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/bake/zipball/c88883ed23d51d99b9310722f2bb92674fd4d830",
-                "reference": "c88883ed23d51d99b9310722f2bb92674fd4d830",
+                "url": "https://api.github.com/repos/cakephp/bake/zipball/a44c9562dd611219fef0f93ab0bb3e2739e4e3e1",
+                "reference": "a44c9562dd611219fef0f93ab0bb3e2739e4e3e1",
                 "shasum": ""
             },
             "require": {
@@ -1907,26 +1953,26 @@
                 "bake",
                 "cakephp"
             ],
-            "time": "2020-04-05T04:29:03+00:00"
+            "time": "2020-04-10T14:56:39+00:00"
         },
         {
             "name": "cakephp/cakephp-codesniffer",
-            "version": "4.0.1",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp-codesniffer.git",
-                "reference": "637e424134e6fc7c6c3ecddd750ef743eb7869fc"
+                "reference": "a809170a2fc098eb6a93128dcc9d2230870abe75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp-codesniffer/zipball/637e424134e6fc7c6c3ecddd750ef743eb7869fc",
-                "reference": "637e424134e6fc7c6c3ecddd750ef743eb7869fc",
+                "url": "https://api.github.com/repos/cakephp/cakephp-codesniffer/zipball/a809170a2fc098eb6a93128dcc9d2230870abe75",
+                "reference": "a809170a2fc098eb6a93128dcc9d2230870abe75",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1",
-                "slevomat/coding-standard": "^6.0",
-                "squizlabs/php_codesniffer": "~3.5.0"
+                "php": "^7.2",
+                "slevomat/coding-standard": ">=6.0 <6.2",
+                "squizlabs/php_codesniffer": "~3.5.3"
             },
             "require-dev": {
                 "phpunit/phpunit": "^7.1"
@@ -1953,7 +1999,7 @@
                 "codesniffer",
                 "framework"
             ],
-            "time": "2020-01-13T22:00:38+00:00"
+            "time": "2020-04-05T17:41:27+00:00"
         },
         {
             "name": "cakephp/debug_kit",
@@ -2018,16 +2064,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "1.10.1",
+            "version": "1.10.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "b912a45da3e2b22f5cb5a23e441b697a295ba011"
+                "reference": "7a4d5b6aa30d2118af27c04f5e897b57156ccfa9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/b912a45da3e2b22f5cb5a23e441b697a295ba011",
-                "reference": "b912a45da3e2b22f5cb5a23e441b697a295ba011",
+                "url": "https://api.github.com/repos/composer/composer/zipball/7a4d5b6aa30d2118af27c04f5e897b57156ccfa9",
+                "reference": "7a4d5b6aa30d2118af27c04f5e897b57156ccfa9",
                 "shasum": ""
             },
             "require": {
@@ -2094,7 +2140,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2020-03-13T19:34:27+00:00"
+            "time": "2020-04-10T09:44:22+00:00"
         },
         {
             "name": "composer/semver",
@@ -2687,16 +2733,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.3.0",
+            "version": "v4.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "9a9981c347c5c49d6dfe5cf826bb882b824080dc"
+                "reference": "bd43ec7152eaaab3bd8c6d0aa95ceeb1df8ee120"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/9a9981c347c5c49d6dfe5cf826bb882b824080dc",
-                "reference": "9a9981c347c5c49d6dfe5cf826bb882b824080dc",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/bd43ec7152eaaab3bd8c6d0aa95ceeb1df8ee120",
+                "reference": "bd43ec7152eaaab3bd8c6d0aa95ceeb1df8ee120",
                 "shasum": ""
             },
             "require": {
@@ -2735,7 +2781,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2019-11-08T13:50:10+00:00"
+            "time": "2020-04-10T16:34:50+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -4219,38 +4265,33 @@
         },
         {
             "name": "slevomat/coding-standard",
-            "version": "6.2.0",
+            "version": "6.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slevomat/coding-standard.git",
-                "reference": "c4bf9cad66da885cc843cc24d708661d9d8fbb95"
+                "reference": "d767b5e302ff096327466c97fec3cb57f6d16086"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/c4bf9cad66da885cc843cc24d708661d9d8fbb95",
-                "reference": "c4bf9cad66da885cc843cc24d708661d9d8fbb95",
+                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/d767b5e302ff096327466c97fec3cb57f6d16086",
+                "reference": "d767b5e302ff096327466c97fec3cb57f6d16086",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1",
-                "phpstan/phpdoc-parser": "0.4.0 - 0.4.3",
+                "phpstan/phpdoc-parser": "0.3.5 - 0.4.3",
                 "squizlabs/php_codesniffer": "^3.5.4"
             },
             "require-dev": {
                 "dealerdirect/phpcodesniffer-composer-installer": "0.6.2",
+                "grogy/php-parallel-lint": "1.1.0",
                 "phing/phing": "2.16.3",
-                "php-parallel-lint/php-parallel-lint": "1.1.0",
-                "phpstan/phpstan": "0.12.18",
-                "phpstan/phpstan-phpunit": "0.12.6",
-                "phpstan/phpstan-strict-rules": "0.12.2",
-                "phpunit/phpunit": "7.5.20|8.5.2|9.0.1"
+                "phpstan/phpstan": "0.11.19|0.12.9",
+                "phpstan/phpstan-phpunit": "0.11.2|0.12.6",
+                "phpstan/phpstan-strict-rules": "0.11.1|0.12.2",
+                "phpunit/phpunit": "7.5.18|8.5.2"
             },
             "type": "phpcodesniffer-standard",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "6.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "SlevomatCodingStandard\\": "SlevomatCodingStandard"
@@ -4261,7 +4302,7 @@
                 "MIT"
             ],
             "description": "Slevomat Coding Standard for PHP_CodeSniffer complements Consistence Coding Standard by providing sniffs with additional checks.",
-            "time": "2020-03-28T22:04:31+00:00"
+            "time": "2020-02-05T21:17:34+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -4762,5 +4803,6 @@
     "platform": {
         "php": ">=7.2"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }

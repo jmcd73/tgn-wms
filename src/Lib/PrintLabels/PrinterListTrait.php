@@ -23,6 +23,6 @@ trait PrinterListTrait
             $printerList[] = explode(' ', $printer)[0];
         }
 
-        return $printerList;
+        return array_combine($printerList, $printerList);
     }
 }

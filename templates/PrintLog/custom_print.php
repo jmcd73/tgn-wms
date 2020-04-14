@@ -37,37 +37,38 @@
                     ]); ?>
                     <?=
                     $this->Form->control(
-                        $formName . '.printer',
+                        $formName . '-printer',
                         [
                             'options' => $printers['printers'],
                             'default' => $printers['default'] ? $printers['default'] : '',
                             'empty' => '(select printer)',
+                            'label' => 'Printer',
                         ]
                     ); ?>
                     <?=
                     $this->Form->hidden(
-                        $formName . '.name',
+                        $formName . '-name',
                         [
                             'value' => $customPrint['name'],
                         ]
                     );?>
-                    <?=$this->Form->hidden($formName . '.id', ['value' => $customPrint['id']]); ?>
+                    <?=$this->Form->hidden($formName . '-id', ['value' => $customPrint['id']]); ?>
                     <?=
                     $this->Form->control(
-                        $formName . '.copies',
+                        $formName . '-copies',
                         [
                             'label' => 'Enter quantity to print',
                             'id' => 'copies-' . $customPrint['id'],
                         ]
                     ); ?>
-                    <?=$this->Form->hidden($formName . '.template', [
+                    <?=$this->Form->hidden($formName . '-template', [
                         'value' => $customPrint['comment']['template'], ]); ?>
-                    <?=$this->Form->hidden($formName . '.code', [
+                    <?=$this->Form->hidden($formName . '-code', [
                         'value' => $customPrint['comment']['code'], ]); ?>
                     <?php if (isset($customPrint['comment']['csv'])): ?>
                     <?php foreach ($customPrint['comment']['csv'] as $key => $csv): ?>
                     <?=$this->Form->hidden(
-                            $formName . '.csv.' . $key,
+                            $formName . '-csv.' . $key,
                             ['value' => $csv]
                         ); ?>
                     <?php endforeach; ?>

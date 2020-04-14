@@ -71,7 +71,8 @@ class UsersTable extends Table
         $validator
             ->scalar('username')
             ->maxLength('username', 50)
-            ->allowEmptyString('username');
+            ->notEmptyString('username');
+        //EmptyString('username');
 
         $validator
             ->scalar('password')
@@ -88,6 +89,8 @@ class UsersTable extends Table
             ->maxLength('full_name', 60)
             ->allowEmptyString('full_name');
 
+        $validator
+            ->scalar('timezone');
         return $validator;
     }
 

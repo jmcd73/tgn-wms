@@ -57,6 +57,13 @@ class HelpController extends AppController
             }
             $this->Flash->error(__('The help could not be saved. Please, try again.'));
         }
+
+        $documentationRoot = ROOT . $this->Help->getSetting('DOCUMENTATION_ROOT');
+        $mdFiles = $this->Help->listMdFiles($documentationRoot);
+        $markdownDocuments = array_combine($mdFiles, $mdFiles);
+        $controllerActions = $this->Ctrl->getMenuActions();
+        $this->set(compact('controllerActions', 'documentationRoot', 'markdownDocuments'));
+
         $this->set(compact('help'));
     }
 
@@ -81,6 +88,12 @@ class HelpController extends AppController
             }
             $this->Flash->error(__('The help could not be saved. Please, try again.'));
         }
+
+        $documentationRoot = ROOT . $this->Help->getSetting('DOCUMENTATION_ROOT');
+        $mdFiles = $this->Help->listMdFiles($documentationRoot);
+        $markdownDocuments = array_combine($mdFiles, $mdFiles);
+        $controllerActions = $this->Ctrl->getMenuActions();
+        $this->set(compact('controllerActions', 'documentationRoot', 'markdownDocuments'));
         $this->set(compact('help'));
     }
 
@@ -102,5 +115,23 @@ class HelpController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+     * view method
+     *
+     * @throws NotFoundException
+     * @param int $id ID of Help page
+     * @return void
+     */
+    public function viewPageHelp($id = null)
+    {
+        $help = $this->Help->get($id);
+
+        $mdDocumentPath = ROOT . $this->Help->getSetting('DOCUMENTATION_ROOT') .
+            DS . $help->markdown_document;
+
+        $markdown = $this->Help->getMarkdown($mdDocumentPath);
+        $this->set(compact('help', 'markdown'));
     }
 }

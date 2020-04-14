@@ -107,6 +107,20 @@ class ShipmentsTable extends Table
         $rules->add($rules->existsIn(['product_type_id'], 'ProductTypes'));
         $rules->add($rules->isUnique(['shipper'], 'Shipper number must be unique'));
 
+        $rules->addDelete(function ($entity, $options) {
+            return !$entity->shipped;
+        }, 'cantDeleteShipped', [
+            'errorField' => 'shipped',
+            'message' => 'A shipment cannot be deleted when it is marked as shipped',
+        ]);
+
+        $rules->addUpdate(function ($entity, $options) {
+            return true;
+        }, 'noChangeWhenShipped', [
+            'errorField' => 'shipped',
+            'message' => 'You cannot change a shipment once it is marked as shipped',
+        ]);
+
         return $rules;
     }
 

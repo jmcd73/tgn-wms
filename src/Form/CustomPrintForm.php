@@ -33,7 +33,7 @@ class CustomPrintForm extends Form
     private function prependFormName()
     {
         if (!empty($this->formName) && is_string($this->formName)) {
-            return $this->formName . '.';
+            return $this->formName . '-';
         }
     }
 
@@ -59,13 +59,20 @@ class CustomPrintForm extends Form
     */
     public function validationDefault(Validator $validator):Validator
     {
-        $fieldValidator = new Validator();
-        $fieldValidator->notEmptyString('printer', 'Please select a printer')
-        ->notEmptyString('copies', 'Copies cannot be empty')
-        ->notBlank('copies', 'Please enter the copies')
-        ->lessThan('copies', $this->copies, 'Less must be less than ' . $this->copies);
+        //$fieldValidator = new Validator();
+        $validator->notEmptyString($this->prependFormName() . 'printer', 'Please select a printer')
+        ->notEmptyString($this->prependFormName() . 'copies', 'Copies cannot be empty')
+        ->add(
+            $this->prependFormName() . 'copies',
+            'not-blank',
+            [
+                'rule' => 'notBlank',
+                'message' => 'Please enter the copies',
+            ]
+        )
+        ->lessThan($this->prependFormName() . 'copies', $this->copies, 'Less must be less than ' . $this->copies);
 
-        $validator->addNested($this->formName, $fieldValidator);
+        // $validator->addNested($this->formName, $fieldValidator);
 
         return $validator;
     }

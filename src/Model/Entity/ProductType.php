@@ -12,7 +12,6 @@ use Cake\ORM\Entity;
  * @property int|null $inventory_status_id
  * @property int|null $location_id
  * @property string $name
- * @property string $code_prefix
  * @property string $storage_temperature
  * @property string $code_regex
  * @property string $code_regex_description
@@ -45,7 +44,6 @@ class ProductType extends Entity
         'inventory_status_id' => true,
         'location_id' => true,
         'name' => true,
-        'code_prefix' => true,
         'storage_temperature' => true,
         'code_regex' => true,
         'code_regex_description' => true,
