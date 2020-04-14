@@ -62,43 +62,4 @@
             </tr>
         </table>
     </div>
-    <div class="related">
-        <h4><?= __('Related Cartons') ?></h4>
-        <?php if (!empty($user->cartons)): ?>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <tr>
-                    <th scope="col"><?= __('Id') ?></th>
-                    <th scope="col"><?= __('Pallet Id') ?></th>
-                    <th scope="col"><?= __('Count') ?></th>
-                    <th scope="col"><?= __('Best Before') ?></th>
-                    <th scope="col"><?= __('Production Date') ?></th>
-                    <th scope="col"><?= __('Item Id') ?></th>
-                    <th scope="col"><?= __('Created') ?></th>
-                    <th scope="col"><?= __('Modified') ?></th>
-                    <th scope="col"><?= __('User Id') ?></th>
-                    <th scope="col" class="actions"><?= __('Actions') ?></th>
-                </tr>
-                <?php foreach ($user->cartons as $cartons): ?>
-                <tr>
-                    <td><?= h($cartons->id) ?></td>
-                    <td><?= h($cartons->pallet_id) ?></td>
-                    <td><?= h($cartons->count) ?></td>
-                    <td><?= h($cartons->best_before) ?></td>
-                    <td><?= h($cartons->production_date) ?></td>
-                    <td><?= h($cartons->item_id) ?></td>
-                    <td><?= h($cartons->created) ?></td>
-                    <td><?= h($cartons->modified) ?></td>
-                    <td><?= h($cartons->user_id) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['controller' => 'Cartons', 'action' => 'view', $cartons->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
-                        <?= $this->Html->link(__('Edit'), ['controller' => 'Cartons', 'action' => 'edit', $cartons->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['controller' => 'Cartons', 'action' => 'delete', $cartons->id], ['confirm' => __('Are you sure you want to delete # {0}?', $cartons->id), 'class' => 'btn btn-danger btn-sm mb-1']) ?>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </table>
-        </div>
-        <?php endif; ?>
-    </div>
 </div>
