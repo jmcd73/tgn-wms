@@ -599,13 +599,23 @@ th a.desc:after {
   padding-top: 23px;
 }
 
-.page-help-icon {
-  position: fixed;
-  top: 120px;
-  right: 25px;
-  /*width: 300px;
-          border: 3px solid #73AD21;*/
-  z-index: 2000;
+div.context-help {
+  height: 50px;
+  background-color: rgb(52, 58, 64, 0.8);
+
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+}
+a.context-help {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+}
+a.context-help:hover {
+  color: rgba(255, 255, 255, 0.75);
+}
+span.page-help-icon {
+  display: inline;
 }
 
 .page-help {
@@ -821,4 +831,8 @@ div.empty-message {
   padding: 3px 20px;
   font-size: 18px;
   line-height: 24px;
+}
+
+.hidden {
+  display: none;
 }

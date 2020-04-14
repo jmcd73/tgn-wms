@@ -45,17 +45,15 @@ use App\View\Helper\ToggenHelper;
 </div>
 <?php $this->end();?>
 <?php $this->assign('tb_sidebar', $this->fetch('tb_actions')); ?>
-<div class="container">
+<div class="row">
     <div class="col">
         <p class="h3"><?php echo __('Pallet Location Report'); ?>
             <small>
-                <span class="label label-default">
-                    <?php echo $this->Paginator->counter('{{count}} pallets'); ?>
-                </span>
-                <span class="<?php echo $dont_ship_count === 0 ? 'hidden' : ''; ?> label label-danger">
-                    <?php echo $dont_ship_count; ?>
-                    low dated
-                </span>
+
+                <?php echo $this->Html->badge($this->Paginator->counter('{{count}}')); ?> pallets
+                <?php $className = $dont_ship_count === 0 ? 'hidden' : ''; ?>
+                <?php $options = !empty($className) ? ['class' => $className] : []; ?>
+                <?php sprintf('<div class="%s">%s low dated</div>', $className, $this->Html->badge($dont_ship_count, $options)) ; ?>
             </small>
         </p>
         <table class="table table-striped">
@@ -87,7 +85,7 @@ use App\View\Helper\ToggenHelper;
         $cls = '';
     } ?>
                 <tr>
-                    <td <?php echo $this->Toggen->buildClass($cls); ?>>
+                    <td <?php echo $this->Html->buildClass($cls); ?>>
                         <?php echo $this->Html->tag('a', '', [
                             'id' => $pallet['pl_ref'],
                             'class' => 'anchor', ]);
@@ -102,32 +100,32 @@ use App\View\Helper\ToggenHelper;
                             );
                         ?>
                     </td>
-                    <td <?php echo $this->Toggen->buildClass($cls); ?>>
+                    <td <?php echo $this->Html->buildClass($cls); ?>>
                         <?php echo h($pallet['items']['code']); ?>
                     </td>
-                    <td <?php echo $this->Toggen->buildClass($cls); ?>>
+                    <td <?php echo $this->Html->buildClass($cls); ?>>
                         <?php echo h($pallet['items']['description']); ?>
                     </td>
-                    <td <?php echo $this->Toggen->buildClass($cls); ?>>
+                    <td <?php echo $this->Html->buildClass($cls); ?>>
                         <?php echo h($pallet['pl_ref']); ?>
                     </td>
-                    <td <?php echo $this->Toggen->buildClass($cls); ?>>
+                    <td <?php echo $this->Html->buildClass($cls); ?>>
                         <?php echo $this->Html->tag(
                             'span',
                             h($pallet['print_date']->i18nFormat(null, $user->timezone)),
                             ['title' => 'Cooldown date: ' . h($pallet['cooldown_date']->i18nFormat(null, $user->timezone)), 'style' => 'cursor: crosshair;']
                         ); ?></td>
-                    <td <?php echo $this->Toggen->buildClass($cls); ?>>
+                    <td <?php echo $this->Html->buildClass($cls); ?>>
                         <?php echo h($this->Time->timeAgoInWords($pallet['print_date'])); ?></td>
-                    <td <?php echo $this->Toggen->buildClass($cls); ?>>
+                    <td <?php echo $this->Html->buildClass($cls); ?>>
                         <?php echo h($pallet['bb_date']->i18nFormat(null, $user->timezone)); ?>
                     </td>
-                    <td <?php echo $this->Toggen->buildClass($cls); ?>>
+                    <td <?php echo $this->Html->buildClass($cls); ?>>
                         <?php echo h($pallet['batch']); ?></td>
-                    <td <?php echo $this->Toggen->buildClass($cls); ?>>
+                    <td <?php echo $this->Html->buildClass($cls); ?>>
                         <?php echo h($pallet['qty']); ?>
                     </td>
-                    <td <?php echo $this->Toggen->buildClass($cls); ?>>
+                    <td <?php echo $this->Html->buildClass($cls); ?>>
                         <?php if ($pallet->has('shipment')) {
                             echo $this->Html->link(
                                 $pallet->shipment->shipper,
@@ -145,7 +143,7 @@ use App\View\Helper\ToggenHelper;
                         };
                         ?></td>
 
-                    <td <?php echo $this->Toggen->buildClass($cls); ?>>
+                    <td <?php echo $this->Html->buildClass($cls); ?>>
                         <?= $pallet->has('inventory_status') ? h($pallet->inventory_status->name) : ''; ?>
                         <?php if (!empty($pallet['inventory_status_note'])): ?>
                         <p class="x-small" title="<?php echo $pallet['inventory_status_note']; ?>">
@@ -153,7 +151,7 @@ use App\View\Helper\ToggenHelper;
                         </p>
                         <?php endif; ?>
                     </td>
-                    <td <?php echo $this->Toggen->buildClass([$cls, 'actions']); ?>>
+                    <td <?php echo $this->Html->buildClass([$cls, 'actions']); ?>>
                         <?php echo $this->Html->link(
                             __('Edit'),
                             '#',

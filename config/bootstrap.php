@@ -229,3 +229,5 @@ if (!function_exists('tog')) {
         Log::write(LOG_ERR, "\n" . 'TOG' . "\n" . print_r($args, true) . "\n");
     }
 }
+
+Configure::write('pallet_print_debug', true);

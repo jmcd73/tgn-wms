@@ -21,6 +21,8 @@ class InventoryStatusesController extends AppController
     {
         $inventoryStatuses = $this->paginate($this->InventoryStatuses);
 
+        $this->set('stockViewPerms', $this->InventoryStatuses->createStockViewPermsList());
+
         $this->set(compact('inventoryStatuses'));
     }
 
@@ -36,6 +38,8 @@ class InventoryStatusesController extends AppController
         $inventoryStatus = $this->InventoryStatuses->get($id, [
             'contain' => ['Pallets', 'ProductTypes'],
         ]);
+
+        $this->set('stockViewPerms', $this->InventoryStatuses->createStockViewPermsList());
 
         $this->set('inventoryStatus', $inventoryStatus);
     }
@@ -57,6 +61,7 @@ class InventoryStatusesController extends AppController
             }
             $this->Flash->error(__('The inventory status could not be saved. Please, try again.'));
         }
+        $this->set('stockViewPerms', $this->InventoryStatuses->createStockViewPermsList());
         $this->set(compact('inventoryStatus'));
     }
 
@@ -74,6 +79,7 @@ class InventoryStatusesController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $inventoryStatus = $this->InventoryStatuses->patchEntity($inventoryStatus, $this->request->getData());
+            $inventoryStatus->perms = $this->request->getData('perms');
             if ($this->InventoryStatuses->save($inventoryStatus)) {
                 $this->Flash->success(__('The inventory status has been saved.'));
 
@@ -81,6 +87,7 @@ class InventoryStatusesController extends AppController
             }
             $this->Flash->error(__('The inventory status could not be saved. Please, try again.'));
         }
+        $this->set('stockViewPerms', $this->InventoryStatuses->createStockViewPermsList());
         $this->set(compact('inventoryStatus'));
     }
 

@@ -40,6 +40,7 @@ class SettingsTable extends Table
         $this->setTable('settings');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
+        $this->addBehavior('TgnUtils');
     }
 
     /**

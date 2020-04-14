@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Lib\Utility\Barcode;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -73,7 +74,7 @@ class ItemsTable extends Table
         $this->hasMany('Cartons', [
             'foreignKey' => 'item_id',
         ]);
-        $this->hasMany('Pallets.s', [
+        $this->hasMany('Pallets', [
             'foreignKey' => 'item_id',
         ]);
     }
@@ -100,7 +101,15 @@ class ItemsTable extends Table
             ->maxLength('code', 10)
             ->requirePresence('code', 'create')
             ->notEmptyString('code')
-            ->add('code', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->add('code', 'custom', [
+                'rule' => [$this, 'isValidCode'],
+                'message' => 'This code must comply with the product types code regex',
+            ])
+            ->add('code', 'unique', [
+                'rule' => 'validateUnique',
+                'message' => 'Item code must be unique',
+                'provider' => 'table',
+            ]);
 
         $validator
             ->scalar('description')
@@ -116,12 +125,21 @@ class ItemsTable extends Table
         $validator
             ->scalar('trade_unit')
             ->maxLength('trade_unit', 14)
-            ->allowEmptyString('trade_unit');
+            ->allowEmptyString('trade_unit')
+            // Use an array callable that is not in a provider
+    ->add('trade_unit', 'custom', [
+        'rule' => [$this, 'isBarcode'],
+        'message' => 'Please enter a valid barcode',
+    ]);
 
         $validator
             ->scalar('consumer_unit')
             ->maxLength('consumer_unit', 14)
-            ->allowEmptyString('consumer_unit');
+            ->allowEmptyString('consumer_unit')
+            ->add('consumer_unit', 'custom', [
+                'rule' => [$this, 'isBarcode'],
+                'message' => 'Please enter a valid barcode',
+            ]);
 
         $validator
             ->scalar('brand')
@@ -149,12 +167,12 @@ class ItemsTable extends Table
         $validator
             ->integer('min_days_life')
             ->requirePresence('min_days_life', 'create')
-            ->notEmptyString('min_days_life');
+            ->allowEmptyString('min_days_life');
 
         $validator
             ->scalar('item_comment')
             ->requirePresence('item_comment', 'create')
-            ->notEmptyString('item_comment');
+            ->allowEmptyString('item_comment');
 
         $validator
             ->integer('pallet_label_copies')
@@ -176,7 +194,7 @@ class ItemsTable extends Table
         $rules->add($rules->existsIn(['pack_size_id'], 'PackSizes'));
         $rules->add($rules->existsIn(['product_type_id'], 'ProductTypes'));
         $rules->add($rules->existsIn(['pallet_template_id'], 'PrintTemplates'));
-        $rules->add($rules->existsIn(['carton_template_id'], 'CartonLabels'));
+        $rules->add($rules->existsIn(['carton_template_id'], 'CartonTemplates'));
 
         return $rules;
     }
@@ -231,21 +249,39 @@ class ItemsTable extends Table
     * @param in $productTypeId Product Type ID
     * @return array
     */
-    public function getPalletPrintItems($productTypeId)
+    public function getPalletPrintItems($productTypeId): Query
     {
         $options = [
+            'keyField' => 'id',
+            'valueField' => 'code_desc',
             'conditions' => [
-                'NOT' => [
-                    'active' => 0,
-                ],
+                'active' => 1,
                 'product_type_id' => $productTypeId,
             ],
             'order' => [
                 'code' => 'ASC',
             ],
-            'recursive' => -1,
         ];
 
         return $this->find('list', $options);
+    }
+
+    public function isBarcode($value, $context)
+    {
+        return (new Barcode())->isValidBarcode($value);
+    }
+
+    public function isValidCode($value, $context)
+    {
+        $productType = $this->ProductTypes->get($context['data']['product_type_id']);
+        if (preg_match($productType->code_regex, $value) === 1) {
+            return  true;
+        } else {
+            return sprintf(
+                'For %s product types. %s',
+                $productType->name,
+                $productType->code_regex_description
+            );
+        }
     }
 }

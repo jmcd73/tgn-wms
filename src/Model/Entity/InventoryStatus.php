@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Cake\Core\Configure;
 use Cake\ORM\Entity;
 
 /**
@@ -38,4 +39,17 @@ class InventoryStatus extends Entity
         'pallets' => true,
         'product_types' => true,
     ];
+
+    protected function _getPermArray()
+    {
+        $permArray = [];
+
+        if (isset($this->perms)) {
+            $perms = Configure::read('StockViewPerms');
+            foreach ($perms as $k => $perm) {
+                $permArray[$perm['value']] = $this->perms & $perm['value'];
+            }
+        }
+        return $permArray;
+    }
 }

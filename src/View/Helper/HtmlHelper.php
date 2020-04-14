@@ -3,22 +3,16 @@ declare(strict_types=1);
 
 namespace App\View\Helper;
 
-use App\Lib\Utility\SsccFormatter;
+use App\Lib\Utility\Barcode;
 use Cake\ORM\TableRegistry;
-use Cake\View\Helper;
 use Cake\View\View;
 
-/**
- * Toggen helper
- */
-class ToggenHelper extends Helper
+class HtmlHelper extends \BootstrapUI\View\Helper\HtmlHelper
 {
-    /**
-     * Default configuration.
-     *
-     * @var array
-     */
-    protected $_defaultConfig = [];
+    public function __construct(View $View, array $config = [])
+    {
+        parent::__construct($View, $config);
+    }
 
     public function printTemplateType($printTemplate)
     {
@@ -44,9 +38,9 @@ class ToggenHelper extends Helper
      */
     public function sscc($sscc)
     {
-        $companyPrefix = TableRegistry::get('Setting')->getCompanyPrefix();
+        $companyPrefix = TableRegistry::get('Settings')->getCompanyPrefix();
 
-        return (new SsccFormatter($sscc, $companyPrefix))->sscc;
+        return (new Barcode())->ssccFormat($sscc, $companyPrefix);
     }
 
     /**

@@ -4,8 +4,8 @@ Create markdown documents in `/docs/help`
 
 Place images in `/docs/help/images`
 
-Add a record for each Controller / Action you want a context sensitive help page for
+Go to Admin => Help and add a record for each Controller / Action you want a context sensitive help page
 
-The help icon will appear to the right of the content just under the navbar
+The help icon will appear under the navbar brand on the top left of the screen
 
-![Context sensitive help icon](images/help_icon.png)
+![Context sensitive help icon](images/context-help.png)

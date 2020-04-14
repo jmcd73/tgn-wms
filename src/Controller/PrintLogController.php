@@ -594,7 +594,7 @@ class PrintLogController extends AppController
 
             $customPrints[$key]['comment'] = $decodedComment;
 
-            $copies = isset($decodedComment['copies']) && is_numeric($decodedComment['copies']) ? $decodedComment['copies'] : null;
+            $copies = isset($decodedComment['maxCopies']) && is_numeric($decodedComment['maxCopies']) ? $decodedComment['maxCopies'] : null;
 
             $forms[$formName] = (new CustomPrintForm())->setFormName($formName)->setCopies($copies);
 
@@ -609,22 +609,33 @@ class PrintLogController extends AppController
             $formName = $data['formName'];
 
             if ($forms[$formName]->validate($data)) {
+                // once successfully validated take the custom
+                // fieldnames and remove the prefix
+                $newData = [];
+
+                foreach ($data as $key => $value) {
+                    $newKey = str_replace($formName . '-', '', $key);
+                    $newData[$newKey] = $value;
+                }
+
+                $data = $newData;
+
                 $saveData = $this->PrintLog->formatPrintLogData(
                     $action,
-                    $data[$formName]
+                    $data
                 );
 
-                $glabelsData = $data[$formName] + $saveData;
+                $glabelsData = $data + $saveData;
 
                 $printerDetails = $this->PrintLog->getLabelPrinterById(
-                    $data[$formName]['printer']
+                    $data['printer']
                 );
 
                 $printResult = LabelFactory::create($action)
                     ->format($glabelsData)
                         ->print(
                             $printerDetails,
-                            WWW_ROOT . $data[$formName]['template']
+                            WWW_ROOT . $data['template']
                         );
 
                 $printTemplate['name'] = 'Custom Print';

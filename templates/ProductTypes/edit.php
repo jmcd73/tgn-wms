@@ -55,7 +55,6 @@
             echo $this->Form->control('inventory_status_id', ['options' => $inventoryStatuses, 'empty' => true]);
             echo $this->Form->control('location_id');
             echo $this->Form->control('name');
-            echo $this->Form->control('code_prefix');
             echo $this->Form->control('storage_temperature');
             echo $this->Form->control('code_regex');
             echo $this->Form->control('code_regex_description');

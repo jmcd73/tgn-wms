@@ -3,19 +3,14 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use ArrayObject;
-use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\I18n\Date;
-use Cake\I18n\Time;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
-use Cake\Utility\Inflector;
 use Cake\Validation\Validator;
 
 /**
@@ -251,7 +246,6 @@ class PalletsTable extends Table
      * locationSpaceUsageOptions method
      * @param string $filter string of either 'all' or 'available'
      * @param string $productTypeId if productTypeId is all then no filter other wise pass in ID
-     * @param array ExtraOptions $extraOptions some more conditions to add to $options array
      * @return array returns an option array configured correctly to find location availability
      */
     public function locationSpaceUsageOptions($filter, $productTypeId = 'all')
@@ -364,7 +358,7 @@ class PalletsTable extends Table
 
             $reports[$ctr] = $shift_report;
             $reports[$ctr]['Cartons'] = $cartons_report;
-            $reports[$ctr]['@shift_name'] = $shift['Shift']['name'];
+            $reports[$ctr]['@shift_name'] = $shift['name'];
             $reports[$ctr]['@start_time'] = $start_time;
             $reports[$ctr]['@stop_time'] = $stop_time;
             $reports[$ctr]['@start_date_time'] = $start_date_time;
@@ -483,7 +477,10 @@ class PalletsTable extends Table
             if ($key === $last) {
                 $report[$record_num]['last_pallet'] = $pallet['created'];
 
-                $report[$record_num]['run_time'] = $this->getDateTimeDiff($report[$record_num]['first_pallet'], $report[$record_num]['last_pallet']);
+                $report[$record_num]['run_time'] = $this->getDateTimeDiff(
+                    $report[$record_num]['first_pallet'],
+                    $report[$record_num]['last_pallet']
+                );
 
                 $report[$record_num]['pallets'] = $this->palletsDotCartons(
                     $report[$record_num]['carton_total'],
@@ -591,7 +588,7 @@ class PalletsTable extends Table
             ],
         ])->group([
             'Pallets.id',
-        ], );
+        ]);
 
         $palletIds = $this->find()->select(['id' => 'Pallets__id'])->from(['sub' => $matchingPallets]);
         $cartons = $this->Cartons->find()->contain([
@@ -602,6 +599,7 @@ class PalletsTable extends Table
         ])->where(
             ['pallet_id IN' => $palletIds]
         );
+
         return $cartons->toArray();
     }
 
@@ -619,16 +617,16 @@ class PalletsTable extends Table
             // only interested in Lookup.xxx not page=2 etc
 
             switch ($searchKey) {
-                    case 'item_id_select':
-                        $options[] = ['item' => $searchValue];
-                        break;
-                    case 'print_date':
-                        $options[] = [$searchKey . ' LIKE ' => $searchValue . '%'];
-                        break;
-                    default:
-                        $options[] = [$searchKey => $searchValue];
-                        break;
-                }
+                case 'item_id_select':
+                    $options[] = ['item' => $searchValue];
+                    break;
+                case 'print_date':
+                    $options[] = [$searchKey . ' LIKE ' => $searchValue . '%'];
+                    break;
+                default:
+                    $options[] = [$searchKey => $searchValue];
+                    break;
+            }
         }
 
         return $options;
@@ -698,6 +696,7 @@ class PalletsTable extends Table
     public function formatBatch($data)
     {
         $date = Date::parse($data['print_date']);
+
         return [
             'value' => $data['batch'],
             'label' => $data['batch'] . ' - ' . $date->format('D d/m/Y'),
@@ -852,10 +851,10 @@ class PalletsTable extends Table
     }
 
     /**
-    * @param array $pallets array of pallets from ->find call
-    *
-    * @return mixed
-    */
+     * @param array $pallets array of pallets from ->find call
+     *
+     * @return mixed
+     */
     public function getDontShipCount($pallets = [])
     {
         $dont_ship_count = 0;
@@ -869,10 +868,6 @@ class PalletsTable extends Table
         return $dont_ship_count;
     }
 
-    /**
-     * @param int $id ProductType ID
-     * @return mixed
-     */
     public function getProductType($palletId)
     {
         $options = [
@@ -903,12 +898,13 @@ class PalletsTable extends Table
     }
 
     /**
-    * @throws CakeException
-    * @param bool $created set to true if new DB record created
-    * @param array $options Options array
-    * @return void
-    * Cake\ORM\Table::afterSave(Event $event, EntityInterface $entity, ArrayObject $options)¶
-    */
+     *
+     * @param \Cake\Event\Event $event Event
+     * @param \Cake\Datasource\EntityInterface $entity EntityInterface
+     * @param array $options Options array
+     * @return void
+     * @throws \Cake\Core\Exception
+     */
     public function afterSave(Event $event, EntityInterface $entity, $options = [])
     {
         $isNew = $entity->isNew();
@@ -927,17 +923,6 @@ class PalletsTable extends Table
                 $cartonRecord[$cartonField] = $entity->get($palletField);
             }
 
-            /*  $cartonQty = $this->data[$this->alias]['qty'];
-             $productionDate = $this->data[$this->alias]['print_date'];
-             $bb_date = $this->data[$this->alias]['bb_date'];
-
-             $formattedDate = $this->formatLabelDates(
-                 strtotime($productionDate),
-                 [
-                     'production_date' => 'Y-m-d',
-                 ]
-             ); */
-
             $carton = $this->Cartons->newEntity($cartonRecord);
 
             if (!$this->Cartons->save($carton)) {
@@ -947,9 +932,9 @@ class PalletsTable extends Table
     }
 
     /**
-    * @param array $sndata $this->data
-    * @return mixed
-    */
+     * @param array $sndata $this->data
+     * @return mixed
+     */
     public function inventoryStatusNote($sndata)
     {
         $inventory_status_note = '';

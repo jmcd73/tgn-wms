@@ -45,7 +45,6 @@
             <th scope="col"><?= $this->Paginator->sort('inventory_status_id') ?></th>
             <th scope="col"><?= $this->Paginator->sort('location_id') ?></th>
             <th scope="col"><?= $this->Paginator->sort('name') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('code_prefix') ?></th>
             <th scope="col"><?= $this->Paginator->sort('storage_temperature') ?></th>
             <th scope="col"><?= $this->Paginator->sort('code_regex') ?></th>
             <th scope="col"><?= $this->Paginator->sort('code_regex_description') ?></th>
@@ -64,7 +63,6 @@
             </td>
             <td><?= $this->Number->format($productType->location_id) ?></td>
             <td><?= h($productType->name) ?></td>
-            <td><?= h($productType->code_prefix) ?></td>
             <td><?= h($productType->storage_temperature) ?></td>
             <td><?= h($productType->code_regex) ?></td>
             <td><?= h($productType->code_regex_description) ?></td>

@@ -39,10 +39,9 @@ class PalletsController extends AppController
     */
     public function palletPrint($productTypeId = null)
     {
-        $forms = ['left' => null,  'right' => null];
-
-        foreach ($forms as $key => $form) {
-            $forms[$key] = new PalletPrintForm();
+        $forms = [];
+        foreach (['left', 'right'] as $form) {
+            $forms[$form] = (new PalletPrintForm())->setFormName($form);
         }
 
         $productTypes = $this->Pallets->Items->ProductTypes->find('list', [
@@ -81,28 +80,18 @@ class PalletsController extends AppController
             ? $productType->inventory_status_id : 0;
 
         if ($this->request->is('post')) {
-            $plRefMaxLength = $this->Pallets->getSetting('plRefMaxLength');
+            $data = $this->request->getData();
+            $formName = $data['formName'];
 
-            $str = 'Maximum length for a pallet reference is <strong>%d</strong>';
-            $str .= ' characters. Please check the Product Type ';
-            $str .= '"Serial number format"';
-            $ruleMsg = sprintf($str, $plRefMaxLength);
+            if ($forms[$formName]->validate($data)) {
+                $newData = [];
+                foreach ($data as $key => $value) {
+                    $newKey = str_replace($formName . '-', '', $key);
+                    $newData[$newKey] = $value;
+                }
+                $data = $newData;
 
-            $this->Pallets->getValidator()->field('pl_ref')->add(
-                'notTooLong',
-                [
-                    'rule' => ['maxLength', $plRefMaxLength],
-                    'message' => $ruleMsg,
-                ]
-            );
-            $formName = array_key_exists(
-                'PalletLabelLeftPalletPrintForm',
-                $this->request->getData()
-            ) ? 'PalletLabelLeftPalletPrintForm' : 'PalletLabelRightPalletPrintForm';
-
-            if ($forms[$this->request->getData('formName')]->validate($this->request->getData())) {
-                $productionLineId = $this->request
-                    ->getData('production_line');
+                $productionLineId = $data['production_line'];
 
                 $productionLine = $this->Pallets->Items
                     ->ProductTypes->ProductionLines->get($productionLineId);
@@ -127,7 +116,7 @@ class PalletsController extends AppController
 
                 $pallet_ref = $this->Pallets->createPalletRef($productTypeId);
 
-                $item_detail = $this->Pallets->Items->get($this->request->getData()['item']);
+                $item_detail = $this->Pallets->Items->get($data['item']);
 
                 $labelCopies = $item_detail['pallet_label_copies'] > 0
                     ? $item_detail['pallet_label_copies']
@@ -135,8 +124,8 @@ class PalletsController extends AppController
 
                 $printTemplateId = $item_detail['pallet_template_id'];
 
-                $qty = !empty($this->request->getData()['qty'])
-                    ? $this->request->getData()['qty']
+                $qty = !empty($data['qty'])
+                    ? $data['qty']
                     : $item_detail['quantity'];
 
                 $days_life = $item_detail['days_life'];
@@ -159,8 +148,8 @@ class PalletsController extends AppController
                         'item' => $item_detail['code'],
                         'description' => $item_detail['description'],
                         'bb_date' => $bestBeforeDates['bb_date'],
-                        'item_id' => $this->request->getData()['item'],
-                        'batch' => $this->request->getData()['batch_no'],
+                        'item_id' => $data['item'],
+                        'batch' => $data['batch_no'],
                         'qty' => $qty,
                         'qty_previous' => 0,
                         'pl_ref' => $pallet_ref,
@@ -215,7 +204,7 @@ class PalletsController extends AppController
                     'quantity' => $qty,
                     'bestBeforeHr' => $bestBeforeDates['bb_hr'],
                     'bestBeforeBc' => $bestBeforeDates['bb_bc'],
-                    'batch' => $this->request->getData()['batch_no'],
+                    'batch' => $data['batch_no'],
                     'numLabels' => $labelCopies,
                 ];
 
@@ -230,8 +219,8 @@ class PalletsController extends AppController
                     $printerDetails,
                     $pallet_ref,
                     $palletData,
-                    $formName,
-                    $isPrintDebugMode
+                    $isPrintDebugMode,
+                    $data['refer']
                 );
             } else {
                 $this->Flash->error('There was a problem submitting your form.');
@@ -630,47 +619,6 @@ class PalletsController extends AppController
      *
      * @return void
      */
-    public function formatReport($url_date = null)
-    {
-        if ($this->request->is('POST')) {
-            if (!empty($this->request->getData()['start_date'])) {
-                $query_date = $this->request->getData()['start_date'];
-            } elseif (!empty($this->request->getData()['report_date'])) {
-                $query_date = $this->request->getData()['report_date'];
-            }
-
-            if (!empty($url_date)) {
-                $query_date = $url_date;
-            }
-
-            $reports = $this->Pallets->enumShifts($query_date);
-
-            $this->set('reports', $reports['reports']);
-            $this->set('shift_date', $this->Pallets->arrayToMysqlDate($query_date));
-            $this->set('xml_shift_report', $reports['xml_shift_report']);
-        }
-
-        $this->loadModel('Shift');
-
-        $shifts = $this->Shift->find(
-            'list',
-            [
-                'conditions' => [
-                    'Shift.active' => 1,
-                    'Shift.for_prod_dt' => 0,
-                ],
-            ]
-        );
-
-        $this->set('shifts', $shifts);
-        $this->set('_serialize', ['xml_shift_report']);
-    }
-
-    /**
-     * @param URLDate $url_date provided on command line
-     *
-     * @return void
-     */
     public function shiftReport($url_date = null)
     {
         if ($this->request->is('POST')) {
@@ -954,6 +902,14 @@ class PalletsController extends AppController
         if (!$this->Pallets->exists($id)) {
             throw new NotFoundException(__('Invalid label'));
         }
+        $this->Pallets->getValidator()->add(
+            'location_id',
+            'notblank',
+            [
+                'rule' => 'notBlank',
+                'message' => 'Specify a location to put-away the pallet',
+            ]
+        );
 
         if ($this->request->is(['post', 'put'])) {
             $locationId = $this->request->getData()['location_id'];
@@ -1006,11 +962,6 @@ class PalletsController extends AppController
     {
         $last_pallet = null;
         $pallets = null;
-        $options = [
-            'conditions' => [
-                'Pallets.location_id' => 0,
-            ],
-        ];
 
         //$this->Pallets->Behaviors->load("Containable");
 
@@ -1019,8 +970,9 @@ class PalletsController extends AppController
             ->where([
                 'ProductTypes.active' => 1,
                 'ProductTypes.location_id IS NULL',
-            ])->toArray();
-        $productTypeIds = Hash::extract($productTypeIds, '{n}.id');
+            ]);
+
+        //$productTypeIds = Hash::extract($productTypeIds, '{n}.id');
 
         if (!empty($productTypeIds)) {
             $last_pallet = $this->Pallets->find()
@@ -1031,11 +983,14 @@ class PalletsController extends AppController
                     'Pallets.product_type_id IN' => $productTypeIds,
                 ])
                 ->contain(['Locations'])
-                ->first()
-                ->toArray();
+                ->first();
         }
 
-        $this->paginate = $options;
+        $this->paginate = [
+            'conditions' => [
+                'Pallets.location_id' => 0,
+            ],
+        ];
 
         $pallets = $this->paginate($this->Pallets);
 
@@ -1099,6 +1054,7 @@ class PalletsController extends AppController
         ]);
 
         if ($this->request->is(['post', 'put'])) {
+            $data = $this->request->getData();
             $pallet_ref = $pallet->pl_ref;
 
             if (!isset($pallet['items']['print_template']) || empty($pallet['items']['print_template'])) {
@@ -1108,9 +1064,9 @@ class PalletsController extends AppController
             $replaceTokens = json_decode($pallet->items->print_template->replace_tokens);
 
             // get the printer queue name
-            $printerId = $this->request->getData()['printer_id'];
+            $printerId = $data['printer_id'];
 
-            $printerDetails = $this->Pallets->getLabelPrinterById($printerId);
+            $printerDetails = $this->Pallets->Printers->get($printerId);
 
             $dateFormats = [
                 'bb_date' => 'Y-m-d',
@@ -1147,9 +1103,9 @@ class PalletsController extends AppController
                 $printResult,
                 $printerDetails,
                 $pallet_ref,
-                $cabLabelData,
-                'Pallets',
+                $pallet,
                 $isPrintDebugMode,
+                $this->request->referer(),
                 false
             );
         }

@@ -34,7 +34,15 @@
         <?php foreach ($inventoryStatuses as $inventoryStatus) : ?>
         <tr>
             <td><?= $this->Number->format($inventoryStatus->id) ?></td>
-            <td><?= $this->Number->format($inventoryStatus->perms) ?></td>
+            <td><?php
+             echo $this->Form->control('perms', [
+                 'multiple' => 'checkbox',
+                 'label' => false,
+                 'options' => $stockViewPerms,
+                 'value' => $inventoryStatus->permArray,
+                 'disabled' => true,
+             ]); ?>
+            </td>
             <td><?= h($inventoryStatus->name) ?></td>
             <td><?= h($inventoryStatus->comment) ?></td>
             <td><?= h($inventoryStatus->allow_bulk_status_change) ?></td>

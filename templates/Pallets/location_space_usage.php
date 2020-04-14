@@ -1,8 +1,4 @@
-<?php
-
-?>
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
-
 <?php $this->start('tb_actions'); ?>
 <div class="col">
     <h3>Actions</h3>
@@ -26,8 +22,7 @@
 </div>
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', $this->fetch('tb_actions')); ?>
-<div class="container">
-
+<div class="row">
     <div class="col">
         <table class="table table-striped">
             <thead>
@@ -52,7 +47,6 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
-
         <p>
             <?php
     echo $this->Paginator->counter(

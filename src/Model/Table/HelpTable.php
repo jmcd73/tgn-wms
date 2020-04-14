@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use \Parsedown;
+use Cake\Filesystem\File;
+use Cake\Filesystem\Folder;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -40,6 +43,7 @@ class HelpTable extends Table
         $this->setTable('help');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+        $this->addBehavior('TgnUtils');
     }
 
     /**
@@ -81,5 +85,59 @@ class HelpTable extends Table
         $rules->add($rules->isUnique(['controller_action']));
 
         return $rules;
+    }
+
+    /**
+     * @param string $rootPath Root Path to Doc root
+     * @return mixed
+     */
+    public function setDocumentationRoot($rootPath)
+    {
+        $docRoot = new Folder($rootPath);
+
+        return $docRoot;
+    }
+
+    /**
+     * @param string $mdDocumentPath Mark down path
+     * @return mixed
+     */
+    public function getMarkdown($mdDocumentPath)
+    {
+        $markdownFile = new File($mdDocumentPath);
+        $markdown = sprintf('<strong>%s</strong> file does not exist. Please edit this link to point to a valid markdown file', $mdDocumentPath);
+
+        if ($markdownFile->exists()) {
+            $fileContents = str_replace(
+                '(images/',
+                '(/docs/help/images/',
+                $markdownFile->read()
+            );
+
+            $parsedown = new Parsedown();
+
+            $markdown = $parsedown->text($fileContents);
+            $markdownFile->close();
+        }
+
+        return $markdown;
+    }
+
+    /**
+     * @param string $rootPath path to markdown files
+     * @return mixed
+     */
+    public function listMdFiles($rootPath)
+    {
+        $docRootFolder = $this->setDocumentationRoot($rootPath);
+        $files = $docRootFolder->find('.*\.md');
+        $fileList = [];
+        foreach ($files as $file) {
+            $file = new File($rootPath . DS . $file);
+
+            $fileList[] = $file->name;
+        }
+
+        return $fileList;
     }
 }

@@ -32,16 +32,32 @@
     <tbody>
         <?php foreach ($shipments as $shipment) : ?>
         <tr>
+
             <td><?= h($shipment->shipper) ?></td>
             <td><?= $shipment->has('product_type') ? h($shipment->product_type->name) : '' ?>
             </td>
             <td><?= h($shipment->destination) ?></td>
             <td><?= $this->Number->format($shipment->pallet_count) ?></td>
-            <td><?= h($shipment->shipped) ?></td>
+            <td class="text-center">
+                <?php $icon = $shipment->shipped === true ? 'toggle-on' : 'toggle-off';
+                            echo $this->Form->postLink(
+                                $this->Html->icon($icon),
+                                [
+                                    'action' => 'toggleShipped',
+                                    $shipment->id,
+                                ],
+                                [
+                                    'escape' => false,
+                                    'class' => 'btn btn-xs', ],
+                                __('Are you sure you want to toggle shipped state # %s?', $shipment->id)
+                            );
+                        ?></td>
             <td><?= h($shipment->created) ?></td>
             <td><?= h($shipment->modified) ?></td>
             <td class="actions">
-                <?= $this->Html->link(__('PDF'), ['action' => 'pdfPickList', $shipment->id], ['title' => __('PDF Pick List'), 'class' => 'pdf btn btn-secondary btn-sm mb-1']) ?>
+                <?= $this->Html->link(__('PDF'), ['action' => 'pdfPickList', $shipment->id], ['title' => __('PDF Pick List'),
+                    'target' => '_blank',
+                    'class' => 'pdf btn btn-secondary btn-sm mb-1', ]) ?>
                 <?= $this->Html->link(__('View'), ['action' => 'view', $shipment->id], ['title' => __('View'), 'class' => 'view btn btn-secondary btn-sm mb-1']) ?>
                 <?= $this->Html->link(__('Edit'), ['action' => 'process', 'edit-shipment', $shipment->id], ['title' => __('Edit'), 'class' => 'edit btn btn-secondary btn-sm mb-1']) ?>
                 <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $shipment->id], [

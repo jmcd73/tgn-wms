@@ -96,12 +96,6 @@ class ProductTypesTable extends Table
             ->notEmptyString('name');
 
         $validator
-            ->scalar('code_prefix')
-            ->maxLength('code_prefix', 20)
-            ->requirePresence('code_prefix', 'create')
-            ->notEmptyString('code_prefix');
-
-        $validator
             ->scalar('storage_temperature')
             ->maxLength('storage_temperature', 20)
             ->requirePresence('storage_temperature', 'create')

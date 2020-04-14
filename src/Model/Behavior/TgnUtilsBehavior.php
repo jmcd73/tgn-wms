@@ -9,7 +9,6 @@ use Cake\I18n\FrozenDate;
 use Cake\I18n\Time;
 use Cake\Log\LogTrait;
 use Cake\ORM\Behavior;
-use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
@@ -21,6 +20,7 @@ use DateTime;
 class TgnUtilsBehavior extends Behavior
 {
     use LogTrait;
+
     /**
      * Default configuration.
      *
@@ -29,13 +29,13 @@ class TgnUtilsBehavior extends Behavior
     protected $_defaultConfig = [];
 
     /**
-    *  return array of batch numbers formatted for cakephp select options
-    * $batch_nos = [
-    *      601201 => '6012 - 01',
-    *      601202 => '6012 - 02'
-    *  ]
-    * @return array Array of batch numbers
-    */
+     *  return array of batch numbers formatted for cakephp select options
+     * $batch_nos = [
+     *      601201 => '6012 - 01',
+     *      601202 => '6012 - 02'
+     *  ]
+     * @return array Array of batch numbers
+     */
     public function getBatchNumbers()
     {
         $now = Time::now();
@@ -44,7 +44,7 @@ class TgnUtilsBehavior extends Behavior
 
         for ($i = 1; $i <= 99; $i++) {
             $batch_nos[$batch_prefix . sprintf('%02d', $i)] = $batch_prefix . ' - ' . sprintf('%02d', $i);
-        };
+        }
 
         return $batch_nos;
     }
@@ -55,11 +55,11 @@ class TgnUtilsBehavior extends Behavior
     }
 
     /**
-    *
-    * @param string $settingname the name of the setting in the settings.setting field of the db
-    * @param bool $inComment some settings are stored in the comment field as they have CR or JSON
-    * @return string
-    */
+     *
+     * @param string $settingname the name of the setting in the settings.setting field of the db
+     * @param bool $inComment some settings are stored in the comment field as they have CR or JSON
+     * @return string
+     */
     public function getSetting($settingname, bool $inComment = false)
     {
         $setting = $this->getSettingsTable()->find()->where(['name' => $settingname])->firstOrFail();
@@ -76,12 +76,12 @@ class TgnUtilsBehavior extends Behavior
     }
 
     /**
-    * Generate an SSCC number with check digit
-    *
-    * @return string
-    *
-    * phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
-    */
+     * Generate an SSCC number with check digit
+     *
+     * @return string
+     *
+     * phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
+     */
     public function generateSSCCWithCheckDigit()
     {
         $sscc = $this->generateSSCC();
@@ -139,11 +139,11 @@ class TgnUtilsBehavior extends Behavior
     }
 
     /**
-    * @param string $settingName setting name
-    * @param int $companyPrefix the GS1 company prefix
-    *
-    * @return string a number with leading zeros
-    */
+     * @param string $settingName setting name
+     * @param int $companyPrefix the GS1 company prefix
+     *
+     * @return string a number with leading zeros
+     */
     public function getReferenceNumber($settingName, $companyPrefix)
     {
         $next_val = $this->getSetting($settingName) + 1;
@@ -197,7 +197,7 @@ class TgnUtilsBehavior extends Behavior
 
         if (!$productTypeModel->save($productType)) {
             throw new Exception('Failed to save the serial number for ' . $productTypeArray['name']);
-        };
+        }
 
         return sprintf($serialNumberFormat, $serialNumber);
     }
@@ -211,23 +211,18 @@ class TgnUtilsBehavior extends Behavior
     {
         $helpModel = $this->getSettingsTable('Help');
 
-        $helpPage = $helpModel->find(
-            'first',
-            [
-                'conditions' => [
-                    'Help.controller_action' => $controllerAction,
-                ],
-            ]
-        );
+        $helpPage = $helpModel->find()->where([
+            'controller_action' => $controllerAction,
+        ])->first();
 
         return $helpPage;
     }
 
     /**
-    * returns a 2017-02-21 06:43:00 date time stamp
-    *
-    * @return date
-    */
+     * returns a 2017-02-21 06:43:00 date time stamp
+     *
+     * @return date
+     */
     public function getDateTimeStamp()
     {
         return date('Y-m-d H:i:s');
@@ -263,33 +258,6 @@ class TgnUtilsBehavior extends Behavior
     }
 
     /**
-     *
-     * @param string $pallet_ref Pallet reference e.g. B1234567, 00123456
-     * @param array $return_value The array containing the return value of the process
-     * @param string $printerName Print friendly name e.g "PDF Printer" or "CAB Bottling"
-     * @param bool $debugMode True if the CAKEPHP_DEBUG value is > 0
-     *
-     * @return array An array of strings
-     */
-    public function createSuccessMessage($pallet_ref, $return_value, $printerName, $debugMode = false)
-    {
-        $debugText = '';
-        $alertType = $return_value['return_value'] !== 0 ? 'error' : 'success';
-        $msgString = '%s Pallet No. <strong>%s</strong> has been';
-        $msgString .= ' sent to <strong>%s</strong>';
-
-        if ($debugMode) {
-            $debugText = '<strong>IN DEBUG MODE: </strong>';
-            $debugText .= $alertType === 'error' ? $return_value['stderr'] : '';
-        }
-
-        return [
-            'type' => $alertType,
-            'msg' => sprintf($msgString, $debugText, $pallet_ref, $printerName),
-        ];
-    }
-
-    /**
      * formats date as YYmmdd
      * @param string $date Date string
      * @param string $format PHP date format
@@ -299,19 +267,6 @@ class TgnUtilsBehavior extends Behavior
     {
         $date = new FrozenDate($date);
         return $date->format($format);
-    }
-
-    /**
-     * @param array $date Cakephp date array
-     * @return string "Y-m-d"
-     */
-    public function arrayToMysqlDate($date = [])
-    {
-        $return_date = is_array($date) ? $date['year'] . '-' . $date['month'] . '-' . $date['day'] : $date;
-
-        $ret = new DateTime($return_date);
-
-        return $ret->format('Y-m-d');
     }
 
     /**

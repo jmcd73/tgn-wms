@@ -36,7 +36,7 @@
             <td><?= $this->Number->format($user->id) ?></td>
             <td><?= h($user->active) ?></td>
             <td><?= h($user->username) ?></td>
-            <td><?= h($this->Text->truncate($user->password, 10)) ?></td>
+            <td><?= $user->hasValue('password') ? h($this->Text->truncate($user->password, 10)) : '' ?></td>
             <td><?= h($user->role) ?></td>
             <td><?= h($user->created) ?></td>
             <td><?= h($user->modified) ?></td>
