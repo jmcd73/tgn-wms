@@ -38,6 +38,8 @@ use Cake\Http\MiddlewareQueue;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\Utility\Security;
+//use CakeDC\Auth\Authentication\AuthenticationService;
+use CakeDC\Auth\Middleware\RbacMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -57,10 +59,11 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
      */
     public function bootstrap(): void
     {
-        $this->addPlugin('BootstrapUI');
         // Call parent to load bootstrap from files.
         parent::bootstrap();
+        $this->addPlugin('BootstrapUI');
 
+        $this->addPlugin(\CakeDC\Auth\Plugin::class);
         // $this->addPlugin('Authorization');
 
         if (PHP_SAPI === 'cli') {
@@ -86,6 +89,12 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
     public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue
     {
         $bodies = new BodyParserMiddleware();
+        $rbac = new RbacMiddleware(null, [
+            'unauthorizedRedirect' => [
+                'controller' => 'Users',
+                'action' => 'accessDenied',
+            ],
+        ]);
 
         $middlewareQueue
             // Catch any exceptions in the lower layers,
@@ -108,10 +117,14 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             ->add(new RoutingMiddleware($this))
             ->add(new EncryptedCookieMiddleware(['remember-me'], Security::getSalt()))
             ->add(new AuthenticationMiddleware($this))
+            ->add($rbac)
             ->add($bodies);
         // Ensure routing middleware is added to the queue before CSRF protection middleware.
 
         //  ->add(new AuthorizationMiddleware($this))
+
+        /*  $middlewareQueue->add(new AuthorizationMiddleware($this, Configure::read('Auth.AuthorizationMiddleware')));
+         $middlewareQueue->add(new RequestAuthorizationMiddleware()); */
 
         return $middlewareQueue;
     }
