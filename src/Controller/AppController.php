@@ -82,21 +82,21 @@ class AppController extends Controller
         $result = $this->Authentication->getResult();
         if ($result->isValid()) {
             $user = $this->Authentication->getIdentity();
-            $this->set(compact('user'));
+
+            $isAdmin = $user->role === 'admin';
+
+            $this->set(compact('user', 'isAdmin'));
         } else {
             //  pr($result->getErrors());
           //  pr($result->getStatus());
         }
-
-        $isAdmin = true;
-        $isLoggedIn = true;
 
         $menuTree = $menuTable->find('threaded')
             ->where([
                 'active' => 1,
             ])->orderAsc('lft');
 
-        $this->set(compact('menuTree', 'isAdmin', 'isLoggedIn'));
+        $this->set(compact('menuTree'));
 
         $controller = $this->request->getParam('controller');
         $action = $this->request->getParam('action');
