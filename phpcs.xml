@@ -8,6 +8,7 @@
     <exclude-pattern>vendors/sebastian/diff/tests/ParserTest.php</exclude-pattern>
     <rule ref="CakePHP">
         <!-- don't worry about use and namespace missing -->
+        <exclude name="SlevomatCodingStandard.PHP.ShortList.LongListUsed"/>
         <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
         <exclude name="PSR1.Files.SideEffects.FoundWithSymbols"/>
         <exclude name="PSR2.Files.EndFileNewline.NoneFound"/>
