@@ -22,10 +22,13 @@
                     ]
                 ); ?></p>
                 <p>Please phone
-                    <em><?php echo $this->Html->link(Configure::read('contact.phone'), 'tel:' . Configure::read('contact.phone_dial')); ?></em>
+                    <em><?php echo $this->Html->link(
+                    Configure::read('contact.phone'),
+                    'tel:' . Configure::read('contact.phone_dial')
+                ); ?></em>
                     for assistance</p>
             </div>
-            <?php if ($isLoggedIn): ?>
+            <?php if ($isAdmin) : ?>
             <table class="table table-striped table-condensed">
                 <tr>
                     <th colspan="2">
@@ -36,7 +39,8 @@
                     <th>Bootstrap Version</th>
                     <td>
                         <div id="twbs_version"></div>
-                        <?php $this->Html->scriptStart(['block' => 'from_view']);
+                        <?php
+                        $this->Html->scriptStart(['block' => 'from_view']);
                                 echo '$(function () {' .
                                     '$.get("' . $this->Url->build('/bootstrap_u_i/css/bootstrap.min.css') .
                                         '", function (data) {' .
@@ -51,8 +55,12 @@
                 </tr>
                 <tr>
                     <th>PHP Framework</th>
-                    <td><?php echo $this->Html->link('CakePHP ' . Configure::version(), 'http://www.cakephp.org', ['target' => '_blank']);
-                                           ?>
+                    <td><?php
+                        echo $this->Html->link(
+                                  'CakePHP ' . Configure::version(),
+                                  'http://www.cakephp.org',
+                                  ['target' => '_blank']
+                              ); ?>
                     </td>
                 </tr>
                 <tr>
@@ -65,36 +73,25 @@
                     <td> <?php echo gethostname(); ?></td>
                 </tr>
                 <tr>
-                    <th>
-                        Operating System</th>
+                    <th>Operating System</th>
                     <td> <?php echo php_uname('a'); ?></td>
                 </tr>
-
                 <tr>
                     <th>IP Address</th>
                     <td><?php echo env('SERVER_ADDR'); ?></td>
                 </tr>
-
-
                 <tr>
-                    <th>
-                        Database configuration name</th>
-                    <td> <?php echo $dbConfig['name']; ?></td>
+                    <th>Database configuration name</th>
+                    <td><?php echo $dbConfig['name']; ?></td>
                 </tr>
                 <tr>
                     <th>Database Server Host</th>
-
-                    <td>
-
-                        <?php echo $dbConfig['host']; ?></td>
+                    <td><?php echo $dbConfig['host']; ?></td>
                 </tr>
-
                 <tr>
-                    <th>
-                        Current database</th>
+                    <th>Current database</th>
                     <td><?php echo $dbConfig['database']; ?></td>
                 </tr>
-
                 <tr>
                     <th>Print Debug</th>
                     <td> <?php echo (bool)Configure::read('pallet_print_debug') ? 'TRUE' : 'FALSE'; ?></td>
