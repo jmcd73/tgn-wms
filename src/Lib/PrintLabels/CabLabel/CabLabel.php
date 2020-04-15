@@ -9,12 +9,14 @@ class CabLabel
 {
     /**
      * Company Name Header
+     *
      * @var string
      */
     protected $companyName = 'Toggen';
 
     /**
      * Old QAD Product Codes uniquely identify Oil 6xxxx and Marg 5xxxx products
+     *
      * @var string
      */
     protected $internalProductCode = ''; // 5xxxx or 6xxxx
@@ -23,6 +25,7 @@ class CabLabel
      * Product reference 8 digits
      * B1234567 for Bottling products
      * 12345678 for Marg Products
+     *
      * @var string
      */
     protected $reference = '';
@@ -30,23 +33,27 @@ class CabLabel
     /**
      * Serial Shipper Container Code
      * 18 Digit SSCC
+     *
      * @var string
      */
     protected $sscc = '';
 
     /**
      * Product Description on label
+     *
      * @var string
      */
     protected $description;
 
     /**
      * GTIN 14 or carton barcode
+     *
      * @var string
      */
     protected $gtin14 = '';
     /**
      * Pallet Quantity
+     *
      * @var int
      */
     protected $quantity = 0;
@@ -54,14 +61,16 @@ class CabLabel
     /**
      * Best before date human readable
      * dd/mm/yy
-     * @var date
+     *
+     * @var string
      */
     protected $bestBeforeHr = '';
 
     /**
      * Best before date barcode
      * yymmdd
-     * @var date
+     *
+     * @var string
      */
     protected $bestBeforeBc = '';
 
@@ -69,29 +78,34 @@ class CabLabel
      * batch number
      * YDDDBB (Year ordinal day batch )
      * 903199 = 2019 Jan 31 Batch 99
+     *
      * @var int
      */
     protected $batch = '';
 
     /**
      * Number of Copies of label to print
+     *
      * @var int
      */
     protected $numLabels = 0;
 
     /**
      * hold format *TOKEN* => value array
+     *
      * @var array
      */
     protected $findAndReplaceArray = [];
 
     /**
      * printContent
+     *
      * @var string
      */
     public $printContent = '';
     /**
      * Template
+     *
      * @var string
      */
     public $template = '';
@@ -99,13 +113,12 @@ class CabLabel
     /**
      * Token map
      * Tokens in template mapping to class properties
-     *
      */
     public $tokenMap = [];
 
     /**
-     * @param array $labelValues Array of values
-     * @param string $template Text Template
+     * @param array  $labelValues   Array of values
+     * @param string $template      Text Template
      * @param object $replaceTokens Replace tokens
      */
     public function __construct(
@@ -170,7 +183,8 @@ class CabLabel
 
     /**
      * formatTemplate remove dos new lines add trailing newline if missing
-     * @param string $template_string The string with the printer commands in it
+     *
+     * @param  string $template_string The string with the printer commands in it
      * @return string
      */
     private function formatTemplate($template_string)
