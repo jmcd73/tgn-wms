@@ -42,7 +42,7 @@ $this->Html->script(
                 echo $this->Form->create($pallet);
                 echo $this->Form->hidden('id');
                 echo $this->Form->hidden('location_id');
-                echo $this->Form->hidden('referer');
+                echo $this->Form->hidden('referer', ['value' => $referer]);
                 echo $this->Form->hidden('previous_location_id', ['value' => $pallet->location_id]);
                 echo $this->Form->control(
                     'location_id',
