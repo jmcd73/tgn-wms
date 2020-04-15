@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Lib\PrintLabels;
 
@@ -22,10 +23,10 @@ trait PalletPrintResultTrait
 
     /**
      *
-     * @param string $pallet_ref Pallet reference e.g. B1234567, 00123456
-     * @param array $return_value The array containing the return value of the process
-     * @param array $printerDetails Print friendly name e.g "PDF Printer" or "CAB Bottling"
-     * @param bool $debugMode True if the CAKEPHP_DEBUG value is > 0
+     * @param string $pallet_ref     Pallet reference e.g. B1234567, 00123456
+     * @param array  $return_value   The array containing the return value of the process
+     * @param array  $printerDetails Print friendly name e.g "PDF Printer" or "CAB Bottling"
+     * @param bool   $debugMode      True if the CAKEPHP_DEBUG value is > 0
      *
      * @return array An array of strings
      */
@@ -69,13 +70,13 @@ trait PalletPrintResultTrait
 
     /**
      *
-     * @param array $printResult Array containing cmd, stdout, stderr, return value
-     * @param mixed $printerDetails
-     * @param mixed $palletRef
-     * @param \App\Model\Entity\Pallet|array $palletData entity or array of data to save
-     * @param bool $debug are we in print debugmode which causes a record to be saved even if print result is not 0
-     * @param mixed $referer
-     * @param bool $createRecord
+     * @param  array                          $printResult    Array containing cmd, stdout, stderr, return value
+     * @param  mixed                          $printerDetails
+     * @param  mixed                          $palletRef
+     * @param  \App\Model\Entity\Pallet|array $palletData     entity or array of data to save
+     * @param  bool                           $debug          are we in print debugmode which causes a record to be saved even if print result is not 0
+     * @param  mixed                          $referer
+     * @param  bool                           $createRecord
      * @return mixed|void
      * @throws RuntimeException
      * @throws Exception

@@ -6,7 +6,6 @@ namespace App\Lib\PrintLabels\CabLabel;
 use App\Lib\Exception\MissingConfigurationException;
 use App\Lib\PrintLabels\Interfaces\TextLabelInterface;
 use App\Lib\PrintLabels\Label;
-use Cake\Core\Configure;
 
 class CartonLabel extends Label implements TextLabelInterface
 {

@@ -31,7 +31,8 @@ class ShippingLabel extends Label implements GlabelInterface
 
     /**
      * formatShippingLabelPrintLine
-     * @param array $printArray Print data array
+     *
+     * @param  array $printArray Print data array
      * @return void
      */
     public function formatShippingLabelPrintLine($printArray)
@@ -47,7 +48,10 @@ class ShippingLabel extends Label implements GlabelInterface
 
         $lookUpProps = [
             'BLANK',
-            ['insertNewLineAtComma', 'address'],
+            [
+                'method' => 'insertNewLineAtComma',
+                'field' => 'address',
+            ],
             'reference',
             'state',
             'sequence-end',

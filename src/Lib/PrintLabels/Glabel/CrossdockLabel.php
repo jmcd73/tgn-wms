@@ -31,7 +31,7 @@ class CrossdockLabel extends Label implements GlabelInterface
 
     /**
      * Crossdock Labels
-     * @param array $printArray cakephp array from form with model
+     * @param  array $printArray cakephp array from form with model
      * @return void
      */
     public function formatCrossdockLabelPrintLine($printArray)
@@ -49,11 +49,14 @@ class CrossdockLabel extends Label implements GlabelInterface
 
         $props = [
             'purchase_order',
-            'booked_date',
+            [
+                'method' => 'formatLocalDate',
+                'field' => 'booked_date',
+            ],
             'sending_co',
             [
-                'splitValueIntoTwoParts',
-                'address',
+                'method' => 'splitValueIntoTwoParts',
+                'field' => 'address',
             ],
             'sequence-end',
             'sending_co',
@@ -75,7 +78,7 @@ class CrossdockLabel extends Label implements GlabelInterface
                 array_splice($loopArray, 6, 0, $i);
                 $printLines[] = $loopArray;
             }
-        };
+        }
 
         $printThis = $this->strPutCsv($printLines);
 

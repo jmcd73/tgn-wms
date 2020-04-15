@@ -65,13 +65,11 @@ class SsccLabel extends Label implements GlabelInterface
 
         $printLines[] = array_keys($this->headings);
 
-        for ($j = 1; $j <= $copies; $j++) {
-            $printLines[] = $printArrayValues;
-        }
+        $printLines[] = $printArrayValues;
 
         $printThis = $this->strPutCsv($printLines);
 
-        $this->setPrintCopies(1);
+        $this->setPrintCopies($copies);
 
         $this->setPrintContent($printThis);
 

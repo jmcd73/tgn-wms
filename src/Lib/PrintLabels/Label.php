@@ -3,9 +3,9 @@
 namespace App\Lib\PrintLabels;
 
 use App\Lib\Exception\GlabelsException;
-use App\Lib\Exception\MissingConfigurationException;
-use App\Lib\PrintLabels\PrinterListTrait;
+use Cake\Core\Configure;
 use Cake\Filesystem\File;
+use Cake\I18n\FrozenDate;
 
 /**
  * Label base class
@@ -92,6 +92,7 @@ class Label
 
     /**
      * gets the current working directory
+     *
      * @return string
      */
     public function getCwd()
@@ -101,7 +102,8 @@ class Label
 
     /**
      * Sets the current working directory for the print process
-     * @param string $cwd usually TMP is passed in
+     *
+     * @param  string $cwd usually TMP is passed in
      * @return void
      */
     public function setCwd($cwd)
@@ -110,7 +112,7 @@ class Label
     }
 
     /**
-     * @param array $printArray an array
+     * @param  array $printArray an array
      * @return void
      */
     public function setPrintContentArray($printArray)
@@ -119,7 +121,7 @@ class Label
     }
 
     /**
-     * @param string $value Get an array value when passed a key
+     * @param  string $value Get an array value when passed a key
      * @return mixed
      */
     public function getPrintContentArrayValue($value)
@@ -135,12 +137,17 @@ class Label
     }
 
     /**
-     * @param string $template Template from config
+     * @param  string $template Template from config
      * @return void
      */
     private function setGlabelsTemplate($template)
     {
         $this->glabelsTemplate = realpath($template);
+    }
+
+    public function formatLocalDate($date)
+    {
+        return FrozenDate::parse($date)->format(Configure::read('dateFormat'));
     }
 
     /**
@@ -169,7 +176,7 @@ class Label
     }
 
     /**
-     * @param string $actionOrReference pass in the controller action e.g. cartonPrint or a pallet reference e.g. 0023456
+     * @param  string $actionOrReference pass in the controller action e.g. cartonPrint or a pallet reference e.g. 0023456
      * @return string something like 201912021219-B0232232
      */
     public function setJobId($actionOrReference = '')
@@ -185,7 +192,7 @@ class Label
 
     /**
      * Sets the output file name and path
-     * @param string $rootDir The root directory usually TMP/file.pdf
+     * @param  string $rootDir The root directory usually TMP/file.pdf
      * @return void
      */
     public function setPdfOutFile($rootDir)
@@ -202,7 +209,7 @@ class Label
     }
 
     /**
-     * @param mixed $content Print Content
+     * @param  mixed $content Print Content
      * @return void
      */
     protected function setPrintContent($content)
@@ -211,9 +218,9 @@ class Label
     }
 
     /**
-     * @param array $input Array to convert to CSV
-     * @param string $delimiter Typically a comma
-     * @param string $enclosure What to wrap spaced strings in
+     * @param  array  $input     Array to convert to CSV
+     * @param  string $delimiter Typically a comma
+     * @param  string $enclosure What to wrap spaced strings in
      * @return string
      */
     protected function strPutCsv($input, $delimiter = ',', $enclosure = '"')
@@ -240,19 +247,21 @@ class Label
     }
 
     /**
-     * @param array $printArray Print Array
-     * @param array $arrayOfProperties An Array of Properties to look for in the Print Array
+     *
+     * @param  array $printArray        Print Array
+     * @param  array $arrayOfProperties An Array of Properties to look for in the Print Array
      * @return array
      */
     public function getArrayProperties($printArray, $arrayOfProperties = [])
     {
         $returnProps = [];
+
         foreach ($arrayOfProperties as $aop) {
-            if (is_array($aop) && isset($printArray[$aop[1]])) {
-                $func = $aop[0];
-                $value = $this->$func($printArray[$aop[1]]);
+            if (is_array($aop) && isset($printArray[$aop['field']])) {
+                $func = $aop['method'];
+                $value = $this->$func($printArray[$aop['field']]);
             } else {
-                $value = isset($printArray[$aop]) ? $printArray[$aop] : '';
+                $value = $printArray[$aop] ?? '';
             }
             if (is_array($value)) {
                 $returnProps = array_merge($returnProps, $value);
@@ -266,7 +275,8 @@ class Label
 
     /**
      * setPrintCopies
-     * @param int $copies number of copies
+     *
+     * @param  int  $copies number of copies
      * @return void
      */
     public function setPrintCopies($copies)
@@ -281,10 +291,11 @@ class Label
 
     /**
      * takes the first comma in an address and splits it into two arrays
-     * @param string $value A Value such as 3/5 Euston WeHave, A problem
-     * @return array the string split into two values
+     *
+     * @param  string $value A Value such as 3/5 Euston WeHave, A problem
+     * @return array  the string split into two values
      */
-    public function splitValueIntoTwoParts($value)
+    public function splitValueIntoTwoParts($value): array
     {
         return array_map(
             'trim',
@@ -301,20 +312,21 @@ class Label
     }
 
     /**
-     * @param string $line Line with a potential comma to add a newline
+     * @param  string $line Line with a potential comma to add a newline
      * @return string
      */
-    public function insertNewLineAtComma($line)
+    public function insertNewLineAtComma($line): string
     {
         return preg_replace('/\s*,\s*/', '\n', $line);
     }
 
     /**
      * send gLabels PDF to designated LPR printer
-     * @param string $printer Print queue name
-     * @return array Array with stdout stderr cmd and return_value
+     *
+     * @param  string $printer Print queue name
+     * @return array  Array with stdout stderr cmd and return_value
      */
-    public function sendPdfToLpr($printer)
+    public function sendPdfToLpr($printer): array
     {
         $jobId = $this->getJobId();
 
@@ -345,11 +357,11 @@ class Label
      * Send job to gLabels
      *
      * Sends the completed template to the printer held in the $print_settings array
-     * @param string $template full path to glabels template
-     * @param array $printerDetails Printer Information
-     * @return array Array holding the results of the lpr command
+     * @param  string $template       full path to glabels template
+     * @param  array  $printerDetails Printer Information
+     * @return array  Array holding the results of the lpr command
      */
-    public function glabelsBatchPrint(string $template, $printerDetails)
+    public function glabelsBatchPrint(string $template, $printerDetails): array
     {
         $this->setGlabelsTemplate($template);
 
@@ -414,11 +426,11 @@ class Label
 
     /**
      * run process
-     * @param string $cmd Command line to run
-     * @param array $printContent Not sure what this is
-     * @return array array of stdin, out,err and exit code, cmd
+     * @param  string $cmd          Command line to run
+     * @param  array  $printContent Not sure what this is
+     * @return array  array of stdin, out,err and exit code, cmd
      */
-    public function runProcess($cmd, $printContent)
+    public function runProcess($cmd, $printContent): array
     {
         // code...
         $descriptorspec = [
@@ -455,11 +467,11 @@ class Label
 
     /**
      * getPrintSettings function
-     * @param string $printer Printer name
-     * @param string $actionOrReference Temporary file name
+     * @param  string $printer           Printer name
+     * @param  string $actionOrReference Temporary file name
      * @return array
      */
-    public function getPrintSettings($printer, $actionOrReference = '')
+    public function getPrintSettings($printer, $actionOrReference = ''): array
     {
         return [
             'name' => $printer['queue_name'],
@@ -472,8 +484,8 @@ class Label
     /**
      * createTempFile
      * create a temporary file in TMP with the contents sent to the printer
-     * @param string $print_content Print content
-     * @param array $print_settings as an array
+     * @param  string $print_content  Print content
+     * @param  array  $print_settings as an array
      * @return void
      */
     public function createTempFile($print_content, $print_settings = [])
@@ -496,9 +508,9 @@ class Label
      *
      * Sends the completed template to the printer held in the $print_settings array
      *
-     * @param string $print_content template with replaced tokens
-     * @param array $print_settings Printer name, options, temp file, job name
-     * @return array Array holding the results of the lpr command
+     * @param  string $print_content  template with replaced tokens
+     * @param  array  $print_settings Printer name, options, temp file, job name
+     * @return array  Array holding the results of the lpr command
      */
     public function sendPrint($print_content, $print_settings = [])
     {

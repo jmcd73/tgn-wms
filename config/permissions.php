@@ -134,7 +134,17 @@ return [
         ],
         [
             'role' => 'user',
+            'controller' => ['Pallets'],
+            'action' => ['bulkStatusRemove'],
+            'allowed' => function ($userEntity, $role, $request) {
+                // allow users to view not update
+                return !$request->is(['PUT', 'POST']);
+            },
+        ],
+        [
+            'role' => 'user',
             'controller' => ['PrintLog', 'Pallets', 'Items', 'Cartons', 'Shipments'],
+            // allow all actions except these
             '*action' => ['add', 'delete', 'edit', 'bulkStatusRemove'],
         ],
     ],

@@ -5,6 +5,23 @@ $companyName = 'Toggen Systems';
 
 return [
     'timezones' => DateTimeZone::AUSTRALIA, // extras with a pipe | DateTimeZone::EUROPE,
+    'dateFormat' => 'd/m/Y',
+    'PrintLabels' => [
+        // mappings for controller print actions to their classes
+        // used by Lib/PrintLabels/LabelFactory.php
+        'glabelSampleLabels' => 'App\Lib\PrintLabels\Glabel\GlabelSample',
+        'keepRefrigerated' => 'App\Lib\PrintLabels\Glabel\CustomLabel',
+        'customPrint' => 'App\Lib\PrintLabels\Glabel\CustomLabel',
+        'shippingLabels' => 'App\Lib\PrintLabels\Glabel\ShippingLabel',
+        'crossdockLabels' => 'App\Lib\PrintLabels\Glabel\CrossdockLabel',
+        'shippingLabelsGeneric' => 'App\Lib\PrintLabels\Glabel\ShippingLabelGeneric',
+        'bigNumber' => 'App\Lib\PrintLabels\Zebra\TextLabel',
+        'printCartonLabels' => 'App\Lib\PrintLabels\CabLabel\CartonLabel',
+        'sampleLabels' => 'App\Lib\PrintLabels\Glabel\SampleLabel',
+        'palletPrint' => 'App\Lib\PrintLabels\CabLabel\PalletPrint',
+        'palletReprint' => 'App\Lib\PrintLabels\CabLabel\PalletPrint',
+        'ssccLabel' => 'App\Lib\PrintLabels\Glabel\SsccLabel',
+    ],
     'Ctrl' => [
         'printControllersActions' => [
             'Pallets' => [
