@@ -63,7 +63,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         parent::bootstrap();
         $this->addPlugin('BootstrapUI');
 
-        $this->addPlugin(\CakeDC\Auth\Plugin::class);
+        //$this->addPlugin(\CakeDC\Auth\Plugin::class);
         // $this->addPlugin('Authorization');
 
         if (PHP_SAPI === 'cli') {
@@ -90,6 +90,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
     {
         $bodies = new BodyParserMiddleware();
         $rbac = new RbacMiddleware(null, [
+            'unauthorizedBehavior' => RbacMiddleware::UNAUTHORIZED_BEHAVIOR_REDIRECT,
             'unauthorizedRedirect' => [
                 'controller' => 'Users',
                 'action' => 'accessDenied',

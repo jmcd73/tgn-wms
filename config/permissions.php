@@ -56,6 +56,14 @@ return [
             'action' => ['login', 'logout', 'accessDenied'],
             'bypassAuth' => true,
         ],
+        [
+            'role' => 'admin',
+            'prefix' => '*',
+            'extension' => '*',
+            'plugin' => '*',
+            'controller' => '*',
+            'action' => '*',
+        ],
         /*  //all bypass
         [
             'prefix' => false,
@@ -92,14 +100,7 @@ return [
             'bypassAuth' => true,
         ], */
         //admin role allowed to all the things
-        [
-            'role' => 'admin',
-            'prefix' => '*',
-            'extension' => '*',
-            'plugin' => '*',
-            'controller' => '*',
-            'action' => '*',
-        ],
+
         /*   //specific actions allowed for the all roles in Users plugin
         [
             'role' => '*',
@@ -130,6 +131,11 @@ return [
                 'index',
                 'view',
             ],
+        ],
+        [
+            'role' => 'user',
+            'controller' => ['PrintLog', 'Pallets', 'Items', 'Cartons', 'Shipments'],
+            '*action' => ['add', 'delete', 'edit', 'bulkStatusRemove'],
         ],
     ],
 ];
