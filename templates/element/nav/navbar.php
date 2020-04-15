@@ -16,14 +16,14 @@ use Cake\Core\Configure;
             if ($menu->admin_menu && !$isAdmin) {
                 continue;
             } ?>
-            <?php if ($menu->hasValue('children')): ?>
+            <?php if ($menu->hasValue('children')) : ?>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
-                    <?= $menu->name ; ?>
+                    <?= $menu->name; ?>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <?php foreach ($menu->children as $child): ?>
+                    <?php foreach ($menu->children as $child) : ?>
                     <?php
                         // has valid external URL
                         $options = [
@@ -52,10 +52,11 @@ use Cake\Core\Configure;
                     <?php endforeach; ?>
                 </div>
             </li>
-            <?php else: ?>
+            <?php else : ?>
             <li class="nav-item">
-                <?php     list($controller, $action) = explode('::', $child->bs_url);
-                            $url = ['controller' => $controller,
+                <?php list($controller, $action) = explode('::', $menu->bs_url);
+                            $url = [
+                                'controller' => $controller,
                                 'action' => $action,
                             ]; ?>
                 <?php echo $this->Html->link($menu->name, $url, ['class' => 'nav-link']); ?>
@@ -65,14 +66,15 @@ use Cake\Core\Configure;
         </ul>
 
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0 mr-4">
-            <?php if ($user): ?>
+            <?php if ($user) : ?>
             <li class="nav-item">
-                <?php echo  $this->Html->link(
+                <?php
+                    echo  $this->Html->link(
                                 $user->get('full_name') . ' ' . $this->Html->icon('sign-out-alt'),
                                 ['controller' => 'users', 'action' => 'logout'],
                                 ['title' => 'Logout',
                                     'escape' => false, 'class' => 'nav-link', ]
-                            ) ;?>
+                            ); ?>
             </li>
             <?php endif; ?>
             <li class="nav-item"><?=
