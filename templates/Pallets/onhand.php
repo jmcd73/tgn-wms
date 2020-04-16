@@ -28,7 +28,7 @@ use App\View\Helper\ToggenHelper;
     ]);
     echo $this->Form->submit('Search');
     echo $this->Form->end(); ?>
-    <h4 class="mt-4"><?= __('Colour Legend');?></h4>
+    <h4 class="mt-4"><?= __('Colour Legend'); ?></h4>
     <div class="bg-danger alert" role="alert">
         <?= $this->Html->icon('ban'); ?>
         Can't ship low dated
@@ -43,7 +43,7 @@ use App\View\Helper\ToggenHelper;
         <span class="label label-primary"><?php echo $cooldown; ?> hours</span>
     </div>
 </div>
-<?php $this->end();?>
+<?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', $this->fetch('tb_actions')); ?>
 <div class="row">
     <div class="col">
@@ -74,18 +74,21 @@ use App\View\Helper\ToggenHelper;
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($pallets as $pallet): ?>
-                <?php if ($pallet['oncooldown']) {
-        $cls = 'bg-info';
-    } elseif ($pallet['ship_low_date']) {
-        $cls = 'bg-warning';
-    } elseif ($pallet['dont_ship']) {
-        $cls = 'bg-danger';
-    } else {
-        $cls = '';
-    } ?>
+                <?php foreach ($pallets as $pallet) : ?>
+                <?php
+                    if ($pallet['oncooldown']) {
+                        $cls = 'bg-info';
+                    } elseif ($pallet['ship_low_date']) {
+                        $cls = 'bg-warning';
+                    } elseif ($pallet['dont_ship']) {
+                        $cls = 'bg-danger';
+                    } else {
+                        $cls = '';
+                    }
+                    $classString = $this->Html->buildClass($cls);
+                ?>
                 <tr>
-                    <td <?php echo $this->Html->buildClass($cls); ?>>
+                    <td <?= $classString; ?>>
                         <?php echo $this->Html->tag('a', '', [
                             'id' => $pallet['pl_ref'],
                             'class' => 'anchor', ]);
@@ -100,32 +103,32 @@ use App\View\Helper\ToggenHelper;
                             );
                         ?>
                     </td>
-                    <td <?php echo $this->Html->buildClass($cls); ?>>
+                    <td <?= $classString; ?>>
                         <?php echo h($pallet['items']['code']); ?>
                     </td>
-                    <td <?php echo $this->Html->buildClass($cls); ?>>
+                    <td <?= $classString; ?>>
                         <?php echo h($pallet['items']['description']); ?>
                     </td>
-                    <td <?php echo $this->Html->buildClass($cls); ?>>
+                    <td <?= $classString; ?>>
                         <?php echo h($pallet['pl_ref']); ?>
                     </td>
-                    <td <?php echo $this->Html->buildClass($cls); ?>>
+                    <td <?= $classString; ?>>
                         <?php echo $this->Html->tag(
                             'span',
                             h($pallet['print_date']->i18nFormat(null, $user->timezone)),
                             ['title' => 'Cooldown date: ' . h($pallet['cooldown_date']->i18nFormat(null, $user->timezone)), 'style' => 'cursor: crosshair;']
                         ); ?></td>
-                    <td <?php echo $this->Html->buildClass($cls); ?>>
+                    <td <?= $classString; ?>>
                         <?php echo h($this->Time->timeAgoInWords($pallet['print_date'])); ?></td>
-                    <td <?php echo $this->Html->buildClass($cls); ?>>
+                    <td <?= $classString; ?>>
                         <?php echo h($pallet['bb_date']->i18nFormat(null, $user->timezone)); ?>
                     </td>
-                    <td <?php echo $this->Html->buildClass($cls); ?>>
+                    <td <?= $classString; ?>>
                         <?php echo h($pallet['batch']); ?></td>
-                    <td <?php echo $this->Html->buildClass($cls); ?>>
+                    <td <?= $classString; ?>>
                         <?php echo h($pallet['qty']); ?>
                     </td>
-                    <td <?php echo $this->Html->buildClass($cls); ?>>
+                    <td <?= $classString; ?>>
                         <?php if ($pallet->has('shipment')) {
                             echo $this->Html->link(
                                 $pallet->shipment->shipper,
@@ -143,7 +146,7 @@ use App\View\Helper\ToggenHelper;
                         };
                         ?></td>
 
-                    <td <?php echo $this->Html->buildClass($cls); ?>>
+                    <td <?= $classString; ?>>
                         <?= $pallet->has('inventory_status') ? h($pallet->inventory_status->name) : ''; ?>
                         <?php if (!empty($pallet['inventory_status_note'])): ?>
                         <p class="x-small" title="<?php echo $pallet['inventory_status_note']; ?>">

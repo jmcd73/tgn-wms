@@ -1,7 +1,7 @@
 <?php
 /**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\User $user
+ * @var \App\View\AppView                                               $this
+ * @var \App\Model\Entity\User                                          $user
  * @var \App\Model\Entity\Carton[]|\Cake\Collection\CollectionInterface $cartons
  */
 ?>
@@ -22,8 +22,12 @@
         <legend><?= __('Add User') ?></legend>
         <?php
             echo $this->Form->control('active');
-            echo $this->Form->control('username');
-            echo $this->Form->control('password');
+            echo $this->Form->control('username', [
+                'autocomplete' => 'off',
+            ]);
+            echo $this->Form->control('password', [
+                'autocomplete' => 'new-password',
+            ]);
             echo $this->Form->control('role');
             echo $this->Form->control('full_name');
             echo $this->Form->control('timezone', [

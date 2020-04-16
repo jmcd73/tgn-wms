@@ -836,3 +836,13 @@ div.empty-message {
 .hidden {
   display: none;
 }
+
+.secondary-text {
+  font-weight: normal;
+  font-size: 0.8em;
+}
+
+.secondary-text::before {
+  content: " ";
+  display: block;
+}

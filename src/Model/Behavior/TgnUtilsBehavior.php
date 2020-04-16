@@ -12,7 +12,6 @@ use Cake\ORM\Behavior;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
-use DateTime;
 
 /**
  * TgnUtils behavior
@@ -34,6 +33,7 @@ class TgnUtilsBehavior extends Behavior
      *      601201 => '6012 - 01',
      *      601202 => '6012 - 02'
      *  ]
+     *
      * @return array Array of batch numbers
      */
     public function getBatchNumbers()
@@ -55,7 +55,6 @@ class TgnUtilsBehavior extends Behavior
     }
 
     /**
-     *
      * @param  string $settingname the name of the setting in the settings.setting field of the db
      * @param  bool   $inComment   some settings are stored in the comment field as they have CR or JSON
      * @return string
@@ -79,8 +78,7 @@ class TgnUtilsBehavior extends Behavior
      * Generate an SSCC number with check digit
      *
      * @return string
-     *
-     * phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
+     *                phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
      */
     public function generateSSCCWithCheckDigit()
     {
@@ -107,6 +105,7 @@ class TgnUtilsBehavior extends Behavior
 
     /**
      * when fed a barcode number returns the GS1 checkdigit number
+     *
      * @param  string $number barcode number
      * @return string barcode number
      */
@@ -132,16 +131,15 @@ class TgnUtilsBehavior extends Behavior
             $cd = 0;
         } else {
             // go to the next multiple of 10 above and subtract
-            $cd = ((10 - $mod_sum) + $sum) - $sum;
+            $cd = 10 - $mod_sum + $sum - $sum;
         }
 
         return $cd;
     }
 
     /**
-     * @param string $settingName   setting name
-     * @param int    $companyPrefix the GS1 company prefix
-     *
+     * @param  string $settingName   setting name
+     * @param  int    $companyPrefix the GS1 company prefix
      * @return string a number with leading zeros
      */
     public function getReferenceNumber($settingName, $companyPrefix)
@@ -203,6 +201,7 @@ class TgnUtilsBehavior extends Behavior
     }
 
     /**
+     * getPageHelp
      *
      * @param  string $controllerAction controller action method name
      * @return array  Help page record array or empty array
@@ -221,7 +220,7 @@ class TgnUtilsBehavior extends Behavior
     /**
      * returns a 2017-02-21 06:43:00 date time stamp
      *
-     * @return date
+     * @return string|false
      */
     public function getDateTimeStamp()
     {
@@ -241,14 +240,13 @@ class TgnUtilsBehavior extends Behavior
      *     'bb_date' => '31/01/73',
      *     'mysql_date' => '1973-01-31'
      * ]
+     *
      * @param  \Cake\I18n\FrozenTime $dateObject  The date as a string
      * @param  array                 $dateFormats As above example
      * @return array                 of date strings
      */
     public function formatLabelDates($dateObject, $dateFormats)
     {
-        //tog([$dateString, $dateFormats]);
-
         $dates = [];
         foreach ($dateFormats as $k => $v) {
             $dates[$k] = $dateObject->format($v);
@@ -259,22 +257,22 @@ class TgnUtilsBehavior extends Behavior
 
     /**
      * formats date as YYmmdd
+     *
      * @param  string $date   Date string
      * @param  string $format PHP date format
-     * @return date
+     * @return string
      */
-    public function formatYymmdd($date, $format = 'ymd')
+    public function formatYymmdd($date, $format = 'ymd'): string
     {
-        $date = new FrozenDate($date);
-        return $date->format($format);
+        return (new FrozenDate($date))->format($format);
     }
 
     /**
-     * @param  datetime $date_time Y-m-d H:i:s
-     * @param  int      $minutes   minutes to add
+     * @param  \DateTime $date_time Y-m-d H:i:s
+     * @param  int       $minutes   minutes to add
      * @return string
      */
-    public function addMinutesToDateTime($date_time, $minutes)
+    public function addMinutesToDateTime($date_time, $minutes): string
     {
         $dateTime = new \DateTime($date_time);
         $add_minutes = '+ ' . $minutes . ' minutes';

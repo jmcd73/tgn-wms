@@ -31,12 +31,12 @@ class PalletsController extends AppController
     // $this->Security->setConfig('unlockedActions', ['edit']);
 
     /**
-    * Print a new pallet label
-    *
-    * @param int ProductTypeId $productTypeId Product Type ID
-    *
-    * @return mixed
-    */
+     * Print a new pallet label
+     *
+     * @param int ProductTypeId $productTypeId Product Type ID
+     *
+     * @return mixed
+     */
     public function palletPrint($productTypeId = null)
     {
         $forms = [];
@@ -267,8 +267,8 @@ class PalletsController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Pallet id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @param  string|null                                        $id Pallet id.
+     * @return \Cake\Http\Response|null|void                      Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
@@ -310,8 +310,8 @@ class PalletsController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Pallet id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @param  string|null                                        $id Pallet id.
+     * @return \Cake\Http\Response|null|void                      Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null)
@@ -341,8 +341,8 @@ class PalletsController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Pallet id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @param  string|null                                        $id Pallet id.
+     * @return \Cake\Http\Response|null|void                      Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
@@ -359,10 +359,10 @@ class PalletsController extends AppController
     }
 
     /**
-    * batchLookup used by Pallets/lookup to get list of queried batch numbers from fragment
-    *
-    * @return void
-    */
+     * batchLookup used by Pallets/lookup to get list of queried batch numbers from fragment
+     *
+     * @return void
+     */
     public function batchLookup()
     {
         $search_term = $this->request->getQuery('term');
@@ -374,10 +374,10 @@ class PalletsController extends AppController
     }
 
     /**
-      * @param int StatusID $status_id the id to change
-      *
-      * @return void
-      */
+     * @param int StatusID $status_id the id to change
+     *
+     * @return void
+     */
     public function bulkStatusRemove($status_id = null)
     {
         $view_perms = $this->Pallets->getViewPermNumber('view_in_remove_status');
@@ -492,7 +492,7 @@ class PalletsController extends AppController
     }
 
     /**
-     * @param ID $id ID of Pallet
+     * @param  ID    $id ID of Pallet
      * @return mixed
      */
     public function changeLocation($id = null)
@@ -531,9 +531,9 @@ class PalletsController extends AppController
     }
 
     /**
-    * @param int $id Supply ID of pallet
-    * @return mixed
-    */
+     * @param  int   $id Supply ID of pallet
+     * @return mixed
+     */
     public function editPallet($id = null)
     {
         $pallet = $this->Pallets->get($id, [
@@ -719,8 +719,6 @@ class PalletsController extends AppController
              ); */
         }
 
-        tog($options);
-
         $searchForm = new LookupSearchForm();
 
         $this->paginate = [
@@ -772,8 +770,8 @@ class PalletsController extends AppController
     }
 
     /**
-       * @return mixed
-       */
+     * @return mixed
+     */
     public function lookupSearch()
     {
         // the page we will redirect to
@@ -797,7 +795,7 @@ class PalletsController extends AppController
     /**
      * move pallet to new location
      *
-     * @param int $id ID of Pallet
+     * @param  int   $id ID of Pallet
      * @return mixed
      */
     public function move($id = null)
@@ -835,12 +833,12 @@ class PalletsController extends AppController
     }
 
     /**
-         * edit method
-         *
-         * @throws NotFoundException
-         * @param string $id ID of pallet
-         * @return void
-         */
+     * edit method
+     *
+     * @throws NotFoundException
+     * @param  string            $id ID of pallet
+     * @return void
+     */
     public function multiEdit($id = null)
     {
         $this->layout = 'ajax';
@@ -1029,7 +1027,7 @@ class PalletsController extends AppController
      * view method
      *
      * @throws NotFoundException
-     * @param string $id ID of Pallet
+     * @param  string            $id ID of Pallet
      * @return mixed
      */
     public function palletReprint($id = null)
@@ -1333,8 +1331,8 @@ class PalletsController extends AppController
     }
 
     /**
-    * @return mixed
-    */
+     * @return mixed
+     */
     public function search()
     {
         // the page we will redirect to

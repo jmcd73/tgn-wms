@@ -16,9 +16,9 @@ class HttpOptionsMiddleware implements MiddlewareInterface
     /**
      * Process method.
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request The request.
-     * @param \Psr\Http\Server\RequestHandlerInterface $handler The request handler.
-     * @return \Psr\Http\Message\ResponseInterface A response.
+     * @param  \Psr\Http\Message\ServerRequestInterface $request The request.
+     * @param  \Psr\Http\Server\RequestHandlerInterface $handler The request handler.
+     * @return \Psr\Http\Message\ResponseInterface      A response.
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -32,7 +32,7 @@ class HttpOptionsMiddleware implements MiddlewareInterface
             $method = $request->getHeader('Access-Control-Request-Method');
             $headers = $request->getHeader('Access-Control-Request-Headers');
             $allowed = empty($method) ? 'GET, POST, PUT, DELETE' : $method;
-            tog('IN OPTIONS');
+
             $response = $response
                     ->withHeader('Access-Control-Allow-Headers', $headers)
                     ->withHeader('Access-Control-Allow-Methods', $allowed)
