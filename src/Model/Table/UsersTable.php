@@ -6,6 +6,7 @@ namespace App\Model\Table;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
 /**
@@ -34,7 +35,7 @@ class UsersTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param  array $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void
@@ -55,7 +56,7 @@ class UsersTable extends Table
     /**
      * Default validation rules.
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @param  \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator): Validator
@@ -98,7 +99,7 @@ class UsersTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @param  \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules): RulesChecker
@@ -106,5 +107,10 @@ class UsersTable extends Table
         $rules->add($rules->isUnique(['username']));
 
         return $rules;
+    }
+
+    public function roleList($roles)
+    {
+        return Hash::combine($roles, '{n}.slug', ['%s (%s): %s', '{n}.name', '{n}.slug', '{n}.description']);
     }
 }

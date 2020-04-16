@@ -45,8 +45,8 @@ class ShipmentsController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Shipment id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @param  string|null                                        $id Shipment id.
+     * @return \Cake\Http\Response|null|void                      Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
@@ -84,8 +84,8 @@ class ShipmentsController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Shipment id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @param  string|null                                        $id Shipment id.
+     * @return \Cake\Http\Response|null|void                      Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null)
@@ -110,8 +110,8 @@ class ShipmentsController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Shipment id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @param  string|null                                        $id Shipment id.
+     * @return \Cake\Http\Response|null|void                      Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
@@ -199,23 +199,24 @@ class ShipmentsController extends AppController
 
     /**
      * addApp React SPA
-     * @param int $shipment_type Product Type ID
+     * @param  int  $shipment_type Product Type ID
      * @return void
      */
-    public function process($shipment_type = null)
+    public function process($shipment_type = null, $productTypeId = null)
     {
         list($js, $css) = $this->ReactEmbed->getAssets(
             'shipment-app'
         );
 
         $baseUrl = $this->request->getAttribute('webroot');
+        $productTypes = $this->Shipments->ProductTypes->find('list');
 
-        $this->set(compact('js', 'css', 'baseUrl'));
+        $this->set(compact('js', 'css', 'baseUrl', 'productTypes', 'productTypeId'));
     }
 
     /**
      * add method
-     * @param string $shipment_type oil or marg
+     * @param  string $shipment_type oil or marg
      * @return mixed
      */
     public function addShipment($shipment_type = null)
@@ -226,7 +227,7 @@ class ShipmentsController extends AppController
 
         if ($this->request->is('post')) {
             $data = $this->request->getParsedBody();
-            tog('shipment data', $data);
+
             $pallets = $data['pallets'];
 
             unset($data['pallets']);
@@ -312,7 +313,7 @@ class ShipmentsController extends AppController
     }
 
     /**
-     * @param int $id ID of shipment
+     * @param  int   $id ID of shipment
      * @return mixed
      */
     public function toggleShipped($id = null)
@@ -374,7 +375,7 @@ class ShipmentsController extends AppController
      * edit method
      *
      * @throws \Cake\Http\Exception\NotFoundException
-     * @param string $id Shipment ID
+     * @param  string                                 $id Shipment ID
      * @return mixed
      */
     public function editShipment($id = null)
@@ -471,7 +472,7 @@ class ShipmentsController extends AppController
     /**
      * pdfPickList
      *
-     * @param int $id ID of Shipment
+     * @param  int  $id ID of Shipment
      * @return void
      */
     public function pdfPickList($id = null)

@@ -1,12 +1,12 @@
 <?php
 /**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Item $item
- * @var \App\Model\Entity\PackSize[]|\Cake\Collection\CollectionInterface $packSizes
- * @var \App\Model\Entity\ProductType[]|\Cake\Collection\CollectionInterface $productTypes
+ * @var \App\View\AppView                                                      $this
+ * @var \App\Model\Entity\Item                                                 $item
+ * @var \App\Model\Entity\PackSize[]|\Cake\Collection\CollectionInterface      $packSizes
+ * @var \App\Model\Entity\ProductType[]|\Cake\Collection\CollectionInterface   $productTypes
  * @var \App\Model\Entity\PrintTemplate[]|\Cake\Collection\CollectionInterface $printTemplates
- * @var \App\Model\Entity\Carton[]|\Cake\Collection\CollectionInterface $cartons
- * @var \App\Model\Entity\Pallet[]|\Cake\Collection\CollectionInterface $pallets
+ * @var \App\Model\Entity\Carton[]|\Cake\Collection\CollectionInterface        $cartons
+ * @var \App\Model\Entity\Pallet[]|\Cake\Collection\CollectionInterface        $pallets
  */
 ?>
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
@@ -59,6 +59,9 @@
             echo $this->Form->control('pallet_template_id', ['options' => $printTemplates]);
             echo $this->Form->control('carton_template_id', ['options' => $printTemplates]);
             echo $this->Form->control('pallet_label_copies');
+            echo $this->Form->control('item_wait_hrs', [
+                'escape' => false,
+                'label' => 'Item Wait Hrs<span class="secondary-text">Enable wait time in hours for QA checks. Disables ability to ship for this number of hours</span>', ]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

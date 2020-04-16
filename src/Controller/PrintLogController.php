@@ -45,8 +45,8 @@ class PrintLogController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Print Log id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @param  string|null                                        $id Print Log id.
+     * @return \Cake\Http\Response|null|void                      Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
@@ -81,8 +81,8 @@ class PrintLogController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Print Log id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @param  string|null                                        $id Print Log id.
+     * @return \Cake\Http\Response|null|void                      Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null)
@@ -106,8 +106,8 @@ class PrintLogController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Print Log id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @param  string|null                                        $id Print Log id.
+     * @return \Cake\Http\Response|null|void                      Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
@@ -154,7 +154,7 @@ class PrintLogController extends AppController
     }
 
     /**
-     * @param int $printLogId Print ID
+     * @param  int  $printLogId Print ID
      * @return void
      */
     public function completed($printLogId = null)
@@ -365,8 +365,8 @@ class PrintLogController extends AppController
         );
 
         /**
-          * @var GlabelsTemplate $template Glabels Configuration
-          */
+         * @var GlabelsTemplate $template Glabels Configuration
+         */
         $template = $this->PrintLog->getGlabelsDetail(
             $controller,
             $action
@@ -760,7 +760,15 @@ class PrintLogController extends AppController
 
             $printerDetails = $palletTable->getLabelPrinterById($printerId);
 
-            $bestBeforeBc = $this->PrintLog->formatYymmdd($pallet['bb_date']);
+            $dateFormats = [
+                'bb_bc' => 'ymd',
+                'bb_hr' => 'd/m/y',
+            ];
+
+            $bestBeforeDates = $this->PrintLog->formatLabelDates(
+                $pallet['bb_date'],
+                $dateFormats
+            );
 
             $cabLabelData = [
                 'printDate' => $pallet['print_date'],
@@ -771,13 +779,13 @@ class PrintLogController extends AppController
                 'description' => $pallet['items']['description'],
                 'gtin14' => $pallet['gtin14'],
                 'quantity' => $pallet['qty'],
-                'bestBeforeHr' => $pallet['best_before'],
-                'bestBeforeBc' => $bestBeforeBc,
+                'bestBeforeHr' => $bestBeforeDates['bb_hr'],
+                'bestBeforeBc' => $bestBeforeDates['bb_bc'],
                 'batch' => $pallet['batch'],
                 'numLabels' => $data['copies'],
                 'ssccBarcode' => '[00]' . $pallet['sscc'],
                 'itemBarcode' => '[02]' . $pallet['gtin14'] .
-                    '[15]' . $bestBeforeBc . '[10]' . $pallet['batch'] .
+                    '[15]' . $bestBeforeDates['bb_bc'] . '[10]' . $pallet['batch'] .
                     '[37]' . $pallet['qty'],
             ];
 

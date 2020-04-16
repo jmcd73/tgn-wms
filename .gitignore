@@ -32,3 +32,7 @@ dev/scripted upgrade/sql/mysql-bin*
 old/
 logs/*
 tmp/*
+dev/glabels/150x200-product-label-merge.csv
+dev/glabels/glabels-3.99-master561-x86_64.AppImage
+dev/glabels/test.pdf
+dev/glabels/test2.pdf

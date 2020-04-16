@@ -68,8 +68,11 @@ class Label
 
     protected $reference = '';
 
+    protected $glabelsBatch = '';
+
     public function __construct($action)
     {
+        $this->glabelsBatch = Configure::read('GLABELS_BATCH_BINARY');
         $this->action = $action;
         $this->setJobId($action);
         $this->setCwd(TMP);
@@ -343,7 +346,7 @@ class Label
         ];
 
         $returnValue = $this->runProcess(
-            implode(' ', $cmdArgs),
+            $cmdArgs,
             $this->printContent
         );
 
@@ -370,21 +373,24 @@ class Label
         $this->createTempFile($this->printContent);
 
         $cmdArgs = [
-            'glabels-3-batch',
+            '/usr/bin/xvfb-run',
+            '--',
+            '/usr/local/glabels-qt/usr/bin/glabels-batch-qt',
             '-o',
             $this->getPdfOutFile(),
             $this->getGlabelsTemplate(),
         ];
 
-        if ($this->glabelsMergeCSV) {
-            /**
-             * add stdin ("-i -") to glabels command line when piping  CSV data into glabels:
-             * glabels-3-batch -i - -o
-             *      /var/www/wms/app/tmp/20190701182321-customPrint.pdf
-             *      /var/www/wms/app/webroot/files/templates/100x50custom.glabels
-             */
-            array_splice($cmdArgs, 1, 0, ['-i', '-']);
-        }
+        /** if ($this->glabelsMergeCSV) {
+
+         * add stdin ("-i -") to glabels command line when piping  CSV data into glabels:
+         * glabels-3-batch -i - -o
+         *      /var/www/wms/app/tmp/20190701182321-customPrint.pdf
+         *      /var/www/wms/app/webroot/files/templates/100x50custom.glabels
+         *
+         * array_splice($cmdArgs, 1, 0, ['-i', '-']);
+         *}
+         */
 
         /**
          * If it's got variable pages such as sequence numbers: 1 of 13, 2 of 13 etc
@@ -396,7 +402,7 @@ class Label
         }
 
         $results = $this->runProcess(
-            implode(' ', $cmdArgs),
+            $cmdArgs,
             $this->printContent
         );
 
@@ -419,7 +425,7 @@ class Label
 
         $this->setPrintContent(file_get_contents($this->getPdfOutFile()));
 
-        //unlink($this->getPdfOutFile());
+        unlink($this->getPdfOutFile());
 
         return $this->sendPdfToLpr($printerDetails);
     }
@@ -446,7 +452,7 @@ class Label
             $descriptorspec,
             $pipes,
             $this->getCwd(), //cwd orig TMP
-            null// env null = current
+            null
         );
 
         // writing straight to stdin works

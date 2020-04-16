@@ -33,7 +33,7 @@ class HtmlHelper extends \BootstrapUI\View\Helper\HtmlHelper
     /**
      * Format a SSCC string and return it
      *
-     * @param string $sscc SSCC String
+     * @param  string $sscc SSCC String
      * @return mixed
      */
     public function sscc($sscc)
@@ -44,11 +44,11 @@ class HtmlHelper extends \BootstrapUI\View\Helper\HtmlHelper
     }
 
     /**
-    * buildClass takes an array or string of classes and returns
-    * class="class1 class2 class4"
-    * @param mixed $classes array or string
-    * @return string
-    */
+     * buildClass takes an array or string of classes and returns
+     * class="class1 class2 class4"
+     * @param  mixed  $classes array or string
+     * @return string
+     */
     public function buildClass($classes)
     {
         if (!is_array($classes)) {

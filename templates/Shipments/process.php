@@ -1,11 +1,31 @@
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 
-<?php echo $this->Html->scriptBlock(sprintf(
-    'var csrfToken = %s;',
-    json_encode($this->request->getAttribute('csrfToken'))
-)); ?>
+<?php $this->start('tb_actions'); ?>
+<?php foreach ($productTypes as $key => $productType): ?>
+<li class="nav-item">
+    <?php $active = (int)$key === (int)$productTypeId ? 'active' : null;
+        $classes = join(' ', array_filter(['nav-link', $active], function ($item) {
+            return !is_null($item);
+        }));
+    ?>
+    <?= $this->Html->link(
+        'Add ' . $productType,
+        ['action' => 'process', 'add-shipment', $key],
+        ['class' => $classes]
+    ); ?>
+</li>
+<?php endforeach; ?>
 
-<?php foreach ($css as $style): ?>
+<?php $this->end(); ?>
+<?php $this->assign('tb_sidebar', '<ul class="nav flex-column">' . $this->fetch('tb_actions') . '</ul>'); ?>
+
+
+<?php echo $this->Html->scriptBlock(sprintf(
+        'var csrfToken = %s;',
+        json_encode($this->request->getAttribute('csrfToken'))
+    )); ?>
+
+<?php foreach ($css as $style) : ?>
 <?php $this->Html->css($style, [
     'block' => 'css',
 ]); ?>
@@ -14,7 +34,7 @@
 
 <?= $this->Html->script($script, ['block' => 'from_view']); ?>
 
-<?php endforeach;?>
+<?php endforeach; ?>
 
 <div class="container">
     <div class="row">

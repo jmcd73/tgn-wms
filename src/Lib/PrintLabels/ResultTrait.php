@@ -22,9 +22,11 @@ trait ResultTrait
             $savedEntity = $this->PrintLog->save($newEntity);
 
             $message = __(
-                'Sent <strong>{0}</strong> to printer <strong>{1}</strong>',
+                'Sent <strong>{0}</strong> to printer <strong>{1}</strong> {2} :-: {3}',
                 $printTemplate['name'],
-                $printerDetails['name']
+                $printerDetails['name'],
+                $printResult['stdout'],
+                $printResult['stderr'],
             );
 
             $this->Flash->success($message, ['escape' => false]);

@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\View\AppView $this
+ * @var \App\View\AppView        $this
  * @var \App\Model\Entity\Pallet $pallet
  */
 ?>
@@ -179,7 +179,6 @@
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['controller' => 'Cartons', 'action' => 'view', $cartons->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
                         <?= $this->Html->link(__('Edit'), ['controller' => 'Cartons', 'action' => 'edit', $cartons->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['controller' => 'Cartons', 'action' => 'delete', $cartons->id], ['confirm' => __('Are you sure you want to delete # {0}?', $cartons->id), 'class' => 'btn btn-danger btn-sm mb-1']) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

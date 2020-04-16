@@ -4,6 +4,7 @@ $appName = 'Toggen WMS';
 $companyName = 'Toggen Systems';
 
 return [
+    'GLABELS_BATCH_BINARY' => '/usr/bin/xvfb-run -- /usr/local/glabels-qt/usr/bin/glabels-batch-qt',
     'timezones' => DateTimeZone::AUSTRALIA, // extras with a pipe | DateTimeZone::EUROPE,
     'dateFormat' => 'd/m/Y',
     'PrintLabels' => [
@@ -59,6 +60,7 @@ return [
         'maxLimit' => 30,
     ],
     'MaxShippingLabels' => 70,
+
     'LabelsRolesActions' => [
         [
             'roles' => ['qa'], // single value must be array
@@ -69,19 +71,9 @@ return [
             'actions' => ['editPallet'],
         ],
     ],
-    'BestBeforeDateEditors' => [
-        //list of user names
-        'petersj',
-        'rogerh',
-    ],
-
     // Pallets/onhand action page size
     // display this many in view
     'onhandPageSize' => 1000,
-    'StorageTemperatures' => [
-        'Ambient',
-        'Chilled',
-    ],
     'StockViewPerms' => [
         [
             'value' => 1,
@@ -105,10 +97,27 @@ return [
     ],
     'Users' => [
         'roles' => [
-            'admin' => 'Administrators',
-            'qa' => 'Quality Assurance',
-            'user' => 'User',
-            'qty_editor' => 'Edit Pallet Quantities',
+            [
+                'slug' => 'admin',
+                'name' => 'Administrators',
+                'description' => 'Access to view, update and delete everything',
+            ],
+
+            [
+                'slug' => 'qa',
+                'name' => 'Quality Assurance',
+                'description' => 'QA Functions',
+            ],
+            [
+                'slug' => 'user',
+                'name' => 'User',
+                'description' => 'User can view and update most areas, some restrictions',
+            ],
+            [
+                'slug' => 'qty_editor',
+                'name' => 'Edit Pallet Quantities',
+                'description' => 'Limited to editing pallet qauntities',
+            ],
         ],
     ],
     /**
