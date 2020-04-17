@@ -19,15 +19,14 @@ class CustomPrintForm extends Form
     /**
      * Builds the schema for the modelless form
      *
-     * @param \Cake\Form\Schema $schema From schema
+     * @param  \Cake\Form\Schema $schema From schema
      * @return \Cake\Form\Schema
      */
     protected function _buildSchema(Schema $schema): Schema
     {
-        return $schema->addField($this->prependFormName() . 'copies', 'integer')
+        return $schema
             ->addField($this->prependFormName() . 'printer', 'integer')
-            ->addField($this->prependFormName() . 'name', 'string')
-            ->addField('formName', 'string');
+            ->addField($this->prependFormName() . 'copies', 'integer');
     }
 
     private function prependFormName()
@@ -42,21 +41,23 @@ class CustomPrintForm extends Form
         if (is_numeric($copies)) {
             $this->copies = $copies;
         }
+
         return $this;
     }
 
     public function setFormName($name)
     {
         $this->formName = $name;
+
         return $this;
     }
 
     /**
-    * Form validation builder
-    *
-    * @param \Cake\Validation\Validator $validator to use against the form
-    * @return \Cake\Validation\Validator
-    */
+     * Form validation builder
+     *
+     * @param  \Cake\Validation\Validator $validator to use against the form
+     * @return \Cake\Validation\Validator
+     */
     public function validationDefault(Validator $validator):Validator
     {
         //$fieldValidator = new Validator();
@@ -70,7 +71,7 @@ class CustomPrintForm extends Form
                 'message' => 'Please enter the copies',
             ]
         )
-        ->lessThan($this->prependFormName() . 'copies', $this->copies, 'Less must be less than ' . $this->copies);
+        ->lessThan($this->prependFormName() . 'copies', $this->copies, 'Copies must be less than ' . $this->copies);
 
         // $validator->addNested($this->formName, $fieldValidator);
 
@@ -80,7 +81,7 @@ class CustomPrintForm extends Form
     /**
      * Defines what to execute once the Form is processed
      *
-     * @param array $data Form data.
+     * @param  array $data Form data.
      * @return bool
      */
     protected function _execute(array $data): bool

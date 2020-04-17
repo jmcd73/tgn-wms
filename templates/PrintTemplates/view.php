@@ -116,7 +116,7 @@
     </div>
     <div class="related">
         <h4><?= __('Related Items') ?></h4>
-        <?php if (!empty($printTemplate->items)): ?>
+        <?php if (!empty($printTemplate->items)) : ?>
         <div class="table-responsive">
             <table class="table table-striped">
                 <tr>
@@ -230,6 +230,34 @@
                     <td><?= h($childPrintTemplates->rght) ?></td>
                     <td><?= h($childPrintTemplates->replace_tokens) ?></td>
                     <td class="actions">
+                        <?php
+                echo $this->Form->create(null, [
+                    'style' => 'width: 120px;',
+                    'url' => [
+                        'action' => 'move',
+                        $printTemplate->id,
+                    ],
+                ]);
+                                echo $this->Form->control('amount', [
+                                    'label' => false,
+                                    'prepend' => $this->Form->button(
+                                        '',
+                                        [
+                                            'type' => 'submit',
+                                            'name' => 'moveUp',
+                                            'class' => 'move-up',
+                                        ]
+                                    ),
+                                    'append' => $this->Form->button(
+                                        '',
+                                        [
+                                            'type' => 'submit',
+                                            'name' => 'moveDown',
+                                            'class' => 'move-down',
+                                        ]
+                                    ),
+                                ]);
+                                echo $this->Form->end(); ?>
                         <?= $this->Html->link(__('View'), ['controller' => 'PrintTemplates', 'action' => 'view', $childPrintTemplates->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
                         <?= $this->Html->link(__('Edit'), ['controller' => 'PrintTemplates', 'action' => 'edit', $childPrintTemplates->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
                         <?= $this->Form->postLink(__('Delete'), ['controller' => 'PrintTemplates', 'action' => 'delete', $childPrintTemplates->id], ['confirm' => __('Are you sure you want to delete # {0}?', $childPrintTemplates->id), 'class' => 'btn btn-danger btn-sm mb-1']) ?>

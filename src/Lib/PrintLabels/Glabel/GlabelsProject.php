@@ -6,6 +6,7 @@ namespace App\Lib\PrintLabels\Glabel;
 use App\Lib\Exception\MissingConfigurationException;
 use App\Lib\PrintLabels\Template;
 use App\Model\Entity\PrintTemplate;
+use InvalidArgumentException;
 
 /**
  * GlabelsProject
@@ -38,12 +39,26 @@ class GlabelsProject extends Template
         throw new MissingConfigurationException(__('Glabels Project File missing from {0}', $filePath));
     }
 
+    /**
+     * Opens both XML and Gzipped glabels files
+     * Edits the <Merge src="" /> attribute to make it
+     * /dev/stdin
+     *
+     * @param  mixed      $projectFile Full path to glabels file
+     * @param  mixed|null $mergePath   /dev/stdin
+     * @return void
+     */
     public function setMergePath($projectFile, $mergePath = null)
     {
         $mergePath = $mergePath ?? $this->mergePath;
 
         if (file_exists($projectFile)) {
-            $glabelsDocument = simplexml_load_file($projectFile);
+            $fp = gzopen($projectFile, 'r');
+            $contents = gzread($fp, 1000000); // 1mb
+            gzclose($fp);
+
+            $glabelsDocument = simplexml_load_string($contents);
+
             if ($glabelsDocument->Merge['src'] != $mergePath) {
                 tog('Updating merge path on ' . $projectFile);
                 $glabelsDocument->Merge['src'] = $mergePath;

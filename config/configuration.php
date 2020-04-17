@@ -4,6 +4,7 @@ $appName = 'Toggen WMS';
 $companyName = 'Toggen Systems';
 
 return [
+    'MAX_COPIES' => 100,
     'GLABELS_BATCH_BINARY' => '/usr/bin/xvfb-run -- /usr/local/glabels-qt/usr/bin/glabels-batch-qt',
     'timezones' => DateTimeZone::AUSTRALIA, // extras with a pipe | DateTimeZone::EUROPE,
     'dateFormat' => 'd/m/Y',
@@ -12,7 +13,7 @@ return [
         // used by Lib/PrintLabels/LabelFactory.php
         'glabelSampleLabels' => 'App\Lib\PrintLabels\Glabel\GlabelSample',
         'keepRefrigerated' => 'App\Lib\PrintLabels\Glabel\CustomLabel',
-        'customPrint' => 'App\Lib\PrintLabels\Glabel\CustomLabel',
+        'customPrint0' => 'App\Lib\PrintLabels\Glabel\CustomLabel',
         'shippingLabels' => 'App\Lib\PrintLabels\Glabel\ShippingLabel',
         'crossdockLabels' => 'App\Lib\PrintLabels\Glabel\CrossdockLabel',
         'shippingLabelsGeneric' => 'App\Lib\PrintLabels\Glabel\ShippingLabelGeneric',

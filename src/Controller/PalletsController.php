@@ -1105,8 +1105,7 @@ class PalletsController extends AppController
         }
 
         $printers = $this->Pallets->getLabelPrinters(
-            $controller,
-            $action
+            $controller . '::' . $action
         );
 
         // unset this as the default printer is configured

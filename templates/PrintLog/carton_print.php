@@ -14,7 +14,7 @@
         [
             'bottling-ui',
         ]
-    );?>
+    ); ?>
 <div class="row">
     <div class="col">
         <span id="global-error"></span>
@@ -51,7 +51,7 @@
                 <?php
                         echo $this->Form->hidden('controller_action', [
                             'id' => 'controller_action',
-                            'value' => $controller_action,
+                            'value' => $controllerAction,
                         ]);
                         echo $this->Form->hidden('product-list', [
                             'id' => 'product-list',
@@ -61,13 +61,13 @@
                             'data-url' => $this->Url->build([
                                 'controller' => 'items',
                                 'action' => 'productListByCode',
-                            ]), ]);?>
+                            ]), ]); ?>
                 <?php
                         echo $this->Form->control('cartons-item', [
                             'type' => 'text',
                             'id' => 'cartons-item',
                             'label' => 'Item',
-                        ]);?>
+                        ]); ?>
 
                 <?php
                         echo $this->Form->control('carton-desc', [

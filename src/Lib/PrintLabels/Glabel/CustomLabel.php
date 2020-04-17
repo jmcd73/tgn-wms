@@ -37,8 +37,8 @@ class CustomLabel extends Label implements GlabelInterface
 
         $copies = $printArray['copies'];
 
-        if (isset($printArray['csv']) && is_array($printArray['csv'])) {
-            $printThis = $this->strPutCsv($printArray['csv']);
+        if (isset($printArray['csv'])) {
+            $printThis = $printArray['csv'];
             $this->glabelsMergeCSV = true;
         } else {
             $this->glabelsMergeCSV = false;
