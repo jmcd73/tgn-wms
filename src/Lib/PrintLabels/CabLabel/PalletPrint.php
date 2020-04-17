@@ -6,6 +6,7 @@ namespace App\Lib\PrintLabels\CabLabel;
 use App\Lib\Exception\MissingConfigurationException;
 use App\Lib\PrintLabels\Interfaces\TextLabelInterface;
 use App\Lib\PrintLabels\Label;
+use App\Model\Entity\Printer;
 use Cake\Core\Configure;
 
 class PalletPrint extends Label implements TextLabelInterface
@@ -37,7 +38,7 @@ class PalletPrint extends Label implements TextLabelInterface
         return $this;
     }
 
-    public function print($printer)
+    public function print(Printer $printer)
     {
         $printSettings = $this->getPrintSettings(
             $printer,

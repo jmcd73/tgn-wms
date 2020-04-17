@@ -44,20 +44,21 @@
             <td><?= h($printTemplate->name) ?></td>
             <td><?= h($printTemplate->description) ?></td>
             <td><?= h($printTemplate->example_image) ?></td>
-            <td><?= h($printTemplate->text_template) ?></td>
+            <td><?= $printTemplate->hasValue('text_template') ? h($this->Text->truncate($printTemplate->text_template, 20)) : '' ?>
+            </td>
             <td><?= h($printTemplate->file_template) ?></td>
             <td><?= h($printTemplate->controller_action) ?></td>
-            <td><?= h($printTemplate->replace_tokens) ?></td>
+            <td><?= $printTemplate->hasValue('replace_tokens') ? h($this->Text->truncate($printTemplate->replace_tokens, 20)) : '' ?>
+            </td>
             <td class="actions">
-
                 <?php
-                                echo $this->Form->create(null, [
-                                    'style' => 'width: 120px;',
-                                    'url' => [
-                                        'action' => 'move',
-                                        $printTemplate->id,
-                                    ],
-                                ]);
+                echo $this->Form->create(null, [
+                    'style' => 'width: 120px;',
+                    'url' => [
+                        'action' => 'move',
+                        $printTemplate->id,
+                    ],
+                ]);
                                 echo $this->Form->control('amount', [
                                     'label' => false,
                                     'prepend' => $this->Form->button(
@@ -77,9 +78,7 @@
                                         ]
                                     ),
                                 ]);
-                                echo $this->Form->end();
-                            ?>
-
+                                echo $this->Form->end(); ?>
                 <?= $this->Html->link(__('View'), ['action' => 'view', $printTemplate->id], ['title' => __('View'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
                 <?= $this->Html->link(__('Edit'), ['action' => 'edit', $printTemplate->id], ['title' => __('Edit'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
                 <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $printTemplate->id], ['confirm' => __('Are you sure you want to delete # {0}?', $printTemplate->id), 'title' => __('Delete'), 'class' => 'btn btn-danger btn-sm mb-1']) ?>

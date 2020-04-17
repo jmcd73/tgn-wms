@@ -138,9 +138,4 @@ class PrintLogTable extends Table
             'controller_action' => $controller_action,
         ];
     }
-
-    public function getControllerAction($request)
-    {
-        return $request->getParam('controller') . '::' . $request->getParam('action');
-    }
 }

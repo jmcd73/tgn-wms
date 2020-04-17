@@ -32,7 +32,7 @@ echo $this->Html->script(
         </ul>
         <?php  echo $this->Form->create(null, [
             'align' => 'inline',
-        ]);?>
+        ]); ?>
 
         <div class="offset-lg-7 col">
             <div class="row">
@@ -80,15 +80,15 @@ echo $this->Html->script(
                     <td><?php echo h($pallet['pl_ref']); ?></td>
                     <td><?php echo h($pallet['batch']); ?></td>
                     <td><?php echo h($pallet['print_date']); ?></td>
-                    <td><?php echo h($pallet['location']['location']); ?></td>
+                    <td><?= $pallet->has('location') ? h($pallet['location']['location']) : ''; ?></td>
                     <td><?= $pallet->has('inventory_status') ? h($pallet['inventory_status']['name']) : ''; ?></td>
                     <td><?php echo h($pallet['inventory_status_note']); ?></td>
                     <td>
                         <?php
-                    /**
-                     * This radio control doesn't use  $this->Form->input because it takes
-                     * so long to render that execution timeouts occur
-                     */
+                /**
+                 * This radio control doesn't use  $this->Form->input because it takes
+                 * so long to render that execution timeouts occur
+                 */
                 ?>
 
                         <?php echo $this->Form->control('pallets.' . $k . '.inventory_status_id', [
@@ -104,7 +104,7 @@ echo $this->Html->script(
                         <?php  echo $this->Form->control('pallets.' . $k . '.id', [
                             'type' => 'hidden',
                             'value' => $pallet['id'],
-                        ]);  ?>
+                        ]); ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -114,7 +114,7 @@ echo $this->Html->script(
         <div class="paginator">
             <p><?php echo $this->Paginator->counter(
                             'Page {{page}} of {{pages}}, showing {{current}} records out of {{count}} total, starting on record {{start}}, ending on {{end}}'
-                        );?></p>
+                        ); ?></p>
             <ul class="pagination">
                 <?php
             echo $this->Paginator->first('&laquo; first', ['escape' => false, 'tag' => 'li']);

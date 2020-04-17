@@ -5,7 +5,16 @@
  * Note: It is not recommended to commit files with credentials such as app_local.php
  * into source code version control.
  */
+
+$dbHost = file_exists('/.dockerenv') ? 'host.docker.internal' : 'localhost';
+
 return [
+    'Session' => [
+        'timeout' => 1440,
+    ],
+    'App' => [
+        'title' => 'Toggen WMS',
+    ],
     /*
      * Debug Level:
      *
@@ -36,7 +45,7 @@ return [
      */
     'Datasources' => [
         'default' => [
-            'host' => 'localhost',
+            'host' => $dbHost,
             /*
              * CakePHP will use the default DB port based on the driver selected
              * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
@@ -64,7 +73,7 @@ return [
          * The test connection is used during the test suite.
          */
         'test' => [
-            'host' => 'localhost',
+            'host' => $dbHost,
             //'port' => 'non_standard_port_number',
             'username' => 'my_app',
             'password' => 'secret',

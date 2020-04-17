@@ -33,8 +33,8 @@ use Cake\ORM\TableRegistry;
 class AppController extends Controller
 {
     protected $controllerActionsToSkip = [
-        'menus' => 'buildMenu',
-        'toolbar_access' => 'history_state',
+        'menus::buildMenu',
+        'toolbar_access::history_state',
         //'Pages' => 'display',
     ];
 
@@ -98,11 +98,9 @@ class AppController extends Controller
 
         $this->set(compact('menuTree'));
 
-        $controller = $this->request->getParam('controller');
-        $action = $this->request->getParam('action');
+        $controllerAction = $this->getControllerAction();
 
-        if ($this->allowGetHelpPage($controller, $action)) {
-            $controllerAction = $controller . '::' . $action;
+        if ($this->allowGetHelpPage($controllerAction)) {
             $helpTable = TableRegistry::get('Help');
 
             $this->set(
@@ -113,18 +111,17 @@ class AppController extends Controller
         }
     }
 
-    protected function allowGetHelpPage($controller, $action)
+    protected function allowGetHelpPage($controllerAaction)
     {
         if ($this->request->is(['PUT', 'POST'])) {
             return false;
         }
 
-        foreach ($this->controllerActionsToSkip as $key => $value) {
-            if ($controller === $key && $action === $value) {
-                return false;
-            }
-        }
+        return !in_array($controllerAaction, $this->controllerActionsToSkip);
+    }
 
-        return true;
+    public function getControllerAction()
+    {
+        return $this->request->getParam('controller') . '::' . $this->request->getParam('action');
     }
 }
