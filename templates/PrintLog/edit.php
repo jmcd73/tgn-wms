@@ -18,7 +18,7 @@
         <legend><?= __('Edit Print Log') ?></legend>
         <?php
             echo $this->Form->control('print_data');
-            echo $this->Form->control('print_action');
+            echo $this->Form->control('controller_action');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

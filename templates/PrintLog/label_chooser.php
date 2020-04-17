@@ -15,7 +15,12 @@
         </div>
     </div>
     <div class="row">
-        <?php foreach ($printTemplate['children'] as $ptc): ?>
+        <?php foreach ($printTemplate['children'] as $ptc) : ?>
+        <?php list($controller, $action) = explode('::', $ptc['controller_action']); ?>
+
+        <?php if (empty($controller) || empty($action)) {
+    continue;
+} ?>
         <div class="col-3 mb-4">
             <div class="card ">
                 <div class="card-body">
@@ -25,15 +30,15 @@
         ['class' => 'card-img-top']
     ),
     [
-        'controller' => $ptc['print_controller'],
-        'action' => $ptc['print_action'],
+        'controller' => $controller,
+        'action' => $action,
     ],
     [
         'escape' => false,
     ]
-);?>
-                    <h3 class="card-title mt-3"><?=h($ptc['name']);?></h3>
-                    <p class="card-text"><?=h($ptc['description']);?></p>
+); ?>
+                    <h3 class="card-title mt-3"><?=h($ptc['name']); ?></h3>
+                    <p class="card-text"><?=h($ptc['description']); ?></p>
                 </div>
             </div>
         </div>

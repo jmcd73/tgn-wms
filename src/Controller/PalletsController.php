@@ -118,15 +118,11 @@ class PalletsController extends AppController
 
                 $item_detail = $this->Pallets->Items->get($data['item']);
 
-                $labelCopies = $item_detail['pallet_label_copies'] > 0
-                    ? $item_detail['pallet_label_copies']
-                    : $this->Pallets->getSetting('sscc_default_label_copies');
+                $labelCopies = $this->Pallets->getLabelCopies($item_detail->pallet_label_copies);
 
                 $printTemplateId = $item_detail['pallet_template_id'];
 
-                $qty = !empty($data['qty'])
-                    ? $data['qty']
-                    : $item_detail['quantity'];
+                $qty = $data['qty'] ?? $item_detail->quantity;
 
                 $days_life = $item_detail['days_life'];
 
@@ -1117,9 +1113,7 @@ class PalletsController extends AppController
         // for the reprint Controller/Action in Printers
         unset($pallet['printer_id']);
 
-        $labelCopies = $pallet['items']['pallet_label_copies'] > 0
-            ? $pallet['items']['pallet_label_copies']
-            : $this->Pallets->getSetting('sscc_default_label_copies');
+        $labelCopies = $this->Pallets->getLabelCopies($pallet->items->pallet_label_copies);
 
         $tag = 'Pallet';
 

@@ -130,7 +130,7 @@ function getPrinterFriendlyName() {
 function getLabelDetails() {
   return {
     barcode: $("#cartons-gtin14").val(),
-    print_action: $("#print_action").val(),
+    controller_action: $("#controller_action").val(),
     description: $("#cartons-desc").val(),
     count: getPrintQty(),
     printer_id: getPrinter(),

@@ -47,7 +47,7 @@ class PalletsTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param  array $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void
@@ -96,7 +96,7 @@ class PalletsTable extends Table
     /**
      * Default validation rules.
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @param  \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator): Validator
@@ -224,7 +224,7 @@ class PalletsTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @param  \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules): RulesChecker
@@ -244,9 +244,9 @@ class PalletsTable extends Table
 
     /**
      * locationSpaceUsageOptions method
-     * @param string $filter string of either 'all' or 'available'
-     * @param string $productTypeId if productTypeId is all then no filter other wise pass in ID
-     * @return array returns an option array configured correctly to find location availability
+     * @param  string $filter        string of either 'all' or 'available'
+     * @param  string $productTypeId if productTypeId is all then no filter other wise pass in ID
+     * @return array  returns an option array configured correctly to find location availability
      */
     public function locationSpaceUsageOptions($filter, $productTypeId = 'all')
     {
@@ -381,11 +381,11 @@ class PalletsTable extends Table
     }
 
     /**
-     * @param string $date Date
-     * @param string $start_date_time Start Date Time
-     * @param string $end_date_time End Date Time
-     * @param int $productTypeId Product Type ID
-     * @param array $shift Shift array
+     * @param  string $date            Date
+     * @param  string $start_date_time Start Date Time
+     * @param  string $end_date_time   End Date Time
+     * @param  int    $productTypeId   Product Type ID
+     * @param  array  $shift           Shift array
      * @return array
      */
     public function getShiftReport(
@@ -500,7 +500,7 @@ class PalletsTable extends Table
      * given 100 cartons and a qty_per_pallet of 40
      * returns 2.20
      *
-     * @param int $cartons Count of cartons
+     * @param int $cartons        Count of cartons
      * @param int $qty_per_pallet the quantity per pallet for that item
      *
      * @return mixed
@@ -518,9 +518,9 @@ class PalletsTable extends Table
     }
 
     /**
-     * @param null $startDateTime Start Datetime
-     * @param null $endDateTime End Datetime
-     * @param int $productTypeId Product Type ID
+     * @param  null  $startDateTime Start Datetime
+     * @param  null  $endDateTime   End Datetime
+     * @param  int   $productTypeId Product Type ID
      * @return array
      */
     public function getCartonsBetweenDateTimes($startDateTime = null, $endDateTime = null, $productTypeId = null)
@@ -633,7 +633,7 @@ class PalletsTable extends Table
     }
 
     /**
-     * @param array $data $this->data array
+     * @param  array $data $this->data array
      * @return array
      */
     protected function _stripBlankValues($data)
@@ -642,7 +642,7 @@ class PalletsTable extends Table
     }
 
     /**
-     * @param array $passed_args passed from Pallets/lookup view / action
+     * @param  array $passed_args passed from Pallets/lookup view / action
      * @return mixed
      */
     public function formatLookupRequestData($passed_args = [])
@@ -660,7 +660,7 @@ class PalletsTable extends Table
     }
 
     /**
-     * @param string $term Snippet of batch no. to search for
+     * @param  string $term Snippet of batch no. to search for
      * @return mixed
      */
     public function batchLookup($term)
@@ -690,7 +690,7 @@ class PalletsTable extends Table
     }
 
     /**
-     * @param array $data $this->data
+     * @param  array $data $this->data
      * @return array
      */
     public function formatBatch($data)
@@ -704,7 +704,7 @@ class PalletsTable extends Table
     }
 
     /**
-     * @param string $term snippet of pallet reference from any part of pl_ref
+     * @param  string $term snippet of pallet reference from any part of pl_ref
      * @return mixed
      */
     public function palletReferenceLookup($term)
@@ -732,7 +732,7 @@ class PalletsTable extends Table
 
     /**
      * Format for a Javascript control somewhere
-     * @param array $pl_data Pallet Data array
+     * @param  array $pl_data Pallet Data array
      * @return array
      */
     public function formatLookup($pl_data)
@@ -744,8 +744,8 @@ class PalletsTable extends Table
     }
 
     /**
-     * @param array $filter ?
-     * @param int $productTypeId Product Type ID
+     * @param  array $filter        ?
+     * @param  int   $productTypeId Product Type ID
      * @return mixed
      */
     public function getAvailableLocations($filter, $productTypeId)
@@ -758,7 +758,7 @@ class PalletsTable extends Table
     }
 
     /**
-     * @param array $contain the contain options [ Model => [ Model2 ]]
+     * @param  array $contain the contain options [ Model => [ Model2 ]]
      * @return mixed
      */
     public function getViewOptions($contain = [])
@@ -899,9 +899,9 @@ class PalletsTable extends Table
 
     /**
      *
-     * @param \Cake\Event\Event $event Event
-     * @param \Cake\Datasource\EntityInterface $entity EntityInterface
-     * @param array $options Options array
+     * @param  \Cake\Event\Event                $event   Event
+     * @param  \Cake\Datasource\EntityInterface $entity  EntityInterface
+     * @param  array                            $options Options array
      * @return void
      * @throws \Cake\Core\Exception
      */
@@ -932,7 +932,7 @@ class PalletsTable extends Table
     }
 
     /**
-     * @param array $sndata $this->data
+     * @param  array $sndata $this->data
      * @return mixed
      */
     public function inventoryStatusNote($sndata)
@@ -947,5 +947,10 @@ class PalletsTable extends Table
         }
 
         return $inventory_status_note;
+    }
+
+    public function getLabelCopies($labelCopies)
+    {
+        return $labelCopies ?? $this->getSetting('sscc_default_label_copies');
     }
 }

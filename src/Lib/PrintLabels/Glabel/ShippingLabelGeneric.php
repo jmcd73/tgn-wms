@@ -12,9 +12,9 @@ class ShippingLabelGeneric extends Label implements GlabelInterface
         parent::__construct($action);
     }
 
-    public function print($printerDetails, $glabelsTemplateFullPath)
+    public function print($printerDetails, $glabelsProject)
     {
-        return $this->glabelsBatchPrint($glabelsTemplateFullPath, $printerDetails['queue_name']);
+        return $this->glabelsBatchPrint($glabelsProject, $printerDetails['queue_name']);
     }
 
     public function format($labelData)

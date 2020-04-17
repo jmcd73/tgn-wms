@@ -310,11 +310,9 @@ class TgnUtilsBehavior extends Behavior
      * @param  string $action     the controller action as derived from $this->request->action
      * @return array
      */
-    public function getLabelPrinters($controller = null, $action = null)
+    public function getLabelPrinters($controllerAction)
     {
         $printerModel = TableRegistry::get('Printers');
-
-        $controllerAction = Inflector::camelize($controller . '::') . $action;
 
         $labelPrinters = $printerModel->find(
             'all',
@@ -364,9 +362,7 @@ class TgnUtilsBehavior extends Behavior
     {
         $printerModel = TableRegistry::get('Printers');
 
-        $printer = $printerModel->get($printerId);
-
-        return $printer->toArray();
+        return $printerModel->get($printerId);
     }
 
     /**

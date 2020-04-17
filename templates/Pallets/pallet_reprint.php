@@ -1,43 +1,43 @@
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 <div class="container">
     <div class="row">
-        <div class="col-md-6 col-lg-6 col-sm-6">
+        <div class="col-6">
             <h3><?=__('Reprint Label'); ?></h3>
-            <dl class="dl-horizontal">
-                <dt><?=__('Item'); ?></dt>
-                <dd>
+            <dl class="row">
+                <dt class="col-sm-4"><?=__('Item'); ?></dt>
+                <dd class="col-sm-8">
                     <?=h($pallet['item']); ?>
                 </dd>
-                <dt><?=__('Description'); ?></dt>
-                <dd>
+                <dt class="col-sm-4"><?=__('Description'); ?></dt>
+                <dd class="col-sm-8">
                     <?=h($pallet['description']); ?>
                 </dd>
-                <dt><?=__('Best Before'); ?></dt>
-                <dd>
-                    <?=h($pallet['best_before']); ?>
+                <dt class="col-sm-4"><?=__('Best Before'); ?></dt>
+                <dd class="col-sm-8">
+                    <?=h($pallet['bb_date']); ?>
                 </dd>
-                <dt><?=__('Gtin14'); ?></dt>
-                <dd>
+                <dt class="col-sm-4"><?=__('Gtin14'); ?></dt>
+                <dd class="col-sm-8">
                     <?=h($pallet['gtin14']); ?>
                 </dd>
-                <dt><?=__('Qty'); ?></dt>
-                <dd>
+                <dt class="col-sm-4"><?=__('Qty'); ?></dt>
+                <dd class="col-sm-8">
                     <?=h($pallet['qty']); ?>
                 </dd>
-                <dt><?=__('Pl Ref'); ?></dt>
-                <dd>
+                <dt class="col-sm-4"><?=__('Pl Ref'); ?></dt>
+                <dd class="col-sm-8">
                     <?=h($pallet['pl_ref']); ?>
                 </dd>
-                <dt><?=__('Sscc'); ?></dt>
-                <dd>
+                <dt class="col-sm-4"><?=__('Sscc'); ?></dt>
+                <dd class="col-sm-8">
                     <?=h($pallet['sscc']); ?>
                 </dd>
-                <dt><?=__('Batch'); ?></dt>
-                <dd>
+                <dt class="col-sm-4"><?=__('Batch'); ?></dt>
+                <dd class="col-sm-8">
                     <?=h($pallet['batch']); ?>
                 </dd>
-                <dt><?=__('Print Date'); ?></dt>
-                <dd>
+                <dt class="col-sm-4"><?=__('Print Date'); ?></dt>
+                <dd class="col-sm-8">
                     <?=h($pallet['print_date']); ?>
                 </dd>
             </dl>

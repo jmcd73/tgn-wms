@@ -14,7 +14,7 @@
                 'legend' => false,
                 'options' => $printers['printers'],
                 'default' => $printers['default'] ? $printers['default'] : '',
-            ]);?>
+            ]); ?>
             <?= $this->Form->control('copies', [
                 'placeholder' => 'Enter a number',
                 'class' => 'mb-4',
@@ -25,8 +25,8 @@
         </div>
         <div class="col-md-6 col-lg-6">
             <?= $this->element('printImage/card', [
-                'name' => $template->details['name'],
-                'description' => $template->details['description'],
+                'name' => $template->details->name,
+                'description' => $template->details->description,
                 'image' => $template->image,
             ]); ?>
         </div>

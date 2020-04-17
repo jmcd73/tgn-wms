@@ -1,22 +1,29 @@
 <?php
 /**
- * @var \App\View\AppView $this
+ * @var \App\View\AppView               $this
  * @var \App\Model\Entity\PrintTemplate $printTemplate
  */
 ?>
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 
 <?php $this->start('tb_actions'); ?>
-<li><?= $this->Html->link(__('Edit Print Template'), ['action' => 'edit', $printTemplate->id], ['class' => 'nav-link']) ?></li>
-<li><?= $this->Form->postLink(__('Delete Print Template'), ['action' => 'delete', $printTemplate->id], ['confirm' => __('Are you sure you want to delete # {0}?', $printTemplate->id), 'class' => 'nav-link']) ?></li>
+<li><?= $this->Html->link(__('Edit Print Template'), ['action' => 'edit', $printTemplate->id], ['class' => 'nav-link']) ?>
+</li>
+<li><?= $this->Form->postLink(__('Delete Print Template'), ['action' => 'delete', $printTemplate->id], ['confirm' => __('Are you sure you want to delete # {0}?', $printTemplate->id), 'class' => 'nav-link']) ?>
+</li>
 <li><?= $this->Html->link(__('List Print Templates'), ['action' => 'index'], ['class' => 'nav-link']) ?> </li>
 <li><?= $this->Html->link(__('New Print Template'), ['action' => 'add'], ['class' => 'nav-link']) ?> </li>
-<li><?= $this->Html->link(__('List Parent Print Templates'), ['controller' => 'PrintTemplates', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
-<li><?= $this->Html->link(__('New Parent Print Template'), ['controller' => 'PrintTemplates', 'action' => 'add'], ['class' => 'nav-link']) ?></li>
-<li><?= $this->Html->link(__('List Items'), ['controller' => 'Items', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
+<li><?= $this->Html->link(__('List Parent Print Templates'), ['controller' => 'PrintTemplates', 'action' => 'index'], ['class' => 'nav-link']) ?>
+</li>
+<li><?= $this->Html->link(__('New Parent Print Template'), ['controller' => 'PrintTemplates', 'action' => 'add'], ['class' => 'nav-link']) ?>
+</li>
+<li><?= $this->Html->link(__('List Items'), ['controller' => 'Items', 'action' => 'index'], ['class' => 'nav-link']) ?>
+</li>
 <li><?= $this->Html->link(__('New Item'), ['controller' => 'Items', 'action' => 'add'], ['class' => 'nav-link']) ?></li>
-<li><?= $this->Html->link(__('List Child Print Templates'), ['controller' => 'PrintTemplates', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
-<li><?= $this->Html->link(__('New Child Print Template'), ['controller' => 'PrintTemplates', 'action' => 'add'], ['class' => 'nav-link']) ?></li>
+<li><?= $this->Html->link(__('List Child Print Templates'), ['controller' => 'PrintTemplates', 'action' => 'index'], ['class' => 'nav-link']) ?>
+</li>
+<li><?= $this->Html->link(__('New Child Print Template'), ['controller' => 'PrintTemplates', 'action' => 'add'], ['class' => 'nav-link']) ?>
+</li>
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', '<ul class="nav flex-column">' . $this->fetch('tb_actions') . '</ul>'); ?>
 
@@ -41,12 +48,8 @@
                 <td><?= h($printTemplate->file_template) ?></td>
             </tr>
             <tr>
-                <th scope="row"><?= __('Print Action') ?></th>
-                <td><?= h($printTemplate->print_action) ?></td>
-            </tr>
-            <tr>
-                <th scope="row"><?= __('Print Controller') ?></th>
-                <td><?= h($printTemplate->print_controller) ?></td>
+                <th scope="row"><?= __('Controller/Action') ?></th>
+                <td><?= h($printTemplate->controller_action) ?></td>
             </tr>
             <tr>
                 <th scope="row"><?= __('Example Image') ?></th>
@@ -62,7 +65,8 @@
             </tr>
             <tr>
                 <th scope="row"><?= __('Parent Print Template') ?></th>
-                <td><?= $printTemplate->has('parent_print_template') ? $this->Html->link($printTemplate->parent_print_template->name, ['controller' => 'PrintTemplates', 'action' => 'view', $printTemplate->parent_print_template->id]) : '' ?></td>
+                <td><?= $printTemplate->has('parent_print_template') ? $this->Html->link($printTemplate->parent_print_template->name, ['controller' => 'PrintTemplates', 'action' => 'view', $printTemplate->parent_print_template->id]) : '' ?>
+                </td>
             </tr>
             <tr>
                 <th scope="row"><?= __('Replace Tokens') ?></th>
@@ -165,7 +169,7 @@
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['controller' => 'Items', 'action' => 'view', $items->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
                         <?= $this->Html->link(__('Edit'), ['controller' => 'Items', 'action' => 'edit', $items->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
-                        <?= $this->Form->postLink( __('Delete'), ['controller' => 'Items', 'action' => 'delete', $items->id], ['confirm' => __('Are you sure you want to delete # {0}?', $items->id), 'class' => 'btn btn-danger btn-sm mb-1']) ?>
+                        <?= $this->Form->postLink(__('Delete'), ['controller' => 'Items', 'action' => 'delete', $items->id], ['confirm' => __('Are you sure you want to delete # {0}?', $items->id), 'class' => 'btn btn-danger btn-sm mb-1']) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -211,7 +215,7 @@
                     <td><?= h($childPrintTemplates->file_template) ?></td>
                     <td><?= h($childPrintTemplates->active) ?></td>
                     <td><?= h($childPrintTemplates->is_file_template) ?></td>
-                    <td><?= h($childPrintTemplates->print_action) ?></td>
+                    <td><?= h($childPrintTemplates->controller_action) ?></td>
                     <td><?= h($childPrintTemplates->print_controller) ?></td>
                     <td><?= h($childPrintTemplates->created) ?></td>
                     <td><?= h($childPrintTemplates->modified) ?></td>
@@ -228,7 +232,7 @@
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['controller' => 'PrintTemplates', 'action' => 'view', $childPrintTemplates->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
                         <?= $this->Html->link(__('Edit'), ['controller' => 'PrintTemplates', 'action' => 'edit', $childPrintTemplates->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
-                        <?= $this->Form->postLink( __('Delete'), ['controller' => 'PrintTemplates', 'action' => 'delete', $childPrintTemplates->id], ['confirm' => __('Are you sure you want to delete # {0}?', $childPrintTemplates->id), 'class' => 'btn btn-danger btn-sm mb-1']) ?>
+                        <?= $this->Form->postLink(__('Delete'), ['controller' => 'PrintTemplates', 'action' => 'delete', $childPrintTemplates->id], ['confirm' => __('Are you sure you want to delete # {0}?', $childPrintTemplates->id), 'class' => 'btn btn-danger btn-sm mb-1']) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

@@ -3,6 +3,7 @@
 namespace App\Lib\PrintLabels;
 
 use App\Lib\Exception\GlabelsException;
+use App\Lib\PrintLabels\Glabel\GlabelsProject;
 use Cake\Core\Configure;
 use Cake\Filesystem\File;
 use Cake\I18n\FrozenDate;
@@ -145,7 +146,7 @@ class Label
      */
     private function setGlabelsTemplate($template)
     {
-        $this->glabelsTemplate = realpath($template);
+        $this->glabelsTemplate = realpath($template->file_path);
     }
 
     public function formatLocalDate($date)
@@ -360,11 +361,12 @@ class Label
      * Send job to gLabels
      *
      * Sends the completed template to the printer held in the $print_settings array
-     * @param  string $template       full path to glabels template
-     * @param  array  $printerDetails Printer Information
-     * @return array  Array holding the results of the lpr command
+     *
+     * @param  \App\Lib\PrintLabels\Glabel\GlabelsProject $template       full path to glabels template
+     * @param  array                                      $printerDetails Printer Information
+     * @return array                                      Array holding the results of the lpr command
      */
-    public function glabelsBatchPrint(string $template, $printerDetails): array
+    public function glabelsBatchPrint(GlabelsProject $template, $printerDetails): array
     {
         $this->setGlabelsTemplate($template);
 
