@@ -21,32 +21,21 @@ class SampleLabel extends Label implements GlabelInterface
         parent::__construct($action);
     }
 
-    public function print($printerDetails, $glabelsTemplateFullPath)
+    public function print($printerDetails, $glabelsProject)
     {
-        return $this->glabelsBatchPrint($glabelsTemplateFullPath, $printerDetails['queue_name']);
+        return $this->glabelsBatchPrint($glabelsProject, $printerDetails['queue_name']);
     }
 
     public function format($labelData)
     {
-        $this->formatPrintLine($labelData);
+        $this->setPrintContentArray($labelData);
+        $this->formatSampleLabel($labelData);
 
         return $this;
     }
 
     /**
-     * Takes PrintData and sends to a specially formatting functions which creates the CSV for gLabels
-     *
-     * @param array $printData an array of the print data to format
-     * @return void
-     */
-    public function formatPrintLine($printData)
-    {
-        $this->setPrintContentArray($printData);
-        $this->formatSampleLabel($printData);
-    }
-
-    /**
-     * @param array $printArray print array
+     * @param  array $printArray print array
      * @return void
      */
     public function formatSampleLabel($printArray)

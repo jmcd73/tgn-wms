@@ -17,7 +17,7 @@ echo $this->Html->scriptBlock('hljs.initHighlightingOnLoad();', ['block' => 'fro
 <div class="container">
     <!--  <dl class="dl-horizontal">
         <dt>Print Type</dt>
-        <dd> <?= $completed['PrintLabel']['print_action']; ?></dd>
+        <dd> <?= $completed['PrintLabel']['controller_action']; ?></dd>
         <dt>Print Data</dt>
         <dd>
             <pre
@@ -38,8 +38,8 @@ echo $this->Html->scriptBlock('hljs.initHighlightingOnLoad();', ['block' => 'fro
     <div class="row">
         <div class="col-lg-3"></div>
         <div class="col-lg-3 col-md-4 col-sm-12 text-center">
-            <?= $this->Html->link('Back to ' . $completed['print_action'], [
-                'action' => $completed['print_action'],
+            <?= $this->Html->link('Back to ' . $completed['controller_action'], [
+                'action' => explode('::', $completed['controller_action'])[1],
             ], [
                 'class' => 'btn btn-link',
             ]); ?>

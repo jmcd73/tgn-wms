@@ -9,10 +9,10 @@
   <Objects id="0" rotate="false">
     <Object-text line_spacing="1" h="119pt" lock_aspect_ratio="false" shadow_color="0x0" font_size="18" shadow="false" color="0xff" shadow_x="0pt" valign="top" font_underline="false" a2="0" font_family="Sans" wrap="word" shadow_opacity="1" font_italic="false" a4="0" a5="0" align="left" y="14.6297pt" a1="0" a3="1" x="12.3574pt" font_weight="normal" w="266.25pt" auto_shrink="false" a0="1" shadow_y="0pt">
       <p>KEEP REFRIGERATED </p>
-      <p>AT OR BELOW 4°C </p>
-      <p></p>
+      <p>AT OR BELOW 4&#xB0;C </p>
+      <p/>
       <p>DO NOT FREEZE</p>
     </Object-text>
   </Objects>
   <Data/>
-</Glabels-document>
+<Merge src="/dev/stdin"/></Glabels-document>

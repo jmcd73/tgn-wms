@@ -49,7 +49,7 @@ class TextLabel extends Label implements TextLabelInterface
         return $this;
     }
 
-    public function print(array $printer)
+    public function print($printer)
     {
         $printSettings = $this->getPrintSettings(
             $printer,

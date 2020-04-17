@@ -1,54 +1,54 @@
 <?xml version="1.0"?>
 <Glabels-document version="4.0">
-    <Template size="Other" height="566.929pt" description="150x200 Crossdock Label" brand="JMITS" part="02" width="425.197pt">
-        <Label-rectangle id="0" height="566.929pt" round="0pt" x_waste="0pt" width="425.197pt" y_waste="0pt">
-            <Markup-margin size="9.07087pt"/>
-            <Layout ny="1" nx="1" dy="566.929pt" x0="0pt" y0="0pt" dx="425.197pt"/>
-        </Label-rectangle>
-    </Template>
-    <Objects id="0" rotate="false">
-        <Object-text a4="0" x="42.3925pt" shadow_y="0pt" a0="1" color="0xff" font_size="45" a1="0" font_family="Sans" font_weight="normal" w="344.531pt" wrap="word" shadow_opacity="1" auto_shrink="false" h="77pt" font_italic="false" a3="1" lock_aspect_ratio="false" y="16.1519pt" align="left" a5="0" font_underline="false" shadow_x="0pt" shadow="false" line_spacing="1" shadow_color="0x0" valign="top" a2="0">
-            <p>Warehouse</p>
-        </Object-text>
-        <Object-text a4="0" x="23.9121pt" shadow_y="0pt" a0="1" color="0xff" font_size="15" a1="0" font_family="Sans" font_weight="normal" w="190.875pt" wrap="word" shadow_opacity="1" auto_shrink="false" h="30pt" font_italic="false" a3="1" lock_aspect_ratio="false" y="107.69pt" align="left" a5="0" font_underline="false" shadow_x="0pt" shadow="false" line_spacing="1" shadow_color="0x0" valign="top" a2="0">
-            <p>Purchase Order #:</p>
-        </Object-text>
-        <Object-text a4="0" x="23.9121pt" shadow_y="0pt" a0="1" color="0xff" font_size="15" a1="0" font_family="Sans" font_weight="normal" w="255.484pt" wrap="word" shadow_opacity="1" auto_shrink="false" h="30pt" font_italic="false" a3="1" lock_aspect_ratio="false" y="288.102pt" align="left" a5="0" font_underline="false" shadow_x="0pt" shadow="false" line_spacing="1" shadow_color="0x0" valign="top" a2="0">
-            <p>Sending company name:</p>
-        </Object-text>
-        <Object-text a4="0" x="23.9121pt" shadow_y="0pt" a0="1" color="0xff" font_size="15" a1="0" font_family="Sans" font_weight="normal" w="138.891pt" wrap="word" shadow_opacity="1" auto_shrink="false" h="30pt" font_italic="false" a3="1" lock_aspect_ratio="false" y="366.928pt" align="left" a5="0" font_underline="false" shadow_x="0pt" shadow="false" line_spacing="1" shadow_color="0x0" valign="top" a2="0">
-            <p>Booked date:</p>
-        </Object-text>
-        <Object-text a4="0" x="23.9121pt" shadow_y="0pt" a0="1" color="0xff" font_size="15" a1="0" font_family="Sans" font_weight="normal" w="191.547pt" wrap="word" shadow_opacity="1" auto_shrink="false" h="30pt" font_italic="false" a3="1" lock_aspect_ratio="false" y="459.306pt" align="left" a5="0" font_underline="false" shadow_x="0pt" shadow="false" line_spacing="1" shadow_color="0x0" valign="top" a2="0">
-            <p>Number of pallets:</p>
-        </Object-text>
-        <Object-text a4="0" x="23.9121pt" shadow_y="0pt" a0="1" color="0xff" font_size="15" a1="0" font_family="Sans" font_weight="normal" w="89.4844pt" wrap="word" shadow_opacity="1" auto_shrink="false" h="30pt" font_italic="false" a3="1" lock_aspect_ratio="false" y="149.676pt" align="left" a5="0" font_underline="false" shadow_x="0pt" shadow="false" line_spacing="1" shadow_color="0x0" valign="top" a2="0">
-            <p>Send to:</p>
-        </Object-text>
-        <Object-text a4="0" x="57.4436pt" shadow_y="0pt" a0="1" color="0xff" font_size="36" a1="0" font_family="Sans" font_weight="normal" w="294.556pt" wrap="word" shadow_opacity="1" auto_shrink="false" h="65pt" font_italic="false" a3="1" lock_aspect_ratio="false" y="488.937pt" align="hcenter" a5="0" font_underline="false" shadow_x="0pt" shadow="false" line_spacing="1" shadow_color="0x0" valign="top" a2="0">
-            <p>${PL_NUM} of ${TOTAL_PLS}</p>
-        </Object-text>
-        <Object-text a4="0" x="12.7625pt" shadow_y="0pt" a0="1" color="0xff" font_size="30" a1="0" font_family="Sans" font_weight="normal" w="382.844pt" wrap="word" shadow_opacity="1" auto_shrink="false" h="54pt" font_italic="false" a3="1" lock_aspect_ratio="false" y="401.1pt" align="hcenter" a5="0" font_underline="false" shadow_x="0pt" shadow="false" line_spacing="1" shadow_color="0x0" valign="top" a2="0">
-            <p>${BOOKED_DATE}</p>
-        </Object-text>
-        <Object-text a4="0" x="12.0604pt" shadow_y="0pt" a0="1" color="0xff" font_size="21" a1="0" font_family="Sans" font_weight="normal" w="243.828pt" wrap="word" shadow_opacity="1" auto_shrink="false" h="39pt" font_italic="false" a3="1" lock_aspect_ratio="false" y="318.061pt" align="hcenter" a5="0" font_underline="false" shadow_x="0pt" shadow="false" line_spacing="1" shadow_color="0x0" valign="top" a2="0">
-            <p>${SENDING_CO}</p>
-        </Object-text>
-        <Object-text a4="0" x="11.4964pt" shadow_y="0pt" a0="1" color="0xff" font_size="30" a1="0" font_family="Sans" font_weight="normal" w="405.504pt" wrap="word" shadow_opacity="1" auto_shrink="true" h="54pt" font_italic="false" a3="1" lock_aspect_ratio="false" y="173.573pt" align="hcenter" a5="0" font_underline="false" shadow_x="0pt" shadow="false" line_spacing="1" shadow_color="0x0" valign="top" a2="0">
-            <p>${SENDTO_ADDR1}</p>
-        </Object-text>
-        <Object-text a4="0" x="10.8758pt" shadow_y="0pt" a0="1" color="0xff" font_size="30" a1="0" font_family="Sans" font_weight="normal" w="404.124pt" wrap="word" shadow_opacity="1" auto_shrink="true" h="54pt" font_italic="false" a3="1" lock_aspect_ratio="false" y="226.713pt" align="hcenter" a5="0" font_underline="false" shadow_x="0pt" shadow="false" line_spacing="1" shadow_color="0x0" valign="top" a2="0">
-            <p>${SENDTO_ADDR2}</p>
-        </Object-text>
-        <Object-text a4="0" x="214.553pt" shadow_y="0pt" a0="1" color="0xff" font_size="25" a1="0" font_family="Sans" font_weight="normal" w="416.891pt" wrap="word" shadow_opacity="1" auto_shrink="true" h="49pt" font_italic="false" a3="1" lock_aspect_ratio="false" y="97.3131pt" align="left" a5="0" font_underline="false" shadow_x="0pt" shadow="false" line_spacing="1" shadow_color="0x0" valign="top" a2="0">
-            <p>${PURCHASE_ORDER}</p>
-        </Object-text>
-        <Object-line a3="1" a5="0" shadow_color="0x0" shadow_opacity="1" y="92.5441pt" a1="0" dy="1.40425pt" line_color="0xff" a2="0" line_width="1.5pt" shadow_x="0pt" a4="0" shadow_y="0pt" a0="1" x="8.72935pt" shadow="false" dx="404.493pt"/>
-        <Object-line a3="1" a5="0" shadow_color="0x0" shadow_opacity="1" y="143.433pt" a1="0" dy="1.40425pt" line_color="0xff" a2="0" line_width="1.5pt" shadow_x="0pt" a4="0" shadow_y="0pt" a0="1" x="8.72935pt" shadow="false" dx="404.493pt"/>
-        <Object-line a3="1" a5="0" shadow_color="0x0" shadow_opacity="1" y="282.559pt" a1="0" dy="1.40425pt" line_color="0xff" a2="0" line_width="1.5pt" shadow_x="0pt" a4="0" shadow_y="0pt" a0="1" x="8.72935pt" shadow="false" dx="404.493pt"/>
-        <Object-line a3="1" a5="0" shadow_color="0x0" shadow_opacity="1" y="359.748pt" a1="0" dy="1.40425pt" line_color="0xff" a2="0" line_width="1.5pt" shadow_x="0pt" a4="0" shadow_y="0pt" a0="1" x="8.72935pt" shadow="false" dx="404.493pt"/>
-        <Object-line a3="1" a5="0" shadow_color="0x0" shadow_opacity="1" y="457.588pt" a1="0" dy="1.40425pt" line_color="0xff" a2="0" line_width="1.5pt" shadow_x="0pt" a4="0" shadow_y="0pt" a0="1" x="8.72935pt" shadow="false" dx="404.493pt"/>
-    </Objects>
-    <Merge src="/dev/stdin" type="Text/Comma/Line1Keys"/>
-    <Data/>
+  <Template part="02" width="425.197pt" size="Other" brand="JMITS" height="566.929pt" description="150x200 Crossdock Label">
+    <Label-rectangle width="425.197pt" id="0" y_waste="0pt" round="0pt" x_waste="0pt" height="566.929pt">
+      <Markup-margin size="9.07087pt"/>
+      <Layout x0="0pt" dy="566.929pt" nx="1" ny="1" dx="425.197pt" y0="0pt"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-text lock_aspect_ratio="false" x="10pt" shadow="false" font_size="45" a1="0" font_italic="false" a0="1" font_weight="normal" color="0xff" w="403pt" a5="0" auto_shrink="false" h="77pt" shadow_x="0pt" align="hcenter" line_spacing="1" a4="0" valign="top" a2="0" shadow_y="0pt" shadow_color="0x0" y="13.1519pt" a3="1" font_family="Sans" wrap="word" font_underline="false" shadow_opacity="1">
+      <p>Warehouse</p>
+    </Object-text>
+    <Object-text lock_aspect_ratio="false" x="11.8758pt" shadow="false" font_size="15" a1="0" font_italic="false" a0="1" font_weight="normal" color="0xff" w="190.875pt" a5="0" auto_shrink="false" h="30pt" shadow_x="0pt" align="left" line_spacing="1" a4="0" valign="top" a2="0" shadow_y="0pt" shadow_color="0x0" y="107.69pt" a3="1" font_family="Sans" wrap="word" font_underline="false" shadow_opacity="1">
+      <p>Purchase Order #:</p>
+    </Object-text>
+    <Object-text lock_aspect_ratio="false" x="11.8758pt" shadow="false" font_size="15" a1="0" font_italic="false" a0="1" font_weight="normal" color="0xff" w="272.088pt" a5="0" auto_shrink="false" h="30pt" shadow_x="0pt" align="left" line_spacing="1" a4="0" valign="top" a2="0" shadow_y="0pt" shadow_color="0x0" y="288.102pt" a3="1" font_family="Sans" wrap="word" font_underline="false" shadow_opacity="1">
+      <p>Sending company name:</p>
+    </Object-text>
+    <Object-text lock_aspect_ratio="false" x="11.8758pt" shadow="false" font_size="15" a1="0" font_italic="false" a0="1" font_weight="normal" color="0xff" w="138.891pt" a5="0" auto_shrink="false" h="30pt" shadow_x="0pt" align="left" line_spacing="1" a4="0" valign="top" a2="0" shadow_y="0pt" shadow_color="0x0" y="366.928pt" a3="1" font_family="Sans" wrap="word" font_underline="false" shadow_opacity="1">
+      <p>Booked date:</p>
+    </Object-text>
+    <Object-text lock_aspect_ratio="false" x="11.8758pt" shadow="false" font_size="15" a1="0" font_italic="false" a0="1" font_weight="normal" color="0xff" w="191.547pt" a5="0" auto_shrink="false" h="30pt" shadow_x="0pt" align="left" line_spacing="1" a4="0" valign="top" a2="0" shadow_y="0pt" shadow_color="0x0" y="459.306pt" a3="1" font_family="Sans" wrap="word" font_underline="false" shadow_opacity="1">
+      <p>Number of pallets:</p>
+    </Object-text>
+    <Object-text lock_aspect_ratio="false" x="11.8758pt" shadow="false" font_size="15" a1="0" font_italic="false" a0="1" font_weight="normal" color="0xff" w="124.088pt" a5="0" auto_shrink="false" h="30pt" shadow_x="0pt" align="left" line_spacing="1" a4="0" valign="top" a2="0" shadow_y="0pt" shadow_color="0x0" y="149.676pt" a3="1" font_family="Sans" wrap="word" font_underline="false" shadow_opacity="1">
+      <p>Send to:</p>
+    </Object-text>
+    <Object-text lock_aspect_ratio="false" x="11.8758pt" shadow="false" font_size="36" a1="0" font_italic="false" a0="1" font_weight="normal" color="0xff" w="294.556pt" a5="0" auto_shrink="false" h="65pt" shadow_x="0pt" align="left" line_spacing="1" a4="0" valign="top" a2="0" shadow_y="0pt" shadow_color="0x0" y="488.937pt" a3="1" font_family="Sans" wrap="word" font_underline="false" shadow_opacity="1">
+      <p>${PL_NUM} of ${TOTAL_PLS}</p>
+    </Object-text>
+    <Object-text lock_aspect_ratio="false" x="11.8758pt" shadow="false" font_size="30" a1="0" font_italic="false" a0="1" font_weight="normal" color="0xff" w="382.844pt" a5="0" auto_shrink="false" h="54pt" shadow_x="0pt" align="left" line_spacing="1" a4="0" valign="top" a2="0" shadow_y="0pt" shadow_color="0x0" y="401.1pt" a3="1" font_family="Sans" wrap="word" font_underline="false" shadow_opacity="1">
+      <p>${BOOKED_DATE}</p>
+    </Object-text>
+    <Object-text lock_aspect_ratio="false" x="11.8758pt" shadow="false" font_size="21" a1="0" font_italic="false" a0="1" font_weight="normal" color="0xff" w="397.94pt" a5="0" auto_shrink="false" h="39pt" shadow_x="0pt" align="left" line_spacing="1" a4="0" valign="top" a2="0" shadow_y="0pt" shadow_color="0x0" y="318.061pt" a3="1" font_family="Sans" wrap="word" font_underline="false" shadow_opacity="1">
+      <p>${SENDING_CO}</p>
+    </Object-text>
+    <Object-text lock_aspect_ratio="false" x="11.8758pt" shadow="false" font_size="29" a1="0" font_italic="false" a0="1" font_weight="normal" color="0xff" w="405.504pt" a5="0" auto_shrink="true" h="54pt" shadow_x="0pt" align="left" line_spacing="1" a4="0" valign="top" a2="0" shadow_y="0pt" shadow_color="0x0" y="173.573pt" a3="1" font_family="Sans" wrap="word" font_underline="false" shadow_opacity="1">
+      <p>${SENDTO_ADDR1}</p>
+    </Object-text>
+    <Object-text lock_aspect_ratio="false" x="11.8758pt" shadow="false" font_size="29" a1="0" font_italic="false" a0="1" font_weight="normal" color="0xff" w="404.124pt" a5="0" auto_shrink="true" h="54pt" shadow_x="0pt" align="left" line_spacing="1" a4="0" valign="top" a2="0" shadow_y="0pt" shadow_color="0x0" y="226.713pt" a3="1" font_family="Sans" wrap="word" font_underline="false" shadow_opacity="1">
+      <p>${SENDTO_ADDR2}</p>
+    </Object-text>
+    <Object-text lock_aspect_ratio="false" x="205.553pt" shadow="false" font_size="25" a1="0" font_italic="false" a0="1" font_weight="normal" color="0xff" w="416.891pt" a5="0" auto_shrink="true" h="49pt" shadow_x="0pt" align="left" line_spacing="1" a4="0" valign="top" a2="0" shadow_y="0pt" shadow_color="0x0" y="95.3131pt" a3="1" font_family="Sans" wrap="word" font_underline="false" shadow_opacity="1">
+      <p>${PURCHASE_ORDER}</p>
+    </Object-text>
+    <Object-line dy="1.40425pt" y="92.5441pt" a2="0" shadow_color="0x0" a5="0" line_width="1.5pt" a3="1" dx="404.493pt" line_color="0xff" shadow_opacity="1" a1="0" a0="1" shadow_x="0pt" a4="0" shadow="false" x="8.72935pt" shadow_y="0pt"/>
+    <Object-line dy="1.40425pt" y="143.433pt" a2="0" shadow_color="0x0" a5="0" line_width="1.5pt" a3="1" dx="404.493pt" line_color="0xff" shadow_opacity="1" a1="0" a0="1" shadow_x="0pt" a4="0" shadow="false" x="8.72935pt" shadow_y="0pt"/>
+    <Object-line dy="1.40425pt" y="282.559pt" a2="0" shadow_color="0x0" a5="0" line_width="1.5pt" a3="1" dx="404.493pt" line_color="0xff" shadow_opacity="1" a1="0" a0="1" shadow_x="0pt" a4="0" shadow="false" x="8.72935pt" shadow_y="0pt"/>
+    <Object-line dy="1.40425pt" y="359.748pt" a2="0" shadow_color="0x0" a5="0" line_width="1.5pt" a3="1" dx="404.493pt" line_color="0xff" shadow_opacity="1" a1="0" a0="1" shadow_x="0pt" a4="0" shadow="false" x="8.72935pt" shadow_y="0pt"/>
+    <Object-line dy="1.40425pt" y="457.588pt" a2="0" shadow_color="0x0" a5="0" line_width="1.5pt" a3="1" dx="404.493pt" line_color="0xff" shadow_opacity="1" a1="0" a0="1" shadow_x="0pt" a4="0" shadow="false" x="8.72935pt" shadow_y="0pt"/>
+  </Objects>
+  <Merge src="/dev/stdin" type="Text/Comma/Line1Keys"/>
+  <Data/>
 </Glabels-document>

@@ -3,18 +3,23 @@ declare(strict_types=1);
 
 namespace App\Lib\PrintLabels;
 
+use App\Model\Entity\PrintTemplate;
+use Cake\ORM\Entity;
+
 /**
  * trait ResultTrait
  * This handles the return value from the print process and
  * then displays the correct success|error message based
  * on success it saves the data to the print_log table
+ *
+ * @param App\Model\Entity\PrintTemplate $printTemplate Print Template Entity
  */
 trait ResultTrait
 {
     private function handlePrintResult(
         array $printResult,
-        array $printerDetails,
-        array $printTemplate,
+        Entity $printerDetails,
+        PrintTemplate $printTemplate,
         array $saveData
     ) {
         if ($printResult['return_value'] === 0) {
@@ -22,11 +27,9 @@ trait ResultTrait
             $savedEntity = $this->PrintLog->save($newEntity);
 
             $message = __(
-                'Sent <strong>{0}</strong> to printer <strong>{1}</strong> {2} :-: {3}',
-                $printTemplate['name'],
+                'Sent <strong>{0}</strong> to printer <strong>{1}</strong>',
+                $printTemplate->name,
                 $printerDetails['name'],
-                $printResult['stdout'],
-                $printResult['stderr'],
             );
 
             $this->Flash->success($message, ['escape' => false]);

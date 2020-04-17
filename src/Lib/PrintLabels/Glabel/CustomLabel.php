@@ -13,9 +13,9 @@ class CustomLabel extends Label implements GlabelInterface
         parent::__construct($action);
     }
 
-    public function print($printerDetails, $glabelsTemplateFullPath)
+    public function print($printerDetails, $glabelsProject)
     {
-        return $this->glabelsBatchPrint($glabelsTemplateFullPath, $printerDetails['queue_name']);
+        return $this->glabelsBatchPrint($glabelsProject, $printerDetails['queue_name']);
     }
 
     public function format($labelData)
@@ -28,7 +28,7 @@ class CustomLabel extends Label implements GlabelInterface
     }
 
     /**
-     * @param array $printArray Print Array
+     * @param  array $printArray Print Array
      * @return void
      */
     public function formatCustomLabel($printArray)

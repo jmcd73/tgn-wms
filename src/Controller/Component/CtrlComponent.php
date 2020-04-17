@@ -73,7 +73,13 @@ class CtrlComponent extends Component
         return $resources;
     }
 
-    public function getPrintActions()
+    /**
+     * returns array
+     * [ Controller::action => Controller::action ]
+     *
+     * @return array
+     */
+    public function getPrintActions(): array
     {
         $controllersWithActions = $this->getResources();
         $flattened = [];
@@ -89,7 +95,8 @@ class CtrlComponent extends Component
                 }
             }
         }
-        return $flattened;
+
+        return array_combine($flattened, $flattened);
     }
 
     public function getMenuActions()

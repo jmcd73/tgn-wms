@@ -20,7 +20,7 @@
         <table class="table table-striped">
             <tr>
                 <th scope="row"><?= __('Print Action') ?></th>
-                <td><?= h($printLog->print_action) ?></td>
+                <td><?= h($printLog->controller_action) ?></td>
             </tr>
             <tr>
                 <th scope="row"><?= __('Id') ?></th>

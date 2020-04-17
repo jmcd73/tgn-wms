@@ -15,8 +15,7 @@ use Cake\ORM\Entity;
  * @property string|null $file_template
  * @property bool|null $active
  * @property int|null $is_file_template
- * @property string|null $print_action
- * @property string|null $print_controller
+ * @property string|null $controller_action
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property string|null $example_image
@@ -52,8 +51,7 @@ class PrintTemplate extends Entity
         'file_template' => true,
         'active' => true,
         'is_file_template' => true,
-        'print_action' => true,
-        'print_controller' => true,
+        'controller_action' => true,
         'created' => true,
         'modified' => true,
         'example_image' => true,

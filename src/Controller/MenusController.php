@@ -38,8 +38,8 @@ class MenusController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Menu id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @param  string|null                                        $id Menu id.
+     * @return \Cake\Http\Response|null|void                      Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
@@ -79,8 +79,8 @@ class MenusController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Menu id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @param  string|null                                        $id Menu id.
+     * @return \Cake\Http\Response|null|void                      Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null)
@@ -107,8 +107,8 @@ class MenusController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Menu id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @param  string|null                                        $id Menu id.
+     * @return \Cake\Http\Response|null|void                      Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
@@ -125,8 +125,8 @@ class MenusController extends AppController
     }
 
     /**
-     * @param int $id ID of menu
-     * @param int $delta how much to move up or down
+     * @param  int   $id    ID of menu
+     * @param  int   $delta how much to move up or down
      * @return mixed
      */
     public function move($id = null, $delta = 1)

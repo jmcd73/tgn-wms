@@ -10,7 +10,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string|null $print_data
- * @property string|null $print_action
+ * @property string|null $controller_action
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenTime|null $modified
  */
@@ -27,7 +27,7 @@ class PrintLog extends Entity
      */
     protected $_accessible = [
         'print_data' => true,
-        'print_action' => true,
+        'controller_action' => true,
         'created' => true,
         'modified' => true,
     ];

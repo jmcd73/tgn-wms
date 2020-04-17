@@ -49,9 +49,9 @@
         <div class="row">
             <div class='col-4'>
                 <?php
-                        echo $this->Form->hidden('print_action', [
-                            'id' => 'print_action',
-                            'value' => $print_action,
+                        echo $this->Form->hidden('controller_action', [
+                            'id' => 'controller_action',
+                            'value' => $controller_action,
                         ]);
                         echo $this->Form->hidden('product-list', [
                             'id' => 'product-list',

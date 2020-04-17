@@ -7,7 +7,7 @@
     <thead>
         <tr>
 <th><?= $this->Paginator->sort('id'); ?></th>
-  <th><?= $this->Paginator->sort('print_action'); ?></th>
+  <th><?= $this->Paginator->sort('controller_action'); ?></th>
             <th><?= $this->Paginator->sort('print_data'); ?></th>
             <th><?= $this->Paginator->sort('created'); ?></th>
             <th><?= $this->Paginator->sort('modified'); ?></th>
@@ -17,7 +17,7 @@
                 <?php foreach ($printItems as $item): ?>
                 <tr>
         <td><?= h($item['PrintLabel']['id']); ?></td>
-        <td><?= h($item['PrintLabel']['print_action']); ?></td>
+        <td><?= h($item['PrintLabel']['controller_action']); ?></td>
         <td><pre style="background-color: inherit; border: 0px;"><?= json_encode(
                 json_decode($item['PrintLabel']['print_data']),
                 JSON_PRETTY_PRINT

@@ -28,6 +28,7 @@ return [
             'Pallets' => [
                 'palletPrint',
                 'palletReprint',
+                'lookup',
             ],
             'PrintLog' => [
                 'printCartonLabels',
@@ -39,6 +40,7 @@ return [
                 'glabelSampleLabels',
                 'bigNumber',
                 'customPrint',
+                'customPrint0',
                 'sampleLabels',
                 'ssccLabel', ],
         ], ],

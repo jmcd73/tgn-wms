@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use App\Lib\PrintLabels\Glabel\GlabelsTemplate;
+use App\Lib\PrintLabels\Glabel\GlabelsProject;
 use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -37,7 +37,7 @@ class PrintLogTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param  array $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void
@@ -55,7 +55,7 @@ class PrintLogTable extends Table
     /**
      * Default validation rules.
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @param  \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator): Validator
@@ -69,9 +69,9 @@ class PrintLogTable extends Table
             ->allowEmptyString('print_data');
 
         $validator
-            ->scalar('print_action')
-            ->maxLength('print_action', 100)
-            ->allowEmptyString('print_action');
+            ->scalar('controller_action')
+            ->maxLength('controller_action', 100)
+            ->allowEmptyString('controller_action');
 
         return $validator;
     }
@@ -79,42 +79,30 @@ class PrintLogTable extends Table
     /**
      * getGlabelsDetail
      *
-     * @param string $controller controller name
-     * @param string $action action name
-     * @return GlabelsTemplate
+     * @param  string                                     $controller controller name
+     * @param  string                                     $action     action name
+     * @return \App\Lib\PrintLabels\Glabel\GlabelsProject
      */
-    public function getGlabelsDetail($controller, $action)
+    public function getGlabelsProject($controllerAction): GlabelsProject
     {
-        $glabelsTemplate = $action;
-
-        $printTemplateModel = TableRegistry::get('PrintTemplates');
-
-        $glabelsTemplate = $printTemplateModel->find()
+        $glabelsTemplate = TableRegistry::get('PrintTemplates')->find()
             ->where([
-                'PrintTemplates.print_controller' => $controller,
-                'PrintTemplates.print_action' => $action,
-                'PrintTemplates.active' => 1,
-            ])->first()->toArray();
+                'controller_action' => $controllerAction,
+                'active' => 1,
+            ])->first();
 
         $glabelsRoot = $this->getSetting('GLABELS_ROOT');
 
-        $glabelsTemplateFullPath = WWW_ROOT . $glabelsRoot . DS .
-            $glabelsTemplate['file_template'];
-
-        $glabelsExampleImage = DS . $glabelsRoot . DS .
-            $glabelsTemplate['example_image'];
-
-        //$this->log(get_defined_vars();
-
-        return new GlabelsTemplate($glabelsTemplateFullPath, $glabelsExampleImage, $glabelsTemplate);
+        return new GlabelsProject($glabelsTemplate, $glabelsRoot);
     }
 
     /**
      * create sequence list as needed in a list e.g.
      * [ "1" => "1", "2" => "2" ]
-     * @param int $max high value
-     * @param int $start low value
-     * @param array $extraOptions values to add after high
+     *
+     * @param  int   $max          high value
+     * @param  int   $start        low value
+     * @param  array $extraOptions values to add after high
      * @return array
      */
     public function createSequenceList($max, $start = 1, $extraOptions = [])
@@ -135,19 +123,24 @@ class PrintLogTable extends Table
 
     /**
      * form print log data for print_log table
-     * @param string $print_action result of $this->request->action or calling action
-     * @param array $print_data print data to encode as json
+     * @param  string $controller_action result of $this->request->action or calling action
+     * @param  array  $print_data        print data to encode as json
      * @return array
      */
-    public function formatPrintLogData($print_action, $print_data)
+    public function formatPrintLogData($controller_action, $print_data)
     {
-        if (empty($print_action) || empty($print_data)) {
-            throw new NotFoundException('Failed to specify a print_action and print_data');
+        if (empty($controller_action) || empty($print_data)) {
+            throw new NotFoundException('Failed to specify a controller_action and print_data');
         }
 
         return [
             'print_data' => json_encode($print_data),
-            'print_action' => $print_action,
+            'controller_action' => $controller_action,
         ];
+    }
+
+    public function getControllerAction($request)
+    {
+        return $request->getParam('controller') . '::' . $request->getParam('action');
     }
 }
