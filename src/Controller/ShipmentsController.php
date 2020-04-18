@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Core\Configure;
+use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Utility\Hash;
 
@@ -17,6 +18,19 @@ use Cake\Utility\Hash;
  */
 class ShipmentsController extends AppController
 {
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
+        $this->Authentication->addUnauthenticatedActions([
+            'edit-shipment',
+            'editShipment',
+            'destinationLookup',
+            'add-shipment',
+            'addShipment',
+            'view',
+        ]);
+    }
+
     public function initialize(): void
     {
         parent::initialize();
