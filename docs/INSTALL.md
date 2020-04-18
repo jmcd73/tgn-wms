@@ -1,6 +1,6 @@
-# Installation the CakePHP 4 version of Toggen WMS to a Docker Test Environment
+# Installing Toggen WMS to a Docker Test Environment
 
-Note: PHP7.4 is required
+**Note:** PHP7.4 is required as some of the code makes use of new features from this version
 
 1. Create a database in MYSQL, create and grant a user access
    ```sql
@@ -107,49 +107,48 @@ Note: PHP7.4 is required
 
    using symlinks breaks if you try to switch out of docker and run `bin/cake server`
 
-```sh
-# still in container
-cd /var/www
-root@d3ad0c48ca65:/var/www# bin/cake plugin assets copy
+   ```sh
+   # still in container
+   cd /var/www
+   root@d3ad0c48ca65:/var/www# bin/cake plugin assets copy
 
-For plugin: BootstrapUI
--------------------------------------------------------------------------------
+   For plugin: BootstrapUI
+   -------------------------------------------------------------------------------
 
-For plugin: DebugKit
--------------------------------------------------------------------------------
+   For plugin: DebugKit
+   -------------------------------------------------------------------------------
 
-Done
+   Done
 
-```
+   ```
 
 10. Copy bootstrap, jquery and popper.js into webroot/bootstrap_u_i
 
-```sh
-cd /var/www/vendor/friendsofcake/bootstrap-ui/node_modules/
-cp -rv bootstrap/dist/* /var/www/webroot/bootstrap_u_i/
-cp -rv jquery/dist/* /var/www/webroot/bootstrap_u_i/js/
-cp -rv popper.js/dist/umd/* /var/www/webroot/bootstrap_u_i/js/
+    ```sh
+    cd /var/www/vendor/friendsofcake/bootstrap-ui/node_modules/
+    cp -rv bootstrap/dist/* /var/www/webroot/bootstrap_u_i/
+    cp -rv jquery/dist/* /var/www/webroot/bootstrap_u_i/js/
+    cp -rv popper.js/dist/umd/* /var/www/webroot/bootstrap_u_i/js/
+    ```
 
-```
+    Edit the file to have the correct host, user, db, password parameters
 
-Edit the file to have the correct host, user, db, password parameters
+    ```php
 
-```php
+        'Datasources' => [
+            'default' => [
+                'host' => \$dbHost,
+                //'port' => 'non_standard_port_number',
+                'username' => 'tgndbuser',
+                'password' => 'RandomCakeNameBoxPhoneNote',
+                'database' => 'tgnwmsdbc4',
+                //'schema' => 'myapp',
+                //'url' => env('DATABASE_URL', null),
+            ],
 
-    'Datasources' => [
-        'default' => [
-            'host' => \$dbHost,
-            //'port' => 'non_standard_port_number',
-            'username' => 'tgndbuser',
-            'password' => 'RandomCakeNameBoxPhoneNote',
-            'database' => 'tgnwmsdbc4',
-            //'schema' => 'myapp',
-            //'url' => env('DATABASE_URL', null),
-        ],
+    ```
 
-```
-
-10. Install htaccess files
+11. Install htaccess files
 
     ```sh
     cd /var/www
@@ -158,7 +157,7 @@ Edit the file to have the correct host, user, db, password parameters
     mv htaccess.txt .htaccess
     ```
 
-11. At this point if the above instructions are correct you should be able to connect to [http://localhost:8052](http://localhost:8052) and get the login screen
+12. At this point if the above instructions are correct you should be able to connect to [http://localhost:8052](http://localhost:8052) and get the login screen
 
 | Username          | Password | Role Description                                                                        |
 | ----------------- | -------- | --------------------------------------------------------------------------------------- |
