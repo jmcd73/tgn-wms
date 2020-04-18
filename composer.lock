@@ -386,28 +386,28 @@
         },
         {
             "name": "cakephp/migrations",
-            "version": "3.0.0-beta2",
+            "version": "3.0.0-beta3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/migrations.git",
-                "reference": "4cc2222dbde87fa6827d76ede01e13ce3ff5c78f"
+                "reference": "d0a101ec8c5eb167885419170a6133c258298949"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/migrations/zipball/4cc2222dbde87fa6827d76ede01e13ce3ff5c78f",
-                "reference": "4cc2222dbde87fa6827d76ede01e13ce3ff5c78f",
+                "url": "https://api.github.com/repos/cakephp/migrations/zipball/d0a101ec8c5eb167885419170a6133c258298949",
+                "reference": "d0a101ec8c5eb167885419170a6133c258298949",
                 "shasum": ""
             },
             "require": {
                 "cakephp/cache": "^4.0",
                 "cakephp/orm": "^4.0",
                 "php": ">=7.2.0",
-                "robmorgan/phinx": "0.next-dev"
+                "robmorgan/phinx": "^0.12"
             },
             "require-dev": {
                 "cakephp/bake": "^2.0",
                 "cakephp/cakephp": "^4.0",
-                "cakephp/cakephp-codesniffer": "dev-next",
+                "cakephp/cakephp-codesniffer": "^4.0",
                 "phpunit/phpunit": "^8.0"
             },
             "suggest": {
@@ -435,7 +435,7 @@
                 "cakephp",
                 "migrations"
             ],
-            "time": "2019-12-18T08:16:53+00:00"
+            "time": "2020-04-10T21:37:06+00:00"
         },
         {
             "name": "cakephp/plugin-installer",
@@ -1356,16 +1356,16 @@
         },
         {
             "name": "robmorgan/phinx",
-            "version": "dev-0.next",
+            "version": "0.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/phinx.git",
-                "reference": "8b0e2f1bd7a0cf047bdbfcbb766cac3012f12e7a"
+                "reference": "94d0b78f68bfb20aac4c59b0b3ff49956803fc70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/phinx/zipball/8b0e2f1bd7a0cf047bdbfcbb766cac3012f12e7a",
-                "reference": "8b0e2f1bd7a0cf047bdbfcbb766cac3012f12e7a",
+                "url": "https://api.github.com/repos/cakephp/phinx/zipball/94d0b78f68bfb20aac4c59b0b3ff49956803fc70",
+                "reference": "94d0b78f68bfb20aac4c59b0b3ff49956803fc70",
                 "shasum": ""
             },
             "require": {
@@ -1378,12 +1378,14 @@
             "require-dev": {
                 "cakephp/cakephp-codesniffer": "^3.0",
                 "ext-json": "*",
+                "ext-pdo": "*",
                 "phpunit/phpunit": "^8.5",
                 "sebastian/comparator": ">=1.2.3",
                 "symfony/yaml": "^3.4|^4.0|^5.0"
             },
             "suggest": {
                 "ext-json": "Install if using JSON configuration format",
+                "ext-pdo": "PDO extension is needed",
                 "symfony/yaml": "Install if using YAML configuration format"
             },
             "bin": [
@@ -1432,7 +1434,7 @@
                 "migrations",
                 "phinx"
             ],
-            "time": "2020-04-08T21:37:04+00:00"
+            "time": "2020-04-11T07:17:48+00:00"
         },
         {
             "name": "symfony/config",
@@ -1923,23 +1925,22 @@
     "packages-dev": [
         {
             "name": "cakephp/bake",
-            "version": "2.0.9",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/bake.git",
-                "reference": "a44c9562dd611219fef0f93ab0bb3e2739e4e3e1"
+                "reference": "51742303e0033a8612ab08b9a723bc84fb5a2210"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/bake/zipball/a44c9562dd611219fef0f93ab0bb3e2739e4e3e1",
-                "reference": "a44c9562dd611219fef0f93ab0bb3e2739e4e3e1",
+                "url": "https://api.github.com/repos/cakephp/bake/zipball/51742303e0033a8612ab08b9a723bc84fb5a2210",
+                "reference": "51742303e0033a8612ab08b9a723bc84fb5a2210",
                 "shasum": ""
             },
             "require": {
                 "cakephp/cakephp": "^4.0",
-                "cakephp/plugin-installer": "^1.0",
-                "php": ">=7.2",
-                "wyrihaximus/twig-view": "^5.0.1"
+                "cakephp/twig-view": "^1.0",
+                "php": ">=7.2"
             },
             "require-dev": {
                 "cakephp/cakephp-codesniffer": "^4.0",
@@ -1967,7 +1968,7 @@
                 "bake",
                 "cakephp"
             ],
-            "time": "2020-04-10T14:56:39+00:00"
+            "time": "2020-04-18T00:06:41+00:00"
         },
         {
             "name": "cakephp/cakephp-codesniffer",
@@ -2017,22 +2018,21 @@
         },
         {
             "name": "cakephp/debug_kit",
-            "version": "4.1.0",
+            "version": "4.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/debug_kit.git",
-                "reference": "db018a7cdcd8ae4e6a6b893c00bfc1a4ec5444df"
+                "reference": "e98c06eb05a084cb43832d4bc3f034bb44913c61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/debug_kit/zipball/db018a7cdcd8ae4e6a6b893c00bfc1a4ec5444df",
-                "reference": "db018a7cdcd8ae4e6a6b893c00bfc1a4ec5444df",
+                "url": "https://api.github.com/repos/cakephp/debug_kit/zipball/e98c06eb05a084cb43832d4bc3f034bb44913c61",
+                "reference": "e98c06eb05a084cb43832d4bc3f034bb44913c61",
                 "shasum": ""
             },
             "require": {
                 "cakephp/cakephp": "^4.0",
                 "cakephp/chronos": "^2.0",
-                "cakephp/plugin-installer": "^1.0",
                 "composer/composer": "^1.3",
                 "jdorn/sql-formatter": "^1.2",
                 "php": ">=7.2"
@@ -2074,7 +2074,63 @@
                 "debug",
                 "kit"
             ],
-            "time": "2020-03-03T02:45:17+00:00"
+            "time": "2020-04-13T17:28:17+00:00"
+        },
+        {
+            "name": "cakephp/twig-view",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cakephp/twig-view.git",
+                "reference": "2d058a81acc584b384bc9abe957879a20744a31c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cakephp/twig-view/zipball/2d058a81acc584b384bc9abe957879a20744a31c",
+                "reference": "2d058a81acc584b384bc9abe957879a20744a31c",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "^4.0",
+                "jasny/twig-extensions": "^1.3",
+                "php": "^7.2",
+                "twig/markdown-extra": "^3.0",
+                "twig/twig": "^3.0"
+            },
+            "conflict": {
+                "wyrihaximus/twig-view": "*"
+            },
+            "require-dev": {
+                "cakephp/cakephp-codesniffer": "^4.0",
+                "cakephp/debug_kit": "^4.0",
+                "michelf/php-markdown": "^1.9",
+                "mikey179/vfsstream": "^1.6",
+                "phpunit/phpunit": "^8.5"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Cake\\TwigView\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "CakePHP Community",
+                    "homepage": "https://github.com/cakephp/cakephp/graphs/contributors"
+                }
+            ],
+            "description": "Twig powered View for CakePHP",
+            "keywords": [
+                "cakephp",
+                "template",
+                "twig",
+                "view"
+            ],
+            "time": "2020-04-14T02:11:50+00:00"
         },
         {
             "name": "composer/composer",
@@ -2543,16 +2599,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v2.16.2",
+            "version": "v2.16.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "c460a3cbaa58f983fe026cd52c45950bf61e9239"
+                "reference": "83baf823a33a1cbd5416c8626935cf3f843c10b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/c460a3cbaa58f983fe026cd52c45950bf61e9239",
-                "reference": "c460a3cbaa58f983fe026cd52c45950bf61e9239",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/83baf823a33a1cbd5416c8626935cf3f843c10b0",
+                "reference": "83baf823a33a1cbd5416c8626935cf3f843c10b0",
                 "shasum": ""
             },
             "require": {
@@ -2630,7 +2686,7 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
-            "time": "2020-04-10T21:08:06+00:00"
+            "time": "2020-04-15T18:51:10+00:00"
         },
         {
             "name": "jasny/twig-extensions",
@@ -4684,16 +4740,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.5.4",
+            "version": "3.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "dceec07328401de6211037abbb18bda423677e26"
+                "reference": "73e2e7f57d958e7228fce50dc0c61f58f017f9f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/dceec07328401de6211037abbb18bda423677e26",
-                "reference": "dceec07328401de6211037abbb18bda423677e26",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/73e2e7f57d958e7228fce50dc0c61f58f017f9f6",
+                "reference": "73e2e7f57d958e7228fce50dc0c61f58f017f9f6",
                 "shasum": ""
             },
             "require": {
@@ -4731,7 +4787,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2020-01-30T22:20:29+00:00"
+            "time": "2020-04-17T01:09:41+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -5514,62 +5570,6 @@
                 "validate"
             ],
             "time": "2020-02-14T12:15:55+00:00"
-        },
-        {
-            "name": "wyrihaximus/twig-view",
-            "version": "5.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cakephp/legacy-twig-view.git",
-                "reference": "ec1d3091d56a0da9b1756692fa0bf99846a4eb20"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/legacy-twig-view/zipball/ec1d3091d56a0da9b1756692fa0bf99846a4eb20",
-                "reference": "ec1d3091d56a0da9b1756692fa0bf99846a4eb20",
-                "shasum": ""
-            },
-            "require": {
-                "cakephp/cakephp": "^4.0",
-                "jasny/twig-extensions": "^1.3",
-                "php": "^7.2",
-                "twig/markdown-extra": "^3.0",
-                "twig/twig": "^3.0"
-            },
-            "require-dev": {
-                "cakephp/cakephp-codesniffer": "^4.0",
-                "cakephp/debug_kit": "^4.0",
-                "jakub-onderka/php-console-highlighter": "^0.4.0",
-                "jakub-onderka/php-parallel-lint": "^1.0",
-                "phpunit/phpunit": "^8.0",
-                "wyrihaximus/phpunit-class-reflection-helpers": "dev-master"
-            },
-            "type": "cakephp-plugin",
-            "autoload": {
-                "psr-4": {
-                    "WyriHaximus\\TwigView\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Cees-Jan Kiewiet",
-                    "email": "ceesjank@gmail.com",
-                    "homepage": "http://wyrihaximus.net/"
-                }
-            ],
-            "description": "Twig powered View for CakePHP",
-            "keywords": [
-                "cakephp",
-                "template",
-                "twig",
-                "twig2",
-                "view"
-            ],
-            "time": "2019-12-30T11:29:47+00:00"
         }
     ],
     "aliases": [],
