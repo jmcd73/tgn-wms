@@ -1,5 +1,7 @@
 # Installation the CakePHP 4 version of Toggen WMS to a Docker Test Environment
 
+Note: PHP7.4 is required
+
 1. Create a database in MYSQL, create and grant a user access
    ```sql
    CREATE DATABASE tgnwmsdbc4;
@@ -53,15 +55,21 @@
 
    You should get the CUPS admin page for the first URL and a HTTP 500 ERROR for the second
 
+   Note that Google Chrome will refuse to connect to the https://localhost:652 page. So to add or remove printers you need to use Firefox or Safari
+
 7. Login to the docker container
 
    ```sh
    docker exec -ti tgnwms /bin/bash
    # you should see a root prompt
    root@495bdffd3c45:/var/www#
-   # check apache logs for errors
+
+   # you can check apache logs for errors
    cd /var/log/apache2/
    vim error.log
+
+   # cakephp 4 application error logs are in /var/www/logs
+
    ```
 
 8. Install the vendor files and support files for bootstrap-ui
