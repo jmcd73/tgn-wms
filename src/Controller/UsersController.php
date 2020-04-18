@@ -161,6 +161,7 @@ class UsersController extends AppController
                         );
                     }
                 }
+
                 return $this->redirect($redirect);
             }
         }
@@ -181,6 +182,7 @@ class UsersController extends AppController
         if ($this->request->is('post') && !$result->isValid()) {
             $this->Flash->error(__('Invalid username or password'));
         }
+
         $this->set(compact('rememberMe'));
     }
 
@@ -192,12 +194,19 @@ class UsersController extends AppController
         if ($result->isValid()) {
             $this->Authentication->logout();
             $this->Flash->success('You are logged out');
+
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
         }
     }
 
     public function accessDenied()
     {
+        $result = $this->Authentication->getResult();
+        if ($result->isValid()) {
+            $redirect = $this->request->getQuery('redirect', '/');
+
+            return $this->redirect($redirect);
+        }
         // code...
     }
 }

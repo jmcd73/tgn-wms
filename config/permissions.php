@@ -64,65 +64,6 @@ return [
             'controller' => '*',
             'action' => '*',
         ],
-        /*  //all bypass
-        [
-            'prefix' => false,
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'Users',
-            'action' => [
-                // LoginTrait
-                'socialLogin',
-                'login',
-                'logout',
-                'socialEmail',
-                'verify',
-                // RegisterTrait
-                'register',
-                'validateEmail',
-                // PasswordManagementTrait used in RegisterTrait
-                'changePassword',
-                'resetPassword',
-                'requestResetPassword',
-                // UserValidationTrait used in PasswordManagementTrait
-                'resendTokenValidation',
-                'linkSocial',
-            ],
-            'bypassAuth' => true,
-        ],
-        [
-            'prefix' => false,
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'SocialAccounts',
-            'action' => [
-                'validateAccount',
-                'resendValidation',
-            ],
-            'bypassAuth' => true,
-        ], */
-        //admin role allowed to all the things
-
-        /*   //specific actions allowed for the all roles in Users plugin
-        [
-            'role' => '*',
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'Users',
-            'action' => ['profile', 'logout', 'linkSocial', 'callbackLinkSocial'],
-        ], */
-        /*  [
-            'role' => '*',
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'Users',
-            'action' => 'resetOneTimePasswordAuthenticator',
-            'allowed' => function (array $user, $role, \Cake\Http\ServerRequest $request) {
-                $userId = \Cake\Utility\Hash::get($request->getAttribute('params'), 'pass.0');
-                if (!empty($userId) && !empty($user)) {
-                    return $userId === $user['id'];
-                }
-
-                return false;
-            },
-        ], */
-        //all roles allowed to Pages/display
         [
             'role' => 'user',
             'controller' => '*',
@@ -144,7 +85,7 @@ return [
         [
             'role' => 'user',
             'controller' => ['PrintLog', 'Pallets', 'Items', 'Cartons', 'Shipments'],
-            // allow all actions except these
+            // allow all actions except these by prepending * to action
             '*action' => ['add', 'delete', 'edit', 'bulkStatusRemove'],
         ],
     ],
