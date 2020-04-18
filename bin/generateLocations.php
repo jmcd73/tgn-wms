@@ -1,11 +1,11 @@
 <?php
+declare(strict_types=1);
 
 /**
  * CreateLocations Class
  */
-class CreateLocations
+class GenerateLocations
 {
-
     /**
      * Store the list of locations
      *
@@ -20,19 +20,12 @@ class CreateLocations
     public $rclFormat = '%02d';
 
     /**
-     * Flag to check if store needs clearing
-     *
-     * @var mixed
-     */
-    private $__clearStore = false;
-
-    /**
      * @var string
      */
     public $csvFilename = 'locations.csv';
 
     /**
-     * @param $locationConfig
+     * @param array $locationConfig Location Configuration Array
      */
     public function createCSVLocations($locationConfig)
     {
@@ -52,13 +45,10 @@ class CreateLocations
             foreach ($locationList as $kll => $vll) {
                 foreach ($config as $kcnf => $vcnf) {
                     if ($kcnf == 'location') {
-
                         $csv[$kll][$kcnf] = $vll;
-
                     } else {
                         $csv[$kll][$kcnf] = $vcnf;
                     }
-
                 }
             }
 
@@ -68,17 +58,15 @@ class CreateLocations
         }
 
         $csv_file = null;
-
     }
 
     /**
      * Recursively parse location format array
      *
-     * @param $setup Setup array
+     * @param array $setup Setup array
      */
     public function formatLocations($setup)
     {
-
         foreach ($setup as $k => $v) {
             if (is_array($v)) {
                 if (empty($this->store)) {
@@ -94,9 +82,11 @@ class CreateLocations
     }
 
     /**
-     * @param $current
-     * @param $append
-     * @return mixed
+     * @param  mixed $current
+     * @param  mixed $append
+     * @param  mixed $key
+     * @param  array $options
+     * @return array
      */
     public function append($current, $append, $key, $options = [])
     {
@@ -109,35 +99,34 @@ class CreateLocations
                 $newVals[] = $v . $_v;
             }
         }
+
         return $newVals;
     }
+
     /**
-     * @param $args
+     * @param mixed $args Args to log
      */
     public function lg(...$args)
     {
-
         echo print_r($args[0], true) . "\n";
-
     }
-
 }
 
 $locationConfig = [
     [
         'location' => [
             'setup' => [
-                "prefix" => ['A-'],
-                'suffix' => ['DEFAULT']
-            ]
+                'prefix' => ['A-'],
+                'suffix' => ['DEFAULT'],
+            ],
         ],
         'pallet_capacity' => 999999,
         'is_hidden' => (int)false,
         'description' => 'Ambient Storage',
-        'created' => date("Y-m-d H:i:s"),
-        'modified' => date("Y-m-d H:i:s"),
+        'created' => date('Y-m-d H:i:s'),
+        'modified' => date('Y-m-d H:i:s'),
         'product_type_id' => 1,
-        'overflow' => (int)false
+        'overflow' => (int) false,
     ],
     [
         'location' => [
@@ -145,36 +134,34 @@ $locationConfig = [
                 'prefix' => ['C-'],
                 'row' => ['A', 'B', 'C', 'D'],
                 'column' => [1, 2, 3, 4, 5],
-                'level' => [1, 2, 3, 4]
-            ]
+                'level' => [1, 2, 3, 4],
+            ],
         ],
         'pallet_capacity' => 2,
         'is_hidden' => (int)false,
         'description' => 'Coolroom location',
-        'created' => date("Y-m-d H:i:s"),
-        'modified' => date("Y-m-d H:i:s"),
+        'created' => date('Y-m-d H:i:s'),
+        'modified' => date('Y-m-d H:i:s'),
         'product_type_id' => 2,
-        'overflow' => (int)false
+        'overflow' => (int)false,
     ],
     [
         'location' => [
-
             'setup' => [
                 'Chilled' => ['C-'],
-                'overflow' => ['Floor']
-            ]
+                'overflow' => ['Floor'],
+            ],
         ],
         'pallet_capacity' => 2,
         'is_hidden' => (int)false,
         'description' => 'Coolroom overflow',
-        'created' => date("Y-m-d H:i:s"),
-        'modified' => date("Y-m-d H:i:s"),
+        'created' => date('Y-m-d H:i:s'),
+        'modified' => date('Y-m-d H:i:s'),
         'product_type_id' => 1,
-        'overflow' => (int)true
-    ]
+        'overflow' => (int)true,
+    ],
 ];
 
-$fl = new CreateLocations();
+$fl = new GenerateLocations();
 
 $fl->createCSVLocations($locationConfig);
-

@@ -1,35 +1,36 @@
-# Installation to a Docker Test Environment
+# Installation the CakePHP 4 version of Toggen WMS to a Docker Test Environment
 
 1. Create a database in MYSQL, create and grant a user access
    ```sql
-   CREATE DATABASE tgnwmsdb;
-   GRANT ALL PRIVILEGES ON tgnwmsdb.* TO tgndbuser@localhost IDENTIFIED BY 'RandomCakeNameBoxPhoneNote';
+   CREATE DATABASE tgnwmsdbc4;
+   GRANT ALL PRIVILEGES ON tgnwmsdbc4.* TO tgndbuser@localhost IDENTIFIED BY 'RandomCakeNameBoxPhoneNote';
    FLUSH PRIVILEGES;
    ```
 2. Clone this repo
    ```sh
-   git clone https://github.com/jmcd73/tgn-wms.git tgnwms
-   # pull the docker and FileUpload repos
+   git clone -b cakephp4 https://github.com/jmcd73/tgn-wms.git tgnwms
+   # pull the docker repo
    cd tgnwms
    git submodule update --init --recursive
    ```
 3. Install the database schema
    ```sh
-   cd dev/sampledbs
-   mysql -utgndbuser -p tgnwmsdb < skeleton-db.sql
+   mysql -utgndbuser -p tgnwmsdbc4 < dev/sampledbs/skeleton-db.sql
    ```
 4. Build docker image
    ```sh
-   cd ../../docker/
-   docker build -t tgn/php73:v2 .
+   cd docker/
+   docker build -t tgn/php74:v13 .
    ```
 5. Run the container
 
+   Edit the docker-command.sh file
+
    ```sh
    #!/bin/sh
-   CUPS_PORT=634
-   APACHE_PORT=8634
-   DOCKER_TAG=tgn/php73:v2 # tag (-t) you used for docker build
+   CUPS_PORT=652
+   APACHE_PORT=8052
+   DOCKER_TAG=tgn/php74\:v13 # tag (-t) you used for docker build
    VOLUME=~/sites/tgnwms/
    CONTAINER_NAME=tgnwms
 
@@ -38,25 +39,32 @@
    -p ${CUPS_PORT}:631 -p ${APACHE_PORT}:80 $DOCKER_TAG
    ```
 
+   Run it
+
+   ```
+   ./docker-command.sh
+   ```
+
 6. Test connection to CUPS and Apache
 
-   > [http://localhost:634/](http://localhost:634/)
+   > [http://localhost:652/](http://localhost:652/)
    >
-   > [http://localhost:8634](http://localhost:8634)
+   > [http://localhost:8052](http://localhost:8052)
 
    You should get the CUPS admin page for the first URL and a HTTP 500 ERROR for the second
 
 7. Login to the docker container
+
    ```sh
    docker exec -ti tgnwms /bin/bash
    # you should see a root prompt
    root@495bdffd3c45:/var/www#
-   # check apache logs for the 500 error
+   # check apache logs for errors
    cd /var/log/apache2/
    vim error.log
-   # you should see a complaint about not being able to find cake core
    ```
-8. Install the vendor files
+
+8. Install the vendor files and support files for bootstrap-ui
 
    Still in the docker container...
 
@@ -65,100 +73,110 @@
 
    # install the PHP dependencies
    composer install
+
+   # install bootstrap-ui deps
+   cd vendor/friendsofcake/bootstrap-ui/
+
+   root@d3ad0c48ca65:/var/www/vendor/friendsofcake/bootstrap-ui# npm install
+   npm WARN deprecated popper.js@1.16.1: You can find the new Popper v2 at @popperjs/core, this package is dedicated to the legacy
+   v1
+   /var/www/vendor/friendsofcake/bootstrap-ui
+   ├── bootstrap@4.4.1
+   ├── jquery@3.5.0
+   └── popper.js@1.16.1
+   npm WARN bootstrap-ui No repository field.
+   npm WARN bootstrap-ui No license field.
+
+   # IMPORTANT
+
+   # install jquery 3.4.1 because the default install of 3.5.0 breaks the
+   # navbar collapse / expand accordion
+
+   npm i jquery@3.4.1
    ```
 
-9. Create and edit database config
+9) Copy don't symlink the assets for plugins to the webroot.
 
-   ```sh
-   cd app/Config
-   cp database.php.default database.php
-   ```
+   using symlinks breaks if you try to switch out of docker and run `bin/cake server`
 
-   Edit the file to have the correct host, user, db, password parameters
+```sh
+# still in container
+cd /var/www
+root@d3ad0c48ca65:/var/www# bin/cake plugin assets copy
 
-   ```php
-   // app/Config/database.php
+For plugin: BootstrapUI
+-------------------------------------------------------------------------------
 
-   class DATABASE_CONFIG {
+For plugin: DebugKit
+-------------------------------------------------------------------------------
 
-       public $default = [
-               'datasource' => 'Database/Mysql',
-               'persistent' => false,
-               /* if your mysql server is running on the
-                * docker host this is the hostname
-                * Otherwise change this to the host that
-                * is running MySQL
-                */
-               'host' => 'host.docker.internal',
-               'login' => 'tgndbuser',
-               'password' => 'RandomCakeNameBoxPhoneNote',
-               'database' => 'tgnwmsdb',
-               'prefix' => '',
-               //'encoding' => 'utf8',
-       ];
+Done
 
-   }
-   ```
+```
 
-   Open app/Config/configuration.php and edit datasources to include a reference to the default database.php config
+10. Copy bootstrap, jquery and popper.js into webroot/bootstrap_u_i
 
-   The app/Config/configuration.php file contains app wide settings and allows you to configure multiple database environments and swap them using a `SetEnv ENVIRONMENT <ENV_NAME>` directive in the Apache .htaccess file
+```sh
+cd /var/www/vendor/friendsofcake/bootstrap-ui/node_modules/
+cp -rv bootstrap/dist/* /var/www/webroot/bootstrap_u_i/
+cp -rv jquery/dist/* /var/www/webroot/bootstrap_u_i/js/
+cp -rv popper.js/dist/umd/* /var/www/webroot/bootstrap_u_i/js/
 
-   ```php
-   // app/Config/configuration.php
-   //... snippage
-   'datasources' => [
-       'HOME' => 'default', // my laptop
-       'TEST' => 'test', // test
-       'NEWTEST' => 'palletsTest'
-   ],
-   //... snippage
-   ```
+```
+
+Edit the file to have the correct host, user, db, password parameters
+
+```php
+
+    'Datasources' => [
+        'default' => [
+            'host' => \$dbHost,
+            //'port' => 'non_standard_port_number',
+            'username' => 'tgndbuser',
+            'password' => 'RandomCakeNameBoxPhoneNote',
+            'database' => 'tgnwmsdbc4',
+            //'schema' => 'myapp',
+            //'url' => env('DATABASE_URL', null),
+        ],
+
+```
 
 10. Install htaccess files
 
     ```sh
     cd /var/www
-    mv htaccess.txt .htaccess
-    # edit this top level .htaccess and SetEnv CAKEPHP_DEBUG 2 to enable DebugKit or 0 to disable
-    # When in DEBUG mode the navbars will be black when in normal production mode the navbars will be blue
-
-    cd app/
-    mv htaccess.txt .htaccess
-    cd webroot
+    co htaccess.txt .htaccess
+    cd webroot/
     mv htaccess.txt .htaccess
     ```
 
-11. Edit the ENVIRONMENT value to match the configuration.php value
+11. At this point if the above instructions are correct you should be able to connect to [http://localhost:8052](http://localhost:8052) and get the login screen
 
-    ```sh
-    vim /var/www/.htaccess
-    ```
+| Username          | Password | Role Description                                                                        |
+| ----------------- | -------- | --------------------------------------------------------------------------------------- |
+| admin@example.com | admin    | admin - Allowed to view, update and delete everything. Has access to Admin menu         |
+| user@example.com  | user     | user - Allowed to view everything and update / delete selected items. Admin menu hidden |
 
-    ```apacheconf
-    SetEnv CAKEPHP_DEBUG 2
-    Header Set X-Forwarded-Host "frontend.toggen.com.au"
-    SetEnv ENVIRONMENT HOME
+### Default root password for docker container
 
-    <IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteRule ^(docs)($|/) - [L]
-    RewriteRule    ^$    app/webroot/    [L]
-    RewriteRule    (.*) app/webroot/$1    [L]
-    </IfModule>
-    ```
+The default **root** password for the docker container is defined in the Dockerfile as `HeartMindSoul`. You will need this if when you add printers via CUPS.
 
-12. At this point if the above instructions are correct you should be able to connect to [http://localhost:8634](http://localhost:8634) and get the main screen
+The `dev/sampledbs/skeleton-db.sql` file imported above pre-populates the database with:
 
-    Most menu items are public but if authentication and authorization is required you will be redirected to a login screen. The default username and password for the CakePHP application is `admin/admin`
+- Sample labels
+- A PDF Printer that outputs to /var/www/PDF
+- Inventory Statuses
+- Example product types
+- Shifts
+- Production Lines
+- Print Templates
+- Menus
 
-    The default **root** password for the docker container is defined in the Dockerfile as `HeartMindSoul`. You will need this if when you add printers via CUPS.
+You need modify the above to suit your use case and add your own
 
-    The `tgn-wms-db.sql` file imported above pre-populates the database with some product types & items, sample labels, a PDF Printer and some sample data
-
-    By default DebugKit is enabled and can be disabled by removing or commenting out the `SetEnv CAKEPHP_DEBUG 2` statement in the /var/www/.htaccess file
-
-    ![Home Screen](images/010-main.png)
+- Locations
+- Items
+- Pack Sizes
 
 ## Next Steps
 

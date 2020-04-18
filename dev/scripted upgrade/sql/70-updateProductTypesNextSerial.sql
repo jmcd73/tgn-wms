@@ -1,2 +1,0 @@
-UPDATE product_types SET next_serial_number = ( SELECT setting FROM settings WHERE name = 'marg_ref') WHERE product_types.name = "Margarine";
-UPDATE product_types SET next_serial_number = ( SELECT setting FROM settings WHERE name = 'oil_ref') WHERE product_types.name = "Oil";

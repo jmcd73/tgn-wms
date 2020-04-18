@@ -1,1 +1,0 @@
-UPDATE items SET print_template_id = 2 WHERE char_length(quantity) < 3 AND product_type_id = 1;
