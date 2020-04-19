@@ -139,7 +139,7 @@ echo $this->Form->control(
 <?php echo $this->Form->submit('Search'); ?>
 
 <?php
-                echo $this->Form->control('reset', [
+                echo $this->Form->button('Reset', [
                     'class' => 'mt-3 btn btn-secondary',
                     'type' => 'reset',
                     'id' => 'resetButton',
