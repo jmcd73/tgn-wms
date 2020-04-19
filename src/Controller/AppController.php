@@ -19,6 +19,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
+use Cake\Database\Query;
 use Cake\Event\EventInterface;
 use Cake\ORM\TableRegistry;
 
@@ -71,23 +72,22 @@ class AppController extends Controller
     {
         parent::beforeFilter($event);
 
-        $menuTable = $this->getTableLocator()->get('Menus');
         $result = $this->Authentication->getResult();
+
+        $isAdmin = false;
+
         if ($result->isValid()) {
             $user = $this->Authentication->getIdentity();
 
-            $isAdmin = $user->role === 'admin';
+            $isAdmin = $this->isAdmin($user);
 
-            $this->set(compact('user', 'isAdmin'));
-        } else {
-            //  pr($result->getErrors());
-          //  pr($result->getStatus());
+            $this->set(compact('user'));
+            //} else {
+            //pr($result->getErrors());
+            //pr($result->getStatus());
         }
 
-        $menuTree = $menuTable->find('threaded')
-            ->where([
-                'active' => 1,
-            ])->orderAsc('lft');
+        $menuTree = $this->getMenuTree();
 
         $this->set(compact('menuTree'));
 
@@ -102,6 +102,7 @@ class AppController extends Controller
                      ->getHelpPage($controllerAction)
             );
         }
+        $this->set(compact('isAdmin'));
     }
 
     protected function allowGetHelpPage($controllerAaction)
@@ -116,5 +117,22 @@ class AppController extends Controller
     public function getControllerAction()
     {
         return $this->request->getParam('controller') . '::' . $this->request->getParam('action');
+    }
+
+    public function isAdmin($user)
+    {
+        $adminRole = Configure::read('Users.admin_role');
+
+        return $user->role === $adminRole;
+    }
+
+    public function getMenuTree(): Query
+    {
+        $menuTable = $this->getTableLocator()->get('Menus');
+
+        return $menuTable->find('threaded')
+            ->where([
+                'active' => 1,
+            ])->orderAsc('lft');
     }
 }

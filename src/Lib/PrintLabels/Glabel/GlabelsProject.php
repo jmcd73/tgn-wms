@@ -60,7 +60,6 @@ class GlabelsProject extends Template
             $glabelsDocument = simplexml_load_string($contents);
 
             if ($glabelsDocument->Merge['src'] != $mergePath) {
-                tog('Updating merge path on ' . $projectFile);
                 $glabelsDocument->Merge['src'] = $mergePath;
                 $glabelsDocument->asXML($projectFile);
             }

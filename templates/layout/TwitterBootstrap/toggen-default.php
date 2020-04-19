@@ -1,7 +1,4 @@
 <?php
-/**
- * @var \Cake\View\View $this
- */
 
 use Cake\Core\Configure;
 
@@ -43,7 +40,11 @@ if (!$this->fetch('tb_footer')) {
 /**
  * Default `body` block.
  */
-$this->prepend('tb_body_attrs', ' class="' . implode(' ', [$this->request->getParam('controller'), $this->request->getParam('action')]) . '" ');
+$this->prepend('tb_body_attrs', ' class="' . implode(
+    ' ',
+    [$this->request->getParam('controller'),
+        $this->request->getParam('action'), ]
+) . '" ');
 if (!$this->fetch('tb_body_start')) {
     $this->start('tb_body_start');
     echo '<body' . $this->fetch('tb_body_attrs') . '>';
@@ -67,27 +68,33 @@ if (!$this->fetch('tb_body_end')) {
 }
 
 /**
-* Prepend `meta` block with `author` and `favicon`.
-*/
+ * Prepend `meta` block with `author` and `favicon`.
+ */
 if (Configure::check('App.author')) {
     $this->prepend('meta', $this->Html->meta('author', null, ['name' => 'author', 'content' => Configure::read('App.author')]));
 }
 $this->prepend('meta', $this->Html->meta('favicon.ico', '/favicon.ico', ['type' => 'icon']));
 
 /**
-* Prepend `css` block with Bootstrap stylesheets
-* Change to bootstrap.min to use the compressed version
-*/
+ * Prepend `css` block with Bootstrap stylesheets
+ * Change to bootstrap.min to use the compressed version
+ */
 if (Configure::read('debug')) {
     $this->prepend('css', $this->Html->css(['BootstrapUI.bootstrap']));
 } else {
     $this->prepend('css', $this->Html->css(['BootstrapUI.bootstrap.min']));
 }
 
+if (Configure::read('debug')) {
+    $this->append('css', $this->Html->css(['all']));
+} else {
+    $this->append('css', $this->Html->css(['all.min']));
+}
+
 /**
-* Prepend `script` block with jQuery, Popper and Bootstrap scripts
-* Change jquery.min and bootstrap.min to use the compressed version
-*/
+ * Prepend `script` block with jQuery, Popper and Bootstrap scripts
+ * Change jquery.min and bootstrap.min to use the compressed version
+ */
 if (Configure::read('debug')) {
     $this->prepend('script', $this->Html->script(['BootstrapUI.jquery', 'BootstrapUI.popper', 'BootstrapUI.bootstrap']));
 } else {
@@ -106,7 +113,7 @@ if (Configure::read('debug')) {
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->Html->css('main'); ?>
-    <script src="https://kit.fontawesome.com/1d0ce87328.js" crossorigin="anonymous"></script>
+
 </head>
 
 

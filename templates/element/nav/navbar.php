@@ -5,11 +5,12 @@ use Cake\Core\Configure;
 <nav class="navbar navbar-dark navbar-expand-lg sticky-top bg-dark flex-md-nowrap p-0">
     <a class="navbar-brand col-md-2"
         href="<?= $this->Url->build('/'); ?>"><?= Configure::read('applicationName'); ?></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler m-lg-0 m-sm-3 my-md-0 my-1 mx-3" type="button" data-toggle="collapse"
+        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse m-sm-3 m-lg-0 mx-3" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <?php foreach ($menuTree as $menu): ?>
             <?php
@@ -66,7 +67,7 @@ use Cake\Core\Configure;
         </ul>
 
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0 mr-4">
-            <?php if ($user) : ?>
+            <?php if (isset($user)) : ?>
             <li class="nav-item">
                 <?php
                     echo  $this->Html->link(

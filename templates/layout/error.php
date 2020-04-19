@@ -1,43 +1,124 @@
 <?php
 /**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link          https://cakephp.org CakePHP(tm) Project
- * @since         0.10.0
- * @license       https://opensource.org/licenses/mit-license.php MIT License
- * @var \App\View\AppView $this
+ * @var \Cake\View\View $this
  */
+
+use Cake\Core\Configure;
+
+/**
+ * Default `html` block.
+ */
+if (!$this->fetch('html')) {
+    $this->start('html');
+    if (Configure::check('App.language')) {
+        printf('<html lang="%s">', Configure::read('App.language'));
+    } else {
+        echo '<html>';
+    }
+    $this->end();
+}
+
+/**
+ * Default `title` block.
+ */
+if (!$this->fetch('title')) {
+    $this->start('title');
+    echo Configure::read('App.title');
+    $this->end();
+}
+
+/**
+ * Default `footer` block.
+ */
+if (!$this->fetch('tb_footer')) {
+    $this->start('tb_footer');
+    if (Configure::check('App.title')) {
+        printf('<div class="text-center mt-4">&copy;%s %s</div>', date('Y'), Configure::read('App.title'));
+    } else {
+        printf('&copy;%s', date('Y'));
+    }
+    $this->end();
+}
+
+/**
+ * Default `body` block.
+ */
+$this->prepend('tb_body_attrs', ' class="' . implode(' ', [$this->request->getParam('controller'), $this->request->getParam('action')]) . '" ');
+if (!$this->fetch('tb_body_start')) {
+    $this->start('tb_body_start');
+    echo '<body' . $this->fetch('tb_body_attrs') . '>';
+    $this->end();
+}
+/**
+ * Default `flash` block.
+ */
+if (!$this->fetch('tb_flash')) {
+    $this->start('tb_flash');
+    if (isset($this->Flash)) {
+        echo $this->Flash->render();
+    }
+
+    $this->end();
+}
+if (!$this->fetch('tb_body_end')) {
+    $this->start('tb_body_end');
+    echo '</body>';
+    $this->end();
+}
+
+/**
+ * Prepend `meta` block with `author` and `favicon`.
+ */
+if (Configure::check('App.author')) {
+    $this->prepend('meta', $this->Html->meta('author', null, ['name' => 'author', 'content' => Configure::read('App.author')]));
+}
+$this->prepend('meta', $this->Html->meta('favicon.ico', '/favicon.ico', ['type' => 'icon']));
+
+/**
+ * Prepend `css` block with Bootstrap stylesheets
+ * Change to bootstrap.min to use the compressed version
+ */
+if (Configure::read('debug')) {
+    $this->prepend('css', $this->Html->css(['BootstrapUI.bootstrap']));
+} else {
+    $this->prepend('css', $this->Html->css(['BootstrapUI.bootstrap.min']));
+}
+
+/**
+ * Prepend `script` block with jQuery, Popper and Bootstrap scripts
+ * Change jquery.min and bootstrap.min to use the compressed version
+ */
+if (Configure::read('debug')) {
+    $this->prepend('script', $this->Html->script(['BootstrapUI.jquery', 'BootstrapUI.popper', 'BootstrapUI.bootstrap']));
+} else {
+    $this->prepend('script', $this->Html->script(['BootstrapUI.jquery.min', 'BootstrapUI.popper.min',
+        'BootstrapUI.bootstrap.min', ]));
+}
+
 ?>
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<?= $this->fetch('html') ?>
+
 <head>
     <?= $this->Html->charset() ?>
-    <title>
-        <?= $this->fetch('title') ?>
-    </title>
-    <?= $this->Html->meta('icon') ?>
-
-    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css">
-
-    <?= $this->Html->css('milligram.min.css') ?>
-    <?= $this->Html->css('cake.css') ?>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title><?= h($this->fetch('title')) ?></title>
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>
+    <?= $this->Html->css('main'); ?>
+    <script src="https://kit.fontawesome.com/1d0ce87328.js" crossorigin="anonymous"></script>
 </head>
-<body>
-    <div class="error-container">
-        <?= $this->Flash->render() ?>
-        <?= $this->fetch('content') ?>
-        <?= $this->Html->link(__('Back'), 'javascript:history.back()') ?>
-    </div>
-</body>
+
+
+
+<?php
+    echo $this->fetch('tb_body_start');
+    echo $this->fetch('tb_flash');
+    echo $this->fetch('content');
+    echo $this->fetch('tb_footer');
+    echo $this->fetch('script');
+    echo $this->fetch('tb_body_end');
+    echo $this->fetch('from_view');
+    ?>
+
 </html>

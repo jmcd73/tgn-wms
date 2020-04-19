@@ -5,28 +5,21 @@ $image = Configure::read('login.image');
 $this->append('css', $this->Html->css('signin')); ?>
 <div class="container">
     <div class="row">
-        <div class="mt-3 offset-lg-4 col-4">
+        <div class="col mt-3">
             <?= $this->Flash->render() ?>
         </div>
     </div>
     <div class="row">
         <div class="col">
             <div class="text-center">
-
                 <?= $this->Form->create(null, ['class' => 'form-signin']) ?>
-
                 <?= $this->Html->image($image, ['class' => 'rounded mb-4', 'alt' => 'Logo', ]); ?>
-
                 <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
                 <label for="inputEmail" class="sr-only">Email address</label>
-
-                <?php
-        $myTemplates = [
-            'inputContainer' => '{{content}}',
-        ];
-        $this->Form->setTemplates($myTemplates);
-
-        ?>
+                <?php $myTemplates = [
+                    'inputContainer' => '{{content}}',
+                ];
+                $this->Form->setTemplates($myTemplates); ?>
 
                 <?php $usernameOptions = [
                     'label' => ['class' => 'sr-only'],
@@ -35,9 +28,11 @@ $this->append('css', $this->Html->css('signin')); ?>
                     'autofocus' => '',
                     'autocomplete' => 'username',
                 ];
+
                 if (!empty($username)) {
                     $usernameOptions['value'] = $username;
                 } ?>
+
                 <?= $this->Form->control('username', $usernameOptions) ?>
                 <?= $this->Form->control('password', [
                     'label' => false,
@@ -46,13 +41,13 @@ $this->append('css', $this->Html->css('signin')); ?>
                     'required' => true,
                     'autocomplete' => 'current-password',
                 ]) ?>
-                <?= $this->Form->control('remember-me', [
+                <?php /*  $this->Form->control('remember-me', [
                     'type' => 'checkbox',
                     'checked' => $rememberMe,
-                ]); ?>
+                ]);  */?>
 
                 <?= $this->Form->button('Sign in', [
-                    'class' => 'btn btn-lg btn-primary btn-block',
+                    'class' => 'btn btn-lg btn-primary btn-block mt-4',
                     'type' => 'submit', ]); ?>
                 <?= $this->Form->end() ?>
 

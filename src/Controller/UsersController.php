@@ -4,18 +4,24 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Core\Configure;
-use Cake\Http\Cookie\Cookie;
 use DateTimeZone;
 
 /**
  * Users Controller
  *
  * @property \App\Model\Table\UsersTable $Users
- *
  * @method \App\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class UsersController extends AppController
 {
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+    {
+        parent::beforeFilter($event);
+        // Configure the login action to not require authentication, preventing
+        // the infinite redirect loop issue
+        $this->Authentication->addUnauthenticatedActions(['login']);
+    }
+
     /**
      * Index method
      *
@@ -119,14 +125,6 @@ class UsersController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    public function beforeFilter(\Cake\Event\EventInterface $event)
-    {
-        parent::beforeFilter($event);
-        // Configure the login action to not require authentication, preventing
-        // the infinite redirect loop issue
-        $this->Authentication->addUnauthenticatedActions(['login']);
-    }
-
     public function login()
     {
         // $this->Authorization->skipAuthorization();
@@ -143,70 +141,84 @@ class UsersController extends AppController
                     'action' => 'display',
                     'index',
                 ]);
-                if ((bool) $this->request->getData()['remember-me'] === true) {
-                    $this->response = $this->response->withCookie(
-                        new Cookie(
-                            'remember-me',
-                            [
-                                'remember-me' => 1,
-                                'username' => $this->request->getData()['username'],
-                            ]
-                        )
-                    );
-                } else {
-                    $cookies = $this->request->getCookieCollection();
-                    if ($cookies->has('remember-me')) {
+                /*     if ((bool) $this->request->getData()['remember-me'] === true) {
                         $this->response = $this->response->withCookie(
-                            ( new Cookie('remember-me', '', (   new \DateTime())->setDate(1973, 1, 31)))
+                            new Cookie(
+                                'remember-me',
+                                [
+                                    'remember-me' => 1,
+                                    'username' => $this->request->getData()['username'],
+                                ]
+                            )
                         );
-                    }
-                }
+                    } else {
+                        $cookies = $this->request->getCookieCollection();
+                        if ($cookies->has('remember-me')) {
+                            $this->response = $this->response->withCookie(
+                                ( new Cookie('remember-me', '', (   new \DateTime())->setDate(1973, 1, 31)))
+                            );
+                        }
+                    } */
 
                 return $this->redirect($redirect);
+            } else {
+                $this->Flash->error(__('Invalid username or password'));
             }
         }
 
-        $rememberMe = false;
-        $username = '';
+        /*  $rememberMe = false;
+         $username = '';
 
-        if ($this->request->is('GET')) {
-            $rememberMe = $this->request->getCookie('remember-me');
+         if ($this->request->is('GET')) {
+             $rememberMe = $this->request->getCookie('remember-me');
 
-            if (isset($rememberMe['username'])) {
-                $username = $rememberMe['username'];
-                $this->set('username', $username);
-            }
-        }
+             if (isset($rememberMe['username'])) {
+                 $username = $rememberMe['username'];
+                 $this->set('username', $username);
+             }
+         } */
 
         // display error if user submitted and authentication failed
-        if ($this->request->is('post') && !$result->isValid()) {
-            $this->Flash->error(__('Invalid username or password'));
-        }
 
-        $this->set(compact('rememberMe'));
+        //$this->set(compact('rememberMe'));
     }
 
     public function logout()
     {
         // $this->Authorization->skipAuthorization();
         $result = $this->Authentication->getResult();
+
+        $redirect = $this->request->getQuery('redirect', '/');
+
         // regardless of POST or GET, redirect if user is logged in
         if ($result->isValid()) {
-            $this->Authentication->logout();
+            $redirect = $this->Authentication->logout();
             $this->Flash->success('You are logged out');
 
-            return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+            return $this->redirect($redirect);
         }
+
+        return $this->redirect(['controller' => 'Users', 'action' => 'login',
+            '?' => [
+                'redirect' => urldecode($redirect),
+            ],
+        ]);
     }
 
     public function accessDenied()
     {
         $result = $this->Authentication->getResult();
+        $redirect = $this->request->getQuery('redirect', '/');
         if ($result->isValid()) {
-            $redirect = $this->request->getQuery('redirect', '/');
+            $msg = '<span class="h6">Access restricted</span>';
+            $msg .= '<p class="mt-2">Your account does not have ';
+            $msg .= 'permission to perform that function or access that location</p>';
+            $msg .= '<p>You need to log out and then log in with an account with sufficient permissions</p>';
 
-            return $this->redirect($redirect);
+            $this->Flash->warning($msg, ['escape' => false]);
+
+            //return $this->redirect($redirect);
         }
-        // code...
+        $this->set(compact('redirect'));
     }
 }

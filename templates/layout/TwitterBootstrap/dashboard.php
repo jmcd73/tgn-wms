@@ -19,6 +19,7 @@ $this->start('tb_body_start');
                         echo $this->Element('Help/page_help');
                     } ?>
                 <div class="sidebar-sticky">
+
                     <?= $this->fetch('tb_sidebar') ?>
                 </div>
             </nav>

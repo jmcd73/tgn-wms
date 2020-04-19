@@ -29,6 +29,7 @@ class MenusController extends AppController
     {
         $this->paginate = [
             'contain' => ['ParentMenus'],
+            'order' => ['lft' => 'ASC'],
         ];
         $menus = $this->paginate($this->Menus);
 
