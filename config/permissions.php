@@ -86,7 +86,7 @@ return [
             'role' => 'user',
             'controller' => ['PrintLog', 'Pallets', 'Items', 'Cartons', 'Shipments'],
             // allow all actions except these by prepending * to action
-            '*action' => ['add', 'delete', 'edit', 'bulkStatusRemove'],
+            '*action' => ['add', 'delete', 'edit'],
         ],
     ],
 ];

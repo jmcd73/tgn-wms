@@ -99,6 +99,7 @@ return [
         ],
     ],
     'Users' => [
+        'admin_role' => 'admin',
         'roles' => [
             [
                 'slug' => 'admin',

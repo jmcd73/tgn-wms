@@ -18,6 +18,10 @@ declare(strict_types=1);
 namespace App;
 
 use App\Middleware\HttpOptionsMiddleware;
+use App\Middleware\UnauthorizedHandler\CakeRedirectHandler;
+use App\Policy\RbacPolicy;
+use App\Policy\RequestPolicy;
+use App\Policy\SuperuserPolicy;
 use Authentication\AuthenticationService;
 use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
@@ -25,22 +29,25 @@ use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\AuthorizationService;
 use Authorization\AuthorizationServiceInterface;
 use Authorization\AuthorizationServiceProviderInterface;
+use Authorization\Exception\ForbiddenException;
+use Authorization\Exception\MissingIdentityException;
 use Authorization\Middleware\AuthorizationMiddleware;
+use Authorization\Middleware\RequestAuthorizationMiddleware;
+use Authorization\Policy\MapResolver;
 use Authorization\Policy\OrmResolver;
+use Authorization\Policy\ResolverCollection;
 use Cake\Core\Configure;
 use Cake\Core\Exception\MissingPluginException;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Http\Middleware\BodyParserMiddleware;
-use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Http\Middleware\EncryptedCookieMiddleware;
 use Cake\Http\MiddlewareQueue;
+use Cake\Http\ServerRequest;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\Utility\Security;
-//use CakeDC\Auth\Authentication\AuthenticationService;
-use CakeDC\Auth\Middleware\RbacMiddleware;
-use Psr\Http\Message\ResponseInterface;
+use CakeDC\Auth\Policy\CollectionPolicy;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -50,7 +57,9 @@ use Psr\Http\Message\ServerRequestInterface;
  * want to use in your application.
  * AuthorizationServiceProviderInterface //readd for Authorization
  */
-class Application extends BaseApplication implements AuthenticationServiceProviderInterface
+class Application extends BaseApplication implements
+    AuthenticationServiceProviderInterface,
+    AuthorizationServiceProviderInterface
 {
     /**
      * Load all the application configuration and bootstrap logic.
@@ -63,8 +72,9 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         parent::bootstrap();
         $this->addPlugin('BootstrapUI');
 
-        //$this->addPlugin(\CakeDC\Auth\Plugin::class);
+        $this->addPlugin(\CakeDC\Auth\Plugin::class);
         // $this->addPlugin('Authorization');
+        $this->addPlugin('Authentication');
 
         if (PHP_SAPI === 'cli') {
             $this->bootstrapCli();
@@ -76,6 +86,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
          */
         if (Configure::read('debug')) {
             $this->addPlugin('DebugKit');
+            Configure::write('DebugKit.ignoreAuthorization', true);
         }
         // Load more plugins here
     }
@@ -89,13 +100,13 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
     public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue
     {
         $bodies = new BodyParserMiddleware();
-        $rbac = new RbacMiddleware(null, [
-            'unauthorizedBehavior' => RbacMiddleware::UNAUTHORIZED_BEHAVIOR_REDIRECT,
-            'unauthorizedRedirect' => [
-                'controller' => 'Users',
-                'action' => 'accessDenied',
-            ],
-        ]);
+        /*   $rbac = new RbacMiddleware(null, [
+              'unauthorizedBehavior' => RbacMiddleware::UNAUTHORIZED_BEHAVIOR_REDIRECT,
+              'unauthorizedRedirect' => [
+                  'controller' => 'Users',
+                  'action' => 'accessDenied',
+              ],
+          ]); */
 
         $middlewareQueue
             // Catch any exceptions in the lower layers,
@@ -118,14 +129,37 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             ->add(new RoutingMiddleware($this))
             ->add(new EncryptedCookieMiddleware(['remember-me'], Security::getSalt()))
             ->add(new AuthenticationMiddleware($this))
-            ->add($rbac)
+           ->add(
+               new AuthorizationMiddleware(
+                   $this,
+                   [
+                       'unauthorizedHandler' => [
+                           'className' => CakeRedirectHandler::class,
+                           'url' => [
+                               'controller' => 'Users',
+                               'action' => 'login',
+                           ],
+                           'queryParam' => 'redirect',
+                           'exceptions' => [
+                               MissingIdentityException::class,
+                               ForbiddenException::class,
+                           ],
+                           'customUrlMap' => [
+                               ForbiddenException::class => [
+                                   'controller' => 'Users',
+                                   'action' => 'accessDenied',
+                               ],
+                           ],
+                       ],
+                   ]
+               )
+           )
+            ->add(new RequestAuthorizationMiddleware())
+           // ->add($rbac)
             ->add($bodies);
         // Ensure routing middleware is added to the queue before CSRF protection middleware.
 
         //  ->add(new AuthorizationMiddleware($this))
-
-        /*  $middlewareQueue->add(new AuthorizationMiddleware($this, Configure::read('Auth.AuthorizationMiddleware')));
-         $middlewareQueue->add(new RequestAuthorizationMiddleware()); */
 
         return $middlewareQueue;
     }
@@ -152,37 +186,58 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
 
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
-        $authenticationService = new AuthenticationService([
+        $authenticationService = new AuthenticationService();
+
+        $authenticationService->setConfig([
             'unauthenticatedRedirect' => '/users/login',
             'queryParam' => 'redirect',
         ]);
 
+        $fields = [
+            'username' => 'username',
+            'password' => 'password',
+        ];
+
         // Load identifiers, ensure we check email and password fields
-        $authenticationService->loadIdentifier('Authentication.Password', [
-            'fields' => [
-                'username' => 'username',
-                'password' => 'password',
-            ],
-        ]);
+        $authenticationService->loadIdentifier('Authentication.Password', compact('fields'));
 
         // Load the authenticators, you want session first
-        $authenticationService->loadAuthenticator('Authentication.Session');
+        $authenticationService->loadAuthenticator(
+            'Authentication.Session',
+            [
+                'skipTwoFactorVerify' => true,
+            ]
+        );
         // Configure form data check to pick email and password
         $authenticationService->loadAuthenticator('Authentication.Form', [
-            'fields' => [
-                'username' => 'username',
-                'password' => 'password',
-            ],
+            'fields' => $fields,
             'loginUrl' => '/users/login',
         ]);
 
         return $authenticationService;
     }
 
-    /*    public function getAuthorizationService(ServerRequestInterface $request): AuthorizationServiceInterface
-       {
-           $resolver = new OrmResolver();
+    public function getAuthorizationService(ServerRequestInterface $request): AuthorizationServiceInterface
+    {
+        $map = new MapResolver();
+        $map->map(
+            ServerRequest::class,
+            new CollectionPolicy([
+                RequestPolicy::class, // skip DebugKit
+                SuperuserPolicy::class, //First check super user policy
+                RbacPolicy::class, // Only check with rbac if user is not super user
+            ])
+        );
 
-           return new AuthorizationService($resolver);
-       } */
+        //            RequestPolicy::class,
+
+        $orm = new OrmResolver();
+
+        $resolver = new ResolverCollection([
+            $map,
+            $orm,
+        ]);
+
+        return new AuthorizationService($resolver);
+    }
 }
