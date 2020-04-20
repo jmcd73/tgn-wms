@@ -4,6 +4,8 @@
 #    RequestHeader unset Proxy
 #</IfModule>
 
+SetEnv DEBUG true
+
 <IfModule mod_rewrite.c>
     RewriteEngine on
      RewriteRule ^(docs)($|/) - [L]
