@@ -9,6 +9,7 @@ use DateTimeZone;
 /**
  * Users Controller
  *
+ * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication Auth component
  * @property \App\Model\Table\UsersTable $Users
  * @method \App\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
@@ -136,51 +137,18 @@ class UsersController extends AppController
             // regardless of POST or GET, redirect if user is logged in
             if ($result->isValid()) {
                 // redirect to /articles after login success
-                $redirect = $this->request->getQuery('redirect', [
-                    'controller' => 'Pages',
-                    'action' => 'display',
-                    'index',
-                ]);
-                /*     if ((bool) $this->request->getData()['remember-me'] === true) {
-                        $this->response = $this->response->withCookie(
-                            new Cookie(
-                                'remember-me',
-                                [
-                                    'remember-me' => 1,
-                                    'username' => $this->request->getData()['username'],
-                                ]
-                            )
-                        );
-                    } else {
-                        $cookies = $this->request->getCookieCollection();
-                        if ($cookies->has('remember-me')) {
-                            $this->response = $this->response->withCookie(
-                                ( new Cookie('remember-me', '', (   new \DateTime())->setDate(1973, 1, 31)))
-                            );
-                        }
-                    } */
 
-                return $this->redirect($redirect);
+                $target = $this->Authentication->getLoginRedirect();
+
+                if (!$target) {
+                    $target = ['controller' => 'Pages', 'action' => 'display', 'index'];
+                }
+
+                return $this->redirect($target);
             } else {
                 $this->Flash->error(__('Invalid username or password'));
             }
         }
-
-        /*  $rememberMe = false;
-         $username = '';
-
-         if ($this->request->is('GET')) {
-             $rememberMe = $this->request->getCookie('remember-me');
-
-             if (isset($rememberMe['username'])) {
-                 $username = $rememberMe['username'];
-                 $this->set('username', $username);
-             }
-         } */
-
-        // display error if user submitted and authentication failed
-
-        //$this->set(compact('rememberMe'));
     }
 
     public function logout()
@@ -188,21 +156,15 @@ class UsersController extends AppController
         // $this->Authorization->skipAuthorization();
         $result = $this->Authentication->getResult();
 
-        $redirect = $this->request->getQuery('redirect', '/');
+        // $redirect = $this->request->getQuery('redirect', '/');
 
         // regardless of POST or GET, redirect if user is logged in
         if ($result->isValid()) {
-            $redirect = $this->Authentication->logout();
+            $this->Authentication->logout();
             $this->Flash->success('You are logged out');
-
-            return $this->redirect($redirect);
         }
 
-        return $this->redirect(['controller' => 'Users', 'action' => 'login',
-            '?' => [
-                'redirect' => urldecode($redirect),
-            ],
-        ]);
+        return $this->redirect(['controller' => 'Users', 'action' => 'login']);
     }
 
     public function accessDenied()

@@ -41,10 +41,10 @@ $this->append('css', $this->Html->css('signin')); ?>
                     'required' => true,
                     'autocomplete' => 'current-password',
                 ]) ?>
-                <?php /*  $this->Form->control('remember-me', [
+                <!-- <?= $this->Form->control('remember_me', [
                     'type' => 'checkbox',
                     'checked' => $rememberMe,
-                ]);  */?>
+                ]); ?> -->
 
                 <?= $this->Form->button('Sign in', [
                     'class' => 'btn btn-lg btn-primary btn-block mt-4',

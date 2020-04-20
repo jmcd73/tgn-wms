@@ -53,9 +53,10 @@ return [
     'CakeDC/Auth.permissions' => [
         [
             'controller' => 'Users',
-            'action' => ['login', 'logout', 'accessDenied'],
+            'action' => ['login'],
             'bypassAuth' => true,
         ],
+
         [
             'role' => 'admin',
             'prefix' => '*',
@@ -63,6 +64,13 @@ return [
             'plugin' => '*',
             'controller' => '*',
             'action' => '*',
+        ],
+        [
+            'role' => 'user',
+            'controller' => 'Users',
+            'action' => [
+                'accessDenied', 'logout',
+            ],
         ],
         [
             'role' => 'user',
