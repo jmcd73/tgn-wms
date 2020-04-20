@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\View\AppView $this
+ * @var \App\View\AppView      $this
  * @var \App\Model\Entity\User $user
  */
 ?>
@@ -29,12 +29,18 @@
             </tr>
             <tr>
                 <th scope="row"><?= __('Password') ?></th>
-                <td><?= h($user->timezone) ?></td>
+
+                <td><?= h($user->password) ?></td>
+
             </tr>
 
             <tr>
                 <th scope="row"><?= __('Timezone') ?></th>
-                <td><?= h($user->password) ?></td>
+                <td><?= h($user->timezone) ?></td>
+            </tr>
+            <tr>
+                <th scope="row"><?= __('Token Auth Key') ?></th>
+                <td><?= h($user->token_auth_key) ?></td>
             </tr>
             <tr>
                 <th scope="row"><?= __('Role') ?></th>

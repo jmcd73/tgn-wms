@@ -40,6 +40,7 @@ class User extends Entity
         'modified' => true,
         'full_name' => true,
         'cartons' => true,
+        'token_auth_key' => true,
         'timezone' => true,
     ];
 
@@ -52,11 +53,12 @@ class User extends Entity
         'password',
     ];
 
-    protected function _setPassword(string $password) : ?string
+    protected function _setPassword(string $password): ?string
     {
         if (strlen($password) > 0) {
             return (new DefaultPasswordHasher())->hash($password);
         }
+
         return null;
     }
 }

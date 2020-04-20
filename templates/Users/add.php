@@ -30,6 +30,7 @@
             ]);
             echo $this->Form->control('role');
             echo $this->Form->control('full_name');
+            echo $this->Form->control('token_auth_key');
             echo $this->Form->control('timezone', [
                 'empty' => '(select)',
             ]);

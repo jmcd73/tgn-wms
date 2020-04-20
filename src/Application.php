@@ -73,7 +73,7 @@ class Application extends BaseApplication implements
         $this->addPlugin('BootstrapUI');
 
         $this->addPlugin(\CakeDC\Auth\Plugin::class);
-        // $this->addPlugin('Authorization');
+        $this->addPlugin('Authorization');
         $this->addPlugin('Authentication');
 
         if (PHP_SAPI === 'cli') {
@@ -127,7 +127,7 @@ class Application extends BaseApplication implements
             // using it's second constructor argument:
             // `new RoutingMiddleware($this, '_cake_routes_')`
             ->add(new RoutingMiddleware($this))
-            ->add(new EncryptedCookieMiddleware(['remember-me'], Security::getSalt()))
+            ->add(new EncryptedCookieMiddleware(['CookieAuth'], Security::getSalt()))
             ->add(new AuthenticationMiddleware($this))
            ->add(
                new AuthorizationMiddleware(
@@ -198,9 +198,39 @@ class Application extends BaseApplication implements
             'password' => 'password',
         ];
 
-        // Load identifiers, ensure we check email and password fields
-        $authenticationService->loadIdentifier('Authentication.Password', compact('fields'));
+        $resolver = [
+            'className' => 'Authentication.Orm',
+            'finder' => 'active',
+        ];
 
+        // Load identifiers, ensure we check email and password fields
+        $authenticationService->loadIdentifier('Authentication.Token', [
+            'tokenField' => 'token_auth_key',
+            'resolver' => $resolver,
+        ]);
+        $authenticationService->loadIdentifier(
+            'Authentication.Password',
+            [
+                'fields' => $fields,
+                'resolver' => $resolver,
+            ]
+        );
+
+        /*  $authenticationService->loadAuthenticator(
+             'Authentication.Cookie',
+             [
+                 'rememberMeField' => 'remember_me',
+                 'fields' => $fields,
+             ]
+         );
+ */
+
+        $authenticationService->loadAuthenticator('Authentication.Token', [
+            'queryParam' => 'token',
+            'header' => 'Authorization',
+            'tokenPrefix' => 'Token',
+            'tokenField' => 'token_auth_key',
+        ]);
         // Load the authenticators, you want session first
         $authenticationService->loadAuthenticator(
             'Authentication.Session',
@@ -208,6 +238,7 @@ class Application extends BaseApplication implements
                 'skipTwoFactorVerify' => true,
             ]
         );
+
         // Configure form data check to pick email and password
         $authenticationService->loadAuthenticator('Authentication.Form', [
             'fields' => $fields,

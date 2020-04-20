@@ -113,4 +113,9 @@ class UsersTable extends Table
     {
         return Hash::combine($roles, '{n}.slug', ['%s (%s): %s', '{n}.name', '{n}.slug', '{n}.description']);
     }
+
+    public function findActive(Query $query, array $options)
+    {
+        return $query->where(['active' => 1]);
+    }
 }
