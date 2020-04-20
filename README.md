@@ -1,10 +1,12 @@
-# Toggen WMS in CakePHP 4
+# Toggen WMS Covid-19 Edition in CakePHP 4
 
-This is a project that I have been working on for a number of years.
+This is a project that I have been working on for a number of years. Originally written in CakePHP 2.x it has now been updated to CakePHP 4+ making use of many of the new features of this version including:
+
+- Modelless Forms
+- HTTP Options Middleware
+- The new Authentication and Authorization plugins
 
 It uses open source components to provide simple pallet and label printing and product production and dispatch workflow
-
-This github release has been rewritten in CakePHP 4 and Bootstrap 4
 
 ## Features
 
@@ -15,14 +17,13 @@ This github release has been rewritten in CakePHP 4 and Bootstrap 4
   - Minimum days life calculation so old product isn't sent out unless QA unholds it
   - Dispatch PDF Pick slips
   - Location usage / free space screen
-- Inventory statuses WAIT HOLD etc for QA
-- Bulk inventory status update screen
+- Inventory statuses WAIT HOLD etc for QA and screen to apply bulk status changes
 - Settings table to manage Company Name, GS1 company prefix
 - Configure multiple product types, production lines & printers
 - Numbering and coding
-  - Batch numbers based on ordinal day of year YDDDBB (e.g Last digit of year eg 9 day 105 batch 22)
+  - Batch numbers based on ordinal day of year YDDDBB (e.g Last digit of year 2020 eg 0 day of year 105 batch 22)
 - Printing
-  - gLabels-batch printing
+  - gLabels-batch-qt printing (Uses latest Glabels)
   - GS1 Compliant SSCC labels to CAB Printers
   - Zebra and CAB Printer Command Language Printing
   - Endpoints to serve Product Lists as JSON or XML for external systems
