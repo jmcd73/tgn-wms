@@ -152,4 +152,12 @@ class MenusController extends AppController
 
         return $this->redirect($this->referer());
     }
+
+    public function tree()
+    {
+        $menus = $this->Menus->find('threaded')
+        ->orderAsc('lft');
+
+        $this->set(compact('menus'));
+    }
 }
