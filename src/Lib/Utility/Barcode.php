@@ -43,7 +43,7 @@ class Barcode
             }
             $even = !$even;
             $barcode = substr($barcode, 0, -1);
-            $barcodeLength($barcode);
+            $barcodeLength = strlen($barcode);
         }
         $sum = $sum_even + $sum_odd;
         $sum_rounded_up = ceil($sum / 10) * 10;
