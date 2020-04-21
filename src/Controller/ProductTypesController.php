@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Event\EventInterface;
+
 /**
  * ProductTypes Controller
  *
@@ -12,6 +14,12 @@ namespace App\Controller;
  */
 class ProductTypesController extends AppController
 {
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
+        $this->Authentication->addUnauthenticatedActions(['view']);
+    }
+
     /**
      * Index method
      *
@@ -20,7 +28,7 @@ class ProductTypesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['InventoryStatuses'],
+            'contain' => ['InventoryStatuses', 'PutawayLocation'],
         ];
         $productTypes = $this->paginate($this->ProductTypes);
 
@@ -30,14 +38,23 @@ class ProductTypesController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Product Type id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @param  string|null                                        $id Product Type id.
+     * @return \Cake\Http\Response|null|void                      Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
     {
         $productType = $this->ProductTypes->get($id, [
-            'contain' => ['InventoryStatuses', 'Locations', 'Items',  'Pallets', 'ProductionLines', 'Shifts', 'Shipments'],
+            'contain' => [
+                'InventoryStatuses',
+                'Locations',
+                'Items',
+                'Pallets',
+                'ProductionLines',
+                'Shifts',
+                'Shipments',
+                'PutawayLocation',
+            ],
         ]);
 
         $this->set('productType', $productType);
@@ -61,15 +78,17 @@ class ProductTypesController extends AppController
             }
             $this->Flash->error(__('The product type could not be saved. Please, try again.'));
         }
+        $locations = $this->ProductTypes->Locations->find('list')->where(['is_hidden' => 0]);
+
         $inventoryStatuses = $this->ProductTypes->InventoryStatuses->find('list', ['limit' => 200]);
-        $this->set(compact('productType', 'inventoryStatuses'));
+        $this->set(compact('productType', 'inventoryStatuses', 'locations'));
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id Product Type id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @param  string|null                                        $id Product Type id.
+     * @return \Cake\Http\Response|null|void                      Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null)
@@ -87,14 +106,17 @@ class ProductTypesController extends AppController
             $this->Flash->error(__('The product type could not be saved. Please, try again.'));
         }
         $inventoryStatuses = $this->ProductTypes->InventoryStatuses->find('list', ['limit' => 200]);
-        $this->set(compact('productType', 'inventoryStatuses'));
+
+        $locations = $this->ProductTypes->Locations->find('list')->where(['is_hidden' => 0]);
+
+        $this->set(compact('productType', 'inventoryStatuses', 'locations'));
     }
 
     /**
      * Delete method
      *
-     * @param string|null $id Product Type id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @param  string|null                                        $id Product Type id.
+     * @return \Cake\Http\Response|null|void                      Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
