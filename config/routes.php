@@ -50,10 +50,16 @@ $routes->scope('/', function (RouteBuilder $builder) {
         'httpOnly' => true,
     ]);
 
+    $actions = [
+        'printCartonLabels',
+        'addShipment',
+        'editShipment',
+    ];
+
     // Token check will be skipped when callback returns `true`.
-    $csrf->whitelistCallback(function ($request) {
+    $csrf->whitelistCallback(function ($request) use ($actions) {
         // Skip token check for API URLs.
-        if ($request->getParam('action') === 'printCartonLabels') {
+        if (in_array($request->getParam('action'), $actions)) {
             return true;
         }
     });
