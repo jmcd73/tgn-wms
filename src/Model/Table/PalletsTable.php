@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Table\Traits\UpdateCounterCacheTrait;
 use Cake\Core\Exception\Exception;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
@@ -44,6 +45,8 @@ use Cake\Validation\Validator;
  */
 class PalletsTable extends Table
 {
+    use UpdateCounterCacheTrait;
+
     /**
      * Initialize method
      *
@@ -952,5 +955,11 @@ class PalletsTable extends Table
     public function getLabelCopies($labelCopies)
     {
         return $labelCopies ?? $this->getSetting('sscc_default_label_copies');
+    }
+
+    public function testCounterCache()
+    {
+        $cc = $this->behaviors()->get('CounterCache');
+        $this->Shipments->getConditions();
     }
 }
