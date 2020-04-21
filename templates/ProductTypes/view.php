@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\View\AppView $this
+ * @var \App\View\AppView             $this
  * @var \App\Model\Entity\ProductType $productType
  */
 ?>
@@ -78,7 +78,9 @@
             </tr>
             <tr>
                 <th scope="row"><?= __('Location Id') ?></th>
-                <td><?= $this->Number->format($productType->location_id) ?></td>
+                <td>
+                    <?= $productType->has('location') ? $this->Html->link($productType->location->location, ['controller' => 'Locations', 'action' => 'view', $productType->location->id]) : '' ?>
+                    <?= $this->Number->format($productType->location_id) ?></td>
             </tr>
             <tr>
                 <th scope="row"><?= __('Next Serial Number') ?></th>

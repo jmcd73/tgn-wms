@@ -40,7 +40,7 @@ class ProductTypesTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param  array $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void
@@ -54,9 +54,15 @@ class ProductTypesTable extends Table
         $this->belongsTo('InventoryStatuses', [
             'foreignKey' => 'inventory_status_id',
         ]);
-        $this->belongsTo('Locations', [
+        /*       $this->belongsTo('Locations', [
+                  'foreignKey' => 'location_id',
+              ]); */
+        $this->belongsTo('PutawayLocation', [
+            'className' => 'Locations',
+            'propertyName' => 'putaway_location',
             'foreignKey' => 'location_id',
         ]);
+
         $this->hasMany('Items', [
             'foreignKey' => 'product_type_id',
         ]);
@@ -80,7 +86,7 @@ class ProductTypesTable extends Table
     /**
      * Default validation rules.
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @param  \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator): Validator
@@ -137,7 +143,7 @@ class ProductTypesTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @param  \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules): RulesChecker

@@ -1,14 +1,14 @@
 <?php
 /**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\ProductType $productType
+ * @var \App\View\AppView                                                        $this
+ * @var \App\Model\Entity\ProductType                                            $productType
  * @var \App\Model\Entity\InventoryStatus[]|\Cake\Collection\CollectionInterface $inventoryStatuses
- * @var \App\Model\Entity\Location[]|\Cake\Collection\CollectionInterface $locations
- * @var \App\Model\Entity\Item[]|\Cake\Collection\CollectionInterface $items
- * @var \App\Model\Entity\Pallet[]|\Cake\Collection\CollectionInterface $pallets
- * @var \App\Model\Entity\ProductionLine[]|\Cake\Collection\CollectionInterface $productionLines
- * @var \App\Model\Entity\Shift[]|\Cake\Collection\CollectionInterface $shifts
- * @var \App\Model\Entity\Shipment[]|\Cake\Collection\CollectionInterface $shipments
+ * @var \App\Model\Entity\Location[]|\Cake\Collection\CollectionInterface        $locations
+ * @var \App\Model\Entity\Item[]|\Cake\Collection\CollectionInterface            $items
+ * @var \App\Model\Entity\Pallet[]|\Cake\Collection\CollectionInterface          $pallets
+ * @var \App\Model\Entity\ProductionLine[]|\Cake\Collection\CollectionInterface  $productionLines
+ * @var \App\Model\Entity\Shift[]|\Cake\Collection\CollectionInterface           $shifts
+ * @var \App\Model\Entity\Shipment[]|\Cake\Collection\CollectionInterface        $shipments
  */
 ?>
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
@@ -50,16 +50,19 @@
     <fieldset>
         <legend><?= __('Add Product Type') ?></legend>
         <?php
+                   echo $this->Form->control('active');
+                   echo $this->Form->control('enable_pick_app');
             echo $this->Form->control('inventory_status_id', ['options' => $inventoryStatuses, 'empty' => true]);
-            echo $this->Form->control('location_id');
+            echo $this->Form->control('location_id', [
+                'empty' => true,
+            ]);
             echo $this->Form->control('name');
             echo $this->Form->control('storage_temperature');
             echo $this->Form->control('code_regex');
             echo $this->Form->control('code_regex_description');
-            echo $this->Form->control('active');
             echo $this->Form->control('next_serial_number');
             echo $this->Form->control('serial_number_format');
-            echo $this->Form->control('enable_pick_app');
+
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

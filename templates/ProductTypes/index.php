@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\View\AppView $this
+ * @var \App\View\AppView                                                    $this
  * @var \App\Model\Entity\ProductType[]|\Cake\Collection\CollectionInterface $productTypes
  */
 ?>
@@ -61,7 +61,9 @@
             <td><?= $this->Number->format($productType->id) ?></td>
             <td><?= $productType->has('inventory_status') ? $this->Html->link($productType->inventory_status->name, ['controller' => 'InventoryStatuses', 'action' => 'view', $productType->inventory_status->id]) : '' ?>
             </td>
-            <td><?= $this->Number->format($productType->location_id) ?></td>
+            <td>
+                <?= $productType->has('putaway_location') ? $this->Html->link($productType->putaway_location->location, ['controller' => 'Locations', 'action' => 'view', $productType->putaway_location->id]) : '' ?>
+            </td>
             <td><?= h($productType->name) ?></td>
             <td><?= h($productType->storage_temperature) ?></td>
             <td><?= h($productType->code_regex) ?></td>
