@@ -37,7 +37,7 @@ class LocationsTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param  array $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void
@@ -66,7 +66,7 @@ class LocationsTable extends Table
     /**
      * Default validation rules.
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @param  \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator): Validator
@@ -96,6 +96,10 @@ class LocationsTable extends Table
             ->maxLength('description', 50)
             ->requirePresence('description', 'create')
             ->notEmptyString('description');
+        $validator
+            ->numeric('product_type_id')
+            ->requirePresence('product_type_id', 'create')
+            ->notEmpty('product_type_id');
 
         return $validator;
     }
@@ -104,7 +108,7 @@ class LocationsTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @param  \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules): RulesChecker

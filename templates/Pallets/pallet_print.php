@@ -15,13 +15,13 @@ $this->Html->script(
 
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 
-<?php $this->start('tb_actions');?>
+<?php $this->start('tb_actions'); ?>
 <h5><?php echo __('Select product type'); ?></h5>
 <ul class="nav flex-column">
     <?php foreach ($productTypes as $key => $pt): ?>
     <?php
 
-        $linkActive = (isset($productType) && is_numeric($productType->id) && $productType->id === $key) ? 'active' : '';  ?>
+        $linkActive = (isset($productType) && is_numeric($productType->id) && $productType->id === $key) ? 'active' : ''; ?>
 
     <li class="nav-item">
         <?php echo $this->Html->link($pt, [
@@ -33,8 +33,7 @@ $this->Html->script(
 </ul>
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', '<div class="col">' . $this->fetch('tb_actions') . '</div>'); ?>
-<?php if (!empty($productType)): ?>
-
+<?php if (!empty($productType)) : ?>
 <div class="row">
     <div class="col">
         <h3>
@@ -70,7 +69,7 @@ $this->Html->script(
             $formName . '-item',
             [
                 'class' => 'item',
-                'empty' => '(select)',
+                'empty' => true,
                 'label' => 'Item',
                 'options' => $items,
             ]
@@ -79,7 +78,7 @@ $this->Html->script(
             $formName . '-production_line',
             [
                 'options' => $productionLines,
-                'empty' => '(select)',
+                'empty' => true,
                 'label' => 'Production line',
             ]
         ); ?>
@@ -104,7 +103,7 @@ $this->Html->script(
                 [
                     'options' => $batch_nos,
                     'label' => 'Batch No.',
-                    'empty' => '(select)',
+                    'empty' => true,
                 ]
             ); ?>
         <?php echo $this->Form->button(
@@ -122,5 +121,5 @@ $this->Html->script(
     <?php endforeach; ?>
 </div>
 
-<?= $this->element('modals/pallet_print_modal');?>
-<?php endif;?>
+<?= $this->element('modals/pallet_print_modal'); ?>
+<?php endif; ?>

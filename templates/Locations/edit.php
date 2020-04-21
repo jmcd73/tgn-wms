@@ -1,9 +1,9 @@
 <?php
 /**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Location $location
+ * @var \App\View\AppView                                                    $this
+ * @var \App\Model\Entity\Location                                           $location
  * @var \App\Model\Entity\ProductType[]|\Cake\Collection\CollectionInterface $productTypes
- * @var \App\Model\Entity\Pallet[]|\Cake\Collection\CollectionInterface $pallets
+ * @var \App\Model\Entity\Pallet[]|\Cake\Collection\CollectionInterface      $pallets
  */
 ?>
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
@@ -32,7 +32,9 @@
             echo $this->Form->control('pallet_capacity');
             echo $this->Form->control('is_hidden');
             echo $this->Form->control('description');
-            echo $this->Form->control('product_type_id');
+            echo $this->Form->control('product_type_id', [
+                'empty' => true,
+            ]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
