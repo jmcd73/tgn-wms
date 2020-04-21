@@ -206,7 +206,7 @@ class PalletsController extends AppController
 
                 $printResult = LabelFactory::create($this->request->getParam('action'))
                     ->format($printTemplate, $cabLabelData)
-                        ->print($printerDetails->toArray());
+                        ->print($printerDetails);
 
                 $isPrintDebugMode = Configure::read('pallet_print_debug');
 
