@@ -896,6 +896,9 @@ class PalletsController extends AppController
         if (!$this->Pallets->exists($id)) {
             throw new NotFoundException(__('Invalid label'));
         }
+
+        $pallet = $this->Pallets->get($id);
+
         $this->Pallets->getValidator()->add(
             'location_id',
             'notblank',
@@ -917,7 +920,10 @@ class PalletsController extends AppController
 
                 $this->Flash->success(
                     __(
-                        'The product has been saved to the <strong>{0}</strong> location',
+                        'A pallet of <strong>{0} - {1}</strong> with reference no. <strong>{2}</strong> has been moved to put-away location <strong>{3}</strong>',
+                        $pallet->item,
+                        $pallet->description,
+                        $pallet->pl_ref,
                         $location['location']
                     ),
                     ['escape' => false]
@@ -936,8 +942,6 @@ class PalletsController extends AppController
 
             return $this->redirect(['action' => 'unassignedPallets']);
         } else {
-            $pallet = $this->Pallets->get($id);
-
             $availableLocations = $this->Pallets->getAvailableLocations(
                 $filter = 'available',
                 $pallet['product_type_id']
@@ -991,8 +995,11 @@ class PalletsController extends AppController
         if ($pallets->isEmpty() && isset($last_pallet['location']['location'])) {
             $this->Flash->success(
                 __(
-                    'The last product was saved to <strong>{0}</strong>. There are no pallets to put away',
-                    $last_pallet['location']['location']
+                    'The last pallet <strong>{0} - {1}</strong> with reference no. <strong>{2}</strong> was put-away in location <strong>{3}</strong>',
+                    $last_pallet->item,
+                    $last_pallet->description,
+                    $last_pallet->pl_ref,
+                    $last_pallet->location->location
                 ),
                 [
                     'escape' => false,
