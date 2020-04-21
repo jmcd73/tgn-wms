@@ -13,7 +13,6 @@ use Cake\Utility\Hash;
  *
  * @property \App\Model\Table\ShipmentsTable $Shipments
  * @property \App\Controller\Component\ReactEmbedComponent $ReactEmbed
- *
  * @method \App\Model\Entity\Shipment[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class ShipmentsController extends AppController
@@ -22,12 +21,9 @@ class ShipmentsController extends AppController
     {
         parent::beforeFilter($event);
         $this->Authentication->addUnauthenticatedActions([
-            'edit-shipment',
             'editShipment',
             'destinationLookup',
-            'add-shipment',
             'addShipment',
-            'view',
         ]);
     }
 
@@ -437,10 +433,15 @@ class ShipmentsController extends AppController
                 $palletResult = $this->Shipments->Pallets->saveMany($patchedEntities);
             }
 
+            //$ret = $this->Shipments->Pallets->updateCounterCache(null, null, false);
+            $ret = $this->Shipments->Pallets->updateCounterCache(
+                ['Shipments' => ['pallet_count']],
+                null,
+                false
+            );
             if ($result) {
                 $shipment = [
                     'shipment' => $result,
-
                     'data' => $data,
                     'error' => false,
                 ];
