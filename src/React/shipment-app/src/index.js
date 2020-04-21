@@ -11,23 +11,20 @@ const root = document.getElementById("root");
 const baseUrl = root.getAttribute("data-baseurl");
 
 ReactDOM.render(
-  <BrowserRouter key={`br-1`}>
-    <Switch key={`sw-1`}>
+  <BrowserRouter>
+    <Switch>
       <Route
-        key={`route-1`}
         path="/"
         exact
-        render={(props) => <App {...props} key={`app-1`} baseUrl={baseUrl} />}
+        render={(props) => <App {...props} baseUrl={baseUrl} />}
       />
       <Route
-        key={`route-2`}
         path="/:operation(edit-shipment|add-shipment)/:productTypeOrId?"
-        render={(props) => <App {...props} key={`app-2`} baseUrl={baseUrl} />}
+        render={(props) => <App {...props} baseUrl={baseUrl} />}
       />
       <Route
-        key={`route-3`}
         path={`${baseUrl}shipments/process/:operation(edit-shipment|add-shipment)/:productTypeOrId?`}
-        render={(props) => <App {...props} key={`app-3`} baseUrl={baseUrl} />}
+        render={(props) => <App {...props} baseUrl={baseUrl} />}
       />
     </Switch>
   </BrowserRouter>,

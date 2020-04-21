@@ -15,9 +15,9 @@ import { faBan } from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router";
 import PulseLoader from "react-spinners/PulseLoader";
 import FormText from "react-bootstrap/FormText";
-import Wrap from "./Wrap";
-import WrapCheckbox from "./WrapCheckbox";
-import AlertMessage from "./AlertMessage";
+import Wrap from "./Components/Wrap";
+import WrapCheckbox from "./Components/WrapCheckbox";
+import AlertMessage from "./Components/AlertMessage";
 import Form from "react-bootstrap/Form";
 
 import "react-bootstrap-typeahead/css/Typeahead.css";
@@ -152,6 +152,8 @@ class App extends React.Component {
         allPallets.forEach((pl) => {
           this.updateCodeDescriptions(pl);
         });
+
+        this.getProductType(this.state.productType);
 
         this.setState({
           loading: false,
@@ -426,9 +428,10 @@ class App extends React.Component {
           return resp.json();
         })
         .then((d) => {
-          if (d.productType.ProductType) {
+          console.log("ProductType", d);
+          if (d.productType) {
             this.setState({
-              productTypeName: d.productType.ProductType.name,
+              productTypeName: d.productType.name,
             });
           }
           console.log("pt", d);
@@ -461,21 +464,15 @@ class App extends React.Component {
     return ret;
   }
   buildLabelString(palletObject) {
-    const {
-      location,
-      item,
-      best_before,
-      pl_ref,
-      qty,
-      description,
-    } = palletObject;
+    const { location, item, bb_date, pl_ref, qty, description } = palletObject;
 
     const locationName = location.location;
+    const d = new Date(bb_date);
 
     const stringValues = [
       locationName,
       item,
-      best_before,
+      d.toLocaleDateString(),
       pl_ref,
       qty,
       description,
@@ -540,7 +537,7 @@ class App extends React.Component {
 
     return (
       <Wrap>
-        <Row>
+        <Row key="row-1">
           <Col lg={12}>
             <AlertMessage
               strongText="bold this"
@@ -549,11 +546,13 @@ class App extends React.Component {
               show={showAlert}
               onDismiss={this.toggleAlert}
             />
-            <h3>{operationName} Shipment</h3>
+            <h3>
+              {operationName} {productTypeName} Shipment
+            </h3>
           </Col>
         </Row>
-        <Row>
-          <Col lg={12}>
+        <Row key="row-2">
+          <Col lg={12} key="row-col-1">
             <Form.Row onSubmit={(e) => e.preventDefault()}>
               <Col lg={3}>
                 <FormGroup controlId="shipper">
@@ -579,7 +578,7 @@ class App extends React.Component {
                   <FormText>{shipperError}</FormText>
                 </FormGroup>
               </Col>
-              <Col lg={3}>
+              <Col lg={3} key="row-col-2">
                 <FormGroup controlId="destination">
                   <FormLabel>Destination</FormLabel>
                   <AsyncTypeahead
@@ -626,7 +625,7 @@ class App extends React.Component {
             </Form.Row>
           </Col>
         </Row>
-        <Row>
+        <Row key="row-3">
           <Col lg={1}>
             <FormGroup validation={this.getValidationState("shipped")}>
               <FormCheck
@@ -652,7 +651,7 @@ class App extends React.Component {
           </Col>
           <Col lg={6}>{spinner}</Col>
         </Row>
-        <Row>
+        <Row key="row-4">
           <Col>
             <div className="pre-scrollable">
               <div className="card-container">
@@ -660,7 +659,7 @@ class App extends React.Component {
                   {products &&
                     products.map((product, idx) => {
                       return (
-                        <>
+                        <div key={`wrap-{idx}`}>
                           <Card.Header
                             onClick={() => {
                               this.getLabelList(product);
@@ -729,7 +728,7 @@ class App extends React.Component {
                               })}
                             </Card.Body>
                           )}
-                        </>
+                        </div>
                       );
                     })}
                 </Card>
