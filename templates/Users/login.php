@@ -43,7 +43,6 @@ $this->append('css', $this->Html->css('signin')); ?>
                 ]) ?>
                 <!-- <?= $this->Form->control('remember_me', [
                     'type' => 'checkbox',
-                    'checked' => $rememberMe,
                 ]); ?> -->
 
                 <?= $this->Form->button('Sign in', [
