@@ -56,7 +56,16 @@ return [
             'action' => ['login'],
             'bypassAuth' => true,
         ],
-
+        [
+            'controller' => 'Shipments',
+            'action' => ['addShipment', 'editShipment', 'destinationLookup'],
+            'bypassAuth' => true,
+        ],
+        [
+            'controller' => 'ProductTypes',
+            'action' => 'view',
+            'bypassAuth' => true,
+        ],
         [
             'role' => 'admin',
             'prefix' => '*',
