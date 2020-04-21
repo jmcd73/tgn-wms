@@ -1,36 +1,36 @@
 <?xml version="1.0"?>
 <Glabels-document version="4.0">
-    <Template size="Other" height="566.929pt" description="100x250" brand="JMITS" part="150x200" width="425.197pt">
-        <Label-rectangle id="0" height="566.929pt" round="8.50394pt" x_waste="0pt" width="425.197pt" y_waste="0pt">
-            <Markup-margin size="8.50394pt"/>
-            <Layout ny="1" nx="1" dy="566.929pt" x0="0pt" y0="0pt" dx="425.197pt"/>
-        </Label-rectangle>
-    </Template>
-    <Objects id="0" rotate="false">
-        <Object-box a4="0" x="13.7335pt" shadow_y="0pt" a0="1" line_width="1pt" a1="0" w="397.701pt" shadow_opacity="1" a3="1" h="541.794pt" lock_aspect_ratio="false" fill_color="0x0" y="11.0471pt" a5="0" shadow_x="0pt" shadow="false" shadow_color="0x0" line_color="0xff" a2="0"/>
-        <Object-text a4="0" x="21.5092pt" shadow_y="0pt" a0="1" color="0xff" font_size="45" a1="0" font_family="Sans" font_weight="normal" w="379.491pt" wrap="word" shadow_opacity="1" auto_shrink="true" h="77pt" font_italic="false" a3="1" lock_aspect_ratio="false" y="69.0296pt" align="hcenter" a5="0" font_underline="false" shadow_x="0pt" shadow="false" line_spacing="1" shadow_color="0x0" valign="top" a2="0">
-            <p>${2}</p>
-        </Object-text>
-        <Object-text a4="0" x="19.8826pt" shadow_y="0pt" a0="1" color="0xff" font_size="30" a1="0" font_family="Sans" font_weight="normal" w="388.117pt" wrap="word" shadow_opacity="1" auto_shrink="false" h="54pt" font_italic="false" a3="1" lock_aspect_ratio="false" y="147.773pt" align="hcenter" a5="0" font_underline="false" shadow_x="0pt" shadow="false" line_spacing="1" shadow_color="0x0" valign="top" a2="0">
-            <p>${3}</p>
-        </Object-text>
-        <Object-text a4="0" x="23.6716pt" shadow_y="0pt" a0="1" color="0xff" font_size="30" a1="0" font_family="Sans" font_weight="normal" w="383.328pt" wrap="word" shadow_opacity="1" auto_shrink="true" h="54pt" font_italic="false" a3="1" lock_aspect_ratio="false" y="348.987pt" align="hcenter" a5="0" font_underline="false" shadow_x="0pt" shadow="false" line_spacing="1" shadow_color="0x0" valign="top" a2="0">
-            <p>${4}</p>
-        </Object-text>
-        <Object-text a4="0" x="23.2902pt" shadow_y="0pt" a0="1" color="0xff" font_size="22.5" a1="0" font_family="Sans" font_weight="normal" w="383.71pt" wrap="word" shadow_opacity="1" auto_shrink="true" h="42pt" font_italic="false" a3="1" lock_aspect_ratio="false" y="18.2138pt" align="hcenter" a5="0" font_underline="false" shadow_x="0pt" shadow="false" line_spacing="1" shadow_color="0x0" valign="top" a2="0">
-            <p>${1}</p>
-        </Object-text>
-        <Object-line a3="1" a5="0" shadow_color="0x0" shadow_opacity="1" y="61.7136pt" a1="0" dy="0pt" line_color="0xff" a2="0" line_width="1pt" shadow_x="0pt" a4="0" shadow_y="0pt" a0="1" x="13.748pt" shadow="false" dx="397.701pt"/>
-        <Object-text a4="0" x="23.6716pt" shadow_y="0pt" a0="1" color="0xff" font_size="30" a1="0" font_family="Sans" font_weight="normal" w="381.328pt" wrap="word" shadow_opacity="1" auto_shrink="true" h="54pt" font_italic="false" a3="1" lock_aspect_ratio="false" y="398.517pt" align="hcenter" a5="0" font_underline="false" shadow_x="0pt" shadow="false" line_spacing="1" shadow_color="0x0" valign="top" a2="0">
-            <p>${5}</p>
-        </Object-text>
-        <Object-text a4="0" x="24.4191pt" shadow_y="0pt" a0="1" color="0xff" font_size="30" a1="0" font_family="Sans" font_weight="normal" w="380.581pt" wrap="word" shadow_opacity="1" auto_shrink="true" h="54pt" font_italic="false" a3="1" lock_aspect_ratio="false" y="447.296pt" align="hcenter" a5="0" font_underline="false" shadow_x="0pt" shadow="false" line_spacing="1" shadow_color="0x0" valign="top" a2="0">
-            <p>${6}</p>
-        </Object-text>
-        <Object-text a4="0" x="23.6716pt" shadow_y="0pt" a0="1" color="0xff" font_size="30" a1="0" font_family="Sans" font_weight="normal" w="382.328pt" wrap="word" shadow_opacity="1" auto_shrink="true" h="54pt" font_italic="false" a3="1" lock_aspect_ratio="false" y="495.326pt" align="hcenter" a5="0" font_underline="false" shadow_x="0pt" shadow="false" line_spacing="1" shadow_color="0x0" valign="top" a2="0">
-            <p>${7}</p>
-        </Object-text>
-    </Objects>
-    <Merge src="/dev/stdin" type="Text/Comma"/>
-    <Data/>
+  <Template brand="JMITS" description="100x250" height="566.929pt" width="425.197pt" size="Other" part="150x200">
+    <Label-rectangle id="0" height="566.929pt" y_waste="0pt" x_waste="0pt" round="8.50394pt" width="425.197pt">
+      <Markup-margin size="8.50394pt"/>
+      <Layout dx="425.197pt" y0="0pt" nx="1" ny="1" x0="0pt" dy="566.929pt"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-box a5="0" a4="0" shadow_x="0pt" y="11.0471pt" line_color="0xff" lock_aspect_ratio="false" a0="1" fill_color="0x0" x="13.7335pt" shadow="false" line_width="1pt" shadow_color="0x0" a2="0" a1="0" shadow_y="0pt" h="541.794pt" shadow_opacity="1" w="397.701pt" a3="1"/>
+    <Object-text a4="0" a5="0" shadow_x="0pt" y="69.0296pt" wrap="word" font_size="45" lock_aspect_ratio="false" a0="1" x="21.5092pt" shadow="false" line_spacing="1" font_italic="false" font_underline="false" shadow_color="0x0" auto_shrink="true" valign="top" align="hcenter" font_family="Sans" a2="0" a1="0" font_weight="normal" shadow_y="0pt" color="0xff" h="77pt" shadow_opacity="1" w="379.491pt" a3="1">
+      <p>${2}</p>
+    </Object-text>
+    <Object-text a4="0" a5="0" shadow_x="0pt" y="147.773pt" wrap="word" font_size="30" lock_aspect_ratio="false" a0="1" x="19.8826pt" shadow="false" line_spacing="1" font_italic="false" font_underline="false" shadow_color="0x0" auto_shrink="true" valign="top" align="hcenter" font_family="Sans" a2="0" a1="0" font_weight="normal" shadow_y="0pt" color="0xff" h="54pt" shadow_opacity="1" w="388.117pt" a3="1">
+      <p>${3}</p>
+    </Object-text>
+    <Object-text a4="0" a5="0" shadow_x="0pt" y="348.987pt" wrap="word" font_size="30" lock_aspect_ratio="false" a0="1" x="23.6716pt" shadow="false" line_spacing="1" font_italic="false" font_underline="false" shadow_color="0x0" auto_shrink="true" valign="top" align="hcenter" font_family="Sans" a2="0" a1="0" font_weight="normal" shadow_y="0pt" color="0xff" h="54pt" shadow_opacity="1" w="383.328pt" a3="1">
+      <p>${4}</p>
+    </Object-text>
+    <Object-text a4="0" a5="0" shadow_x="0pt" y="18.2138pt" wrap="word" font_size="22.5" lock_aspect_ratio="false" a0="1" x="23.2902pt" shadow="false" line_spacing="1" font_italic="false" font_underline="false" shadow_color="0x0" auto_shrink="true" valign="top" align="hcenter" font_family="Sans" a2="0" a1="0" font_weight="normal" shadow_y="0pt" color="0xff" h="42pt" shadow_opacity="1" w="383.71pt" a3="1">
+      <p>${1}</p>
+    </Object-text>
+    <Object-line x="13.748pt" dx="397.701pt" a0="1" y="61.7136pt" line_width="1pt" shadow_color="0x0" a5="0" shadow="false" a3="1" shadow_x="0pt" dy="0pt" a1="0" line_color="0xff" a2="0" a4="0" shadow_y="0pt" shadow_opacity="1"/>
+    <Object-text a4="0" a5="0" shadow_x="0pt" y="398.517pt" wrap="word" font_size="30" lock_aspect_ratio="false" a0="1" x="23.6716pt" shadow="false" line_spacing="1" font_italic="false" font_underline="false" shadow_color="0x0" auto_shrink="true" valign="top" align="hcenter" font_family="Sans" a2="0" a1="0" font_weight="normal" shadow_y="0pt" color="0xff" h="54pt" shadow_opacity="1" w="381.328pt" a3="1">
+      <p>${5}</p>
+    </Object-text>
+    <Object-text a4="0" a5="0" shadow_x="0pt" y="447.296pt" wrap="word" font_size="30" lock_aspect_ratio="false" a0="1" x="24.4191pt" shadow="false" line_spacing="1" font_italic="false" font_underline="false" shadow_color="0x0" auto_shrink="true" valign="top" align="hcenter" font_family="Sans" a2="0" a1="0" font_weight="normal" shadow_y="0pt" color="0xff" h="54pt" shadow_opacity="1" w="380.581pt" a3="1">
+      <p>${6}</p>
+    </Object-text>
+    <Object-text a4="0" a5="0" shadow_x="0pt" y="495.326pt" wrap="word" font_size="30" lock_aspect_ratio="false" a0="1" x="23.6716pt" shadow="false" line_spacing="1" font_italic="false" font_underline="false" shadow_color="0x0" auto_shrink="true" valign="top" align="hcenter" font_family="Sans" a2="0" a1="0" font_weight="normal" shadow_y="0pt" color="0xff" h="54pt" shadow_opacity="1" w="382.328pt" a3="1">
+      <p>${7}</p>
+    </Object-text>
+  </Objects>
+  <Merge src="/dev/stdin" type="Text/Comma"/>
+  <Data/>
 </Glabels-document>
