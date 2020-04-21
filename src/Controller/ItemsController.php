@@ -13,7 +13,7 @@ namespace App\Controller;
 class ItemsController extends AppController
 {
     /**
-     * @param int $id Product ID
+     * @param  int  $id Product ID
      * @return void
      */
     public function product($id = null)
@@ -40,13 +40,15 @@ class ItemsController extends AppController
         $items = $this->paginate($this->Items);
 
         $this->set(compact('items'));
+
+        $this->set('_serialize', ['items']);
     }
 
     /**
      * View method
      *
-     * @param string|null $id Item id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @param  string|null                                        $id Item id.
+     * @return \Cake\Http\Response|null|void                      Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
@@ -77,15 +79,17 @@ class ItemsController extends AppController
         }
         $packSizes = $this->Items->PackSizes->find('list', ['limit' => 200]);
         $productTypes = $this->Items->ProductTypes->find('list', ['limit' => 200]);
-        $printTemplates = $this->Items->PrintTemplates->find('list', ['limit' => 200]);
+        $printTemplates = $this->Items->PrintTemplates->find('treeList', [
+            'spacer' => '&nbsp;&nbsp;',
+            'limit' => 200, ]);
         $this->set(compact('item', 'packSizes', 'productTypes', 'printTemplates'));
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id Item id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @param  string|null                                        $id Item id.
+     * @return \Cake\Http\Response|null|void                      Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null)
@@ -104,7 +108,9 @@ class ItemsController extends AppController
         }
         $packSizes = $this->Items->PackSizes->find('list', ['limit' => 200]);
         $productTypes = $this->Items->ProductTypes->find('list', ['limit' => 200]);
-        $printTemplates = $this->Items->PrintTemplates->find('list', ['limit' => 200]);
+        $printTemplates = $this->Items->PrintTemplates->find('treeList', [
+            'spacer' => '&nbsp;&nbsp;',
+            'limit' => 200, ]);
         $cartonTemplates = $this->Items->CartonTemplates->find('list');
         $this->set(compact('item', 'packSizes', 'productTypes', 'printTemplates', 'cartonTemplates'));
     }
@@ -112,8 +118,8 @@ class ItemsController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Item id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @param  string|null                                        $id Item id.
+     * @return \Cake\Http\Response|null|void                      Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
@@ -130,9 +136,9 @@ class ItemsController extends AppController
     }
 
     /**
-    * @param int $code item code
-    * @return void
-    */
+     * @param  int  $code item code
+     * @return void
+     */
     public function productListByCode($code = null)
     {
         $search_term = $this->request->getQuery('term');
