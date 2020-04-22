@@ -49,10 +49,8 @@ class ProductTypesController extends AppController
                 'InventoryStatuses',
                 'Locations',
                 'Items',
-                'Pallets',
                 'ProductionLines',
                 'Shifts',
-                'Shipments',
                 'PutawayLocation',
             ],
         ]);
