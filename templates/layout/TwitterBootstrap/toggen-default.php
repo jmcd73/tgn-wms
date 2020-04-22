@@ -73,7 +73,7 @@ if (!$this->fetch('tb_body_end')) {
 if (Configure::check('App.author')) {
     $this->prepend('meta', $this->Html->meta('author', null, ['name' => 'author', 'content' => Configure::read('App.author')]));
 }
-$this->prepend('meta', $this->Html->meta('favicon.ico', '/favicon.ico', ['type' => 'icon']));
+$this->prepend('meta', $this->Html->meta('/img/favicon.png', '/img/favicon.png', ['type' => 'icon']));
 
 /**
  * Prepend `css` block with Bootstrap stylesheets
@@ -113,11 +113,7 @@ if (Configure::read('debug')) {
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->Html->css('main'); ?>
-
 </head>
-
-
-
 <?php
     echo $this->fetch('tb_body_start');
     echo $this->fetch('tb_flash');
