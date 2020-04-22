@@ -83,11 +83,31 @@ return [
         ],
         [
             'role' => 'user',
+            'controller' => [
+                'Users',
+                'Shifts',
+                'Settings',
+                'ProductTypes',
+                'ProductionLines',
+                'PrintTemplates',
+                'Printers',
+                'PackSizes',
+                'Menus',
+                'Locations',
+                'InventoryStatuses',
+            ],
+            'action' => '*',
+            'allowed' => false,
+        ],
+
+        [
+            'role' => 'user',
             'controller' => '*',
             'action' => [
                 'display',
                 'index',
                 'view',
+                'viewPageHelp',
             ],
         ],
         [

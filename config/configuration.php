@@ -8,6 +8,7 @@ return [
     'GLABELS_BATCH_BINARY' => '/usr/bin/xvfb-run -- /usr/local/glabels-qt/usr/bin/glabels-batch-qt',
     'timezones' => DateTimeZone::AUSTRALIA, // extras with a pipe | DateTimeZone::EUROPE,
     'dateFormat' => 'd/m/Y',
+    'BestBeforeDateEditors' => [],
     'PrintLabels' => [
         // mappings for controller print actions to their classes
         // used by Lib/PrintLabels/LabelFactory.php
