@@ -23,7 +23,7 @@
         <legend><?= __('Add Item') ?></legend>
         <div class="row">
             <div class="col">
-                <?php   echo $this->Form->control('active');
+                <?php   echo $this->Form->control('active', ['default' => 1]);
             echo $this->Form->control('code');
             echo $this->Form->control('product_type_id', ['options' => $productTypes]);
             echo $this->Form->control('description');

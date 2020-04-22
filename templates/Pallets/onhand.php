@@ -104,10 +104,10 @@ use App\View\Helper\ToggenHelper;
                         ?>
                     </td>
                     <td <?= $classString; ?>>
-                        <?php echo h($pallet['items']['code']); ?>
+                        <?= $pallet->has('items') ? h($pallet['items']['code']) : ''; ?>
                     </td>
                     <td <?= $classString; ?>>
-                        <?php echo h($pallet['items']['description']); ?>
+                        <?= $pallet->has('items') ? h($pallet['items']['description']) : ''; ?>
                     </td>
                     <td <?= $classString; ?>>
                         <?php echo h($pallet['pl_ref']); ?>

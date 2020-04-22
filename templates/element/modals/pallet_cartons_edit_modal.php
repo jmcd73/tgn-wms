@@ -13,16 +13,11 @@
                         <h3 class="tgn-title"></h3>
                     </div>
                 </div>
-                <div class="row mb2">
-                    <div class="col-lg-6 text-center">
-                        <a class="btn btn-primary" id="editPalletCartons" href="">Edit Cartons</a>
-                    </div>
-                    <div class="col-lg-6 text-center">
-                        <a class="btn btn-primary" id="moveOrEdit" href="">Move or Edit Details</a>
-                    </div>
-                </div>
                 <div class="row  mt-3">
                     <div class="col-lg-6">
+                        <div class="text-center mb-2">
+                            <a class="btn btn-primary" id="editPalletCartons" href="">Edit Cartons</a>
+                        </div>
                         <ul>
                             <li>Edit pallet carton quantity</li>
                             <li>Add or remove cartons</li>
@@ -30,6 +25,8 @@
                         </ul>
                     </div>
                     <div class="col-lg-6">
+                        <div class="text-center mb-2"> <a class="btn btn-primary" id="moveOrEdit" href="">Move or Edit
+                                Details</a></div>
                         <ul>
                             <li>Change inventory status</li>
                             <li>add an inventory status note</li>

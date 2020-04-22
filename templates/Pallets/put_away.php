@@ -58,7 +58,7 @@ echo $this->Form->control('pl_ref', [
     </div>
 
     <div class="row">
-        <div class="offset-lg-2 col-4">
+        <div class="offset-lg-2  col-lg-4 col-12">
             <?php
             echo $this->Form->control(
     'location_id',

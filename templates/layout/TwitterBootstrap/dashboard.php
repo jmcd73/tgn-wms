@@ -14,12 +14,13 @@ $this->start('tb_body_start');
     <div class="container-fluid">
         <div class="row">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                <?php
+                <div class="context-help">
+                    <?php
                     if (!empty($helpPage)) {
-                        echo $this->Element('Help/page_help');
+                        echo $this->Element('help/page_help');
                     } ?>
+                </div>
                 <div class="sidebar-sticky">
-
                     <?= $this->fetch('tb_sidebar') ?>
                 </div>
             </nav>

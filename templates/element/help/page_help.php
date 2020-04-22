@@ -1,5 +1,4 @@
-<div class="context-help">
-    <?= $this->Html->link(
+<?= $this->Html->link(
     'Context help ' . $this->Html->icon('question-circle', ['iconSet' => 'far']),
     [
         'controller' => 'Help',
@@ -11,5 +10,4 @@
         'escape' => false,
         'title' => 'Click here for page specific help',
     ]
-); ?>
-</div>
+);

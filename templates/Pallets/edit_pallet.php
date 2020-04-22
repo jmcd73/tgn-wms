@@ -1,60 +1,54 @@
-<?php use Cake\Core\Configure;
+<?php
+
+use Cake\Core\Configure;
 
 ?>
-
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
+<div class="row">
+    <div class="col">
+        <h3><?= __('Move or Edit'); ?></h3>
+    </div>
+</div>
 
-<div class="container">
-    <div class='row'>
-        <div class='col'>
-            <?= $this->Form->create($pallet); ?>
-            <?php
-            echo $this->Form->hidden('id');
-
-            echo $this->Form->hidden('referer', ['value' => $referer]);
-
-            ?>
-            <div class="row">
-                <div class='col'>
-                    <div class="col">
-                        <h3><?= __('Move or Edit'); ?></h3>
-                        <?php
-                        if ($pallet->shipment_id != 0) {
-                            echo $this->Form->control('shipment_id', [
-                                'empty' => true,
-                                'style' => '-moz-appearance: none;-webkit-appearance: none;appearance: none;',
-                                'disabled' => 'disabled', ]);
-                        }
+<div class="row">
+    <div class="col">
+        <?= $this->Form->create($pallet); ?>
+        <?php echo $this->Form->hidden('id');
+                  echo $this->Form->hidden('referer', ['value' => $referer]); ?>
+        <?php if ($pallet->shipment_id != 0) {
+                      echo $this->Form->control('shipment_id', [
+                          'empty' => true,
+                          'style' => '-moz-appearance: none;-webkit-appearance: none;appearance: none;',
+                          'disabled' => 'disabled', ]);
+                  }
                         echo $this->Form->control('item', ['disabled' => 'disabled']);
                         echo $this->Form->control('description', ['disabled' => 'disabled']);
                         echo $this->Form->control('pl_ref', ['disabled' => 'disabled']);
                         ?>
-                    </div>
-                </div>
+    </div>
+    <div class='col'>
 
-                <div class='col'>
-                    <div class="col">
-                        <?php $disabled = ['disabled' => 'disabled']; ?>
+        <?php $disabled = ['disabled' => 'disabled']; ?>
 
-                        <?php
+        <?php
 
                         $allowConfigUsers = in_array($user->get('username'), Configure::read('BestBeforeDateEditors'));
                         $allowRoleUsers = in_array($user->get('role'), ['qa', 'admin']);
                         $disabled_here = $allowConfigUsers || $allowRoleUsers ? null : $disabled; ?>
 
-                        <?=
-                    $this->Form->control(
-                        'ship_low_date',
-                        [
-                            'label' => 'Ship low dated',
-                            $disabled_here,
-                        ]
-                    );
-                    ?>
 
-                        <?php $allowRoleUsers = in_array($user->get('role'), ['qa', 'admin', 'qty_editor']);
+        <?=
+        $this->Form->control(
+            'ship_low_date',
+            [
+                'label' => 'Ship low dated',
+                $disabled_here,
+            ]
+        ); ?>
+
+        <?php $allowRoleUsers = in_array($user->get('role'), ['qa', 'admin', 'qty_editor']);
                     $disabled_here = $allowRoleUsers ? null : $disabled; ?>
-                        <?=
+        <?=
                     $this->Form->control(
                         'inventory_status_id',
                         [
@@ -69,8 +63,7 @@
                         ]
                     );
                     ?>
-
-                        <?=
+        <?=
                     $this->Form->control(
                         'inventory_status_note',
                         [
@@ -85,27 +78,21 @@
                     );
                     ?>
 
-                        <?= $this->Form->control('location_id', [
-                            'empty' => '(select)',
-                        ]); ?>
+        <?= $this->Form->control('location_id', [
+            'empty' => '(select)',
+        ]); ?>
 
-
-                        <?php
-
+        <?php
 $allowConfigUsers = in_array($user->get('username'), Configure::read('BestBeforeDateEditors'));
 $allowRoleUsers = in_array($user->get('role'), ['admin']);
 $disabled_here = $allowRoleUsers || $allowConfigUsers ? null : $disabled; ?>
-
-                        <?php
+        <?php
                 echo $this->Form->control('bb_date', [
                     'dateFormat' => 'DMY',
                     $disabled_here,
                 ]);
                 ?>
-
-                        <?= $this->Form->submit('Submit'); ?>
-                        <?= $this->Form->end(); ?>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <?= $this->Form->submit('Submit'); ?>
+        <?= $this->Form->end(); ?>
+    </div>
+</div>
