@@ -126,10 +126,13 @@ class ItemsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $item = $this->Items->get($id);
-        if ($this->Items->delete($item)) {
+        try {
+            $this->Items->deleteOrFail($item);
             $this->Flash->success(__('The item has been deleted.'));
-        } else {
-            $this->Flash->error(__('The item could not be deleted. Please, try again.'));
+        } catch (\Cake\ORM\Exception\PersistenceFailedException $e) {
+            $errors = $this->Items->formatValidationErrors($e->getEntity()->getErrors());
+
+            $this->Flash->error(__('The item could not be deleted. Please, try again. {0}', $errors));
         }
 
         return $this->redirect(['action' => 'index']);

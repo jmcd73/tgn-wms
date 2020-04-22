@@ -41,7 +41,7 @@ class ItemsTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param  array $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void
@@ -82,7 +82,7 @@ class ItemsTable extends Table
     /**
      * Default validation rules.
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @param  \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator): Validator
@@ -185,7 +185,7 @@ class ItemsTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @param  \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules): RulesChecker
@@ -195,12 +195,17 @@ class ItemsTable extends Table
         $rules->add($rules->existsIn(['product_type_id'], 'ProductTypes'));
         $rules->add($rules->existsIn(['pallet_template_id'], 'PrintTemplates'));
         $rules->add($rules->existsIn(['carton_template_id'], 'CartonTemplates'));
+        $rules->addDelete($rules->isNotLinkedTo(
+            'Pallets',
+            'item_id',
+            'Items must have no associated pallets to enable deletion.'
+        ));
 
         return $rules;
     }
 
     /**
-     * @param string $term Item snippet to lookup
+     * @param  string $term Item snippet to lookup
      * @return mixed
      */
     public function itemLookup($term)
@@ -230,7 +235,7 @@ class ItemsTable extends Table
     }
 
     /**
-     * @param array $data Array of data to format
+     * @param  array $data Array of data to format
      * @return array data to return to a javascript control somewhere
      */
     public function fmtItem($data)
@@ -244,11 +249,11 @@ class ItemsTable extends Table
     }
 
     /**
-    * getPalletPrintItems - for Pallet print item display field
-    *
-    * @param in $productTypeId Product Type ID
-    * @return array
-    */
+     * getPalletPrintItems - for Pallet print item display field
+     *
+     * @param  in    $productTypeId Product Type ID
+     * @return array
+     */
     public function getPalletPrintItems($productTypeId): Query
     {
         $options = [
