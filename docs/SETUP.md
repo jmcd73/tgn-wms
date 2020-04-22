@@ -46,7 +46,7 @@
 
    Product Types have a number of attributes
 
-   - **serial number and format** - This assigns an incrementing by one reference number to every pallet produced for internal tracking purposes. As every pallet has a SSCC number with a barcode that also individually identifies the pallet then this number may or may not be of use. The benefit is you can define a 8 digit number or smaller which is easier to read off pallet labels for picking purposes. The format for example 'A%07d' is what you would put in `sprintf('A%07d', 11)` = A0000011
+   - **serial number and format** - This assigns an incrementing by one reference number to every pallet produced for internal tracking purposes. Every pallet has an SSCC number with a barcode that also individually identifies the pallet then this number may or may not be of use. The benefit is you can define a 8 digit number or smaller which is easier to read off pallet labels for picking purposes. The format for example 'A%07d' is what you would put in `sprintf('A%07d', 11)` = A0000011
      - **_Important_** The labels pl_ref field has a unique constraint so each products serial number needs to be different. e.g. specify a prefix to separate them for exampl (Ambient = A, Chilled = C)
      - **_Important_** In the settings table `plRefMaxLength` is set to 8 so you format must be 8 characters in total or you need to change the `plRefMaxLength` setting and then perhaps edit pallet label templates to allow for longer / shorter values
    - **Inventory Status** - A default Inventory status. This is applied on pallet label print. So if you want all of this product to enter a WAIT status when the label is printed then set this here.
