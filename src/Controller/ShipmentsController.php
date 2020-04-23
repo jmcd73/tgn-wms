@@ -263,27 +263,7 @@ class ShipmentsController extends AppController
 
             $palletData = [];
 
-            /*   if (!empty($pallets)) {
-                  foreach ($pallets as $pallet) {
-                      $palletData[] = [
-                          'id' => $pallet,
-                          'shipment_id' => $shipmentId,
-                      ];
-                  }
-
-                  $palletRecords = $this->Shipments->Pallets->find()
-                      ->whereInList('id', $pallets)->toList();
-
-                  $palletEntities = $this->Shipments->Pallets->patchEntities($palletRecords, $palletData);
-
-                  $result = $this->Shipments->Pallets->saveMany($palletEntities);
-
-                  return $this->response->withStringBody(json_encode([
-                      $shipment, $palletData, $result, ]))->withType('application/json');
-              } */
-
-            return $this->response->withStringBody(json_encode([
-                $shipment, ]))->withType('application/json');
+            return $this->response->withStringBody(json_encode(compact('shipment')))->withType('application/json');
         }
 
         $options = [
@@ -397,7 +377,7 @@ class ShipmentsController extends AppController
     {
         $error = null;
 
-        $thisShipment = $this->Shipments->get($id, [
+        $shipment = $this->Shipments->get($id, [
             'contain' => [
                 'Pallets' => [
                     'Locations',
@@ -410,42 +390,40 @@ class ShipmentsController extends AppController
             $data = $this->request->getParsedBody();
             $pallets = $data['pallets'];
 
-            $originalPalletIds = Hash::extract($thisShipment->pallets, '{n}.id');
+            $palletsBefore = Hash::extract($shipment->pallets, '{n}.id');
+            $palletsAfter = Hash::extract($pallets, '{n}.id');
 
-            $currentPalletIds = Hash::extract($pallets, '{n}.id');
+            $unlinkIds = array_values(array_diff($palletsBefore, $palletsAfter));
 
-            $removeShipmentIds = array_diff($originalPalletIds, $currentPalletIds);
+            $patch = array_map(function ($el) {
+                return ['shipment_id' => 0, 'id' => $el];
+            }, $unlinkIds);
 
-            $errors = [];
-            $msg = '';
+            $unlinkPallets = $this->Shipments->Pallets->find()->whereInList('id', $unlinkIds, [
+                'allowEmpty' => true,
+            ])->toList();
 
-            if ($removeShipmentIds) {
-                $unlinkPallets = $this->Shipments->Pallets->find()
-                    ->whereInList('id', $removeShipmentIds);
-                /**
-                 * @var \App\Model\Entity\Pallet $pallet Pallet entity
-                 */
-                foreach ($unlinkPallets as $pallet) {
-                    $pallet->shipment_id = 0;
-                    $this->Shipments->Pallets->save($pallet);
-                    $errors[] = $pallet->getErrors();
+            $unlinkPalletsPatched = $this->Shipments->Pallets->patchEntities($unlinkPallets, $patch);
+
+            if (!$this->Shipments->Pallets->saveMany($unlinkPalletsPatched)) {
+                foreach ($unlinkPalletsPatched as $palletEntity) {
+                    if ($palletEntity->hasErrors()) {
+                        $shipment = [
+                            'error' => $palletEntity->getErrors(),
+                            'data' => $data,
+                            'shipment' => null,
+                        ];
+
+                        return $this->response->withStringBody(json_encode($shipment))->withType('application/json');
+                    }
                 }
-
-                if ($errors) {
-                    $msg = $this->Shipments->formatValidationErrors($errors);
-                }
-                // remove pallets from shipment if needed
-                // updateAll will not trigger beforeSave/afterSave
-                //$this->Shipments->Pallets->updateAll(['shipment_id' => 0], [
-                //    'id IN ' => $removeShipmentIds,
-                //]);
             }
 
-            $thisShipment->pallets = [];
+            $shipment->pallets = [];
 
-            $thisShipment->pallets[] = $pallets;
+            $shipment->pallets[] = $pallets;
 
-            $patched = $this->Shipments->patchEntity($thisShipment, $data);
+            $patched = $this->Shipments->patchEntity($shipment, $data);
 
             // save the updated shipment
             $result = $this->Shipments->save($patched, [
@@ -465,25 +443,24 @@ class ShipmentsController extends AppController
                 false
             );
 
-            if (!$patched->hasErrors() && empty($errors)) {
+            if (!$patched->hasErrors(true)) {
                 $shipment = [
-                    'shipment' => $result,
-                    'data' => $data,
                     'error' => false,
+                    'data' => $data,
+                    'shipment' => $result,
                 ];
             } else {
                 $shipment = [
                     'error' => $patched->getErrors(),
-                    'errorPallets' => $msg,
-                    'shipment' => $result,
                     'data' => $data,
+                    'shipment' => $result,
                 ];
             }
             // tog($msg, json_encode($shipment));
 
             return $this->response->withStringBody(json_encode($shipment))->withType('application/json');
         }
-        $productTypeId = $thisShipment->product_type_id;
+        $productTypeId = $shipment->product_type_id;
 
         $options = $this->Shipments->getShipmentLabelOptions($id, $productTypeId);
 
@@ -498,7 +475,7 @@ class ShipmentsController extends AppController
         $this->set(
             compact(
                 'error',
-                'thisShipment',
+                'shipment',
                 'shipment_labels'
             )
         );
@@ -507,7 +484,7 @@ class ShipmentsController extends AppController
             '_serialize',
             [
                 'error',
-                'thisShipment',
+                'shipment',
                 'shipment_labels',
             ]
         );
