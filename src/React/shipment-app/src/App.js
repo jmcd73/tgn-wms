@@ -129,20 +129,20 @@ class App extends React.Component {
             break;
           case "edit-shipment":
             operationName = "Edit";
-            const thisShipmentPallets = d["thisShipment"]["pallets"];
-            allPallets = thisShipmentPallets.concat(d.shipment_labels);
+            const shipmentPallets = d["shipment"]["pallets"];
+            allPallets = shipmentPallets.concat(d.shipment_labels);
             this.setState({
               operationName,
               loadedData: allPallets,
             });
-            const labelIds = thisShipmentPallets.map((pallet) => {
+            const labelIds = shipmentPallets.map((pallet) => {
               return pallet.id;
             });
             this.setState({
-              productType: d["thisShipment"]["product_type_id"],
+              productType: d["shipment"]["product_type_id"],
               shipment: {
                 ...this.state.shipment,
-                ...d.thisShipment,
+                ...d.shipment,
                 operation,
                 labelIds: labelIds,
               },
@@ -329,40 +329,31 @@ class App extends React.Component {
     fetch(url, fetchOptions)
       .then((response) => response.json())
       .then((d) => {
-        /**
-                 *  "error": {
-        "shipper": [
-            "Shipment number must be unique"
-        ]
-    },
-                 */
-        let redirect = false;
+        let redirect = true;
 
-        if (Object.keys(d.error).length) {
+        let errorObject = d.error || {};
+
+        if (Object.keys(errorObject).length > 0) {
           // eslint-disable-next-line array-callback-return
-          Object.keys(d.error).map((fieldName) => {
+
+          if (errorObject.pallets) {
+            errorObject = errorObject.pallets[0];
+          }
+          Object.keys(errorObject).forEach((fieldName) => {
             this.setState({
               errors: {
                 ...this.state.errors,
-                [fieldName]: d.error[fieldName],
+                [fieldName]: errorObject[fieldName],
               },
             });
           });
-        } else {
-          redirect = true;
-        }
-        if (d.errorPallets) {
-          this.toggleAlert(d.errorPallets, "Pallet error", "danger");
-          redirect = false;
-        } else {
-          redirect = true;
-        }
 
+          redirect = false;
+        }
         this.setState({
+          loading: false,
           redirect: redirect,
         });
-
-        this.setState({ loading: false });
       });
   }
 
@@ -417,9 +408,9 @@ class App extends React.Component {
 
   getValidationState(fieldName) {
     if (this.state.errors[fieldName] !== undefined) {
-      return "error";
+      return true;
     }
-    return null;
+    return false;
   }
 
   componentDidMount() {
@@ -505,7 +496,6 @@ class App extends React.Component {
       shipment,
       productTypeName,
       loading,
-      errors,
       baseUrl,
       operationName,
     } = this.state;
@@ -513,7 +503,7 @@ class App extends React.Component {
     const shipperError = this.formatErrors("shipper");
     const shippedError = this.formatErrors("shipped");
     const destinationError = this.formatErrors("destination");
-    const { labelIds, shipper, shipped, operation } = shipment;
+    const { labelIds, shipper, shipped } = shipment;
     const selectedCount = labelIds.length;
     let labelsOnShipment = null;
     let classes = ["FormCheck", "fixed", "pallet-list"];
@@ -642,19 +632,21 @@ class App extends React.Component {
           </Col>
         </Row>
         <Row key="row-3">
-          <Col lg={1}>
-            <FormGroup validation={this.getValidationState("shipped")}>
-              <FormCheck
-                validation={this.getValidationState("shipped")}
-                checked={shipped}
-                id="shipped"
-                onChange={this.toggleShipped}
-                label="Shipped"
-              />
-              <FormText>{shippedError}</FormText>
+          <Col lg={6}>
+            <FormGroup>
+              <Form.Check id="shipped">
+                <Form.Check.Input
+                  type="checkbox"
+                  checked={shipped}
+                  onChange={this.toggleShipped}
+                  isValid={this.getValidationState("shipped")}
+                />
+                <Form.Check.Label>Shipped</Form.Check.Label>
+                <Form.Control.Feedback>{shippedError}</Form.Control.Feedback>
+              </Form.Check>
             </FormGroup>
           </Col>
-          <Col lg={5} className="mb-3">
+          <Col lg={1} className="mb-3">
             <Button
               variant="primary"
               size="sm"
@@ -665,7 +657,7 @@ class App extends React.Component {
               Submit
             </Button>
           </Col>
-          <Col lg={6}>{spinner}</Col>
+          <Col lg={5}>{spinner}</Col>
         </Row>
         <Row key="row-4">
           <Col>
@@ -675,7 +667,7 @@ class App extends React.Component {
                   {products &&
                     products.map((product, idx) => {
                       return (
-                        <div key={`wrap-{idx}`}>
+                        <div key={`wrap-${idx}`}>
                           <Card.Header
                             onClick={() => {
                               this.getLabelList(product);
