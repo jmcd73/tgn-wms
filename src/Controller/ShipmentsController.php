@@ -24,6 +24,8 @@ class ShipmentsController extends AppController
             'editShipment',
             'destinationLookup',
             'addShipment',
+            'openShipments',
+            'view',
         ]);
     }
 
@@ -133,10 +135,10 @@ class ShipmentsController extends AppController
         if ($this->Shipments->delete($shipment)) {
             $pallets = $this->Shipments->Pallets->updateAll(['shipment_id' => 0], ['shipment_id' => $id]);
             $this->Flash->success(__(
-                'The shipment "{0}" has been deleted and {1} pallets released to stock',
+                'The shipment <strong>{0}</strong> has been deleted and <strong>{1}</strong> pallets released back to stock',
                 $shipper,
                 $pallets
-            ));
+            ), ['escape' => false]);
         } else {
             $errors = $this->Shipments->formatValidationErrors($shipment->getErrors());
             $this->Flash->error($errors);
@@ -212,7 +214,7 @@ class ShipmentsController extends AppController
      * @param  int  $shipment_type Product Type ID
      * @return void
      */
-    public function process($shipment_type = null, $productTypeId = null)
+    public function process($operation = null, $productTypeOrId = null)
     {
         list($js, $css) = $this->ReactEmbed->getAssets(
             'shipment-app'
@@ -221,7 +223,7 @@ class ShipmentsController extends AppController
         $baseUrl = $this->request->getAttribute('webroot');
         $productTypes = $this->Shipments->ProductTypes->find('list');
 
-        $this->set(compact('js', 'css', 'baseUrl', 'productTypes', 'productTypeId'));
+        $this->set(compact('js', 'css', 'baseUrl', 'productTypes', 'operation', 'productTypeOrId'));
     }
 
     /**
@@ -240,9 +242,11 @@ class ShipmentsController extends AppController
 
             $pallets = $data['pallets'];
 
-            unset($data['pallets']);
+            $data['pallets'] = ['_ids' => $pallets];
 
-            $newEntity = $this->Shipments->newEntity($data);
+            $newEntity = $this->Shipments->newEntity($data, [
+                'associated' => ['Pallets'],
+            ]);
 
             $shipment = $this->Shipments->save($newEntity);
 
@@ -259,24 +263,24 @@ class ShipmentsController extends AppController
 
             $palletData = [];
 
-            if (!empty($pallets)) {
-                foreach ($pallets as $pallet) {
-                    $palletData[] = [
-                        'id' => $pallet,
-                        'shipment_id' => $shipmentId,
-                    ];
-                }
+            /*   if (!empty($pallets)) {
+                  foreach ($pallets as $pallet) {
+                      $palletData[] = [
+                          'id' => $pallet,
+                          'shipment_id' => $shipmentId,
+                      ];
+                  }
 
-                $palletRecords = $this->Shipments->Pallets->find()
-                    ->whereInList('id', $pallets)->toList();
+                  $palletRecords = $this->Shipments->Pallets->find()
+                      ->whereInList('id', $pallets)->toList();
 
-                $palletEntities = $this->Shipments->Pallets->patchEntities($palletRecords, $palletData);
+                  $palletEntities = $this->Shipments->Pallets->patchEntities($palletRecords, $palletData);
 
-                $result = $this->Shipments->Pallets->saveMany($palletEntities);
+                  $result = $this->Shipments->Pallets->saveMany($palletEntities);
 
-                return $this->response->withStringBody(json_encode([
-                    $shipment, $palletData, $result, ]))->withType('application/json');
-            }
+                  return $this->response->withStringBody(json_encode([
+                      $shipment, $palletData, $result, ]))->withType('application/json');
+              } */
 
             return $this->response->withStringBody(json_encode([
                 $shipment, ]))->withType('application/json');
@@ -284,7 +288,6 @@ class ShipmentsController extends AppController
 
         $options = [
             'conditions' => [
-                'Pallets.product_type_id' => $shipment_type,
                 'OR' => [
                     // not on hold
                     'InventoryStatuses.perms & ' . $perms,
@@ -309,9 +312,11 @@ class ShipmentsController extends AppController
                 ], ],
         ];
 
-        $shipment_labels = $this->Shipments->Pallets->find('all', $options)->toArray();
+        if (!is_null($shipment_type)) {
+            $options['conditions']['Pallets.product_type_id'] = $shipment_type;
+        }
 
-        $shipment_labels = $this->Shipments->markDisabled($shipment_labels);
+        $shipment_labels = $this->Shipments->Pallets->find('all', $options)->toArray();
 
         $this->set(
             compact(
@@ -404,12 +409,41 @@ class ShipmentsController extends AppController
         if ($this->request->is(['post', 'put'])) {
             $data = $this->request->getParsedBody();
             $pallets = $data['pallets'];
-            unset($data['pallets']);
 
             $originalPalletIds = Hash::extract($thisShipment->pallets, '{n}.id');
+
             $currentPalletIds = Hash::extract($pallets, '{n}.id');
 
             $removeShipmentIds = array_diff($originalPalletIds, $currentPalletIds);
+
+            $errors = [];
+            $msg = '';
+
+            if ($removeShipmentIds) {
+                $unlinkPallets = $this->Shipments->Pallets->find()
+                    ->whereInList('id', $removeShipmentIds);
+                /**
+                 * @var \App\Model\Entity\Pallet $pallet Pallet entity
+                 */
+                foreach ($unlinkPallets as $pallet) {
+                    $pallet->shipment_id = 0;
+                    $this->Shipments->Pallets->save($pallet);
+                    $errors[] = $pallet->getErrors();
+                }
+
+                if ($errors) {
+                    $msg = $this->Shipments->formatValidationErrors($errors);
+                }
+                // remove pallets from shipment if needed
+                // updateAll will not trigger beforeSave/afterSave
+                //$this->Shipments->Pallets->updateAll(['shipment_id' => 0], [
+                //    'id IN ' => $removeShipmentIds,
+                //]);
+            }
+
+            $thisShipment->pallets = [];
+
+            $thisShipment->pallets[] = $pallets;
 
             $patched = $this->Shipments->patchEntity($thisShipment, $data);
 
@@ -418,28 +452,20 @@ class ShipmentsController extends AppController
                 'associated' => 'Pallets',
             ]);
 
-            if ($removeShipmentIds) {
-                // remove pallets from shipment if needed
-                $this->Shipments->Pallets->updateAll(['shipment_id' => 0], [
-                    'id IN ' => $removeShipmentIds,
-                ]);
-            }
-
-            if ($currentPalletIds) {
-                $palletEntities = $this->Shipments->Pallets->find()->whereInList('id', $currentPalletIds);
-
-                $patchedEntities = $this->Shipments->Pallets->patchEntities($palletEntities, $pallets);
-
-                $palletResult = $this->Shipments->Pallets->saveMany($patchedEntities);
-            }
-
             //$ret = $this->Shipments->Pallets->updateCounterCache(null, null, false);
+
             $ret = $this->Shipments->Pallets->updateCounterCache(
-                ['Shipments' => ['pallet_count']],
+                [
+                    'Shipments' => [
+                        'pallet_count' => [
+                            'conditions' => ['shipment_id' => $id],
+                        ],
+                    ], ],
                 null,
                 false
             );
-            if ($result) {
+
+            if (!$patched->hasErrors() && empty($errors)) {
                 $shipment = [
                     'shipment' => $result,
                     'data' => $data,
@@ -447,11 +473,14 @@ class ShipmentsController extends AppController
                 ];
             } else {
                 $shipment = [
+                    'error' => $patched->getErrors(),
+                    'errorPallets' => $msg,
                     'shipment' => $result,
                     'data' => $data,
-                    'error-shipment' => $patched->getErrors(),
                 ];
             }
+            // tog($msg, json_encode($shipment));
+
             return $this->response->withStringBody(json_encode($shipment))->withType('application/json');
         }
         $productTypeId = $thisShipment->product_type_id;
@@ -492,14 +521,14 @@ class ShipmentsController extends AppController
      */
     public function pdfPickList($id = null)
     {
-        $shipment = $this->Shipments->find()->where(['id' => $id])
-        ->contain(
-            [
+        $shipment = $this->Shipments->get($id, [
+            'contain' => [
                 'Pallets' => [
                     'Locations',
-                    'Items', ],
+                    'Items',
+                ],
             ],
-        )->first()->toArray();
+        ]);
 
         $pl_count = $this->Shipments->Pallets->find()->where(['shipment_id' => $id])->count();
 
@@ -514,20 +543,21 @@ class ShipmentsController extends AppController
             ])
             ->where(['Pallets.shipment_id' => $id])
             ->contain(['Items'])->group(['Items.code'])
-            ->order(['Items.code' => 'ASC'])->toArray();
+            ->order(['Items.code' => 'ASC']);
 
         $pallets = $this->Shipments->Pallets->find()
             ->where(['shipment_id' => $id])
-            ->contain(['Locations'])
-            ->toArray();
+            ->contain(['Locations']);
 
         $appName = Configure::read('applicationName');
 
-        $keywords = Configure::read('pdfPickListKeywords');
+        $keywords = Configure::read('PdfPickList.KeyWords');
+
+        $suffix = Configure::read('PdfPickList.FileNameSuffix');
 
         $this->layout = 'pdf/default';
 
-        $file_name = $shipment['shipper'] . '_pick_list.pdf';
+        $file_name = $shipment->shipper . $suffix;
 
         $this->response = $this->response->withType('pdf');
 

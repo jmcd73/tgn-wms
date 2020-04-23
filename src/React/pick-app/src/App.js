@@ -1,17 +1,12 @@
 import React, { Component } from "react";
-import Alert from "react-bootstrap/lib/Alert";
-import ListGroup from "react-bootstrap/lib/ListGroup";
-import ListGroupItem from "react-bootstrap/lib/ListGroupItem";
-import FormGroup from "react-bootstrap/lib/FormGroup";
-import ControlLabel from "react-bootstrap/lib/ControlLabel";
-import FormControl from "react-bootstrap/lib/FormControl";
-import Checkbox from "react-bootstrap/lib/Checkbox";
-import Cookies from "js-cookie";
+import { Alert } from "react-bootstrap";
+import { ListGroup } from "react-bootstrap";
+import { ListGroupItem } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 
 class App extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       allPicked: false,
       selectMessage: "Select a shipper",
@@ -228,11 +223,11 @@ class App extends Component {
       <div className="col">
         <div className="row">
           <div className="col">
-            <FormGroup controlId="formControlsSelect">
-              <ControlLabel>Select a shipper</ControlLabel>
-              <FormControl
+            <Form.Group controlId="formControlsSelect">
+              <Form.Label>Select a shipper</Form.Label>
+              <Form.Control
                 onChange={this.selectOnChange}
-                componentClass="select"
+                as="select"
                 placeholder="select"
               >
                 <option key={1} value={0}>
@@ -245,16 +240,16 @@ class App extends Component {
                     </option>
                   );
                 })}
-              </FormControl>
-            </FormGroup>
+              </Form.Control>
+            </Form.Group>
           </div>
         </div>
         <div className="row">
           <div className="col-lg-12 col-md-12 col-sm-12">
             {this.state.showAlert && (
               <Alert
-                onDismiss={this.handleDismiss}
-                bsStyle={this.state.messageResult}
+                onClose={this.handleDismiss}
+                variant={this.state.messageResult}
               >
                 {this.state.message}
               </Alert>
@@ -279,14 +274,18 @@ class App extends Component {
                     {shipments.destination}
                   </p>
 
-                  <Checkbox
-                    checked={this.state.allPicked}
-                    onChange={(e) =>
-                      this.togglePicked(null, !this.state.allPicked, true)
-                    }
-                  >
-                    Mark all as picked
-                  </Checkbox>
+                  <Form.Check>
+                    <Form.Check.Label>
+                      <Form.Check.Input
+                        id="checkbox-allpicked"
+                        onChange={(e) =>
+                          this.togglePicked(null, !this.state.allPicked, true)
+                        }
+                        checked={this.state.allPicked}
+                      />
+                      Mark all as picked
+                    </Form.Check.Label>
+                  </Form.Check>
                 </ListGroupItem>
 
                 {pallets.map((value, idx) => {
@@ -314,14 +313,18 @@ class App extends Component {
                         {" "}
                         {value.item} {value.description}
                       </p>
-                      <Checkbox
-                        checked={isPicked}
-                        onChange={(e) => {
-                          this.togglePicked(value.id, e.target.checked);
-                        }}
-                      >
-                        Picked
-                      </Checkbox>
+                      <Form.Check>
+                        <Form.Check.Label>
+                          <Form.Check.Input
+                            checked={isPicked}
+                            id={`checkbox-` + value.id}
+                            onChange={(e) => {
+                              this.togglePicked(value.id, e.target.checked);
+                            }}
+                          ></Form.Check.Input>
+                          Picked
+                        </Form.Check.Label>
+                      </Form.Check>
                     </ListGroupItem>
                   );
                 })}

@@ -8,6 +8,7 @@ use Cake\Core\Exception\Exception;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\I18n\Date;
+use Cake\ORM\Entity;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
@@ -241,6 +242,27 @@ class PalletsTable extends Table
         // $rules->add($rules->existsIn(['shipment_id'], 'Shipments'));
         // $rules->add($rules->existsIn(['inventory_status_id'], 'InventoryStatuses'));
         $rules->add($rules->existsIn(['product_type_id'], 'ProductTypes'));
+
+        $rules->addUpdate(function (Entity $entity, $options) {
+            if (in_array('shipment_id', $entity->getDirty())) {
+                $shipment_id_now = $entity->shipment_id;
+                $shipment_id = $entity->getOriginal('shipment_id');
+
+                $shipmentId = $shipment_id > 0 ? $shipment_id : $shipment_id_now;
+
+                $count = $this->Shipments->find()->where(['id' => $shipmentId, 'shipped' => true])->count();
+                tog('COUNT', $count, 'orig', $shipment_id, 'now', $shipment_id_now, 'calc', $shipmentId);
+                if ($count > 0) {
+                    tog('IN FALSE');
+                    return false;
+                }
+            }
+
+            return true;
+        }, 'noChangeWhenShipped', [
+            'errorField' => 'shipper',
+            'message' => 'You cannot change a shipment once it is marked as shipped',
+        ]);
 
         return $rules;
     }
@@ -955,11 +977,5 @@ class PalletsTable extends Table
     public function getLabelCopies($labelCopies)
     {
         return $labelCopies ?? $this->getSetting('sscc_default_label_copies');
-    }
-
-    public function testCounterCache()
-    {
-        $cc = $this->behaviors()->get('CounterCache');
-        $this->Shipments->getConditions();
     }
 }

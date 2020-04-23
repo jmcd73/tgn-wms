@@ -10,6 +10,7 @@ use App\Lib\Exception\MissingConfigurationException;
 use App\Lib\PrintLabels\LabelFactory;
 use App\Lib\PrintLabels\PalletPrintResultTrait;
 use Cake\Core\Configure;
+use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\I18n\FrozenTime;
 use Cake\Routing\Router;
@@ -27,6 +28,14 @@ use Cake\Utility\Inflector;
 class PalletsController extends AppController
 {
     use PalletPrintResultTrait;
+
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
+        $this->Authentication->addUnauthenticatedActions([
+            'multiEdit',
+        ]);
+    }
 
     // $this->Security->setConfig('unlockedActions', ['edit']);
 
@@ -142,6 +151,7 @@ class PalletsController extends AppController
                 $palletData =
                     [
                         'item' => $item_detail['code'],
+                        'min_days_life' => $item_detail['min_days_life'],
                         'description' => $item_detail['description'],
                         'bb_date' => $bestBeforeDates['bb_date'],
                         'item_id' => $data['item'],
@@ -1301,10 +1311,7 @@ class PalletsController extends AppController
             ],
         ];
 
-        $pallets = $this->Pallets->find('all', $options)
-        ->select([
-            'dont_ship' => 'DATEDIFF(Pallets.bb_date, CURDATE()) < Pallets.min_days_life AND Pallets.shipment_id = 0',
-        ])->select($this->Pallets);
+        $pallets = $this->Pallets->find('all', $options);
 
         if (!empty($lookup_field) && $lookup_field == 'dont_ship') {
             $pallets->having(['DATEDIFF(Pallets.bb_date, CURDATE()) < Pallets.min_days_life AND Pallets.shipment_id = 0']);

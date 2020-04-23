@@ -54,7 +54,7 @@ trait UpdateCounterCacheTrait
             if ($cacheField) {
                 $config = array_intersect($config, $cacheField);
             } elseif (!is_null($association) && is_array($association[$assocName])) {
-                $config = array_intersect($config, $association[$assocName]);
+                $config = array_intersect_key($association[$assocName], array_flip($config));
             }
 
             foreach ($config as $field => $options) {
@@ -93,8 +93,6 @@ trait UpdateCounterCacheTrait
                         $rowcount = 0;
                     }
 
-                    tog(['TARGET' => $target], $field, $row['count'], [$target->getPrimaryKey() => $row[$foreign_key]] + $conds);
-
                     $target->query()
                         ->update()
                         ->set($field, $row['count'])
@@ -106,6 +104,6 @@ trait UpdateCounterCacheTrait
             }
         }
 
-        return (int) $total_count;
+        return $total_count;
     }
 }

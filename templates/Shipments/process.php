@@ -1,9 +1,10 @@
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 
 <?php $this->start('tb_actions'); ?>
+
 <?php foreach ($productTypes as $key => $productType): ?>
 <li class="nav-item">
-    <?php $active = (int)$key === (int)$productTypeId ? 'active' : null;
+    <?php $active = (int)$key === (int)$productTypeOrId ? 'active' : null;
         $classes = join(' ', array_filter(['nav-link', $active], function ($item) {
             return !is_null($item);
         }));
@@ -14,8 +15,13 @@
         ['class' => $classes]
     ); ?>
 </li>
-<?php endforeach; ?>
 
+<?php endforeach; ?>
+<li class="nav-item"><?= $this->Html->link(
+        'Add Mixed',
+        ['action' => 'process', 'add-shipment'],
+        ['class' => 'nav-link'],
+    ); ?></li>
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', '<ul class="nav flex-column">' . $this->fetch('tb_actions') . '</ul>'); ?>
 

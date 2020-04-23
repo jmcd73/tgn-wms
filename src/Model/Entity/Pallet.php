@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Cake\I18n\FrozenDate;
 use Cake\ORM\Entity;
 
 /**
@@ -57,6 +58,8 @@ class Pallet extends Entity
      *
      * @var array
      */
+    protected $_virtual = ['dont_ship', 'code_desc', 'disabled'];
+
     protected $_accessible = [
         'production_line_id' => true,
         'item' => true,
@@ -98,6 +101,14 @@ class Pallet extends Entity
     protected function _getCodeDesc()
     {
         return $this->item . ' - ' . $this->description;
+    }
+
+    protected function _getDontShip()
+    {
+        //'DATEDIFF(Pallets.bb_date, CURDATE()) < Pallets.min_days_life AND Pallets.shipment_id = 0',
+        $now = new FrozenDate();
+
+        return $now->diffInDays($this->bb_date, false) < $this->min_days_life && $this->shipment_id == 0;
     }
 
     protected function _getDisabled()

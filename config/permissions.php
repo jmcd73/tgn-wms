@@ -58,9 +58,16 @@ return [
         ],
         [
             'controller' => 'Shipments',
-            'action' => ['addShipment', 'editShipment', 'destinationLookup'],
+            'action' => ['addShipment', 'editShipment', 'destinationLookup', 'openShipments', 'view'],
             'bypassAuth' => true,
         ],
+        [
+            'controller' => 'Pallets',
+            'action' => ['multiEdit',
+            ],
+            'bypassAuth' => true,
+        ],
+
         [
             'controller' => 'ProductTypes',
             'action' => 'view',

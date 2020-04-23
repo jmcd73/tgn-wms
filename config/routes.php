@@ -53,7 +53,11 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $actions = [
         'printCartonLabels',
         'addShipment',
+        'multiEdit',
         'editShipment',
+        'destinationLookup',
+        'view',
+        'openShipments',
     ];
 
     // Token check will be skipped when callback returns `true`.

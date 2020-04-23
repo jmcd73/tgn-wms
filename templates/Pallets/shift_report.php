@@ -115,7 +115,7 @@ echo $this->Form->end();
                         [
                             'controller' => 'Cartons',
                             'action' => 'editPalletCartons',
-                            $carton['Pallet']['id'],
+                            $carton['id'],
                         ],
                         ['class' => 'btn btn-link btn-xs edit']
                     ); ?>
@@ -156,8 +156,8 @@ echo $this->Form->end();
             <?php else: ?>
             <div class="card-body">
                 <?php echo $this->element('flash/default', ['message' => 'No part or changed quantity pallets during shift',
-                'class' => 'alert alert-warning',
-                'key' => 'test', ]); ?>
+                    'class' => 'alert alert-warning',
+                    'key' => 'test', ]); ?>
             </div>
             <?php endif; ?>
         </div>

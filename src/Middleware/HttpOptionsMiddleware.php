@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use Cake\Core\Configure;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -24,9 +25,12 @@ class HttpOptionsMiddleware implements MiddlewareInterface
     {
         $response = $handler->handle($request);
         $response = $response->withHeader('X-Toggen', 'James McDonald');
-        $response = $response
-            ->withHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
-            ->withHeader('Access-Control-Allow-Credentials', 'true');
+
+        $origin = array_intersect(Configure::read('ALLOW_ORIGINS'), $request->getHeader('Origin'));
+        if ($origin) {
+            $response = $response->withHeader('Access-Control-Allow-Origin', $origin);
+        }
+        $response = $response->withHeader('Access-Control-Allow-Credentials', 'true');
 
         if ($request->getMethod() == 'OPTIONS') {
             $method = $request->getHeader('Access-Control-Request-Method');

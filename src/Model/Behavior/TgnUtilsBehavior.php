@@ -373,23 +373,19 @@ class TgnUtilsBehavior extends Behavior
      * @param  string $errorMessage     All errors concatenated into a string
      * @return mixed
      */
-    public function formatValidationErrors(array $validationErrors = [], $errorMessage = null): string
+    public function formatValidationErrors(array $validationErrors = [], $errorMessage = []): string
     {
         // get Validation errors and append them into a string
 
         foreach ($validationErrors as $key => $value) {
             if (is_array($value)) {
-                $errorMessage = $this->formatValidationErrors($value, $errorMessage);
+                $errorMessage[] = $this->formatValidationErrors($value, $errorMessage);
             } else {
-                if ($errorMessage) {
-                    $errorMessage .= sprintf('. %s: ', $value);
-                } else {
-                    $errorMessage = sprintf('%s', $value);
-                }
+                $errorMessage[] = $value;
             }
         }
 
-        return $errorMessage;
+        return join('. ', array_unique($errorMessage));
     }
 
     /**

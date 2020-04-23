@@ -26,11 +26,8 @@ const AlertMessage = (props) => {
       classNames="toggen"
       unmountOnExit
     >
-      <Alert onDismiss={onDismiss} variant={variant}>
-        <strong>
-          <FontAwesomeIcon icon={options[variant].icon} /> {strongText}{" "}
-        </strong>{" "}
-        {normalText}
+      <Alert variant={variant} onClose={onDismiss} dismissible>
+        <strong>{strongText} </strong> {normalText}
       </Alert>
     </CSSTransition>
   );

@@ -4,6 +4,9 @@ $appName = 'Toggen WMS';
 $companyName = 'Toggen Systems';
 
 return [
+    'ALLOW_ORIGINS' => [
+        'http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002',
+    ],
     'MAX_COPIES' => 100,
     'GLABELS_BATCH_BINARY' => '/usr/bin/xvfb-run -- /usr/local/glabels-qt/usr/bin/glabels-batch-qt',
     'timezones' => DateTimeZone::AUSTRALIA, // extras with a pipe | DateTimeZone::EUROPE,
@@ -162,5 +165,8 @@ return [
         'company_url' => 'https://toggen.com.au',
     ],
 
-    'pdfPickListKeywords' => ['Pick List'],
+    'PdfPickList' => [
+        'KeyWords' => ['Pick List'],
+        'FileNameSuffix' => '_pick_list.pdf',
+    ],
 ];

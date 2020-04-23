@@ -60,6 +60,9 @@ class App extends React.Component {
       options: [],
       productTypes: [],
       baseUrl: this.props.baseUrl,
+      alertTextBold: "Default Alert Bold",
+      alertText: "Default alert text",
+      alertVariant: "info",
     };
     this.state = {
       ...this.defaults,
@@ -162,9 +165,6 @@ class App extends React.Component {
       .catch((e) => console.log(e));
   }
 
-  buildCodeDescString(palletObject) {
-    return palletObject.item + " " + palletObject.description;
-  }
   /**
    *
    * @param {*} palletObject
@@ -172,7 +172,7 @@ class App extends React.Component {
   updateCodeDescriptions(palletObject) {
     let { products, loadedData, isExpanded } = this.state;
 
-    const codeDesc = this.buildCodeDescString(palletObject);
+    const codeDesc = palletObject.code_desc;
     const { item_id: itemId } = palletObject;
     this.updateSingleLabelCount(
       codeDesc,
@@ -207,7 +207,7 @@ class App extends React.Component {
     let labelCounts = {};
 
     const codeDesc = productArray.reduce((accum, current) => {
-      const codeDesc = this.buildCodeDescString(current);
+      const codeDesc = current.code_desc;
       if (accum.indexOf(codeDesc) === -1) {
         accum.push(codeDesc);
         ctr = 1;
@@ -227,7 +227,7 @@ class App extends React.Component {
     const loadedData = this.state.loadedData;
 
     const labelList = loadedData.reduce((accum, current, idx) => {
-      const codeDesc = current.item + " " + current.description;
+      const codeDesc = current.code_desc;
       if (codeDesc === productTitle) {
         accum.push(current);
       }
@@ -252,9 +252,14 @@ class App extends React.Component {
     this.setState({ isExpanded: isExpanded });
   }
 
-  toggleAlert() {
+  toggleAlert(txt, bold, variant) {
     const newAlertState = !this.state.showAlert;
-    this.setState({ showAlert: newAlertState });
+    this.setState({
+      alertVariant: variant,
+      alertText: txt,
+      alertTextBold: bold,
+      showAlert: newAlertState,
+    });
     if (newAlertState) {
       setTimeout(() => {
         this.setState({ showAlert: !newAlertState });
@@ -331,7 +336,9 @@ class App extends React.Component {
         ]
     },
                  */
-        if (d.error) {
+        let redirect = false;
+
+        if (Object.keys(d.error).length) {
           // eslint-disable-next-line array-callback-return
           Object.keys(d.error).map((fieldName) => {
             this.setState({
@@ -342,10 +349,19 @@ class App extends React.Component {
             });
           });
         } else {
-          this.setState({
-            redirect: true,
-          });
+          redirect = true;
         }
+        if (d.errorPallets) {
+          this.toggleAlert(d.errorPallets, "Pallet error", "danger");
+          redirect = false;
+        } else {
+          redirect = true;
+        }
+
+        this.setState({
+          redirect: redirect,
+        });
+
         this.setState({ loading: false });
       });
   }
@@ -540,9 +556,9 @@ class App extends React.Component {
         <Row key="row-1">
           <Col lg={12}>
             <AlertMessage
-              strongText="bold this"
-              normalText="Message that"
-              variant="info"
+              strongText={this.state.alertTextBold}
+              normalText={this.state.alertText}
+              variant={this.state.alertVariant}
               show={showAlert}
               onDismiss={this.toggleAlert}
             />
@@ -699,9 +715,6 @@ class App extends React.Component {
                                   style = { pointerEvents: "none" };
                                 }
                                 let labelText = this.buildLabelString(value);
-                                if (icon) {
-                                  labelText = icon + labelText;
-                                }
 
                                 return (
                                   <WrapCheckbox
@@ -709,20 +722,26 @@ class App extends React.Component {
                                     childKey={value.pl_ref}
                                     disabled={value.disabled}
                                   >
-                                    <FormCheck
+                                    <Form.Check
                                       disabled={value.disabled}
-                                      checked={checked}
                                       style={style}
                                       key={value.pl_ref}
                                       id={value.pl_ref}
-                                      onChange={(e) =>
-                                        this.addRemoveLabel(
-                                          e.target.checked,
-                                          value.id
-                                        )
-                                      }
-                                      label={labelText}
-                                    />
+                                    >
+                                      <Form.Check.Input
+                                        checked={checked}
+                                        type={"checkbox"}
+                                        onChange={(e) =>
+                                          this.addRemoveLabel(
+                                            e.target.checked,
+                                            value.id
+                                          )
+                                        }
+                                      />
+                                      <Form.Check.Label>
+                                        {icon} {labelText}
+                                      </Form.Check.Label>
+                                    </Form.Check>
                                   </WrapCheckbox>
                                 );
                               })}

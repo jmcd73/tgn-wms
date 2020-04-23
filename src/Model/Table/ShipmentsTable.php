@@ -36,7 +36,7 @@ class ShipmentsTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param  array $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void
@@ -62,7 +62,7 @@ class ShipmentsTable extends Table
     /**
      * Default validation rules.
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @param  \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator): Validator
@@ -99,7 +99,7 @@ class ShipmentsTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @param  \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules): RulesChecker
@@ -114,37 +114,12 @@ class ShipmentsTable extends Table
             'message' => 'A shipment cannot be deleted when it is marked as shipped',
         ]);
 
-        $rules->addUpdate(function ($entity, $options) {
-            return true;
-        }, 'noChangeWhenShipped', [
-            'errorField' => 'shipped',
-            'message' => 'You cannot change a shipment once it is marked as shipped',
-        ]);
-
         return $rules;
     }
 
     /**
-     * markDisabled creates and returns an array of items for the Form->input control to disable
-     * @param array $shipment_labels array of pallets
-     * @return array
-     */
-    public function markDisabled($shipment_labels = [])
-    {
-        foreach ($shipment_labels as $key => $ret) {
-            if ($shipment_labels[$key]['dont_ship'] && !$shipment_labels[$key]['ship_low_date']) {
-                $shipment_labels[$key]['disabled'] = true;
-            } else {
-                $shipment_labels[$key]['disabled'] = false;
-            }
-        }
-
-        return $shipment_labels;
-    }
-
-    /**
      * getShipmentLabelOptions creates an options array for a find call
-     * @param int $id of shipment
+     * @param int $id            of shipment
      * @param int $productTypeId id of product type we lookup for
      *
      * @return array

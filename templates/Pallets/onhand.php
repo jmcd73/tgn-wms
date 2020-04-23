@@ -51,9 +51,11 @@ use App\View\Helper\ToggenHelper;
             <small>
 
                 <?php echo $this->Html->badge($this->Paginator->counter('{{count}}')); ?> pallets
-                <?php $className = $dont_ship_count === 0 ? 'hidden' : ''; ?>
-                <?php $options = !empty($className) ? ['class' => $className] : []; ?>
-                <?php sprintf('<div class="%s">%s low dated</div>', $className, $this->Html->badge($dont_ship_count, $options)) ; ?>
+                <?php if ($dont_ship_count) : ?>
+                <span> <?= $this->Html->badge($dont_ship_count, ['class' => 'danger']); ?> low dated
+                </span>
+                <?php endif; ?>
+
             </small>
         </p>
         <table class="table table-striped">
@@ -103,12 +105,7 @@ use App\View\Helper\ToggenHelper;
                             );
                         ?>
                     </td>
-                    <td <?= $classString; ?>>
-                        <?= $pallet->has('items') ? h($pallet['items']['code']) : ''; ?>
-                    </td>
-                    <td <?= $classString; ?>>
-                        <?= $pallet->has('items') ? h($pallet['items']['description']) : ''; ?>
-                    </td>
+                    <td <?= $classString; ?> colspan="2"><?=  h($pallet->code_desc); ?></td>
                     <td <?= $classString; ?>>
                         <?php echo h($pallet['pl_ref']); ?>
                     </td>
