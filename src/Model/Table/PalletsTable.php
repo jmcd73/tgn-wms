@@ -251,16 +251,15 @@ class PalletsTable extends Table
                 $shipmentId = $shipment_id > 0 ? $shipment_id : $shipment_id_now;
 
                 $count = $this->Shipments->find()->where(['id' => $shipmentId, 'shipped' => true])->count();
-                tog('COUNT', $count, 'orig', $shipment_id, 'now', $shipment_id_now, 'calc', $shipmentId);
+
                 if ($count > 0) {
-                    tog('IN FALSE');
                     return false;
                 }
             }
 
             return true;
         }, 'noChangeWhenShipped', [
-            'errorField' => 'shipper',
+            'errorField' => 'shipped',
             'message' => 'You cannot change a shipment once it is marked as shipped',
         ]);
 
