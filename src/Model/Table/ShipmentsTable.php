@@ -114,6 +114,15 @@ class ShipmentsTable extends Table
             'message' => 'A shipment cannot be deleted when it is marked as shipped',
         ]);
 
+        /* $rules->addUpdate(function ($entity, $options) {
+            //tog($entity->getDirty(), $options, $entity);
+
+            return $entity->shipped && $entity->isDirty('shipped');
+        }, 'cantUpdate', [
+            'errorField' => 'shipped',
+            'message' => 'A shipment cannot be changed when it is marked as shipped',
+        ]); */
+
         return $rules;
     }
 
