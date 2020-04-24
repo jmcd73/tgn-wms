@@ -31,9 +31,7 @@ const WrapCheckbox = (props) => {
         rootClose={true}
         overlay={CustomPopover}
       >
-        <span style={{ padding: 0, margin: 0 }} key={childKey}>
-          {children}
-        </span>
+        <span key={childKey}>{children}</span>
       </OverlayTrigger>
     );
   } else {
