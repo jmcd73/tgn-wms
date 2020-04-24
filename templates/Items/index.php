@@ -9,6 +9,8 @@
 <?php $this->start('tb_actions'); ?>
 <li><?= $this->Html->link(__('New Item'), ['action' => 'add'], ['class' => 'nav-link']) ?></li>
 </li>
+<li><?= $this->Html->link(__('New Item from Copy'), ['action' => 'newItemFromCopy'], ['class' => 'nav-link']) ?></li>
+</li>
 
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', '<ul class="nav flex-column">' . $this->fetch('tb_actions') . '</ul>'); ?>
