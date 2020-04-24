@@ -39,7 +39,12 @@ class ItemsController extends AppController
         ];
         $items = $this->paginate($this->Items);
 
-        $this->set(compact('items'));
+        $itemsList = $this->Items->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'code_desc',
+        ]);
+
+        $this->set(compact('items', 'itemsList'));
 
         $this->set('_serialize', ['items']);
     }
@@ -159,5 +164,54 @@ class ItemsController extends AppController
         // $this->autoRender = false;
         $this->set(compact('json_output'));
         $this->set('_serialize', 'json_output');
+    }
+
+    public function newItemFromCopy()
+    {
+        // code...
+
+        $item_id = $this->request->getQuery('item_id');
+
+        $itemToClone = null;
+
+        if ($this->request->is('GET') && $item_id) {
+            $itemToClone = $this->Items->get($item_id);
+            $item = clone $itemToClone;
+            $fields = ['id', 'trade_unit', 'consumer_unit', 'code', 'description'];
+
+            foreach ($fields as $field) {
+                unset($item->{$field});
+            }
+            $item = $item->toArray();
+            $item = $this->Items->newEntity($item, ['validate' => false]);
+        } else {
+            $item = $this->Items->newEmptyEntity();
+        }
+
+        if ($this->request->is(['post', 'put'])) {
+            $item = $this->Items->patchEntity($item, $this->request->getData());
+            if ($this->Items->save($item)) {
+                $this->Flash->success(__('The item has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            tog('ERROR HERE');
+            $this->Flash->error(__('The item could not be saved. Please, try again.'));
+        }
+
+        $items = $this->Items->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'code_desc',
+        ]);
+
+        $packSizes = $this->Items->PackSizes->find('list', ['limit' => 200]);
+
+        $productTypes = $this->Items->ProductTypes->find('list', ['limit' => 200]);
+
+        $printTemplates = $this->Items->PrintTemplates->find('treeList', [
+            'spacer' => '&nbsp;&nbsp;',
+            'limit' => 200, ]);
+
+        $this->set(compact('items', 'item', 'packSizes', 'productTypes', 'itemToClone', 'printTemplates', 'item_id'));
     }
 }
