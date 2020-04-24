@@ -56,20 +56,16 @@ class ItemsTable extends Table
         $this->addBehavior('TgnUtils');
         $this->belongsTo('PackSizes', [
             'foreignKey' => 'pack_size_id',
-            'joinType' => 'INNER',
         ]);
         $this->belongsTo('ProductTypes', [
             'foreignKey' => 'product_type_id',
-            'joinType' => 'INNER',
         ]);
         $this->belongsTo('PrintTemplates', [
             'foreignKey' => 'pallet_template_id',
-            'joinType' => 'INNER',
         ]);
         $this->belongsTo('CartonTemplates', [
             'className' => 'PrintTemplates',
             'foreignKey' => 'carton_template_id',
-            'joinType' => 'INNER',
         ]);
         $this->hasMany('Cartons', [
             'foreignKey' => 'item_id',
@@ -115,7 +111,12 @@ class ItemsTable extends Table
             ->scalar('description')
             ->maxLength('description', 32)
             ->requirePresence('description', 'create')
-            ->notEmptyString('description');
+            ->notEmptyString('description')
+            ->add('description', 'unique', [
+                'rule' => 'validateUnique',
+                'message' => 'Description must be unique',
+                'provider' => 'table',
+            ]);
 
         $validator
             ->integer('quantity')
@@ -262,6 +263,8 @@ class ItemsTable extends Table
             'conditions' => [
                 'active' => 1,
                 'product_type_id' => $productTypeId,
+                'trade_unit IS NOT NULL',
+                'trade_unit <>' => '',
             ],
             'order' => [
                 'code' => 'ASC',
