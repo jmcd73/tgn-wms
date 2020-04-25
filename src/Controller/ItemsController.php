@@ -195,11 +195,12 @@ class ItemsController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             }
-            tog('ERROR HERE');
+
             $this->Flash->error(__('The item could not be saved. Please, try again.'));
         }
 
         $items = $this->Items->find('list', [
+            'order' => ['code' => 'ASC'],
             'keyField' => 'id',
             'valueField' => 'code_desc',
         ]);
