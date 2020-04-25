@@ -532,7 +532,7 @@ class ShipmentsController extends AppController
 
         $suffix = Configure::read('PdfPickList.FileNameSuffix');
 
-        $this->layout = 'pdf/default';
+        $this->viewBuilder()->setLayout('pdf/default');
 
         $file_name = $shipment->shipper . $suffix;
 

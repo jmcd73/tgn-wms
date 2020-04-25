@@ -1,144 +1,97 @@
 <?php
-use Cake\Core\Configure;
-use Cake\Http\Exception\NotFoundException;
+use App\Lib\Pdf\XTCPDF;
 
-//debug(App::objects('Vendor'));
-    //App::import('Vendor','TCPDF', [ 'file' => 'tecnickcom/tcpdf/tcpdf.php']);
+$pdf = new XTCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-    class XTCPDF extends TCPDF
-    {
-        public function Header()
-        {
-            // Logo
-            $image_file = WWW_ROOT . 'img/' . Configure::read('footer.img');
+$shipper = $shipment['shipper'];
 
-            switch (exif_imagetype($image_file)) {
-                case IMAGETYPE_JPEG:
-                    $imageType = 'JPG';
-                    break;
-                case IMAGETYPE_PNG:
-                    $imageType = 'PNG';
-                    break;
-                default:
-                    throw new NotFoundException('Footer image type unknown');
-            };
+$pdf->SetCreator(PDF_CREATOR);
 
-            $this->Image($image_file, 10, 10, 60, '', $imageType, '', 'B', false, 300, '', false, false, 0, false, false, false);
-            // Set font
-            $this->SetFont('helvetica', 'B', 12);
-            // Title
-            // Cell( $w, $h = 0, $txt = '',
-            // $border = 0, $ln = 0, $align = '', $fill = false, $link = '', $stretch = 0, $ignore_min_height = false, $calign = 'T', $valign = 'M' )
-            $this->Cell(60, 15, 'Shipment Pick List', 0, false, 'C', 0, '', 0, false, 'M', 'T');
-        }
+$pdf->SetAuthor($appName);
 
-        public function Footer()
-        {
-            // Position at 15 mm from bottom
-            $this->SetY(-15);
-            // Set font
-            $this->SetFont('helvetica', 'I', 8);
-            // Page number
-            $this->Cell(0, 10, 'Page ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
-        }
-    }
+$pdf->SetTitle($shipper);
 
-    $pdf = new XTCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+$pdf->SetSubject('Pick List for ' . $shipper);
 
-    $shipper = $shipment['shipper'];
+array_push($keywords, $appName, $shipper);
 
-    $pdf->SetCreator(PDF_CREATOR);
+$pdf->SetKeywords(join(' ', $keywords));
 
-    $pdf->SetAuthor($appName);
+$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
-    $pdf->SetTitle($shipper);
+$pdf->addPage();
 
-    $pdf->SetSubject('Pick List for ' . $shipper);
+$pdf->SetFont('helvetica', '', 13, '', 'false');
 
-    array_push($keywords, $appName, $shipper);
+$style = ['width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => [0, 0, 0]];
+$style = ['width' => 0.4];
+$xAdjust = 1;
 
-    $pdf->SetKeywords(join(' ', $keywords));
+$pdf->drawHeader($xAdjust, -2, $style);
 
-    $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
-    $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-    $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-    $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+$pdf->headerDetail(__('Shipment No'), $shipment['shipper']);
+$pdf->headerDetail(__('Destination'), $shipment['destination']);
+$pdf->headerDetail(__('Created'), $this->Time->format($shipment['created']));
 
-    /*
-    Write( $h, $txt, $link = '', $fill = false, $align = '', $ln = false, $stretch = 0, $firstline = false, $firstblock = false, $maxh = 0, $wadj = 0, $margin = '' )
-     */
+$pdf->drawHeader($xAdjust, -3, $style, true);
 
-    $pdf->addPage();
+if (!empty($pallets)) :
+        $pdf->Cell(145, 0, __('Total Pallets') . ':', 0, 0, 'R', 0, '', 0);
+        $pdf->Cell(15, 0, $pl_count, 0, 1, 'R', 0, '', 0);
 
-    $pdf->SetFont('courier', '', 13, '', 'false');
+        $pdf->drawHeader(1, -2, $style, true);
+        $pdf->Cell(40, 0, 'Item Code', 0, 0, 'L', 0, '', 0);
+        $pdf->Cell(135, 0, 'Total', 0, 1, 'R', 0, '', 0);
 
-    $doubleDivider = '===============================================================';
-    $singleDivider = '---------------------------------------------------------------';
-
-    $pdf->Write(0, $doubleDivider, '', 0, 'L', true, 0, false, false, 0);
-    $pdf->Write(0, str_pad(__('Shipment No') . ': ' . $shipment['shipper'], 33, ' ', STR_PAD_RIGHT), '', 0, 'L', true, 0, false, false, 0);
-    $pdf->Write(0, str_pad(__('Destination') . ': ' . $shipment['destination'], 33, ' ', STR_PAD_RIGHT), '', 0, 'L', true, 0, false, false, 0);
-    $pdf->Write(0, str_pad(__('Created') . ': ' . $this->Time->format($shipment['created']), 30, ' ', STR_PAD_RIGHT), '', 0, 'L', true, 0, false, false, 0);
-    $pdf->Write(0, $doubleDivider, '', 0, 'L', true, 0, false, false, 0);
-
-    if (!empty($pallets)):
-
-        $pdf->Write(
-            0,
-            str_pad(__('Total Pallets:') . $pl_count, 30, ' ', STR_PAD_LEFT),
-            '',
-            0,
-            'L',
-            true,
-            0,
-            false,
-            false,
-            0
-        );
-        $pdf->Write(0, $doubleDivider, '', 0, 'L', true, 0, false, false, 0);
-        $pdf->Write(0, '  Item Code                                             Total', '', 0, 'L', true, 0, false, false, 0);
-        $pdf->Write(0, '  Description   Location   Reference    Qty   Pallets   Qty', '', 0, 'L', true, 0, false, false, 0);
-        $pdf->Write(0, '  -----------   --------   ---------    ---   -------   -----', '', 0, 'L', true, 0, false, false, 0);
-
-        foreach ($groups as $group):
+       $pdf->rowDetail([
+           'col-1' => 'Description',
+           'col-2' => 'Location',
+           'col-3' => 'Reference',
+           'col-4' => 'Qty',
+           'col-5' => 'Pallets',
+           'col-6' => 'Qty',
+       ]);
+        $pdf->doubleLine();
+    foreach ($groups as $group) :
             //string str_pad ( string $input , int $pad_length [, string $pad_string = " " [, int $pad_type = STR_PAD_RIGHT ]] )
-            $pdf->Write(0, '  ' . $group['code'], '', 0, 'L', true, 0, false, false, 0);
-            $palletDescription = '  ' . str_pad($group['description'], 30, ' ', STR_PAD_RIGHT);
-            $palletsCartons = str_repeat(' ', 9) . str_pad($group['pallet_count'], 12, ' ', STR_PAD_LEFT) . str_repeat(' ', 3) . str_pad($group['total'], 5, ' ', STR_PAD_LEFT);
-            $concatDescCount = $palletDescription . $palletsCartons;
-            $pdf->Write(0, $concatDescCount, '', 0, 'L', true, 0, false, false, 0);
+
+           $pdf->Cell(40, 0, $group['code'], 0, 1, 'L', 0, '', 0);
+           // $pdf->Write(0, '  ' . $group['code'], '', 0, 'L', true, 0, false, false, 0);
+           $pdf->Cell(120, 0, $group['description'], 0, 0, 'L', 0, '', 0);
+
+           $pdf->Cell(40, 0, $group['pallet_count'], 0, 0, 'R', 0, '', 0);
+           $pdf->Cell(15, 0, $group['total'], 0, 1, 'R', 0, '', 0);
+
             //str_repeat(' ', 9) . str_pad($group['0']['Pallets'], 12, ' ', STR_PAD_LEFT) . str_repeat(' ', 3) . str_pad($group['0']['Total'], 5, ' ' , STR_PAD_LEFT)
 
-            foreach ($pallets as $pallet):
-
-                if ($pallet['item_id'] == $group['item_id']):
-                    $pdf->Write(
-                        0,
-                        str_pad($pallet['location']['location'], 24, ' ', STR_PAD_LEFT) . '    ' . $pallet['pl_ref'] . '     ' . $pallet['qty'],
-                        '',
-                        0,
-                        'L',
-                        true,
-                        0,
-                        false,
-                        false,
-                        0
-                    );
-
-                endif;
-            endforeach;
-            $pdf->Write(0, $singleDivider, '', 0, 'L', true, 0, false, false, 0);
-
+        foreach ($pallets as $pallet) :
+            if ($pallet['item_id'] == $group['item_id']) :
+                    $pdf->rowDetail([
+                        'col-1' => '',
+                        'col-2' => $pallet['location']['location'],
+                        'col-3' => $pallet['pl_ref'],
+                        'col-4' => $pallet['qty'],
+                        'col-5' => '',
+                        'col-6' => '',
+                    ]);
+            endif;
         endforeach;
-        $pdf->Write(0, '                  End of Shipment Pick List', '', 0, 'L', true, 0, false, false, 0);
-        $pdf->Write(0, $doubleDivider, '', 0, 'L', true, 0, false, false, 0);
 
-    else:
+            $pdf->drawHeader(1, -2, ['width' => 0.3], true);
+    endforeach;
 
-        $pdf->Write(0, '             Please put some pallets on this shipment', '', 0, 'L', true, 0, false, false, 0);
-        $pdf->Write(0, $doubleDivider, '', 0, 'L', true, 0, false, false, 0);
+        $pdf->Cell(0, 0, 'End of Shipment Pick List', 0, 1, 'C', 0, '', 0);
 
-    endif;
+        //$pdf->Write(0, $doubleDivider, '', 0, 'L', true, 0, false, false, 0);
+        $pdf->doubleLine();
+else :
+        $pdf->Cell(0, 0, 'Please put some pallets on this shipment', 0, 1, 'C', 0, '', 0);
+
+        $pdf->doubleLine();
+endif;
 
     // use the examples at http://tcpdf.org to create a pdf
 

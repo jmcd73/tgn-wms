@@ -48,9 +48,22 @@ class AppView extends View
             'className' => 'ToggenHtml',
         ]);*/
 
-        $this->initializeUI();
+        $uiOptions = [
+            'layout' => 'TwitterBootstrap/toggen-default',
+        ];
 
-        $this->layout = 'TwitterBootstrap/toggen-default';
+        /**
+         * if view is not default then assume it has been
+         * set with $this->viewBuilder()->setLayout('customLayout');
+         */
+        if ($this->layout !== 'default') {
+            $uiOptions = [
+                'layout' => $this->layout,
+            ];
+        }
+
+        $this->initializeUI($uiOptions);
+
         $this->loadHelper('Html', ['className' => 'App\View\Helper\HtmlHelper']);
         $this->loadHelper('Form', ['className' => 'BootstrapUI.Form']);
         $this->loadHelper('Flash', ['className' => 'App\View\Helper\FlashHelper']);
