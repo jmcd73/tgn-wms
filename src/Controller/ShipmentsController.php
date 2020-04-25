@@ -64,7 +64,9 @@ class ShipmentsController extends AppController
     public function view($id = null)
     {
         $shipment = $this->Shipments->get($id, [
-            'contain' => ['ProductTypes', 'Pallets' => ['Locations']],
+            'contain' => ['ProductTypes', 'Pallets' => [
+                'ProductionLines',
+                'Locations', ]],
         ]);
 
         $this->set('shipment', $shipment);

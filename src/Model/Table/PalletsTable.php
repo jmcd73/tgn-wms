@@ -647,7 +647,14 @@ class PalletsTable extends Table
                 case 'print_date':
                     $options[] = [$searchKey . ' LIKE ' => $searchValue . '%'];
                     break;
+                // skip standard search keys because they are
+                // for paginate not conditions
+                case 'page':
+                case 'sort':
+                case 'direction':
+                    break;
                 default:
+
                     $options[] = [$searchKey => $searchValue];
                     break;
             }

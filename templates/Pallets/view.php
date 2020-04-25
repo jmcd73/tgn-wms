@@ -178,7 +178,6 @@
                     <td><?= h($cartons->user_id) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['controller' => 'Cartons', 'action' => 'view', $cartons->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
-                        <?= $this->Html->link(__('Edit'), ['controller' => 'Cartons', 'action' => 'edit', $cartons->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

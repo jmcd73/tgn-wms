@@ -58,9 +58,6 @@ class LocationsTable extends Table
         $this->hasMany('Pallets', [
             'foreignKey' => 'location_id',
         ]);
-        $this->hasMany('ProductTypes', [
-            'foreignKey' => 'location_id',
-        ]);
     }
 
     /**

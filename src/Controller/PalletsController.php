@@ -21,7 +21,7 @@ use Cake\Utility\Inflector;
  * Pallets Controller
  *
  * @property \App\Model\Table\PalletsTable $Pallets
- * @property Authentication $Authentication
+ * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
  *
  * @method \App\Model\Entity\Pallet[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
@@ -171,6 +171,7 @@ class PalletsController extends AppController
                         'production_line' => $productionLineName,
                         'production_line_id' => $productionLineId,
                         'product_type_id' => $productType['id'],
+                        'user_id' => $this->Authentication->getIdentity()->getIdentifier(),
                     ];
 
                 // the print template contents which has the replace tokens in it
@@ -231,7 +232,9 @@ class PalletsController extends AppController
             } else {
                 $this->Flash->error('There was a problem submitting your form.');
                 $forms[$this->request->getData()['formName']]->setData($this->request->getData());
-                $forms[$this->request->getData()['formName']]->setErrors($forms[$this->request->getData()['formName']]->getErrors());
+                $forms[$this->request->getData()['formName']]->setErrors(
+                    $forms[$this->request->getData()['formName']]->getErrors()
+                );
             }
         } // end of post check
         // populate form
@@ -1304,6 +1307,18 @@ class PalletsController extends AppController
         $this->paginate = [
             'limit' => $limit,
             'maxLimit' => $limit,
+            'sortWhitelist' => [
+                'location_id',
+                'item_id',
+                'description',
+                'pl_ref',
+                'print_date',
+                'bb_date',
+                'batch',
+                'qty',
+                'shipment_id',
+                'inventory_status_id',
+            ],
             'order' => [
                 'Pallets.item' => 'ASC',
                 // oldest first

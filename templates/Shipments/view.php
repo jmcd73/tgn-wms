@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\View\AppView $this
+ * @var \App\View\AppView          $this
  * @var \App\Model\Entity\Shipment $shipment
  */
 ?>
@@ -98,7 +98,7 @@
                 <?php foreach ($shipment->pallets as $pallets): ?>
                 <tr>
                     <td><?= h($pallets->id) ?></td>
-                    <td><?= h($pallets->production_line_id) ?></td>
+                    <td><?= $pallets->has('production_lines') ? $pallets->production_lines->name : ''  ?></td>
                     <td><?= h($pallets->item) ?></td>
                     <td><?= h($pallets->description) ?></td>
                     <td><?= h($pallets->item_id) ?></td>

@@ -66,11 +66,11 @@ use App\View\Helper\ToggenHelper;
                     <th><?php echo $this->Paginator->sort('description'); ?></th>
                     <th><?php echo $this->Paginator->sort('pl_ref'); ?></th>
                     <th><?php echo $this->Paginator->sort('print_date'); ?></th>
-                    <th><?php echo $this->Paginator->sort('pl_age'); ?></th>
+                    <th>Pl age</th>
                     <th><?php echo $this->Paginator->sort('bb_date', 'Best before'); ?></th>
                     <th><?php echo $this->Paginator->sort('batch'); ?></th>
                     <th><?php echo $this->Paginator->sort('qty'); ?></th>
-                    <th><?php echo $this->Paginator->sort('shipment_id', 'Alloc'); ?></th>
+                    <th><?php echo $this->Paginator->sort('shipment_id', 'Shipment'); ?></th>
                     <th><?php echo $this->Paginator->sort('inventory_status_id', 'Status / Note'); ?></th>
                     <th class="actions"><?php echo __('Actions'); ?></th>
                 </tr>

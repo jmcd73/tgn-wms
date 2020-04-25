@@ -54,9 +54,7 @@ class ProductTypesTable extends Table
         $this->belongsTo('InventoryStatuses', [
             'foreignKey' => 'inventory_status_id',
         ]);
-        /*       $this->belongsTo('Locations', [
-                  'foreignKey' => 'location_id',
-              ]); */
+
         $this->belongsTo('PutawayLocation', [
             'className' => 'Locations',
             'propertyName' => 'putaway_location',

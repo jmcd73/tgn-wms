@@ -96,6 +96,7 @@ class Pallet extends Entity
         'inventory_status' => true,
         'product_type' => true,
         'cartons' => true,
+        'user_id' => true,
     ];
 
     protected function _getCodeDesc()

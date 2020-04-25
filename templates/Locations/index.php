@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\View\AppView $this
+ * @var \App\View\AppView                                                 $this
  * @var \App\Model\Entity\Location[]|\Cake\Collection\CollectionInterface $locations
  */
 ?>
@@ -22,28 +22,22 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col"><?= $this->Paginator->sort('id') ?></th>
             <th scope="col"><?= $this->Paginator->sort('location') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('pallet_capacity') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('is_hidden') ?></th>
             <th scope="col"><?= $this->Paginator->sort('description') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
             <th scope="col"><?= $this->Paginator->sort('product_type_id') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('pallet_capacity') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('modified', 'Last updated') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($locations as $location) : ?>
         <tr>
-            <td><?= $this->Number->format($location->id) ?></td>
             <td><?= h($location->location) ?></td>
-            <td><?= $this->Number->format($location->pallet_capacity) ?></td>
-            <td><?= h($location->is_hidden) ?></td>
             <td><?= h($location->description) ?></td>
-            <td><?= h($location->created) ?></td>
+            <td><?= $location->has('product_type') ? $location->product_type->name : '' ?></td>
+            <td><?= $this->Number->format($location->pallet_capacity) ?></td>
             <td><?= h($location->modified) ?></td>
-            <td><?= $this->Number->format($location->product_type_id) ?></td>
             <td class="actions">
                 <?= $this->Html->link(__('View'), ['action' => 'view', $location->id], ['title' => __('View'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
                 <?= $this->Html->link(__('Edit'), ['action' => 'edit', $location->id], ['title' => __('Edit'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
