@@ -1,10 +1,10 @@
 <?php
 /**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\ProductionLine $productionLine
- * @var \App\Model\Entity\Printer[]|\Cake\Collection\CollectionInterface $printers
+ * @var \App\View\AppView                                                    $this
+ * @var \App\Model\Entity\ProductionLine                                     $productionLine
+ * @var \App\Model\Entity\Printer[]|\Cake\Collection\CollectionInterface     $printers
  * @var \App\Model\Entity\ProductType[]|\Cake\Collection\CollectionInterface $productTypes
- * @var \App\Model\Entity\Pallet[]|\Cake\Collection\CollectionInterface $pallets
+ * @var \App\Model\Entity\Pallet[]|\Cake\Collection\CollectionInterface      $pallets
  */
 ?>
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
@@ -31,7 +31,7 @@
     <fieldset>
         <legend><?= __('Add Production Line') ?></legend>
         <?php
-            echo $this->Form->control('active');
+            echo $this->Form->control('active', ['default' => 1]);
             echo $this->Form->control('printer_id', ['options' => $printers, 'empty' => true]);
             echo $this->Form->control('name');
             echo $this->Form->control('product_type_id', ['options' => $productTypes, 'empty' => true]);
