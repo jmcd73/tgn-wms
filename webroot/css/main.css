@@ -521,7 +521,11 @@ a.btn.down::before {
   font-weight: 900;
   content: "\f0d7\00a0";
 }
-
+a.external::after {
+  font-family: "Font awesome 5 Free";
+  font-weight: 900;
+  content: "\00a0\f35d";
+}
 a.btn.edit::before {
   font-family: "Font awesome 5 Free";
   font-weight: 900;

@@ -31,7 +31,9 @@ class PrintersController extends AppController
     {
         $printers = $this->paginate($this->Printers);
 
-        $this->set(compact('printers'));
+        $cupsUrl = $this->Printers->getCupsURL($this->request);
+
+        $this->set(compact('printers', 'cupsUrl'));
     }
 
     /**

@@ -34,7 +34,7 @@ class PrintersTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param  array $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void
@@ -56,7 +56,7 @@ class PrintersTable extends Table
     /**
      * Default validation rules.
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @param  \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator): Validator
@@ -97,7 +97,7 @@ class PrintersTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @param  \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules): RulesChecker
@@ -105,5 +105,22 @@ class PrintersTable extends Table
         $rules->add($rules->isUnique(['name']));
 
         return $rules;
+    }
+
+    public function getCupsURL($request)
+    {
+        $getEnv = getenv('CUPS_PORT');
+
+        // if its not in a docker container then
+        // return the default port
+        $cupsPort = $getEnv === false ? 631 : $getEnv;
+
+        // $request->is('ssl') ? 'https' : 'http';
+        // scheme must be https to add printers
+        $scheme = 'https';
+        $host = $request->host();
+        $hostPart = explode(':', $host)[0];
+
+        return sprintf('%s://%s:%s', $scheme, $hostPart, $cupsPort);
     }
 }

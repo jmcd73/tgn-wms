@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\View\AppView $this
+ * @var \App\View\AppView                                                $this
  * @var \App\Model\Entity\Printer[]|\Cake\Collection\CollectionInterface $printers
  */
 ?>
@@ -8,7 +8,7 @@
 
 <?php $this->start('tb_actions'); ?>
 <li><?= $this->Html->link(__('New Printer'), ['action' => 'add'], ['class' => 'nav-link']) ?></li>
-
+<li><?= $this->Html->link(__('Cups Admin'), $cupsUrl, ['class' => 'nav-link external', 'target' => '_blank']) ?></li>
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', '<ul class="nav flex-column">' . $this->fetch('tb_actions') . '</ul>'); ?>
 
