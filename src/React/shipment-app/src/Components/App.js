@@ -17,7 +17,6 @@ import fetchApi from "../Utils/fetchFunctions";
 import funcs from "../Utils/functions";
 import CheckboxShipped from "./CheckboxShipped";
 import FormRow from "./FormRow";
-import actions from "../Redux/actions";
 import * as actionCreators from "../Redux/creators";
 import { bindActionCreators } from "redux";
 // import queryString from "query-string";
@@ -48,7 +47,6 @@ class App extends React.Component {
       baseUrl,
       redirect,
       operationName,
-      updateBaseUrl,
       options,
       alert,
       errors,

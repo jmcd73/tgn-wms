@@ -4,17 +4,11 @@ import { faBan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import WrapCheckbox from "./WrapCheckbox";
 import { connect } from "react-redux";
-import actions from "../Redux/actions";
 import funcs from "../Utils/functions";
+import * as actionCreators from "../Redux/creators";
 
 const CheckboxesAvailable = function (props) {
-  const {
-    labelLists,
-    productId,
-    labelIds,
-
-    addRemoveLabel,
-  } = props;
+  const { labelLists, productId, labelIds, addRemoveLabel } = props;
 
   return labelLists[productId].map((value, idx) => {
     let icon = null;
@@ -43,9 +37,7 @@ const CheckboxesAvailable = function (props) {
             checked={checked}
             isInvalid={value.disabled}
             type={"checkbox"}
-            onChange={(e) =>
-              addRemoveLabel(e.target.checked, value.id, labelIds)
-            }
+            onChange={(e) => addRemoveLabel(e.target.checked, value.id)}
           />
           <Form.Check.Label>
             {icon} {labelText}
@@ -58,13 +50,8 @@ const CheckboxesAvailable = function (props) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addRemoveLabel: (isAdd, labelId, labelIds) => {
-      dispatch({
-        type: actions.SET_LABEL_IDS,
-        data: funcs.addRemoveLabel(isAdd, labelId, labelIds),
-      });
-      //updateCodeDescriptions
-      dispatch(funcs.updateCodeDescriptions(labelId));
+    addRemoveLabel: (isAdd, labelId) => {
+      dispatch(actionCreators.addRemoveLabel(isAdd, labelId));
     },
   };
 };

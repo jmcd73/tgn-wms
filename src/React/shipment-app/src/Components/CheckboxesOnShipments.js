@@ -1,8 +1,8 @@
 import React from "react";
 import FormCheck from "react-bootstrap/FormCheck";
 import { connect } from "react-redux";
-import actions from "../Redux/actions";
 import funcs from "../Utils/functions";
+import * as actionCreators from "../Redux/creators";
 
 const CheckboxesOnShipments = function (props) {
   const { labelIds, allPallets, addRemoveLabel } = props;
@@ -16,9 +16,7 @@ const CheckboxesOnShipments = function (props) {
           id={`checkbox-{id}`}
           checked
           label={funcs.buildLabelString(palletObject)}
-          onChange={(e) =>
-            addRemoveLabel(e.target.checked, palletObject.id, labelIds)
-          }
+          onChange={(e) => addRemoveLabel(e.target.checked, palletObject.id)}
         />
       );
     });
@@ -37,13 +35,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     addRemoveLabel: (isAdd, labelId, labelIds) => {
-      dispatch({
-        type: actions.SET_LABEL_IDS,
-        data: funcs.addRemoveLabel(isAdd, labelId, labelIds),
-      });
-
-      //updateCodeDescriptions
-      dispatch(funcs.updateCodeDescriptions(labelId));
+      dispatch(actionCreators.addRemoveLabel(isAdd, labelId));
     },
   };
 };

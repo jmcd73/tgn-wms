@@ -1,5 +1,6 @@
 import actions from "../Redux/actions";
 import funcs from "../Utils/functions";
+import * as actionCreators from "../Redux/creators";
 
 var traverse = function (o, fn) {
   for (var i in o) {
@@ -60,33 +61,18 @@ export const fetchApi = {
               operationName = "Edit";
               const shipmentPallets = d["shipment"]["pallets"];
               allPallets = shipmentPallets.concat(d.shipment_labels);
-              dispatch({
-                type: actions.ADD_OPERATION_NAME,
-                data: operationName,
-              });
+              dispatch(actionCreators.addOperationName(operationName));
 
-              dispatch({
-                type: actions.ADD_ALL_PALLETS,
-                data: allPallets,
-              });
+              dispatch(actionCreators.addAllPallets(allPallets));
 
               const labelIds = shipmentPallets.map((pallet) => {
                 return pallet.id;
               });
               productTypeId = d["shipment"]["product_type_id"];
-              dispatch({
-                type: actions.ADD_PRODUCT_TYPE_ID,
-                data: productTypeId,
-              });
-              dispatch({
-                type: actions.ADD_SHIPMENT_FROM_FETCH,
-                data: d.shipment,
-              });
+              dispatch(actionCreators.addProductTypeId(productTypeId));
+              dispatch(actionCreators.addShipmentFromFetch(d.shipment));
 
-              dispatch({
-                type: actions.SET_LABEL_IDS,
-                data: labelIds,
-              });
+              dispatch(actionCreators.setLabelIds(labelIds));
 
               break;
             default:
@@ -102,29 +88,15 @@ export const fetchApi = {
             itemCounts,
           } = funcs.loadProductsAndDescriptions(allPallets);
 
-          dispatch({
-            type: actions.UPDATE_ITEM_COUNTS,
-            data: itemCounts,
-          });
+          dispatch(actionCreators.updateItemCounts(itemCounts));
 
-          dispatch({
-            type: actions.SET_PRODUCTS,
-            data: products,
-          });
-          dispatch({
-            type: actions.SET_PRODUCT_DESCRIPTIONS,
-            data: productDescriptions,
-          });
+          dispatch(actionCreators.setProducts(products));
 
-          dispatch({
-            type: actions.SET_IS_EXPANDED,
-            data: isExpanded,
-          });
+          dispatch(actionCreators.setProductDescriptions(productDescriptions));
 
-          dispatch({
-            type: actions.SET_LOADING,
-            data: false,
-          });
+          dispatch(actionCreators.setIsExpanded(isExpanded));
+
+          dispatch(actionCreators.setLoading(false));
         })
         .catch((e) => console.log(e));
     };
@@ -192,9 +164,7 @@ export const fetchApi = {
         body: JSON.stringify(postObject),
       };
 
-      dispatch({
-        type: actions.SUBMIT_START,
-      });
+      dispatch(actionCreators.submitStart());
 
       return fetch(url, fetchOptions)
         .then((response) => response.json())
@@ -216,21 +186,21 @@ export const fetchApi = {
               });
             }
             Object.keys(errorObject).forEach((fieldName) => {
-              dispatch({
-                type: actions.UPDATE_ERRORS,
-                data: { [fieldName]: errorObject[fieldName] },
-              });
+              dispatch(
+                actionCreators.updateErrors({
+                  [fieldName]: errorObject[fieldName],
+                })
+              );
             });
 
             redirect = false;
           }
-          dispatch({
-            type: actions.UPDATE_UI,
-            data: {
+          dispatch(
+            actionCreators.updateUI({
               loading: false,
               redirect: redirect,
-            },
-          });
+            })
+          );
         });
     };
   },
@@ -240,7 +210,7 @@ export const fetchApi = {
       const url = `${baseUrl}ProductTypes/view/${productType}`;
 
       if (!productType) return;
-      dispatch({ type: "FETCH_PRODUCT_START" });
+      dispatch(actionCreators.fetchProductTypeStart());
       return fetch(url, {
         headers: {
           Accept: "application/json",
@@ -252,10 +222,7 @@ export const fetchApi = {
         })
         .then((d) => {
           if (d.productType) {
-            dispatch({
-              type: actions.SET_PRODUCT_TYPE_NAME,
-              data: d.productType.name,
-            });
+            dispatch(actionCreators.setProductTypeName(d.productType.name));
           }
         })
         .catch((e) => {
@@ -266,11 +233,8 @@ export const fetchApi = {
 
   getSearchTerm: function (query) {
     return function (dispatch, getState) {
-      dispatch({
-        type: actions.SET_TYPEAHEAD_LOADING,
-        data: true,
-      });
-      dispatch({ type: "START_FETCH_TYPEAHEAD" });
+      dispatch(actionCreators.setTypeAheadLoading(true));
+      dispatch(actionCreators.startFetchTypeAhead());
       const baseUrl = getState().ui.baseUrl;
 
       return fetch(`${baseUrl}Shipments/destinationLookup?term=${query}`, {
@@ -280,14 +244,8 @@ export const fetchApi = {
       })
         .then((resp) => resp.json())
         .then((json) => {
-          dispatch({
-            type: actions.SET_TYPEAHEAD_LOADING,
-            data: false,
-          });
-          dispatch({
-            type: actions.LOAD_OPTIONS,
-            data: json,
-          });
+          dispatch(actionCreators.setTypeAheadLoading(false));
+          dispatch(actionCreators.loadOptions(json));
         });
     };
   },

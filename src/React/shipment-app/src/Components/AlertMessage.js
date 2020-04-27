@@ -4,7 +4,7 @@ import Alert from "react-bootstrap/Alert";
 import "./AlertMessage.css";
 import { CSSTransition } from "react-transition-group";
 const AlertMessage = (props) => {
-  const { onDismiss, content, show } = props;
+  const { onDismiss, content } = props;
   const { alertVariant, alertTextBold, alertText, showAlert } = content;
 
   return (

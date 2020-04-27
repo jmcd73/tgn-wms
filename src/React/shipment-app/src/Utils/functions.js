@@ -1,4 +1,5 @@
 import actions from "../Redux/actions";
+import * as actionCreators from "../Redux/creators";
 
 export const funcs = {
   loadProductsAndDescriptions: function (pallets) {
@@ -28,7 +29,7 @@ export const funcs = {
    */
   updateCodeDescriptions: function (labelId) {
     return function (dispatch, getState) {
-      dispatch({ type: actions.UPDATE_CODE_DESCRIPTIONS });
+      dispatch(actionCreators.updateCodeDescriptions());
       let { products: p } = getState();
 
       const { products, allPallets } = p;
@@ -39,24 +40,18 @@ export const funcs = {
 
       const { item_id: itemId, code_desc } = plObject[0];
 
-      dispatch({
-        type: actions.UPDATE_ITEM_COUNTS,
-        data: funcs.updateSingleItemLabelCount(allPallets, itemId),
-      });
+      dispatch(
+        actionCreators.updateItemCounts(
+          funcs.updateSingleItemLabelCount(allPallets, itemId)
+        )
+      );
 
       if (products.indexOf(itemId) === -1) {
-        dispatch({
-          type: actions.UPDATE_IS_EXPANDED,
-          data: { [itemId]: false },
-        });
-        dispatch({
-          type: actions.UPDATE_PRODUCTS,
-          data: itemId,
-        });
-        dispatch({
-          type: actions.UPDATE_PRODUCT_DESCRIPTIONS,
-          data: { [itemId]: code_desc },
-        });
+        dispatch(actionCreators.updateIsExpanded({ [itemId]: false }));
+        dispatch(actionCreators.updateProducts(itemId));
+        dispatch(
+          actionCreators.updateProductDescriptions({ [itemId]: code_desc })
+        );
       }
     };
   },
@@ -91,7 +86,7 @@ export const funcs = {
     return isExpanded;
   },
 
-  toggleAlert: function (txt, bold, variant) {
+  /* toggleAlert: function (txt, bold, variant) {
     const newAlertState = !this.state.showAlert;
     this.setState({
       alertVariant: variant,
@@ -104,10 +99,8 @@ export const funcs = {
         this.setState({ showAlert: !newAlertState });
       }, 4000);
     }
-  },
+  }, */
   addRemoveLabel: function (isAdd, labelId, labelIds) {
-    //this.updateCodeDescriptions(labelId);
-
     if (isAdd && labelIds.indexOf(labelId) === -1) {
       labelIds.push(labelId);
     }
