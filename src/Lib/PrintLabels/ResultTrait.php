@@ -36,12 +36,14 @@ trait ResultTrait
 
             return $this->redirect(['action' => 'completed', $savedEntity->id]);
         } else {
+            $err = empty($printResult['stderr']) ? $printResult['return_value'] : $printResult['stderr'] ;
             $message = __(
                 'Failed sending <strong>{0}</strong> to printer <strong>{1}</strong> - <strong>{2}</strong>',
                 $printTemplate['name'],
                 $printerDetails['name'],
-                $printResult['stderr']
+                $err
             );
+            tog($printResult);
             $this->Flash->error($message, ['escape' => false]);
             $controller = $this->request->getParam('controller');
             $action = $this->request->getParam('action');
