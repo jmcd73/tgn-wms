@@ -56,7 +56,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  (state) => ({ ...state }),
-  mapDispatchToProps
-)(CheckboxesAvailable);
+export default connect(null, mapDispatchToProps)(CheckboxesAvailable);

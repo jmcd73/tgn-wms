@@ -105,6 +105,17 @@ export const setIsExpanded = (isExpanded) => ({
   data: isExpanded,
 });
 
+export const toggleIsExpanded = (productId) => {
+  return function (dispatch, getState) {
+    const isExpanded = getState().ui.isExpanded;
+    const newExpanded = funcs.toggleIsExpanded(productId, isExpanded);
+    dispatch({
+      type: actions.SET_IS_EXPANDED,
+      data: newExpanded,
+    });
+  };
+};
+
 export const updateIsExpanded = (isExpanded) => ({
   type: actions.UPDATE_IS_EXPANDED,
   data: isExpanded,
@@ -148,3 +159,13 @@ export const updateProductDescriptions = (itemCodeDesc) => ({
   type: actions.UPDATE_PRODUCT_DESCRIPTIONS,
   data: itemCodeDesc,
 });
+
+export const getLabelList = (productId) => {
+  return function (dispatch, getState) {
+    const allPallets = getState().products.allPallets;
+    dispatch({
+      type: actions.SET_LABEL_LIST,
+      data: funcs.getLabelList(productId, allPallets),
+    });
+  };
+};

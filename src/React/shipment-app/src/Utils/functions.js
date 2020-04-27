@@ -1,4 +1,3 @@
-import actions from "../Redux/actions";
 import * as actionCreators from "../Redux/creators";
 
 export const funcs = {
@@ -102,7 +101,7 @@ export const funcs = {
   }, */
   addRemoveLabel: function (isAdd, labelId, labelIds) {
     if (isAdd && labelIds.indexOf(labelId) === -1) {
-      labelIds.push(labelId);
+      labelIds = labelIds.concat(labelId);
     }
     if (!isAdd) {
       labelIds = labelIds.filter((value) => {

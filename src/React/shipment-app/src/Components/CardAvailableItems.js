@@ -3,8 +3,8 @@ import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
 import CheckboxesAvailable from "./CheckboxesAvailable";
 import { connect } from "react-redux";
-import funcs from "../Utils/functions";
-import actions from "../Redux/actions";
+import * as actionCreators from "../Redux/creators";
+import { bindActionCreators } from "redux";
 
 const CardAvailableItems = function (props) {
   const {
@@ -16,8 +16,6 @@ const CardAvailableItems = function (props) {
     isExpanded,
     labelLists,
     productDescriptions,
-
-    allPallets,
   } = props;
 
   let cardContents = null;
@@ -41,8 +39,8 @@ const CardAvailableItems = function (props) {
         <div key={`wrap-${idx}`}>
           <Card.Header
             onClick={() => {
-              getLabelList(productId, allPallets);
-              toggleIsExpanded(productId, isExpanded);
+              getLabelList(productId);
+              toggleIsExpanded(productId);
             }}
             as="h5"
             className="toggen-header"
@@ -76,18 +74,13 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    getLabelList: (productId, allPallets) =>
-      dispatch({
-        type: actions.SET_LABEL_LIST,
-        data: funcs.getLabelList(productId, allPallets),
-      }),
-    toggleIsExpanded: (productId, isExpanded) => {
-      dispatch({
-        type: actions.SET_IS_EXPANDED,
-        data: funcs.toggleIsExpanded(productId, isExpanded),
-      });
+  return bindActionCreators(
+    {
+      getLabelList: actionCreators.getLabelList,
+      toggleIsExpanded: actionCreators.toggleIsExpanded,
     },
-  };
+    dispatch
+  );
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(CardAvailableItems);
