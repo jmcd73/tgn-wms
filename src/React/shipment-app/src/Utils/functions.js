@@ -68,29 +68,7 @@ export const funcs = {
 
     return { [itemId]: count };
   },
-
-  createCodeDescriptions: function createCodeDescriptions(productArray = []) {
-    let ctr = 0;
-    let labelCounts = {};
-
-    const codeDesc = productArray.reduce((accum, current) => {
-      const codeDesc = current.code_desc;
-      if (accum.indexOf(codeDesc) === -1) {
-        accum.push(codeDesc);
-        ctr = 1;
-      }
-
-      labelCounts[codeDesc] = ctr++;
-
-      return accum;
-    }, []);
-    this.setState({
-      labelCounts: { ...this.state.labelCounts, ...labelCounts },
-    });
-    return codeDesc;
-  },
   getLabelList: function (productId, allPallets) {
-    console.log(allPallets, productId);
     const labelList = allPallets.reduce((accum, current, idx) => {
       if (current.item_id === productId) {
         accum.push(current);
@@ -127,16 +105,6 @@ export const funcs = {
       }, 4000);
     }
   },
-
-  toggleShipped: function () {
-    this.setState({
-      shipment: {
-        ...this.state.shipment,
-        shipped: !this.state.shipment.shipped,
-      },
-    });
-  },
-
   addRemoveLabel: function (isAdd, labelId, labelIds) {
     //this.updateCodeDescriptions(labelId);
 

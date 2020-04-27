@@ -1,4 +1,4 @@
-import actions from "./actions";
+import actions from "../actions";
 
 let initialState = {
   showAlert: false,
@@ -9,10 +9,16 @@ let initialState = {
 
 export function alert(state = initialState, action) {
   switch (action.type) {
+    case actions.TOGGLE_ALERT:
+      return {
+        ...state,
+        showAlert: !state.showAlert,
+      };
     case actions.SHOW_ALERT:
       return {
         ...state,
         showAlert: true,
+        ...action.data,
       };
     case actions.HIDE_ALERT:
       return {

@@ -1,4 +1,4 @@
-import actions from "./actions";
+import actions from "../actions";
 
 const initialState = {
   isExpanded: {},
@@ -66,14 +66,12 @@ export function ui(state = initialState, action) {
         ...state,
         loading: action.data,
       };
-
     case actions.TOGGLE_ALERT:
       return {
         ...state,
         showAlert: !state.showAlert,
       };
-    case actions.SHOW_ALERT: {
-    }
+
     case actions.ADD_OPERATION_NAME:
       return {
         ...state,

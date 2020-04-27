@@ -7,9 +7,10 @@ import FormText from "react-bootstrap/FormText";
 import { AsyncTypeahead } from "react-bootstrap-typeahead"; // ES2015
 import Col from "react-bootstrap/Col";
 import { connect } from "react-redux";
-import actions from "../Redux/actions";
 import funcs from "../Utils/functions";
 import fetchAPI from "../Utils/fetchFunctions";
+import { bindActionCreators } from "redux";
+import * as actionCreators from "../Redux/creators";
 
 const FormRow = function (props) {
   const {
@@ -20,6 +21,7 @@ const FormRow = function (props) {
     errors,
     options,
     destination,
+    submitOnEnter,
     shipper,
   } = props;
 
@@ -31,6 +33,11 @@ const FormRow = function (props) {
           <FormControl
             type="text"
             value={shipper}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                submitOnEnter();
+              }
+            }}
             isValid={funcs.getValidationState("shipper", errors)}
             placeholder="Shipment"
             onChange={(e) => {
@@ -73,6 +80,11 @@ const FormRow = function (props) {
             }}
             labelKey="value"
             options={options}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                submitOnEnter();
+              }
+            }}
           />
           <FormText>{formatErrors("destination", errors)}</FormText>
         </FormGroup>
@@ -96,26 +108,15 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    setTypeaheadLoadingState: (b) => {
-      dispatch({
-        type: actions.SET_TYPEAHEAD_LOADING,
-        data: b,
-      });
+  return bindActionCreators(
+    {
+      setTypeaheadLoadingState: actionCreators.setTypeAheadLoading,
+      getSearchTerm: fetchAPI.getSearchTerm,
+      setShipmentDetail: actionCreators.setShipmentDetail,
+      submitOnEnter: fetchAPI.submitData,
     },
-    getSearchTerm: (query) => {
-      dispatch(fetchAPI.getSearchTerm(query));
-    },
-    setShipmentDetail: (fieldName, fieldValue) => {
-      dispatch({
-        type: actions.SET_SHIPMENT_DETAIL,
-        data: {
-          fieldName: fieldName,
-          fieldValue: fieldValue,
-        },
-      });
-    },
-  };
+    dispatch
+  );
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormRow);

@@ -2,16 +2,11 @@ import React from "react";
 
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-
 import Spinner from "./Spinner";
 import { connect } from "react-redux";
-
 import { withRouter } from "react-router";
-
 import Wrap from "./Wrap";
-
 import AlertMessage from "./AlertMessage";
-
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import "./ShipApp.css";
 import CardOnShipment from "./CardOnShipment";
@@ -23,20 +18,19 @@ import funcs from "../Utils/functions";
 import CheckboxShipped from "./CheckboxShipped";
 import FormRow from "./FormRow";
 import actions from "../Redux/actions";
+import * as actionCreators from "../Redux/creators";
+import { bindActionCreators } from "redux";
 // import queryString from "query-string";
 
 class App extends React.Component {
-  /* updateState(newState) {
-    this.setState(newState);
-  } */
-
   componentDidMount() {
     const { operation, productTypeOrId } = funcs.parseRouterArgs(
       this.props.match.params
     );
-    const { baseUrl, dispatch, fetchData } = this.props;
+    const { baseUrl, fetchData, updateBaseUrl } = this.props;
 
-    dispatch({ type: actions.UPDATE_BASE_URL, data: baseUrl });
+    updateBaseUrl(baseUrl);
+
     fetchData(operation, productTypeOrId, baseUrl);
   }
 
@@ -47,19 +41,20 @@ class App extends React.Component {
       labelLists,
       showAlert,
       labelCounts,
+      toggleAlert,
       isExpanded,
       productTypeName,
       loading,
       baseUrl,
       redirect,
       operationName,
+      updateBaseUrl,
       options,
-      alertText,
+      alert,
       errors,
       submitData,
       isTypeAheadLoading,
-      alertTextBold,
-      alertVariant,
+
       labelIds,
     } = this.props;
 
@@ -71,13 +66,7 @@ class App extends React.Component {
       <Wrap>
         <Row key="row-1">
           <Col lg={12}>
-            <AlertMessage
-              strongText={alertTextBold}
-              normalText={alertText}
-              variant={alertVariant}
-              show={showAlert}
-              onDismiss={this.toggleAlert}
-            />
+            <AlertMessage content={alert} onDismiss={toggleAlert} />
             <h3>
               {operationName} {productTypeName} Shipment
             </h3>
@@ -87,7 +76,6 @@ class App extends React.Component {
           <Col lg={12} key="row-col-1">
             <FormRow
               options={options}
-              setState={(o) => this.setState(o)}
               getValidationState={funcs.getValidationState}
               isTypeAheadLoading={isTypeAheadLoading}
               formatErrors={funcs.formatErrors}
@@ -103,7 +91,7 @@ class App extends React.Component {
             />
           </Col>
           <Col lg={1} className="mb-3">
-            <ButtonSubmit click={submitData} />
+            <ButtonSubmit click={submitData} showAlert={showAlert} />
           </Col>
           <Col lg={5}>
             <Spinner loading={loading} />
@@ -135,22 +123,16 @@ class App extends React.Component {
   }
 }
 
-/* const mapDispatchToProps = (dispatch) => {
-    return {
-        fetchData: (operation, producTypeOrId)=
-    }
-} */
-
 const mapStateToProps = (state) => {
-  const { shipment: s, ui, products: p } = state;
+  const { shipment: s, ui, products: p, alert } = state;
   return {
+    alert,
     labelIds: s.labelIds,
     labelCounts: p.labelCounts,
     errors: ui.errors,
     products: p.products,
     productDescriptions: p.productDescriptions,
     labelLists: p.labelLists,
-    showAlert: ui.showAlert,
     isExpanded: ui.isExpanded,
     productTypeName: p.productTypeName,
     loading: ui.loading,
@@ -158,13 +140,18 @@ const mapStateToProps = (state) => {
     redirect: ui.redirect,
     operationName: ui.operationName,
     isTypeAheadLoading: ui.isTypeAheadLoading,
-    alertTextBold: ui.alertTextBold,
-    alertText: ui.alertText,
-    alertVariant: ui.alertVariant,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const wrapWithDispatch = {
+  submitData: fetchApi.submitData,
+  fetchData: fetchApi.fetchData,
+  toggleAlert: actionCreators.toggleAlert,
+  showAlert: actionCreators.showAlert,
+  updateBaseUrl: actionCreators.updateBaseUrl,
+};
+
+/* const mapDispatchToProps = (dispatch) => {
   return {
     dispatch,
     fetchData: (operation, productTypeOrId, baseUrl) => {
@@ -173,7 +160,17 @@ const mapDispatchToProps = (dispatch) => {
     submitData: () => {
       dispatch(fetchApi.submitData());
     },
+    toggleAlert: () => {
+      dispatch(actionCreators.toggleAlert());
+    },
+    showAlertFunc: () => {
+      dispatch(actionCreators.showAlert("Bold Text", "Normal Text", "warning"));
+    },
   };
 };
+ */
 
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(wrapWithDispatch, dispatch);
+};
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));

@@ -4,17 +4,18 @@ import Alert from "react-bootstrap/Alert";
 import "./AlertMessage.css";
 import { CSSTransition } from "react-transition-group";
 const AlertMessage = (props) => {
-  const { variant, strongText, normalText, onDismiss } = props;
+  const { onDismiss, content, show } = props;
+  const { alertVariant, alertTextBold, alertText, showAlert } = content;
 
   return (
     <CSSTransition
-      in={props.show}
+      in={showAlert}
       timeout={300}
       classNames="toggen"
       unmountOnExit
     >
-      <Alert variant={variant} onClose={onDismiss} dismissible>
-        <strong>{strongText} </strong> {normalText}
+      <Alert variant={alertVariant} onClose={onDismiss} dismissible>
+        <strong>{alertTextBold} </strong> {alertText}
       </Alert>
     </CSSTransition>
   );
