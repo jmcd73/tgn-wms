@@ -10,13 +10,17 @@
     "query-string": "^6.12.1",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.0",
-    "react-bootstrap-typeahead": "^3.4.5",
+    "react-bootstrap-typeahead": "^4.2.2",
     "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "^3.4.1",
     "react-spinners": "^0.5.4",
-    "react-transition-group": "^4.2.1"
+    "react-transition-group": "^4.2.1",
+    "redux": "^4.0.5",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",

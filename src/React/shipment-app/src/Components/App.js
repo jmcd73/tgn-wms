@@ -2,8 +2,9 @@ import React from "react";
 
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import async from "../Utils/fetchFunctions";
+
 import Spinner from "./Spinner";
+import { connect } from "react-redux";
 
 import { withRouter } from "react-router";
 
@@ -17,48 +18,36 @@ import CardOnShipment from "./CardOnShipment";
 import CardAvailableItems from "./CardAvailableItems";
 import ButtonSubmit from "./ButtonSubmit";
 import CheckboxesOnShipments from "./CheckboxesOnShipments";
-import defaultState from "../Utils/defaultState";
+import fetchApi from "../Utils/fetchFunctions";
 import funcs from "../Utils/functions";
 import CheckboxShipped from "./CheckboxShipped";
 import FormRow from "./FormRow";
+import actions from "../Redux/actions";
 // import queryString from "query-string";
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      ...defaultState,
-      baseUrl: this.props.baseUrl,
-    };
-
-    // bind all function to "this"
-    Object.keys(funcs).forEach((value) => {
-      this[value] = funcs[value].bind(this);
-    });
-
-    Object.keys(async).forEach((value) => {
-      this[value] = async[value].bind(this);
-    });
-  }
+  /* updateState(newState) {
+    this.setState(newState);
+  } */
 
   componentDidMount() {
-    const { operation, productTypeOrId } = this.parseRouterArgs();
-    this.setState({
-      baseUrl: this.props.baseUrl,
-    });
-    this.fetchData(operation, productTypeOrId);
+    const { operation, productTypeOrId } = funcs.parseRouterArgs(
+      this.props.match.params
+    );
+    const { baseUrl, dispatch, fetchData } = this.props;
+
+    dispatch({ type: actions.UPDATE_BASE_URL, data: baseUrl });
+    fetchData(operation, productTypeOrId, baseUrl);
   }
 
   render() {
     const {
-      newProducts,
-      newProductDescriptions,
+      products,
+      productDescriptions,
       labelLists,
       showAlert,
       labelCounts,
-      newIsExpanded,
-      shipment,
+      isExpanded,
       productTypeName,
       loading,
       baseUrl,
@@ -67,16 +56,12 @@ class App extends React.Component {
       options,
       alertText,
       errors,
+      submitData,
       isTypeAheadLoading,
       alertTextBold,
       alertVariant,
-    } = this.state;
-
-    const shipperError = this.formatErrors("shipper");
-    const shippedError = this.formatErrors("shipped");
-    const destinationError = this.formatErrors("destination");
-    const { labelIds, shipper, shipped } = shipment;
-    const selectedCount = labelIds.length;
+      labelIds,
+    } = this.props;
 
     if (redirect && process.env.NODE_ENV === "production") {
       window.location = baseUrl + "Shipments/";
@@ -101,31 +86,24 @@ class App extends React.Component {
         <Row key="row-2">
           <Col lg={12} key="row-col-1">
             <FormRow
-              shipperError={shipperError}
-              shipper={shipper}
-              setState={(o) => this.setState(o)}
-              getSearchTerm={this.getSearchTerm}
-              getValidationState={this.getValidationState}
-              setShipmentDetail={this.setShipmentDetail}
-              destinationError={destinationError}
-              isTypeAheadLoading={isTypeAheadLoading}
-              shipment={shipment}
               options={options}
-              errors={errors}
+              setState={(o) => this.setState(o)}
+              getValidationState={funcs.getValidationState}
+              isTypeAheadLoading={isTypeAheadLoading}
+              formatErrors={funcs.formatErrors}
             ></FormRow>
           </Col>
         </Row>
         <Row key="row-3">
           <Col lg={6}>
             <CheckboxShipped
-              shipped={shipped}
               toggleShipped={this.toggleShipped}
-              getValidationState={this.getValidationState}
-              shippedError={shippedError}
+              getValidationState={funcs.getValidationState}
+              shippedError={funcs.formatErrors("shipped", errors)}
             />
           </Col>
           <Col lg={1} className="mb-3">
-            <ButtonSubmit click={this.submitData} />
+            <ButtonSubmit click={submitData} />
           </Col>
           <Col lg={5}>
             <Spinner loading={loading} />
@@ -137,27 +115,18 @@ class App extends React.Component {
               <div className="card-container">
                 <CardAvailableItems
                   labelLists={labelLists}
-                  newIsExpanded={newIsExpanded}
+                  isExpanded={isExpanded}
                   labelCounts={labelCounts}
-                  newProducts={newProducts}
+                  products={products}
                   labelIds={labelIds}
-                  getLabelList={this.getLabelList}
-                  toggleIsExpanded={this.toggleIsExpanded}
-                  addRemoveLabel={this.addRemoveLabel}
-                  newProductDescriptions={newProductDescriptions}
-                  buildLabelString={this.buildLabelString}
+                  productDescriptions={productDescriptions}
                 />
               </div>
             </div>
           </Col>
           <Col>
-            <CardOnShipment selectedCount={selectedCount}>
-              <CheckboxesOnShipments
-                getLabelObject={this.getLabelObject}
-                buildLabelString={this.buildLabelString}
-                addRemoveLabel={this.addRemoveLabel}
-                labelIds={labelIds}
-              />
+            <CardOnShipment selectedCount={labelIds.length}>
+              <CheckboxesOnShipments count={labelIds.length} />
             </CardOnShipment>
           </Col>
         </Row>
@@ -166,6 +135,45 @@ class App extends React.Component {
   }
 }
 
-const exported = withRouter(App);
+/* const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchData: (operation, producTypeOrId)=
+    }
+} */
 
-export default exported;
+const mapStateToProps = (state) => {
+  const { shipment: s, ui, products: p } = state;
+  return {
+    labelIds: s.labelIds,
+    labelCounts: p.labelCounts,
+    errors: ui.errors,
+    products: p.products,
+    productDescriptions: p.productDescriptions,
+    labelLists: p.labelLists,
+    showAlert: ui.showAlert,
+    isExpanded: ui.isExpanded,
+    productTypeName: p.productTypeName,
+    loading: ui.loading,
+    options: ui.options,
+    redirect: ui.redirect,
+    operationName: ui.operationName,
+    isTypeAheadLoading: ui.isTypeAheadLoading,
+    alertTextBold: ui.alertTextBold,
+    alertText: ui.alertText,
+    alertVariant: ui.alertVariant,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatch,
+    fetchData: (operation, productTypeOrId, baseUrl) => {
+      dispatch(fetchApi.fetchData(operation, productTypeOrId, baseUrl));
+    },
+    submitData: () => {
+      dispatch(fetchApi.submitData());
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));

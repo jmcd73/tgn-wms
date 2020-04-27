@@ -1,97 +1,93 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
-import Form from "react-bootstrap/Form";
-import { faBan } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import WrapCheckbox from "./WrapCheckbox";
+import CheckboxesAvailable from "./CheckboxesAvailable";
+import { connect } from "react-redux";
+import funcs from "../Utils/functions";
+import actions from "../Redux/actions";
 
-export default function CardAvailableItems(props) {
+const CardAvailableItems = function (props) {
   const {
     labelCounts,
-    newProducts,
+    products,
     labelIds,
     getLabelList,
     toggleIsExpanded,
-    newIsExpanded,
+    isExpanded,
     labelLists,
-    addRemoveLabel,
-    newProductDescriptions,
-    buildLabelString,
+    productDescriptions,
+
+    allPallets,
   } = props;
 
-  let classes = ["FormCheck", "fixed", "pallet-list"];
   let cardContents = null;
-  if (newProducts) {
-    cardContents = newProducts.map((productId, idx) => {
+
+  if (products) {
+    cardContents = products.map((productId, idx) => {
+      let cardBody = null;
+      if (labelLists[productId] && isExpanded[productId]) {
+        cardBody = (
+          <Card.Body className={isExpanded[productId]}>
+            <CheckboxesAvailable
+              labelLists={labelLists}
+              labelIds={labelIds}
+              productId={productId}
+            />
+          </Card.Body>
+        );
+      }
+
       return (
         <div key={`wrap-${idx}`}>
           <Card.Header
             onClick={() => {
-              getLabelList(productId);
-              toggleIsExpanded(productId, idx);
+              getLabelList(productId, allPallets);
+              toggleIsExpanded(productId, isExpanded);
             }}
             as="h5"
             className="toggen-header"
             key={`header-{idx}`}
           >
             {" "}
-            {newProductDescriptions[productId]}{" "}
+            {productDescriptions[productId]}{" "}
             {labelCounts[productId] && (
               <Badge variant="primary">{labelCounts[productId]}</Badge>
             )}
           </Card.Header>
-          {labelLists[productId] && newIsExpanded[productId] && (
-            <Card.Body className={newIsExpanded[productId]}>
-              {labelLists[productId].map((value, idx) => {
-                let icon = null;
-                let formCheckClasses = classes.slice();
-                const checked = labelIds.indexOf(value.id) > -1;
-                let style = {};
-                if (value.disabled) {
-                  formCheckClasses.push("bg-danger");
-                  icon = (
-                    <>
-                      <FontAwesomeIcon icon={faBan} />{" "}
-                    </>
-                  );
-                  style = { pointerEvents: "none" };
-                }
-                let labelText = buildLabelString(value);
-
-                return (
-                  <WrapCheckbox
-                    key={value.pl_ref}
-                    childKey={value.pl_ref}
-                    disabled={value.disabled}
-                  >
-                    <Form.Check
-                      disabled={value.disabled}
-                      style={style}
-                      key={value.pl_ref}
-                      id={value.pl_ref}
-                    >
-                      <Form.Check.Input
-                        checked={checked}
-                        isInvalid={value.disabled}
-                        type={"checkbox"}
-                        onChange={(e) =>
-                          addRemoveLabel(e.target.checked, value.id)
-                        }
-                      />
-                      <Form.Check.Label>
-                        {icon} {labelText}
-                      </Form.Check.Label>
-                    </Form.Check>
-                  </WrapCheckbox>
-                );
-              })}
-            </Card.Body>
-          )}
+          {cardBody}
         </div>
       );
     });
   }
 
   return <Card key={`card-top-level`}>{cardContents}</Card>;
-}
+};
+
+const mapStateToProps = (state) => {
+  const { products: p, ui } = state;
+  return {
+    isExpanded: ui.isExpanded,
+    products: p.products,
+    allPallets: p.allPallets,
+    labelLists: p.labelLists,
+    labelCounts: p.labelCounts,
+    productDescriptions: p.productDescriptions,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getLabelList: (productId, allPallets) =>
+      dispatch({
+        type: actions.SET_LABEL_LIST,
+        data: funcs.getLabelList(productId, allPallets),
+      }),
+    toggleIsExpanded: (productId, isExpanded) => {
+      dispatch({
+        type: actions.SET_IS_EXPANDED,
+        data: funcs.toggleIsExpanded(productId, isExpanded),
+      });
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(CardAvailableItems);

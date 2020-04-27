@@ -6,22 +6,22 @@ import FormLabel from "react-bootstrap/FormLabel";
 import FormText from "react-bootstrap/FormText";
 import { AsyncTypeahead } from "react-bootstrap-typeahead"; // ES2015
 import Col from "react-bootstrap/Col";
+import { connect } from "react-redux";
+import actions from "../Redux/actions";
+import funcs from "../Utils/functions";
+import fetchAPI from "../Utils/fetchFunctions";
 
-export default function (props) {
+const FormRow = function (props) {
   const {
-    shipperError,
-    shipper,
-    getValidationState,
+    formatErrors,
     setShipmentDetail,
-    destinationError,
     isTypeAheadLoading,
     getSearchTerm,
     errors,
-    shipment,
-    setState,
     options,
+    destination,
+    shipper,
   } = props;
-  const { destination } = shipment;
 
   return (
     <Form.Row onSubmit={(e) => e.preventDefault()}>
@@ -31,33 +31,33 @@ export default function (props) {
           <FormControl
             type="text"
             value={shipper}
-            isValid={getValidationState("shipper")}
+            isValid={funcs.getValidationState("shipper", errors)}
             placeholder="Shipment"
             onChange={(e) => {
-              const { shipper, ...newState } = errors;
+              /*   const { shipper, ...newState } = errors;
               setState({
                 errors: {
                   ...newState,
                 },
-              });
+              }); */
 
               setShipmentDetail(e.target.id, e.target.value);
             }}
             required="required"
           />
           <FormControl.Feedback />
-          <FormText>{shipperError}</FormText>
+          <FormText>{formatErrors("shipper", errors)}</FormText>
         </FormGroup>
       </Col>
       <Col lg={3} key="row-col-2">
         <FormGroup controlId="destination">
           <FormLabel>Destination</FormLabel>
           <AsyncTypeahead
+            minLength={1}
             placeholder="Destination"
             isLoading={isTypeAheadLoading}
             id="destination"
-            name="destination"
-            isValid={getValidationState("destination")}
+            isValid={funcs.getValidationState("destination", errors)}
             selected={[destination]}
             onChange={(selected) => {
               if (selected.length > 0) {
@@ -69,15 +69,53 @@ export default function (props) {
               setShipmentDetail("destination", destination);
             }}
             onSearch={(query) => {
-              setState({ isTypeAheadLoading: true });
               getSearchTerm(query);
             }}
             labelKey="value"
             options={options}
           />
-          <FormText>{destinationError}</FormText>
+          <FormText>{formatErrors("destination", errors)}</FormText>
         </FormGroup>
       </Col>
     </Form.Row>
   );
-}
+};
+
+const mapStateToProps = (state) => {
+  const { ui, shipment: s } = state;
+
+  return {
+    isTypeAheadLoading: ui.isTypeAheadLoading,
+    baseUrl: ui.baseUrl,
+    errors: ui.errors,
+    options: ui.options,
+    shipper: s.shipper,
+    destination: s.destination,
+    shipped: s.shipped,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setTypeaheadLoadingState: (b) => {
+      dispatch({
+        type: actions.SET_TYPEAHEAD_LOADING,
+        data: b,
+      });
+    },
+    getSearchTerm: (query) => {
+      dispatch(fetchAPI.getSearchTerm(query));
+    },
+    setShipmentDetail: (fieldName, fieldValue) => {
+      dispatch({
+        type: actions.SET_SHIPMENT_DETAIL,
+        data: {
+          fieldName: fieldName,
+          fieldValue: fieldValue,
+        },
+      });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormRow);

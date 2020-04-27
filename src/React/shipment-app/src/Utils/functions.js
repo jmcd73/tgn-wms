@@ -1,64 +1,64 @@
-export default {
-  setShipmentDetail: function (key, value) {
-    this.setState({
-      shipment: { ...this.state.shipment, [key]: value },
-    });
-  },
+import actions from "../Redux/actions";
 
+export const funcs = {
   loadProductsAndDescriptions: function (pallets) {
-    let newProducts = [];
-    let newProductDescriptions = {};
+    let products = [];
+    let productDescriptions = {};
+    let itemCounts = {};
     pallets.forEach((pl) => {
-      if (newProducts.indexOf(pl.item_id) === -1) {
-        newProducts.push(pl.item_id);
-        newProductDescriptions[pl.item_id] = pl.code_desc;
-        this.updateSingleItemLabelCount(pallets, pl.item_id);
+      if (products.indexOf(pl.item_id) === -1) {
+        products.push(pl.item_id);
+        productDescriptions[pl.item_id] = pl.code_desc;
+        itemCounts = {
+          ...itemCounts,
+          ...funcs.updateSingleItemLabelCount(pallets, pl.item_id),
+        };
       }
     });
-    const newIsExpanded = newProducts.reduce((prev, curr, idx) => {
+    const isExpanded = products.reduce((prev, curr, idx) => {
       prev[curr] = false;
       return prev;
     }, {});
 
-    this.setState({
-      newProducts,
-      newProductDescriptions,
-      newIsExpanded,
-    });
+    return { products, productDescriptions, isExpanded, itemCounts };
   },
   /**
    *
    * @param {*} palletObject
    */
   updateCodeDescriptions: function (labelId) {
-    let {
-      newProducts,
-      newProductDescriptions,
-      allPallets,
-      newIsExpanded,
-    } = this.state;
+    return function (dispatch, getState) {
+      dispatch({ type: actions.UPDATE_CODE_DESCRIPTIONS });
+      let { products: p } = getState();
 
-    const plObject = allPallets.filter((plObj) => {
-      return parseInt(plObj.id) === parseInt(labelId);
-    });
+      const { products, allPallets } = p;
 
-    const { item_id: itemId } = plObject[0];
-
-    this.updateSingleItemLabelCount(allPallets, itemId);
-
-    if (newProducts.indexOf(itemId) === -1) {
-      this.setState({
-        newIsExpanded: {
-          ...newIsExpanded,
-          [itemId]: false,
-        },
-        newProducts: [...newProducts, itemId],
-        newProductDescriptions: {
-          ...newProductDescriptions,
-          [itemId]: "A new description " + itemId,
-        },
+      const plObject = allPallets.filter((plObj) => {
+        return parseInt(plObj.id) === parseInt(labelId);
       });
-    }
+
+      const { item_id: itemId, code_desc } = plObject[0];
+
+      dispatch({
+        type: actions.UPDATE_ITEM_COUNTS,
+        data: funcs.updateSingleItemLabelCount(allPallets, itemId),
+      });
+
+      if (products.indexOf(itemId) === -1) {
+        dispatch({
+          type: actions.UPDATE_IS_EXPANDED,
+          data: { [itemId]: false },
+        });
+        dispatch({
+          type: actions.UPDATE_PRODUCTS,
+          data: itemId,
+        });
+        dispatch({
+          type: actions.UPDATE_PRODUCT_DESCRIPTIONS,
+          data: { [itemId]: code_desc },
+        });
+      }
+    };
   },
 
   updateSingleItemLabelCount: function (productArray, itemId) {
@@ -66,11 +66,7 @@ export default {
       return value.item_id === itemId;
     }).length;
 
-    let labelCounts = { ...this.state.labelCounts };
-
-    this.setState({
-      labelCounts: { ...labelCounts, [itemId]: count },
-    });
+    return { [itemId]: count };
   },
 
   createCodeDescriptions: function createCodeDescriptions(productArray = []) {
@@ -93,9 +89,8 @@ export default {
     });
     return codeDesc;
   },
-  getLabelList: function (productId) {
-    const allPallets = this.state.allPallets;
-
+  getLabelList: function (productId, allPallets) {
+    console.log(allPallets, productId);
     const labelList = allPallets.reduce((accum, current, idx) => {
       if (current.item_id === productId) {
         accum.push(current);
@@ -103,14 +98,10 @@ export default {
       return accum;
     }, []);
 
-    let currentLabelList = this.state.labelLists;
-    let newLabelList = { ...currentLabelList, [productId]: labelList };
-    this.setState({ labelLists: newLabelList });
+    return { [productId]: labelList };
   },
 
-  toggleIsExpanded: function (productId, idx) {
-    let isExpanded = { ...this.state.newIsExpanded };
-
+  toggleIsExpanded: function (productId, isExpanded) {
     Object.keys(isExpanded).forEach((key) => {
       if (parseInt(key) === parseInt(productId)) {
         isExpanded[key] = !isExpanded[key];
@@ -119,7 +110,7 @@ export default {
       }
     });
 
-    this.setState({ newIsExpanded: isExpanded });
+    return isExpanded;
   },
 
   toggleAlert: function (txt, bold, variant) {
@@ -146,11 +137,8 @@ export default {
     });
   },
 
-  addRemoveLabel: function (isAdd, labelId) {
-    let { shipment } = this.state;
-    let labelIds = [...shipment.labelIds];
-    console.log(labelId, isAdd);
-    this.updateCodeDescriptions(labelId);
+  addRemoveLabel: function (isAdd, labelId, labelIds) {
+    //this.updateCodeDescriptions(labelId);
 
     if (isAdd && labelIds.indexOf(labelId) === -1) {
       labelIds.push(labelId);
@@ -161,29 +149,27 @@ export default {
       });
     }
 
-    this.setState({
-      shipment: { ...shipment, labelIds: labelIds },
-    });
+    return labelIds;
   },
 
-  parseRouterArgs: function () {
+  parseRouterArgs: function (props) {
     // gotta fix this it's ugggggly move it out of here
-    let { operation, productTypeOrId } = this.props.match.params;
+    let { operation, productTypeOrId } = props;
 
     return { operation, productTypeOrId };
   },
 
-  getValidationState: function (fieldName) {
-    if (this.state.errors[fieldName] !== undefined) {
+  getValidationState: function (fieldName, errors) {
+    if (errors[fieldName] !== undefined) {
       return true;
     }
     return false;
   },
 
-  formatErrors: function (fieldName) {
+  formatErrors: function (fieldName, fieldErrors) {
     let errors = [];
-    if (this.state.errors[fieldName]) {
-      let obj = this.state.errors[fieldName];
+    if (fieldErrors[fieldName]) {
+      let obj = fieldErrors[fieldName];
 
       errors = Object.keys(obj).map((key) => {
         return obj[key];
@@ -193,9 +179,7 @@ export default {
     return errors.join(", ");
   },
 
-  getLabelObject: function (id) {
-    const { allPallets } = this.state;
-
+  getLabelObject: function (id, allPallets) {
     const ret = allPallets.filter((current, idx) => {
       return current.id === id;
     });
@@ -219,3 +203,5 @@ export default {
     return stringValues.join(", ");
   },
 };
+
+export default funcs;
