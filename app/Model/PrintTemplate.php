@@ -29,29 +29,6 @@ class PrintTemplate extends AppModel
      *
      * @param array $options Options array from ->save
      */
-    public function beforeSave($options = [])
-    {
-        if (
-            isset($this->data['PrintTemplate']['controller_action']) &&
-            !empty($this->data['PrintTemplate']['controller_action'])
-        ) {
-            $controllerAction = $this->data['PrintTemplate']['controller_action'];
-            $controllerActions = explode('::', $controllerAction);
-            $this->data['PrintTemplate']['print_controller'] = $controllerActions[0];
-            $this->data['PrintTemplate']['print_action'] = $controllerActions[1];
-            unset($this->data['PrintTemplate']['controller_action']);
-        } elseif (
-            isset($this->data['PrintTemplate']['controller_action']) &&
-            empty($this->data['PrintTemplate']['controller_action'])
-        ) {
-            $this->data['PrintTemplate']['print_controller'] = '';
-            $this->data['PrintTemplate']['print_action'] = '';
-            unset($this->data['PrintTemplate']['controller_action']);
-        }
-
-        return true;
-    }
-
     public function afterFind($results, $primary = false)
     {
         foreach ($results as $key => $result) {

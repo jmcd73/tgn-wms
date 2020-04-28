@@ -22,11 +22,12 @@
 
         <div class="col-sm-6 col-md-3 col-lg-3">
             <div class="thumbnail">
+                <?php [ $controller, $action ] = explode('::', $ptc['PrintTemplate']['controller_action']); ?>
                 <?=$this->Html->link(
     $this->Html->image(DS . $glabelsRoot . DS . $ptc['PrintTemplate']['example_image']),
     [
-        'controller' => $ptc['PrintTemplate']['print_controller'],
-        'action' => $ptc['PrintTemplate']['print_action'],
+        'controller' => $controller,
+        'action' => $action,
     ],
     [
         'escape' => false,

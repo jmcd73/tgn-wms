@@ -9,7 +9,7 @@
                 <th><?php echo $this->Paginator->sort('description'); ?></th>
                 <th><?php echo $this->Paginator->sort('active'); ?></th>
                 <th><?php echo $this->Paginator->sort('show_in_label_chooser'); ?></th>
-                <th><?php echo $this->Paginator->sort('print_action', 'Controller / Action'); ?></th>
+                <th><?php echo $this->Paginator->sort('controller_action', 'Controller / Action'); ?></th>
                 <th class="actions"><?php echo __('Actions'); ?></th>
             </tr>
         </thead>
@@ -31,9 +31,7 @@
                 <td <?= $boldClass; ?>><?php echo h($printTemplate['PrintTemplate']['active']); ?></td>
                 <td <?= $boldClass; ?>><?php echo h($printTemplate['PrintTemplate']['show_in_label_chooser']); ?></td>
                 <td <?= $boldClass; ?>>
-                    <?php echo h($printTemplate['PrintTemplate']['print_controller']); ?>
-                    <br>
-                    <?php echo h($printTemplate['PrintTemplate']['print_action']); ?>
+                    <?php echo h($printTemplate['PrintTemplate']['controller_action']); ?>
                 </td>
                 <td class="actions">
                     <div class="row">
