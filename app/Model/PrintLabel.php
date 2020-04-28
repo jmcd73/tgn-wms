@@ -48,8 +48,7 @@ class PrintLabel extends AppModel
                 'first',
                 [
                     'conditions' => [
-                        'PrintTemplate.print_controller' => $controller,
-                        'PrintTemplate.print_action' => $action,
+                        'PrintTemplate.controller_action' => $controller . '::' . $action,
                         'PrintTemplate.active' => 1,
                     ],
                 ]

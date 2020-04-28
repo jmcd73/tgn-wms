@@ -24,29 +24,6 @@ class PrintTemplate extends AppModel
     )
      */
 
-    /**
-     * method beforeSave
-     *
-     * @param array $options Options array from ->save
-     */
-    public function afterFind($results, $primary = false)
-    {
-        foreach ($results as $key => $result) {
-            if (
-                isset($result['PrintTemplate']['print_controller']) &&
-                !empty($result['PrintTemplate']['print_controller']) &&
-                isset($result['PrintTemplate']['print_action']) &&
-                !empty($result['PrintTemplate']['print_action'])
-            ) {
-                $results[$key]['PrintTemplate']['controller_action'] =
-                    $result['PrintTemplate']['print_controller'] . '::' .
-                    $result['PrintTemplate']['print_action'];
-            }
-        }
-
-        return $results;
-    }
-
     public $actsAs = [
         'Tree',
         'FileUpload.FileUpload' => [

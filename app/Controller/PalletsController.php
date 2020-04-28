@@ -954,6 +954,8 @@ class PalletsController extends AppController
 
                 $printerDetails = $this->Pallet->Printer->findById($printerId);
 
+                $this->log($printerDetails);
+
                 if (empty($printerDetails)) {
                     throw new MissingConfigurationException(
                         [
