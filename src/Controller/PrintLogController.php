@@ -140,7 +140,7 @@ class PrintLogController extends AppController
      */
     public function labelChooser()
     {
-        $glabelsRoot = $this->PrintLog->getSetting('GLABELS_ROOT');
+        $glabelsRoot = $this->PrintLog->getSetting('TEMPLATE_ROOT');
 
         $printTemplatesThreaded = $this->PrintLog
             ->getSettingsTable('PrintTemplates')->find(
@@ -230,7 +230,7 @@ class PrintLogController extends AppController
             'active' => 1,
         ])->first();
 
-        $glabelsRoot = $this->PrintLog->getSetting('GLABELS_ROOT');
+        $glabelsRoot = $this->PrintLog->getSetting('TEMPLATE_ROOT');
 
         $template = new Template($printTemplate, $glabelsRoot);
 
@@ -544,7 +544,7 @@ class PrintLogController extends AppController
 
         $exampleImage = $printTemplate['example_image'];
 
-        $glabelsRoot = $this->PrintLog->getSetting('GLABELS_ROOT');
+        $glabelsRoot = $this->PrintLog->getSetting('TEMPLATE_ROOT');
 
         if ($this->request->is(['POST', 'PUT'])) {
             $formData = $this->request->getData();
@@ -573,7 +573,7 @@ class PrintLogController extends AppController
         $this->set(compact('printer', 'printerId', 'exampleImage', 'glabelsRoot', 'printTemplate'));
     }
 
-    public function customPrint0()
+    public function customPrint()
     {
         $controllerAction = $this->getControllerAction();
 
@@ -624,98 +624,6 @@ class PrintLogController extends AppController
         );
 
         $this->set(compact('template', 'form', 'printers'));
-    }
-
-    /**
-     * customPrint
-     * @return mixed
-     */
-    public function customPrint()
-    {
-        $conditions = [
-            'conditions' => [
-                "Settings.name LIKE 'custom_print_%'",
-            ],
-        ];
-        $settings = TableRegistry::get('Settings');
-
-        $customPrints = $settings->find('all', $conditions)->toArray();
-
-        $forms = [];
-
-        foreach ($customPrints as $key => $customPrint) {
-            $formName = 'form-' . $customPrint['id'];
-
-            $decodedComment = json_decode($customPrint['comment'], true);
-
-            $customPrints[$key]['comment'] = $decodedComment;
-
-            $copies = isset($decodedComment['maxCopies']) && is_numeric($decodedComment['maxCopies']) ? $decodedComment['maxCopies'] : null;
-
-            $forms[$formName] = (new CustomPrintForm())->setFormName($formName)->setCopies($copies);
-
-            $customPrints[$key]['formName'] = $formName;
-        }
-
-        $action = $this->request->getParam('action');
-        $controller = $this->request->getParam('controller');
-        $controllerAction = $controller . '::' . $action;
-
-        if ($this->request->is(['POST', 'PUT'])) {
-            $data = $this->request->getData();
-            $formName = $data['formName'];
-
-            if ($forms[$formName]->validate($data)) {
-                // once successfully validated take the custom
-                // fieldnames and remove the prefix
-                $newData = [];
-
-                foreach ($data as $key => $value) {
-                    $newKey = str_replace($formName . '-', '', $key);
-                    $newData[$newKey] = $value;
-                }
-
-                $data = $newData;
-
-                $saveData = $this->PrintLog->formatPrintLogData(
-                    $action,
-                    $data
-                );
-
-                $glabelsData = $data + $saveData;
-
-                $printerDetails = $this->PrintLog->getLabelPrinterById(
-                    $data['printer']
-                );
-
-                $template = new GlabelsProject();
-
-                $printResult = LabelFactory::create($action)
-                    ->format($glabelsData)
-                        ->print(
-                            $printerDetails,
-                        );
-
-                $printTemplate['name'] = 'Custom Print';
-
-                $this->handlePrintResult(
-                    $printResult,
-                    $printerDetails,
-                    $printTemplate,
-                    $saveData
-                );
-            } else {
-                $this->Flash->error('Invalid data!');
-                $forms[$formName]->setData($this->request->getData());
-                $forms[$formName]->setErrors($forms[$formName]->getErrors());
-            }
-        }
-
-        $printers = $this->PrintLog->getLabelPrinters(
-            $controllerAction
-        );
-
-        $this->set(compact('forms', 'printers', 'customPrints'));
     }
 
     /**

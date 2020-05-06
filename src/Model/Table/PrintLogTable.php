@@ -91,7 +91,7 @@ class PrintLogTable extends Table
                 'active' => 1,
             ])->first();
 
-        $glabelsRoot = $this->getSetting('GLABELS_ROOT');
+        $glabelsRoot = $this->getSetting('TEMPLATE_ROOT');
 
         return new GlabelsProject($glabelsTemplate, $glabelsRoot);
     }

@@ -11,7 +11,7 @@ The settings table contains a number of crucial settings it can be queried from 
 * **companyName** - Enter your company name here and this will go towards rebranding the app for your use. Other settings such as nav and footer icons can be found in app/Config/configuration.php
 * **cooldown** - Items will appear highlighted in Stock view for this many hours after pallet label is printed
 * **days_life** - This is how many days life still needs to be on a product when it is shipped. If it has less than this value it will not be able to be placed on a shipment and manual intervention will be needed in order to ship
-* **GLABELS_ROOT** - Location relative to WEBROOT of the gLabels templates and example images
+* **TEMPLATE_ROOT** - Location relative to WEBROOT of the gLabels templates and example images
 * **DOCUMENTATION_ROOT** - Location relative to ROOT of the markdown files that make up these help documents
 * **cabLabelTokens** - And other "Token" files provide a mapping between the Print Template Text Template replace tokens and the PHP variables used in print screens
 

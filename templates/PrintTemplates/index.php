@@ -17,73 +17,48 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('active') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('is_file_template', 'Glabels') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('show_in_label_chooser') ?></th>
+         
             <th scope="col"><?= $this->Paginator->sort('parent_id') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('example_image') ?></th>
             <th scope="col"><?= $this->Paginator->sort('name') ?></th>
             <th scope="col"><?= $this->Paginator->sort('description') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('example_image') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('text_template') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('file_template') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('controller_action') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('replace_tokens') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($printTemplates as $printTemplate) : ?>
+
+        <?php if (!$printTemplate->hasValue('parent_id')): ?>
         <tr>
-            <td><?= $this->Number->format($printTemplate->id) ?></td>
-            <td><?= h($printTemplate->active) ?></td>
-            <td><?= $this->Number->format($printTemplate->is_file_template) ?></td>
-            <td><?= h($printTemplate->show_in_label_chooser) ?></td>
-            <td><?= $printTemplate->has('parent_print_template') ? $this->Html->link($printTemplate->parent_print_template->name, ['controller' => 'PrintTemplates', 'action' => 'view', $printTemplate->parent_print_template->id]) : '' ?>
-            </td>
-            <td><?= h($printTemplate->name) ?></td>
-            <td><?= h($printTemplate->description) ?></td>
-            <td><?= h($printTemplate->example_image) ?></td>
-            <td><?= $printTemplate->hasValue('text_template') ? h($this->Text->truncate($printTemplate->text_template, 20)) : '' ?>
-            </td>
-            <td><?= h($printTemplate->file_template) ?></td>
-            <td><?= h($printTemplate->controller_action) ?></td>
-            <td><?= $printTemplate->hasValue('replace_tokens') ? h($this->Text->truncate($printTemplate->replace_tokens, 20)) : '' ?>
+            <td colspan="4">
+                <h4><?= h($printTemplate->name) ?></h4>
             </td>
             <td class="actions">
-                <?php
-                echo $this->Form->create(null, [
-                    'style' => 'width: 120px;',
-                    'url' => [
-                        'action' => 'move',
-                        $printTemplate->id,
-                    ],
-                ]);
-                                echo $this->Form->control('amount', [
-                                    'label' => false,
-                                    'prepend' => $this->Form->button(
-                                        '',
-                                        [
-                                            'type' => 'submit',
-                                            'name' => 'moveUp',
-                                            'class' => 'move-up',
-                                        ]
-                                    ),
-                                    'append' => $this->Form->button(
-                                        '',
-                                        [
-                                            'type' => 'submit',
-                                            'name' => 'moveDown',
-                                            'class' => 'move-down',
-                                        ]
-                                    ),
-                                ]);
-                                echo $this->Form->end(); ?>
-                <?= $this->Html->link(__('View'), ['action' => 'view', $printTemplate->id], ['title' => __('View'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
-                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $printTemplate->id], ['title' => __('Edit'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
-                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $printTemplate->id], ['confirm' => __('Are you sure you want to delete # {0}?', $printTemplate->id), 'title' => __('Delete'), 'class' => 'btn btn-danger btn-sm mb-1']) ?>
+            <?= $this->element('PrintTemplates/actions', [
+                'id' => $printTemplate->id,
+            ]); ?>
             </td>
         </tr>
+        <?php else: ?>
+        <tr>
+          
+            <td><?= $printTemplate->has('parent_print_template') ? $this->Html->link($printTemplate->parent_print_template->name, ['controller' => 'PrintTemplates', 'action' => 'view', $printTemplate->parent_print_template->id]) : '' ?>
+            </td>
+            <td><?= $printTemplate->hasValue('example_image') ? $this->Html->image(
+                $templateRoot . $printTemplate->example_image,
+                [
+                    'class' => 'example-image',
+                ]
+            ) : '' ?></td>
+            <td><?= h($printTemplate->name) ?></td>
+            <td><?= h($printTemplate->description) ?></td>
+            <td class="actions">
+            <?= $this->element('PrintTemplates/actions', [
+                'id' => $printTemplate->id,
+            ]); ?>
+            </td>
+        </tr>
+        <?php endif; ?>
         <?php endforeach; ?>
     </tbody>
 </table>

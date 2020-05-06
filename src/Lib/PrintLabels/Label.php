@@ -11,7 +11,7 @@ use Cake\I18n\FrozenDate;
 /**
  * Label base class
  */
-class Label 
+class Label
 {
     use PrinterListTrait;
 
@@ -71,9 +71,18 @@ class Label
 
     protected $glabelsBatch = '';
 
+    /**
+     *
+     * @var mixed
+     */
+    protected $glabelsBatchCommand = [];
+
+    protected $glabelsBatchLibraryPath = '';
+
     public function __construct($action)
     {
-        $this->glabelsBatch = Configure::read('GLABELS_BATCH_BINARY');
+        $this->glabelsBatchCommand = Configure::read('GLABELS_BATCH_BINARY');
+        $this->glabelsBatchLibraryPath = Configure::read('GLABELS_LIBRARY_PATH');
         $this->action = $action;
         $this->setJobId($action);
         $this->setCwd(TMP);
@@ -374,17 +383,15 @@ class Label
 
         $this->createTempFile($this->printContent);
 
-        $glabelBatchBinary = Configure::read('GLABELS_BATCH_BINARY');
-
         $cmdArgs = array_merge(
-            $glabelBatchBinary, 
+            $this->glabelsBatchCommand,
             [
-            '-o',
-            $this->getPdfOutFile(),
-            $this->getGlabelsTemplate(), 
-        ]);
+                '-o',
+                $this->getPdfOutFile(),
+                $this->getGlabelsTemplate(),
+            ]
+        );
 
-       
         /**
          * If it's got variable pages such as sequence numbers: 1 of 13, 2 of 13 etc
          * then set the print copies to 1 if it doesn't have variable pages then
@@ -398,6 +405,8 @@ class Label
             $cmdArgs,
             $this->printContent
         );
+
+        tog($results);
 
         //cat merge.csv | glabels-3-batch -o /dev/stdout -i - 100x50sample.glabels | \
         // sed -n '/%PDF-1.5/,/%%EOF/p' | lpr -PPDF -J jobname
@@ -439,10 +448,13 @@ class Label
         ];
 
         $pipes = [];
-        $env =  array_merge(
-             getenv(),
-              [ 'LD_LIBRARY_PATH' => '/usr/local/glabels-qt-moved/usr/lib']);
-        
+        $env = array_merge(
+            getenv(),
+            [
+                'LD_LIBRARY_PATH' => $this->glabelsBatchLibraryPath,
+            ]
+        );
+
         $process = proc_open(
             $cmd,
             $descriptorspec,
@@ -450,7 +462,6 @@ class Label
             $this->getCwd(), //cwd orig TMP
            $env
         );
-        tog('ENV', $env);
 
         // writing straight to stdin works
         fwrite($pipes[0], $printContent);

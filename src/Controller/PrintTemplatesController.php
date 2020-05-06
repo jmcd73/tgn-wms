@@ -24,8 +24,9 @@ class PrintTemplatesController extends AppController
             'order' => ['lft' => 'ASC'],
         ];
         $printTemplates = $this->paginate($this->PrintTemplates);
+        $templateRoot = DS . $this->PrintTemplates->getSetting('TEMPLATE_ROOT') . DS;
 
-        $this->set(compact('printTemplates'));
+        $this->set(compact('printTemplates', 'templateRoot'));
     }
 
     /**
@@ -56,7 +57,7 @@ class PrintTemplatesController extends AppController
             $printTemplate = $this->PrintTemplates->patchEntity($printTemplate, $this->request->getData());
 
             if (!$printTemplate->getErrors()) {
-                $targetPath = WWW_ROOT . DS . $this->PrintTemplates->getSetting('GLABELS_ROOT');
+                $targetPath = WWW_ROOT . DS . $this->PrintTemplates->getSetting('TEMPLATE_ROOT');
 
                 $image = $this->request->getData('upload_example_image');
 
@@ -110,7 +111,7 @@ class PrintTemplatesController extends AppController
             $printTemplate = $this->PrintTemplates->patchEntity($printTemplate, $this->request->getData());
 
             if (!$printTemplate->getErrors()) {
-                $targetPath = WWW_ROOT . DS . $this->PrintTemplates->getSetting('GLABELS_ROOT');
+                $targetPath = WWW_ROOT . DS . $this->PrintTemplates->getSetting('TEMPLATE_ROOT');
 
                 $image = $this->request->getData('upload_example_image');
 
@@ -146,7 +147,7 @@ class PrintTemplatesController extends AppController
         }
 
         $controllerActions = $this->Ctrl->getPrintActions();
-        $templateRoot = DS . $this->PrintTemplates->getSetting('GLABELS_ROOT') . DS;
+        $templateRoot = DS . $this->PrintTemplates->getSetting('TEMPLATE_ROOT') . DS;
         $parentPrintTemplates = $this->PrintTemplates->ParentPrintTemplates->find('list', ['limit' => 200]);
         $this->set(compact('printTemplate', 'parentPrintTemplates', 'controllerActions', 'templateRoot'));
     }

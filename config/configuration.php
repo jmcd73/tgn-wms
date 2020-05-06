@@ -4,16 +4,17 @@ $appName = 'Toggen WMS';
 $companyName = 'Toggen Systems';
 
 $glabelsBatchBinary = file_exists('/.dockerenv') ? [
-    '/usr/bin/xvfb-run', '--', 
-    '/usr/local/glabels-qt-moved/usr/bin/glabels-batch-qt', 
-    ] :
-    ['/usr/local/bin/glabels-batch-qt', '--'];
+    '/usr/bin/xvfb-run', '--',
+    '/usr/local/glabels-qt/usr/bin/glabels-batch-qt',
+] : [
+    '/usr/local/bin/glabels-batch-qt', '--',
+];
 
 return [
-    'ALLOW_ORIGINS' => [
-        'http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002',
-    ],
+    'ALLOWED_METHODS' => ['PUT', 'POST'],
+    'ALLOWED_ORIGINS' => ['http://localhost:3000', 'http://localhost:8082'],
     'MAX_COPIES' => 100,
+    'GLABELS_LIBRARY_PATH' => '/usr/local/glabels-qt/usr/lib',
     'GLABELS_BATCH_BINARY' => $glabelsBatchBinary,
     'timezones' => DateTimeZone::AUSTRALIA, // extras with a pipe | DateTimeZone::EUROPE,
     'dateFormat' => 'd/m/Y',
@@ -21,19 +22,20 @@ return [
     'PrintLabels' => [
         // mappings for controller print actions to their classes
         // used by Lib/PrintLabels/LabelFactory.php
-        'glabelSampleLabels' => 'App\Lib\PrintLabels\Glabel\GlabelSample',
-        'keepRefrigerated' => 'App\Lib\PrintLabels\Glabel\CustomLabel',
-        'customPrint0' => 'App\Lib\PrintLabels\Glabel\CustomLabel',
-        'shippingLabels' => 'App\Lib\PrintLabels\Glabel\ShippingLabel',
-        'crossdockLabels' => 'App\Lib\PrintLabels\Glabel\CrossdockLabel',
-        'shippingLabelsGeneric' => 'App\Lib\PrintLabels\Glabel\ShippingLabelGeneric',
-        'bigNumber' => 'App\Lib\PrintLabels\Zebra\TextLabel',
-        'printCartonLabels' => 'App\Lib\PrintLabels\CabLabel\CartonLabel',
-        'sampleLabels' => 'App\Lib\PrintLabels\Glabel\SampleLabel',
-        'palletPrint' => 'App\Lib\PrintLabels\CabLabel\PalletPrint',
-        'palletReprint' => 'App\Lib\PrintLabels\CabLabel\PalletPrint',
-        'ssccLabel' => 'App\Lib\PrintLabels\Glabel\SsccLabel',
+        'glabelSampleLabels' => '\App\Lib\PrintLabels\Glabel\GlabelSample',
+        'keepRefrigerated' => '\App\Lib\PrintLabels\Glabel\CustomLabel',
+        'customPrint' => '\App\Lib\PrintLabels\Glabel\CustomLabel',
+        'shippingLabels' => '\App\Lib\PrintLabels\Glabel\ShippingLabel',
+        'crossdockLabels' => '\App\Lib\PrintLabels\Glabel\CrossdockLabel',
+        'shippingLabelsGeneric' => '\App\Lib\PrintLabels\Glabel\ShippingLabelGeneric',
+        'bigNumber' => '\App\Lib\PrintLabels\Zebra\TextLabel',
+        'printCartonLabels' => '\App\Lib\PrintLabels\CabLabel\CartonLabel',
+        'sampleLabels' => '\App\Lib\PrintLabels\Glabel\SampleLabel',
+        'palletPrint' => '\App\Lib\PrintLabels\CabLabel\PalletPrint',
+        'palletReprint' => '\App\Lib\PrintLabels\CabLabel\PalletPrint',
+        'ssccLabel' => '\App\Lib\PrintLabels\Glabel\SsccLabel',
     ],
+    // specify the Controller and actions that need a default printer set
     'Ctrl' => [
         'printControllersActions' => [
             'Pallets' => [
@@ -51,7 +53,7 @@ return [
                 'glabelSampleLabels',
                 'bigNumber',
                 'customPrint',
-                'customPrint0',
+                'customPrint',
                 'sampleLabels',
                 'ssccLabel', ],
         ], ],
@@ -62,8 +64,6 @@ return [
     'SSCC_REF' => 'sscc_ref',
     'companyName' => $companyName,
     'applicationName' => $appName,
-    'ALLOWED_METHODS' => ['PUT', 'POST'],
-    'ALLOWED_ORIGINS' => ['http://localhost:3000', 'http://localhost:8082'],
     'labelMaxCopies' => 400,
     'App' => [
         'title' => 'Toggen',
@@ -73,7 +73,6 @@ return [
         'maxLimit' => 30,
     ],
     'MaxShippingLabels' => 70,
-
     'LabelsRolesActions' => [
         [
             'roles' => ['qa'], // single value must be array
@@ -134,7 +133,7 @@ return [
             ],
         ],
     ],
-    /**
+    /*
      * The datasources key allows you to set an environment variable
      * in Apache using SetEnv ENVIRONMENT HOME
      * and it will then map to your database.php DB configuration
@@ -170,7 +169,6 @@ return [
         'phone_dial' => '+61428964633',
         'company_url' => 'https://toggen.com.au',
     ],
-
     'PdfPickList' => [
         'KeyWords' => ['Pick List'],
         'FileNameSuffix' => '_pick_list.pdf',

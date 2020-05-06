@@ -26,7 +26,7 @@ class HttpOptionsMiddleware implements MiddlewareInterface
         $response = $handler->handle($request);
         $response = $response->withHeader('X-Toggen', 'James McDonald');
 
-        $origin = array_intersect(Configure::read('ALLOW_ORIGINS'), $request->getHeader('Origin'));
+        $origin = array_intersect(Configure::read('ALLOWED_ORIGINS'), $request->getHeader('Origin'));
         if ($origin) {
             $response = $response->withHeader('Access-Control-Allow-Origin', $origin);
         }
