@@ -45,7 +45,7 @@
             echo $this->Form->control('item');
             echo $this->Form->control('description');
             echo $this->Form->control('item_id', ['options' => $items]);
-            echo $this->Form->control('best_before');
+   
             echo $this->Form->control('bb_date');
             echo $this->Form->control('gtin14');
             echo $this->Form->control('qty_user_id');

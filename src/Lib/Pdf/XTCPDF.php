@@ -10,12 +10,15 @@ use TCPDF;
 class XTCPDF extends TCPDF
 {
     public $headerWidth = 175;
+    private $_doubleLineConfig = [1, -4];
 
-    public function doubleLine()
+    public function doubleLine($adjust = null)
     {
+        [ $line1Adjust, $line2Adjust ] = $adjust ?? $this->_doubleLineConfig;
+
         $style = ['width' => 0.4];
-        $this->drawHeader(1, 1, $style, false);
-        $this->drawHeader(1, -4, $style, true);
+        $this->drawHeader(1, $line1Adjust, $style, false);
+        $this->drawHeader(1, $line2Adjust, $style, true);
     }
 
     public function rowDetail($row)

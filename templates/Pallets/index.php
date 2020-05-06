@@ -49,7 +49,6 @@
             <th scope="col"><?= $this->Paginator->sort('production_line_id') ?></th>
             <th scope="col"><?= $this->Paginator->sort('description') ?></th>
             <th scope="col"><?= $this->Paginator->sort('item_id') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('best_before') ?></th>
             <th scope="col"><?= $this->Paginator->sort('bb_date') ?></th>
             <th scope="col"><?= $this->Paginator->sort('gtin14') ?></th>
             <th scope="col"><?= $this->Paginator->sort('qty_user_id') ?></th>
@@ -85,7 +84,6 @@
             <td><?= h($pallet->description) ?></td>
             <td><?= $pallet->has('items') ? $this->Html->link($pallet->items->code, ['controller' => 'Items', 'action' => 'view', $pallet->items->id]) : '' ?>
             </td>
-            <td><?= h($pallet->best_before) ?></td>
             <td><?= h($pallet->bb_date) ?></td>
             <td><?= h($pallet->gtin14) ?></td>
             <td><?= $this->Number->format($pallet->qty_user_id) ?></td>

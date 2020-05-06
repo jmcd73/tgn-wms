@@ -11,7 +11,7 @@ use Cake\I18n\FrozenDate;
 /**
  * Label base class
  */
-class Label
+class Label 
 {
     use PrinterListTrait;
 
@@ -374,26 +374,17 @@ class Label
 
         $this->createTempFile($this->printContent);
 
-        $cmdArgs = [
-            '/usr/bin/xvfb-run',
-            '--',
-            '/usr/local/glabels-qt/usr/bin/glabels-batch-qt',
+        $glabelBatchBinary = Configure::read('GLABELS_BATCH_BINARY');
+
+        $cmdArgs = array_merge(
+            $glabelBatchBinary, 
+            [
             '-o',
             $this->getPdfOutFile(),
-            $this->getGlabelsTemplate(),
-        ];
+            $this->getGlabelsTemplate(), 
+        ]);
 
-        /** if ($this->glabelsMergeCSV) {
-
-         * add stdin ("-i -") to glabels command line when piping  CSV data into glabels:
-         * glabels-3-batch -i - -o
-         *      /var/www/wms/app/tmp/20190701182321-customPrint.pdf
-         *      /var/www/wms/app/webroot/files/templates/100x50custom.glabels
-         *
-         * array_splice($cmdArgs, 1, 0, ['-i', '-']);
-         *}
-         */
-
+       
         /**
          * If it's got variable pages such as sequence numbers: 1 of 13, 2 of 13 etc
          * then set the print copies to 1 if it doesn't have variable pages then
@@ -448,14 +439,18 @@ class Label
         ];
 
         $pipes = [];
-
+        $env =  array_merge(
+             getenv(),
+              [ 'LD_LIBRARY_PATH' => '/usr/local/glabels-qt-moved/usr/lib']);
+        
         $process = proc_open(
             $cmd,
             $descriptorspec,
             $pipes,
             $this->getCwd(), //cwd orig TMP
-            null
+           $env
         );
+        tog('ENV', $env);
 
         // writing straight to stdin works
         fwrite($pipes[0], $printContent);

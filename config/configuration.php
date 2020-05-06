@@ -3,12 +3,18 @@
 $appName = 'Toggen WMS';
 $companyName = 'Toggen Systems';
 
+$glabelsBatchBinary = file_exists('/.dockerenv') ? [
+    '/usr/bin/xvfb-run', '--', 
+    '/usr/local/glabels-qt-moved/usr/bin/glabels-batch-qt', 
+    ] :
+    ['/usr/local/bin/glabels-batch-qt', '--'];
+
 return [
     'ALLOW_ORIGINS' => [
         'http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002',
     ],
     'MAX_COPIES' => 100,
-    'GLABELS_BATCH_BINARY' => '/usr/bin/xvfb-run -- /usr/local/glabels-qt/usr/bin/glabels-batch-qt',
+    'GLABELS_BATCH_BINARY' => $glabelsBatchBinary,
     'timezones' => DateTimeZone::AUSTRALIA, // extras with a pipe | DateTimeZone::EUROPE,
     'dateFormat' => 'd/m/Y',
     'BestBeforeDateEditors' => [],

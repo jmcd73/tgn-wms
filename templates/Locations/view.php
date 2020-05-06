@@ -151,7 +151,6 @@
                     <td><?= h($pallets->item) ?></td>
                     <td><?= h($pallets->description) ?></td>
                     <td><?= h($pallets->item_id) ?></td>
-                    <td><?= h($pallets->best_before) ?></td>
                     <td><?= h($pallets->bb_date) ?></td>
                     <td><?= h($pallets->gtin14) ?></td>
                     <td><?= h($pallets->qty_user_id) ?></td>

@@ -30,19 +30,19 @@ $style = ['width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'colo
 $style = ['width' => 0.4];
 $xAdjust = 1;
 
-$pdf->drawHeader($xAdjust, -2, $style);
+//$pdf->drawHeader($xAdjust, -2, $style);
 
 $pdf->headerDetail(__('Shipment No'), $shipment['shipper']);
 $pdf->headerDetail(__('Destination'), $shipment['destination']);
 $pdf->headerDetail(__('Created'), $this->Time->format($shipment['created']));
 
-$pdf->drawHeader($xAdjust, -3, $style, true);
+//$pdf->drawHeader($xAdjust, -3, $style, true);
 
 if (!empty($pallets)) :
         $pdf->Cell(145, 0, __('Total Pallets') . ':', 0, 0, 'R', 0, '', 0);
         $pdf->Cell(15, 0, $pl_count, 0, 1, 'R', 0, '', 0);
 
-        $pdf->drawHeader(1, -2, $style, true);
+        //$pdf->drawHeader(1, -2, $style, true);
         $pdf->Cell(40, 0, 'Item Code', 0, 0, 'L', 0, '', 0);
         $pdf->Cell(135, 0, 'Total', 0, 1, 'R', 0, '', 0);
 
@@ -80,17 +80,17 @@ if (!empty($pallets)) :
             endif;
         endforeach;
 
-            $pdf->drawHeader(1, -2, ['width' => 0.3], true);
+            $pdf->drawHeader(1, -3, ['width' => 0.3], true);
     endforeach;
 
         $pdf->Cell(0, 0, 'End of Shipment Pick List', 0, 1, 'C', 0, '', 0);
 
         //$pdf->Write(0, $doubleDivider, '', 0, 'L', true, 0, false, false, 0);
-        $pdf->doubleLine();
+        $pdf->doubleLine([3, -2]);
 else :
         $pdf->Cell(0, 0, 'Please put some pallets on this shipment', 0, 1, 'C', 0, '', 0);
 
-        $pdf->doubleLine();
+        $pdf->doubleLine([3, -2]);
 endif;
 
     // use the examples at http://tcpdf.org to create a pdf

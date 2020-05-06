@@ -34,10 +34,6 @@
                 </td>
             </tr>
             <tr>
-                <th scope="row"><?= __('Best Before') ?></th>
-                <td><?= h($pallet->best_before) ?></td>
-            </tr>
-            <tr>
                 <th scope="row"><?= __('Gtin14') ?></th>
                 <td><?= h($pallet->gtin14) ?></td>
             </tr>
