@@ -1,3 +1,5 @@
+<div class="row">
+<div class="col">
 <?php
 echo $this->Form->create(null, [
     'style' => 'width: 120px;',
@@ -9,6 +11,7 @@ echo $this->Form->create(null, [
 
 echo $this->Form->control('amount', [
     'label' => false,
+    'placeholder' => 'up/down',
     'class' => 'form-control-sm',
     'prepend' => $this->Form->button(
         '',
@@ -29,8 +32,10 @@ echo $this->Form->control('amount', [
 ]);
 
 echo $this->Form->end(); ?>
+</div>
+<div class="col">
 <?= $this->Html->link(__('View'), ['action' => 'view', $id], ['title' => __('View'), 'class' => 'btn btn-secondary btn-sm mr-1 mb-1']) ?>
-<?= $this->Html->link(__('Edit'), ['action' => 'edit', $id], ['title' => __('Edit'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
+<?= $this->Html->link(__('Edit'), ['action' => 'edit', $id], ['title' => __('Edit'), 'class' => 'btn btn-secondary btn-sm mr-1 mb-1']) ?>
 <?= $this->Form->postLink(
     __('Delete'),
     ['action' => 'delete', $id],
@@ -40,3 +45,5 @@ echo $this->Form->end(); ?>
         'class' => 'btn btn-danger btn-sm mb-1',
     ]
 ) ?>
+</div>
+</div>

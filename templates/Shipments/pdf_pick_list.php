@@ -1,4 +1,7 @@
 <?php
+
+//define('K_TCPDF_THROW_EXCEPTION_ERROR', true);
+
 use App\Lib\Pdf\XTCPDF;
 
 $pdf = new XTCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -24,25 +27,18 @@ $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
 $pdf->addPage();
 
-$pdf->SetFont('helvetica', '', 13, '', 'false');
-
-$style = ['width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => [0, 0, 0]];
-$style = ['width' => 0.4];
-$xAdjust = 1;
-
-//$pdf->drawHeader($xAdjust, -2, $style);
+$pdf->SetFont('dejavusans', '', 13, '', 'false');
 
 $pdf->headerDetail(__('Shipment No'), $shipment['shipper']);
 $pdf->headerDetail(__('Destination'), $shipment['destination']);
 $pdf->headerDetail(__('Created'), $this->Time->format($shipment['created']));
 
-//$pdf->drawHeader($xAdjust, -3, $style, true);
-
 if (!empty($pallets)) :
-        $pdf->Cell(145, 0, __('Total Pallets') . ':', 0, 0, 'R', 0, '', 0);
-        $pdf->Cell(15, 0, $pl_count, 0, 1, 'R', 0, '', 0);
-
-        //$pdf->drawHeader(1, -2, $style, true);
+    $pdf->headerDetail(__('Total Pallets'), $pl_count);
+     /*    $pdf->Cell(145, 0, __('Total Pallets') . ':', 0, 0, 'R', 0, '', 0);
+        $pdf->Cell(15, 0, $pl_count, 0, 1, 'R', 0, '', 0); */
+        $y = $pdf->getY();
+        $pdf->setY($y + 6);
         $pdf->Cell(40, 0, 'Item Code', 0, 0, 'L', 0, '', 0);
         $pdf->Cell(135, 0, 'Total', 0, 1, 'R', 0, '', 0);
 
@@ -54,7 +50,8 @@ if (!empty($pallets)) :
            'col-5' => 'Pallets',
            'col-6' => 'Qty',
        ]);
-        $pdf->doubleLine();
+       $pdf->doubleLine([2, -3]);
+
     foreach ($groups as $group) :
             //string str_pad ( string $input , int $pad_length [, string $pad_string = " " [, int $pad_type = STR_PAD_RIGHT ]] )
 
@@ -80,7 +77,7 @@ if (!empty($pallets)) :
             endif;
         endforeach;
 
-            $pdf->drawHeader(1, -3, ['width' => 0.3], true);
+            $pdf->drawHeader(1, -3, $pdf->lineStyle, true);
     endforeach;
 
         $pdf->Cell(0, 0, 'End of Shipment Pick List', 0, 1, 'C', 0, '', 0);

@@ -13,7 +13,7 @@
 <li><?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $carton->id], ['confirm' => __('Are you sure you want to delete # {0}?', $carton->id), 'class' => 'nav-link']) ?></li>
 <li><?= $this->Html->link(__('List Cartons'), ['action' => 'index'], ['class' => 'nav-link']) ?></li>
 <li><?= $this->Html->link(__('List Pallets'), ['controller' => 'Pallets', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
-<li><?= $this->Html->link(__('New Pallet'), ['controller' => 'Pallets', 'action' => 'add'], ['class' => 'nav-link']) ?></li>
+
 <li><?= $this->Html->link(__('List Items'), ['controller' => 'Items', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
 <li><?= $this->Html->link(__('New Item'), ['controller' => 'Items', 'action' => 'add'], ['class' => 'nav-link']) ?></li>
 <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index'], ['class' => 'nav-link']) ?></li>

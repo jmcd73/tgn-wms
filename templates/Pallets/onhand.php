@@ -62,8 +62,7 @@ use App\View\Helper\ToggenHelper;
             <thead>
                 <tr>
                     <th><?php echo $this->Paginator->sort('location_id'); ?></th>
-                    <th><?php echo $this->Paginator->sort('item_id'); ?></th>
-                    <th><?php echo $this->Paginator->sort('description'); ?></th>
+                    <th><?php echo $this->Paginator->sort('item_id'); ?></th>   
                     <th><?php echo $this->Paginator->sort('pl_ref'); ?></th>
                     <th><?php echo $this->Paginator->sort('print_date'); ?></th>
                     <th>Pl age</th>
@@ -95,7 +94,7 @@ use App\View\Helper\ToggenHelper;
                             'id' => $pallet['pl_ref'],
                             'class' => 'anchor', ]);
                             echo $this->Html->link(
-                                h($pallet['location']['location']),
+                                    h($pallet['location']['location']),
                                 [
                                     'action' => 'move',
                                     $pallet['id'], ],
@@ -105,7 +104,7 @@ use App\View\Helper\ToggenHelper;
                             );
                         ?>
                     </td>
-                    <td <?= $classString; ?> colspan="2"><?=  h($pallet->code_desc); ?></td>
+                    <td <?= $classString; ?>><?=  h($pallet->code_desc); ?></td>
                     <td <?= $classString; ?>>
                         <?php echo h($pallet['pl_ref']); ?>
                     </td>

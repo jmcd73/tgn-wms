@@ -4,6 +4,10 @@ import Root from "./Components/Root";
 
 const root = document.getElementById("root");
 
+if(process.env.NODE_ENV === 'development'){
+    root.setAttribute('data-baseurl', 'http://localhost:8051/');
+}
+
 const baseUrl = root.getAttribute("data-baseurl");
 
 ReactDOM.render(<Root baseUrl={baseUrl} />, root);
