@@ -152,7 +152,7 @@ return [
     'navbar' => [
         'brand' => [
             'title' => 'Toggen home',
-            'img' => 'home.png',
+            'img' => 'TOGGEN-GOAT.svg',
             'alt' => 'Toggen home',
         ],
     ],
@@ -171,6 +171,7 @@ return [
     ],
     'PdfPickList' => [
         'KeyWords' => ['Pick List'],
+        'img' => 'TOGGEN-GOAT.svg',
         'FileNameSuffix' => '_pick_list.pdf',
     ],
 ];
