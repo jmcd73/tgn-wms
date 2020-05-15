@@ -28,7 +28,11 @@
 <?php $this->assign('tb_sidebar', '<ul class="nav flex-column">' . $this->fetch('tb_actions') . '</ul>'); ?>
 
 <div class="printTemplates view large-9 medium-8 columns content">
+
     <h3><?= h($printTemplate->name) ?></h3>
+
+   <?php if ($printTemplate->hasValue('parent_id')): ?>
+
     <div class="table-responsive">
         <table class="table table-striped">
             <tr>
@@ -50,6 +54,10 @@
             <tr>
                 <th scope="row"><?= __('Controller/Action') ?></th>
                 <td><?= h($printTemplate->controller_action) ?></td>
+            </tr>
+            <tr>
+                <th scope="row"><?= __('Example Image') ?></th>
+                <td><?= h($printTemplate->example_image) ?></td>
             </tr>
             <tr>
                 <th scope="row"><?= __('Example Image') ?></th>
@@ -114,6 +122,8 @@
             </tr>
         </table>
     </div>
+
+   <?php endif; ?>
     <div class="related">
         <h4><?= __('Related Items') ?></h4>
         <?php if (!empty($printTemplate->items)) : ?>
