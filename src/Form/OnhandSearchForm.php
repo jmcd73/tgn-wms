@@ -23,16 +23,7 @@ class OnhandSearchForm extends Form
         return $schema->addField('filter_value', 'string');
     }
 
-    /**
-     * Form validation builder
-     *
-     * @param \Cake\Validation\Validator $validator to use against the form
-     * @return \Cake\Validation\Validator
-     */
-    protected function _buildValidator(Validator $validator): Validator
-    {
-        return $validator;
-    }
+
 
     /**
     * Form validation builder
