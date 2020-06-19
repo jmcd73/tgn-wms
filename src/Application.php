@@ -188,8 +188,10 @@ class Application extends BaseApplication implements
     {
         $authenticationService = new AuthenticationService();
 
+        $loginUrl = '/' . Configure::read('WEB_DIR') . '/users/login';
+
         $authenticationService->setConfig([
-            'unauthenticatedRedirect' => '/users/login',
+            'unauthenticatedRedirect' => $loginUrl,
             'queryParam' => 'redirect',
         ]);
 
@@ -242,7 +244,7 @@ class Application extends BaseApplication implements
         // Configure form data check to pick email and password
         $authenticationService->loadAuthenticator('Authentication.Form', [
             'fields' => $fields,
-            'loginUrl' => '/users/login',
+            'loginUrl' => $loginUrl,
         ]);
 
         return $authenticationService;

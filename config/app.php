@@ -18,6 +18,8 @@ return [
      * true: Errors and warnings shown.
      */
     'debug' => filter_var(env('DEBUG', false), FILTER_VALIDATE_BOOLEAN),
+    # the folder in the container /var/www/test or the first part of the url example.com/test
+    'WEB_DIR' => filter_var(env('WEB_DIR', 'test'), FILTER_SANITIZE_STRING),
 
     /*
      * Configure basic information about the application.
@@ -178,7 +180,7 @@ return [
      *   breathing room to complete logging or error handling.
      */
     'Error' => [
-        'errorLevel' => E_ALL,
+        'errorLevel' => E_ALL & ~E_USER_DEPRECATED,
         'exceptionRenderer' => ExceptionRenderer::class,
         'skipLog' => [],
         'log' => true,
