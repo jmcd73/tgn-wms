@@ -134,8 +134,8 @@ class UsersController extends AppController
         $result = $this->Authentication->getResult();
 
         if ($this->request->is('POST')) {
-            // regardless of POST or GET, redirect if user is logged in
-            if ($result->isValid()) {
+		// regardless of POST or GET, redirect if user is logged in
+		if ($result->isValid()) {
                 // redirect to /articles after login success
 
                 $target = $this->Authentication->getLoginRedirect();
@@ -146,6 +146,7 @@ class UsersController extends AppController
 
                 return $this->redirect($target);
             } else {
+		 tog([ 'loginError' => $result ]); 
                 $this->Flash->error(__('Invalid username or password'));
             }
         }
