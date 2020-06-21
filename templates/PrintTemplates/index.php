@@ -17,8 +17,6 @@
 <table class="table table-striped">
     <thead>
         <tr>
-         
-            <th scope="col"><?= $this->Paginator->sort('parent_id') ?></th>
             <th scope="col"><?= $this->Paginator->sort('example_image') ?></th>
             <th scope="col"><?= $this->Paginator->sort('name') ?></th>
             <th scope="col"><?= $this->Paginator->sort('description') ?></th>
@@ -30,8 +28,8 @@
 
         <?php if (!$printTemplate->hasValue('parent_id')): ?>
         <tr>
-            <td colspan="4">
-                <h4><?= h($printTemplate->name) ?></h4>
+            <td colspan="3">
+                <h4><?= $this->Html->link($printTemplate->name, ['action' => 'view', $printTemplate->id] ); ?></h4>
             </td>
             <td class="actions">
             <?= $this->element('PrintTemplates/actions', [
@@ -42,14 +40,15 @@
         <?php else: ?>
         <tr>
           
-            <td><?= $printTemplate->has('parent_print_template') ? $this->Html->link($printTemplate->parent_print_template->name, ['controller' => 'PrintTemplates', 'action' => 'view', $printTemplate->parent_print_template->id]) : '' ?>
-            </td>
-            <td><?= $printTemplate->hasValue('example_image') ? $this->Html->image(
+         
+            <td><?= $printTemplate->hasValue('example_image') ? $this->Html->link($this->Html->image(
                 $templateRoot . $printTemplate->example_image,
                 [
                     'class' => 'example-image',
                 ]
-            ) : '' ?></td>
+                ), [ 'action' => 'view', $printTemplate->id], [
+                    'title' => "View details",
+                    'escape' => false]) : '' ?></td>
             <td><?= h($printTemplate->name) ?></td>
             <td><?= h($printTemplate->description) ?></td>
             <td class="actions">

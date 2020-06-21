@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
@@ -49,6 +50,7 @@ class PalletsController extends AppController
     public function palletPrint($productTypeId = null)
     {
         $forms = [];
+
         foreach (['left', 'right'] as $form) {
             $forms[$form] = (new PalletPrintForm())->setFormName($form);
         }
@@ -176,13 +178,12 @@ class PalletsController extends AppController
 
                 // the print template contents which has the replace tokens in it
 
-                $printTemplate = $this->Pallets->Items->PrintTemplates->find()
-                ->where([
-                    'id' => $printTemplateId,
-                    'active' => 1,
-                ])
-                ->firstOrFail()->toArray();
-
+               /* $printTemplate = $this->Pallets->Items->PrintTemplates->find()
+                    ->where([
+                        'id' => $printTemplateId,
+                        'active' => 1,
+                    ])
+                    ->firstOrFail()->toArray();
                 if (empty($printTemplate)) {
                     throw new MissingConfigurationException(
                         [
@@ -196,10 +197,13 @@ class PalletsController extends AppController
                                     ]
                                 ),
                                 $item_detail['Item']['code']
-                            ), ],
+                            ),
+                        ],
                         500
                     );
                 }
+                 */
+
 
                 $cabLabelData = [
                     'companyName' => Configure::read('companyName'),
@@ -213,11 +217,19 @@ class PalletsController extends AppController
                     'bestBeforeBc' => $bestBeforeDates['bb_bc'],
                     'batch' => $data['batch_no'],
                     'numLabels' => $labelCopies,
+                    'ssccBarcode' => '[00]' . $sscc,
+                    'itemBarcode' => '[02]' .$item_detail['trade_unit'] .
+                        '[15]' . $bestBeforeDates['bb_bc'] . '[10]' .  $data['batch_no'] .
+                        '[37]' . $qty
                 ];
 
+                $this->loadModel('PrintLog');
+
+                $template = $this->PrintLog->getGlabelsProject($printTemplateId);
+
                 $printResult = LabelFactory::create($this->request->getParam('action'))
-                    ->format($printTemplate, $cabLabelData)
-                        ->print($printerDetails);
+                    ->format($cabLabelData)
+                    ->print($printerDetails, $template);
 
                 $isPrintDebugMode = Configure::read('pallet_print_debug');
 
@@ -401,8 +413,7 @@ class PalletsController extends AppController
 
             foreach ($data['pallets'] as $pallet) {
                 if (isset($pallet['inventory_status_id']) && ((is_numeric($pallet['inventory_status_id']) &&
-                $pallet['inventory_status_id'] >= 0) || $pallet['inventory_status_id'] === $setNoteKey)
-               ) {
+                    $pallet['inventory_status_id'] >= 0) || $pallet['inventory_status_id'] === $setNoteKey)) {
                     $pallet['inventory_status_note'] = $inventory_status_note;
                     if ($pallet['inventory_status_id'] === $setNoteKey) {
                         unset($pallet['inventory_status_id']);
@@ -454,7 +465,8 @@ class PalletsController extends AppController
                 'Pallets.id' => 'DESC',
             ],
             'limit' => 500,
-            'maxLimit' => 3000, ];
+            'maxLimit' => 3000,
+        ];
 
         $pallets = $this->Pallets->find('all', $options);
 
@@ -518,7 +530,7 @@ class PalletsController extends AppController
                 $this->Flash->set(__('The label could not be saved. Please, try again.'));
             }
         } else {
-            $this->request->withData($this->Pallets->get($id)) ;
+            $this->request->withData($this->Pallets->get($id));
         }
         $locations = $this->Pallets->Locations->find('list');
         $shipments = $this->Pallets->Shipments->find('list');
@@ -871,7 +883,7 @@ class PalletsController extends AppController
                         'data' => $data,
                     ];
                     return $this->response->withType('application/json')
-                    ->withStringBody(json_encode($msg));
+                        ->withStringBody(json_encode($msg));
                 }
                 $this->Flash->set(__('The label has been saved.'));
             } else {
@@ -1059,7 +1071,8 @@ class PalletsController extends AppController
                         'ProductTypes',
                         'PrintTemplates',
                     ],
-                ], ]
+                ],
+            ]
         );
 
         $this->Pallets->getValidator()->add('printer_id', 'required', [
@@ -1177,9 +1190,9 @@ class PalletsController extends AppController
         ])->select(
             $this->Pallets
         )->select($this->Pallets->Shipments)
-        ->select($this->Pallets->Items)
-        ->select($this->Pallets->Locations)
-        ->select($this->Pallets->InventoryStatuses)
+            ->select($this->Pallets->Items)
+            ->select($this->Pallets->Locations)
+            ->select($this->Pallets->InventoryStatuses)
             ->where([
                 'OR' => [
                     'InventoryStatuses.perms & ' . $view_perms,

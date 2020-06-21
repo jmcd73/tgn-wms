@@ -30,6 +30,7 @@
         <?php
         echo $this->Form->control('active');
         echo $this->Form->control('is_file_template', ['label' => 'Glabels template']);
+        echo $this->Form->control('glabels_copies', ['label' => 'Glabels number of copies']);
         echo $this->Form->control('show_in_label_chooser');
         echo $this->Form->control('parent_id', ['options' => $parentPrintTemplates, 'empty' => true]);
         echo $this->Form->control('name');

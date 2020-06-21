@@ -49,7 +49,8 @@
             </tr>
             <tr>
                 <th scope="row"><?= __('File Template') ?></th>
-                <td><?= h($printTemplate->file_template) ?></td>
+                <td><?= $printTemplate->has('file_template') ? 
+                $this->Html->link($printTemplate->file_template, ['action' => 'sendFile', $printTemplate->id]): ''; ?></td>
             </tr>
             <tr>
                 <th scope="row"><?= __('Controller/Action') ?></th>

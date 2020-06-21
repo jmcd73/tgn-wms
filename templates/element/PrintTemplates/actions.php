@@ -11,7 +11,7 @@ echo $this->Form->create(null, [
 
 echo $this->Form->control('amount', [
     'label' => false,
-    'placeholder' => 'up/down',
+    'placeholder' => '1',
     'class' => 'form-control-sm',
     'prepend' => $this->Form->button(
         '',
@@ -45,5 +45,6 @@ echo $this->Form->end(); ?>
         'class' => 'btn btn-danger btn-sm mb-1',
     ]
 ) ?>
+
 </div>
 </div>

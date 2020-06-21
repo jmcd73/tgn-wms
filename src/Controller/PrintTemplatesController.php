@@ -23,6 +23,7 @@ class PrintTemplatesController extends AppController
             'contain' => ['ParentPrintTemplates'],
             'order' => ['lft' => 'ASC'],
         ];
+
         $printTemplates = $this->paginate($this->PrintTemplates);
         $templateRoot = DS . $this->PrintTemplates->getSetting('TEMPLATE_ROOT') . DS;
 
@@ -42,7 +43,27 @@ class PrintTemplatesController extends AppController
             'contain' => ['ParentPrintTemplates', 'Items', 'ChildPrintTemplates'],
         ]);
 
-        $this->set('printTemplate', $printTemplate);
+        $templateRoot = DS . $this->PrintTemplates->getSetting('TEMPLATE_ROOT') . DS;
+
+
+        $this->set(compact('printTemplate', 'templateRoot'));
+    }
+
+    public function sendFile($id) {
+
+        $templateRoot = DS . $this->PrintTemplates->getSetting('TEMPLATE_ROOT') . DS;
+
+        $printTemplate = $this->PrintTemplates->get($id, [
+            'contain' => ['ParentPrintTemplates', 'Items', 'ChildPrintTemplates'],
+        ]);
+
+        $response = $this->response->withFile(
+            WWW_ROOT . $templateRoot . $printTemplate->file_template,
+            ['download' => true, 'name' => $printTemplate->file_template]
+        );
+
+        return $response;
+
     }
 
     /**
@@ -57,11 +78,11 @@ class PrintTemplatesController extends AppController
             $printTemplate = $this->PrintTemplates->patchEntity($printTemplate, $this->request->getData());
 
             if (!$printTemplate->getErrors()) {
-                $targetPath = WWW_ROOT . DS . $this->PrintTemplates->getSetting('TEMPLATE_ROOT');
+                $targetPath = WWW_ROOT . $this->PrintTemplates->getSetting('TEMPLATE_ROOT');
 
                 $image = $this->request->getData('upload_example_image');
-
-                if ($image) {
+       
+                if ($image->getError() === UPLOAD_ERR_OK ) {
                     $example_image_name = $image->getClientFilename();
                     $example_image_type = $image->getClientMediaType();
                     $example_image_size = $image->getSize();
@@ -72,7 +93,8 @@ class PrintTemplatesController extends AppController
                 }
 
                 $file_template = $this->request->getData('upload_file_template');
-                if ($file_template) {
+
+                if ($file_template->getError() === UPLOAD_ERR_OK) {
                     $file_template_name = $file_template->getClientFilename();
                     $file_template_type = $file_template->getClientMediaType();
                     $file_template_size = $file_template->getSize();
@@ -89,7 +111,10 @@ class PrintTemplatesController extends AppController
             }
             $this->Flash->error(__('The print template could not be saved. Please, try again.'));
         }
-        $parentPrintTemplates = $this->PrintTemplates->ParentPrintTemplates->find('list', ['limit' => 200]);
+        $parentPrintTemplates = $this->PrintTemplates->ParentPrintTemplates->find('treeList', [
+            'order' => ['lft' => 'ASC'],
+            'spacer' => '&nbsp;&nbsp;&nbsp;&nbsp;',
+            'limit' => 200]);
 
         $controllerActions = $this->Ctrl->getPrintActions();
         $this->set(compact('printTemplate', 'parentPrintTemplates', 'controllerActions'));

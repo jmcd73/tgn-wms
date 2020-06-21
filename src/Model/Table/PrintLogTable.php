@@ -85,11 +85,19 @@ class PrintLogTable extends Table
      */
     public function getGlabelsProject($controllerAction): GlabelsProject
     {
+        $options = [
+          
+            'active' => 1,
+        ];
+    
+        if(is_numeric($controllerAction)) {
+                $options['id'] = $controllerAction;
+        } else {
+            $options['controller_action'] = $controllerAction;
+        }
+        
         $glabelsTemplate = TableRegistry::get('PrintTemplates')->find()
-            ->where([
-                'controller_action' => $controllerAction,
-                'active' => 1,
-            ])->first();
+            ->where($options)->first();
 
         $glabelsRoot = $this->getSetting('TEMPLATE_ROOT');
 

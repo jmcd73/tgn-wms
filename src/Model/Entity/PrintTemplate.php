@@ -67,5 +67,6 @@ class PrintTemplate extends Entity
         'parent_print_template' => true,
         'items' => true,
         'child_print_templates' => true,
+        'glabels_copies' => true
     ];
 }
