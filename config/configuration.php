@@ -31,8 +31,10 @@ return [
         'bigNumber' => '\App\Lib\PrintLabels\Zebra\TextLabel',
         'printCartonLabels' => '\App\Lib\PrintLabels\CabLabel\CartonLabel',
         'sampleLabels' => '\App\Lib\PrintLabels\Glabel\SampleLabel',
-        'palletPrint' => '\App\Lib\PrintLabels\CabLabel\PalletPrint',
-        'palletReprint' => '\App\Lib\PrintLabels\CabLabel\PalletPrint',
+        'palletPrint' =>  '\App\Lib\PrintLabels\Glabel\SsccLabel',
+	//'\App\Lib\PrintLabels\CabLabel\PalletPrint',
+        'palletReprint' =>  '\App\Lib\PrintLabels\Glabel\SsccLabel',
+	//'\App\Lib\PrintLabels\CabLabel\PalletPrint',
         'ssccLabel' => '\App\Lib\PrintLabels\Glabel\SsccLabel',
     ],
     // specify the Controller and actions that need a default printer set
