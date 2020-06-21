@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template width="595.276pt" description="Shipping labels" size="other" height="841.89pt" part="PPS78168" brand="PPS Shipping Labels 2 UP 100 Pack&#10;">
+    <Label-rectangle width="565.795pt" id="0" height="406.772pt" x_waste="14.7402pt" y_waste="0pt" round="0pt">
+      <Markup-margin size="8.98583pt"/>
+      <Layout nx="1" x0="14.7402pt" ny="2" dy="406.772pt" y0="14.1732pt" dx="595.276pt"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="true">
+    <Object-text w="396.671pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="27pt" shadow="false" a3="1" a2="0" align="hcenter" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="15.3292pt" font_weight="normal" y="5.51593pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="12.75">
+      <p>${COMPANY_NAME}</p>
+    </Object-text>
+    <Object-text w="393.345pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="39pt" shadow="false" a3="1" a2="0" align="left" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="12.6831pt" font_weight="normal" y="103.004pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="20">
+      <p>${DESCRIPTION}</p>
+    </Object-text>
+    <Object-text w="51.4844pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="30pt" shadow="false" a3="1" a2="0" align="left" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="12.6831pt" font_weight="normal" y="154.13pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="14">
+      <p>Item</p>
+    </Object-text>
+    <Object-text w="307.345pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="42pt" shadow="false" a3="1" a2="0" align="left" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="12.6831pt" font_weight="normal" y="182.152pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="20">
+      <p>${GTIN14_HR}</p>
+    </Object-text>
+    <Object-text w="92.3594pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="30pt" shadow="false" a3="1" a2="0" align="right" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="304.059pt" font_weight="normal" y="153.13pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="14">
+      <p>Quantity</p>
+    </Object-text>
+    <Object-text w="243.234pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="42pt" shadow="false" a3="1" a2="0" align="right" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="153pt" font_weight="normal" y="181.152pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="21">
+      <p>${QUANTITY}</p>
+    </Object-text>
+    <Object-line y="279.836pt" a0="1" shadow_x="0pt" shadow_color="0x0" a4="0" x="0pt" dy="0pt" line_width="1pt" a1="0" shadow="false" a2="0" shadow_opacity="1" dx="409pt" line_color="0xff" a3="1" shadow_y="0pt" a5="0"/>
+    <Object-text w="311.975pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="30pt" shadow="false" a3="1" a2="0" align="left" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="12.6831pt" font_weight="normal" y="215.614pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="14">
+      <p>Best Before(dd/mm/yy)</p>
+    </Object-text>
+    <Object-text w="63.4531pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="30pt" shadow="false" a3="1" a2="0" align="right" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="333.06pt" font_weight="normal" y="216.614pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="14">
+      <p>Batch</p>
+    </Object-text>
+    <Object-text w="233.194pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="42pt" shadow="false" a3="1" a2="0" align="right" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="163pt" font_weight="normal" y="235.746pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="20">
+      <p>${BATCH}</p>
+    </Object-text>
+    <Object-text w="225.345pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="42pt" shadow="false" a3="1" a2="0" align="left" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="12.6831pt" font_weight="normal" y="236.746pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="20">
+      <p>${BB_HR}</p>
+    </Object-text>
+    <Object-barcode y="300pt" a0="1" text="true" color="0xff" a4="0" x="33.3073pt" lock_aspect_ratio="false" backend="zint" checksum="true" w="340.157pt" a1="0" h="113.386pt" style="gs1-128" data="${CONCAT_BC}" a2="0" a3="1" a5="0"/>
+    <Object-barcode y="441pt" a0="1" text="true" color="0xff" a4="0" x="33.3073pt" lock_aspect_ratio="false" backend="zint" checksum="true" w="340.157pt" a1="0" h="113.386pt" style="gs1-128" data="${SSCC_BC}" a2="0" a3="1" a5="0"/>
+    <Object-text w="59.2813pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="30pt" shadow="false" a3="1" a2="0" align="left" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="12.6831pt" font_weight="normal" y="68.1136pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="14">
+      <p>SSCC</p>
+    </Object-text>
+    <Object-text w="64.9748pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="30pt" shadow="false" a3="1" a2="0" align="left" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="11.6831pt" font_weight="normal" y="31.4082pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="14">
+      <p>Code</p>
+    </Object-text>
+    <Object-text w="278.339pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="49pt" shadow="false" a3="1" a2="0" align="left" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="69.6609pt" font_weight="normal" y="31.4082pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="20">
+      <p>${ITEMCODE}</p>
+    </Object-text>
+    <Object-text w="219.674pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="47.5918pt" shadow="false" a3="1" a2="0" align="right" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="176.269pt" font_weight="normal" y="29.4082pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="20">
+      <p>${PLREF}</p>
+    </Object-text>
+    <Object-text w="324pt" shadow_opacity="0.5" shadow_color="0xff" shadow_x="1.3pt" h="47pt" shadow="false" a3="1" a2="0" align="left" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="1.3pt" wrap="word" a4="0" a5="0" x="72pt" font_weight="normal" y="65pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="20">
+      <p>${SSCC}</p>
+    </Object-text>
+  </Objects>
+  <Merge src="/dev/stdin" type="Text/Comma/Line1Keys"/>
+  <Data/>
+</Glabels-document>

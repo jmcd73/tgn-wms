@@ -1,97 +1,29 @@
 <?xml version="1.0"?>
 <Glabels-document version="4.0">
-  <Template part="150x200" height="566.929pt" description="100x250" width="425.197pt" brand="JMITS" size="Other">
-    <Label-rectangle round="8.50394pt" height="566.929pt" width="425.197pt" id="0" x_waste="0pt" y_waste="0pt">
+  <Template width="425.197pt" description="100x250" size="Other" height="566.929pt" part="150x200" brand="JMITS">
+    <Label-rectangle width="425.197pt" id="0" height="566.929pt" x_waste="0pt" y_waste="0pt" round="8.50394pt">
       <Markup-margin size="8.50394pt"/>
-      <Layout dx="425.197pt" y0="0pt" dy="566.929pt" ny="1" x0="0pt" nx="1"/>
+      <Layout nx="1" x0="0pt" ny="1" dy="566.929pt" y0="0pt" dx="425.197pt"/>
     </Label-rectangle>
   </Template>
-  <Objects rotate="false" id="0">
-    <Object-text a0="1" font_size="45" h="77pt" wrap="word" shadow_opacity="1" font_underline="false" align="hcenter" shadow_color="0x0" x="13.1564pt" a5="0" a3="1" auto_shrink="true" shadow_x="0pt" font_family="Sans" y="69.0296pt" shadow="false" line_spacing="1" shadow_y="0pt" color="0xff" valign="top" a1="0" lock_aspect_ratio="false" a2="0" w="396.155pt" a4="0" font_italic="false" font_weight="normal">
+  <Objects id="0" rotate="false">
+    <Object-text w="396.155pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="77pt" shadow="false" a3="1" a2="0" align="hcenter" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="13.1564pt" font_weight="normal" y="69.0296pt" auto_shrink="true" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="45">
       <p>${4}</p>
     </Object-text>
-    <Object-text a0="1" font_size="30" h="213.227pt" wrap="word" shadow_opacity="1" font_underline="false" align="hcenter" shadow_color="0x0" x="8pt" a5="0" a3="1" auto_shrink="false" shadow_x="0pt" font_family="Sans" y="147.773pt" shadow="false" line_spacing="1" shadow_y="0pt" color="0xff" valign="top" a1="0" lock_aspect_ratio="false" a2="0" w="405pt" a4="0" font_italic="false" font_weight="normal">
+    <Object-text w="405pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="213.227pt" shadow="false" a3="1" a2="0" align="hcenter" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="8.7339pt" font_weight="normal" y="147.773pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="30">
       <p>${2}</p>
     </Object-text>
-    <Object-text a0="1" font_size="30" h="54pt" wrap="word" shadow_opacity="1" font_underline="false" align="hcenter" shadow_color="0x0" x="19.7815pt" a5="0" a3="1" auto_shrink="false" shadow_x="0pt" font_family="Sans" y="379.257pt" shadow="false" line_spacing="1" shadow_y="0pt" color="0xff" valign="top" a1="0" lock_aspect_ratio="false" a2="0" w="385.634pt" a4="0" font_italic="false" font_weight="normal">
+    <Object-text w="385.634pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="54pt" shadow="false" a3="1" a2="0" align="hcenter" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="18.4169pt" font_weight="normal" y="379.257pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="30">
       <p>${3}</p>
     </Object-text>
-    <Object-text a0="1" font_size="39" h="76.284pt" wrap="word" shadow_opacity="1" font_underline="false" align="hcenter" shadow_color="0x0" x="12.586pt" a5="0" a3="1" auto_shrink="true" shadow_x="0pt" font_family="Sans" y="457.716pt" shadow="false" line_spacing="1" shadow_y="0pt" color="0xff" valign="top" a1="0" lock_aspect_ratio="false" a2="0" w="400.414pt" a4="0" font_italic="false" font_weight="normal">
+    <Object-text w="400.414pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="76.284pt" shadow="false" a3="1" a2="0" align="hcenter" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="11.0269pt" font_weight="normal" y="457.716pt" auto_shrink="true" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="39">
       <p>${5} of ${6}</p>
     </Object-text>
-    <Object-line a0="1" line_width="1pt" line_color="0xff" a3="1" shadow_color="0x0" dx="389.197pt" shadow_opacity="1" a2="0" dy="0pt" shadow_x="0pt" shadow_y="0pt" shadow="false" x="15.874pt" a1="0" y="61.7136pt" a4="0" a5="0"/>
-    <Object-image h="35.0142pt" a0="1" w="127.779pt" a3="1" shadow_color="0xff" src="C:/Users/jmcd7/sites/tgn-wms-cakephp4/webroot/img/TOGGEN-LOGO.svg" shadow_opacity="0.5" a2="0" lock_aspect_ratio="true" shadow_x="1.3pt" shadow_y="1.3pt" shadow="false" x="141pt" a1="0" y="16pt" a4="0" a5="0"/>
+    <Object-line y="61.7136pt" a0="1" shadow_x="0pt" shadow_color="0x0" a4="0" x="15.874pt" dy="0pt" line_width="1pt" a1="0" shadow="false" a2="0" shadow_opacity="1" dx="389.197pt" line_color="0xff" a3="1" shadow_y="0pt" a5="0"/>
+    <Object-text w="372pt" shadow_opacity="0.5" shadow_color="0xff" shadow_x="1.3pt" h="48pt" shadow="false" a3="1" a2="0" align="hcenter" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="1.3pt" wrap="word" a4="0" a5="0" x="26.5985pt" font_weight="normal" y="16pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="16">
+      <p>Australasian Food Exports Pty Ltd</p>
+    </Object-text>
   </Objects>
   <Merge src="/dev/stdin" type="Text/Comma"/>
-  <Data>
-    <File encoding="cdata" mimetype="image/svg+xml" name="C:/Users/jmcd7/sites/tgn-wms-cakephp4/webroot/img/TOGGEN-LOGO.svg"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   id="svg8"
-   version="1.1"
-   viewBox="0 0 174.26384 47.751999"
-   height="47.751999mm"
-   width="174.26384mm">
-  <defs
-     id="defs2" />
-  <metadata
-     id="metadata5">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <g
-     transform="translate(-17.92514,-23.355902)"
-     id="layer1">
-    <g
-       aria-label="[TOGGEN]"
-       id="text12"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:50.8px;line-height:1.25;font-family:'Share Tech';-inkscape-font-specification:'Share Tech, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#2ea3f2;fill-opacity:1;stroke:none;stroke-width:0.264583">
-      <path
-         d="m 17.92514,71.107902 v -47.752 h 9.652 v 3.81 h -5.588 v 40.132 h 5.588 v 3.81 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:50.8px;font-family:'Share Tech';-inkscape-font-specification:'Share Tech, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#2ea3f2;fill-opacity:1;stroke-width:0.264583"
-         id="path9" />
-      <path
-         d="m 43.082252,33.312702 v 31.6992 h -4.419599 v -31.6992 h -7.8232 v -3.8608 h 20.065999 v 3.8608 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:50.8px;font-family:'Share Tech';-inkscape-font-specification:'Share Tech, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#2ea3f2;fill-opacity:1;stroke-width:0.264583"
-         id="path11" />
-      <path
-         d="m 74.540151,56.375902 q 0,4.318 -2.3876,6.5024 -2.3368,2.1336 -6.7564,2.1336 h -1.7272 q -4.4196,0 -6.8072,-2.1336 -2.3368,-2.1844 -2.3368,-6.5024 v -18.288 q 0,-4.318 2.3368,-6.4516 2.3876,-2.1844 6.8072,-2.1844 h 1.7272 q 4.4196,0 6.7564,2.1844 2.3876,2.1336 2.3876,6.4516 z m -4.4196,-19.2532 q 0,-1.5748 -1.1684,-2.6924 -1.1684,-1.1176 -3.048,-1.1176 h -2.7432 q -1.8796,0 -3.048,1.1176 -1.1684,1.1176 -1.1684,2.6924 v 20.2184 q 0,1.5748 1.1684,2.6924 1.1684,1.1176 3.048,1.1176 h 2.7432 q 1.8796,0 3.048,-1.1176 1.1684,-1.1176 1.1684,-2.6924 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:50.8px;font-family:'Share Tech';-inkscape-font-specification:'Share Tech, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#2ea3f2;fill-opacity:1;stroke-width:0.264583"
-         id="path13" />
-      <path
-         d="m 91.350981,65.011902 q -4.4196,0 -6.8072,-2.1336 -2.3368,-2.1844 -2.3368,-6.5024 v -18.288 q 0,-4.318 2.3368,-6.4516 2.3876,-2.1844 6.8072,-2.1844 h 6.858 v 3.8608 h -7.366 q -1.8796,0 -3.048,1.1176 -1.1684,1.1176 -1.1684,2.6924 v 20.2184 q 0,1.5748 1.1684,2.6924 1.1684,1.1176 3.048,1.1176 h 4.6736 v -11.0236 h -4.2672 v -3.81 h 8.4836 v 18.6944 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:50.8px;font-family:'Share Tech';-inkscape-font-specification:'Share Tech, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#2ea3f2;fill-opacity:1;stroke-width:0.264583"
-         id="path15" />
-      <path
-         d="m 116.25489,65.011902 q -4.4196,0 -6.8072,-2.1336 -2.3368,-2.1844 -2.3368,-6.5024 v -18.288 q 0,-4.318 2.3368,-6.4516 2.3876,-2.1844 6.8072,-2.1844 h 6.858 v 3.8608 h -7.366 q -1.8796,0 -3.048,1.1176 -1.1684,1.1176 -1.1684,2.6924 v 20.2184 q 0,1.5748 1.1684,2.6924 1.1684,1.1176 3.048,1.1176 h 4.6736 v -11.0236 h -4.2672 v -3.81 h 8.4836 v 18.6944 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:50.8px;font-family:'Share Tech';-inkscape-font-specification:'Share Tech, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#2ea3f2;fill-opacity:1;stroke-width:0.264583"
-         id="path17" />
-      <path
-         d="m 132.5228,65.011902 v -35.56 h 16.6624 v 3.7084 h -12.2428 v 11.6332 h 10.9728 v 3.7084 h -10.9728 v 12.8016 h 12.2428 v 3.7084 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:50.8px;font-family:'Share Tech';-inkscape-font-specification:'Share Tech, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#2ea3f2;fill-opacity:1;stroke-width:0.264583"
-         id="path19" />
-      <path
-         d="m 168.42094,65.011902 -7.7724,-31.8008 v 31.8008 h -4.1148 v -35.56 h 7.2136 l 7.8232,31.8008 v -31.8008 h 4.1148 v 35.56 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:50.8px;font-family:'Share Tech';-inkscape-font-specification:'Share Tech, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#2ea3f2;fill-opacity:1;stroke-width:0.264583"
-         id="path21" />
-      <path
-         d="m 182.53699,71.107902 v -3.81 h 5.588 v -40.132 h -5.588 v -3.81 h 9.652 v 47.752 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:50.8px;font-family:'Share Tech';-inkscape-font-specification:'Share Tech, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#2ea3f2;fill-opacity:1;stroke-width:0.264583"
-         id="path23" />
-    </g>
-  </g>
-</svg>
-]]></File>
-  </Data>
+  <Data/>
 </Glabels-document>

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template width="595.276pt" description="Shipping labels" size="other" height="841.89pt" part="PPS78168" brand="PPS Shipping Labels 2 UP 100 Pack&#10;">
+    <Label-rectangle width="565.795pt" id="0" height="406.772pt" x_waste="14.7402pt" y_waste="0pt" round="0pt">
+      <Markup-margin size="8.98583pt"/>
+      <Layout nx="1" x0="14.7402pt" ny="2" dy="406.772pt" y0="14.1732pt" dx="595.276pt"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="true">
+    <Object-text w="396.155pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="77pt" shadow="false" a3="1" a2="0" align="hcenter" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="5.3085pt" font_weight="normal" y="69.0296pt" auto_shrink="true" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="45">
+      <p>${4}</p>
+    </Object-text>
+    <Object-text w="405pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="213.227pt" shadow="false" a3="1" a2="0" align="hcenter" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="0.886pt" font_weight="normal" y="147.773pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="30">
+      <p>${2}</p>
+    </Object-text>
+    <Object-text w="385.634pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="54pt" shadow="false" a3="1" a2="0" align="hcenter" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="10.569pt" font_weight="normal" y="379.257pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="30">
+      <p>${3}</p>
+    </Object-text>
+    <Object-text w="400.414pt" shadow_opacity="1" shadow_color="0x0" shadow_x="0pt" h="76.284pt" shadow="false" a3="1" a2="0" align="hcenter" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="0pt" wrap="word" a4="0" a5="0" x="3.179pt" font_weight="normal" y="457.716pt" auto_shrink="true" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="39">
+      <p>${5} of ${6}</p>
+    </Object-text>
+    <Object-line y="61.7136pt" a0="1" shadow_x="0pt" shadow_color="0x0" a4="0" x="8.7875pt" dy="0pt" line_width="1pt" a1="0" shadow="false" a2="0" shadow_opacity="1" dx="389.197pt" line_color="0xff" a3="1" shadow_y="0pt" a5="0"/>
+    <Object-text w="372pt" shadow_opacity="0.5" shadow_color="0xff" shadow_x="1.3pt" h="48pt" shadow="false" a3="1" a2="0" align="hcenter" font_family="Sans" lock_aspect_ratio="false" valign="top" color="0xff" a1="0" shadow_y="1.3pt" wrap="word" a4="0" a5="0" x="25.2339pt" font_weight="normal" y="16pt" auto_shrink="false" font_underline="false" font_italic="false" line_spacing="1" a0="1" font_size="16">
+      <p>Australasian Food Exports Pty Ltd</p>
+    </Object-text>
+  </Objects>
+  <Merge src="/dev/stdin" type="Text/Comma"/>
+  <Data/>
+</Glabels-document>
