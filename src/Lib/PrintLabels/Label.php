@@ -46,6 +46,9 @@ class Label
      * @var string
      */
     private $glabelsTemplate = '';
+
+    private $glabelsCopies = 1;
+
     /**
      * @var string
      */
@@ -379,6 +382,10 @@ class Label
     {
         $this->setGlabelsTemplate($template);
 
+        if( $template->details->glabels_copies > 1 ) {
+            $this->glabelsCopies = $template->details->glabels_copies;
+        }
+
         $this->setPdfOutFile(TMP);
 
         $this->createTempFile($this->printContent);
@@ -386,6 +393,9 @@ class Label
         $cmdArgs = array_merge(
             $this->glabelsBatchCommand,
             [
+                '-c',
+                $this->glabelsCopies,
+                // '-m', // crop marks
                 '-o',
                 $this->getPdfOutFile(),
                 $this->getGlabelsTemplate(),
@@ -401,6 +411,7 @@ class Label
             $this->setPrintCopies(1);
         }
 
+        tog($cmdArgs);
         $results = $this->runProcess(
             $cmdArgs,
             $this->printContent
