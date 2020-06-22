@@ -942,7 +942,7 @@ class PrintLogController extends AppController
             ? $pallet['pallet_label_copies']
             : $this->PrintLog->getSetting('sscc_default_label_copies');
 
-        $tag = 'Pallet';
+        $tag = 'Copy';
 
         $labelCopiesList = [];
 
