@@ -52,7 +52,6 @@ class LocationsTable extends Table
 
         $this->belongsTo('ProductTypes', [
             'foreignKey' => 'product_type_id',
-            'joinType' => 'INNER',
         ]);
 
         $this->hasMany('Pallets', [
