@@ -10,11 +10,11 @@
     ]
 );
 
-    echo $this->Html->css(
-        [
-            'bottling-ui',
-        ]
-    ); ?>
+echo $this->Html->css(
+    [
+        'bottling-ui',
+    ]
+); ?>
 <div class="row">
     <div class="col">
         <span id="global-error"></span>
@@ -49,40 +49,41 @@
         <div class="row">
             <div class='col-4'>
                 <?php
-                        echo $this->Form->hidden('controller_action', [
-                            'id' => 'controller_action',
-                            'value' => $controllerAction,
-                        ]);
-                        echo $this->Form->hidden('product-list', [
-                            'id' => 'product-list',
-                            'data-print_url' => $this->Url->build([
-                                'action' => 'printCartonLabels',
-                            ]),
-                            'data-url' => $this->Url->build([
-                                'controller' => 'items',
-                                'action' => 'productListByCode',
-                            ]), ]); ?>
+                echo $this->Form->hidden('controller_action', [
+                    'id' => 'controller_action',
+                    'value' => $controllerAction,
+                ]);
+                echo $this->Form->hidden('product-list', [
+                    'id' => 'product-list',
+                    'data-print_url' => $this->Url->build([
+                        'action' => 'printCartonLabels',
+                    ]),
+                    'data-url' => $this->Url->build([
+                        'controller' => 'items',
+                        'action' => 'productListByCode',
+                    ]),
+                ]); ?>
                 <?php
-                        echo $this->Form->control('cartons-item', [
-                            'type' => 'text',
-                            'id' => 'cartons-item',
-                            'label' => 'Item',
-                        ]); ?>
+                echo $this->Form->control('cartons-item', [
+                    'type' => 'text',
+                    'id' => 'cartons-item',
+                    'label' => 'Item',
+                ]); ?>
 
                 <?php
-                        echo $this->Form->control('carton-desc', [
-                            'type' => 'text',
-                            'id' => 'cartons-desc',
-                            'label' => 'Description',
-                        ]);
-                    ?>
+                echo $this->Form->control('carton-desc', [
+                    'type' => 'text',
+                    'id' => 'cartons-desc',
+                    'label' => 'Description',
+                ]);
+                ?>
                 <?php
-                        echo $this->Form->control('cartons-gtin14', [
-                            'type' => 'text',
-                            'id' => 'cartons-gtin14',
-                            'label' => 'Trade Unit Barcode',
-                        ]);
-                    ?>
+                echo $this->Form->control('cartons-gtin14', [
+                    'type' => 'text',
+                    'id' => 'cartons-gtin14',
+                    'label' => 'Trade Unit Barcode',
+                ]);
+                ?>
             </div>
             <div class="col-8">
                 <?= $this->element('printImage/card', [
@@ -118,14 +119,17 @@
                     'options' => $buttonOptions,
                     'nestedInput' => true,
                     'hiddenField' => false,
+                    'custom' => false,
                     'autocomplete' => 'off',
                     'value' => 1,
                     'templates' => [
+                        'radioLabel' => '',
                         'radioContainer' => '<div data-toggle="buttons" class="btn-group btn-group-toggle {{type}}{{required}}" role="group" ' .
-                'aria-labelledby="{{groupId}}">{{content}}{{help}}</div>',
+                            'aria-labelledby="{{groupId}}">{{content}}{{help}}</div>',
                         'radioInlineWrapper' => '{{label}}',
                         'nestingLabelNestedInput' => '{{hidden}}<label class="btn btn-lg btn-secondary" {{attrs}}>{{input}}{{text}}{{tooltip}}</label>',
                     ],
+
                 ]); ?>
             </div>
         </div>
