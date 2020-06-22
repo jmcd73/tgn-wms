@@ -1,7 +1,9 @@
 <?php
+
 /**
  * @var \Cake\View\View $this
  */
+
 use Cake\Core\Configure;
 
 $this->Html->css('BootstrapUI.dashboard', ['block' => true]);
@@ -13,34 +15,29 @@ $this->start('tb_body_start');
     <?= $this->element('nav/navbar'); ?>
     <div class="container-fluid">
         <div class="row">
-            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                <div class="context-help">
-                    <?php
-                    if (!empty($helpPage)) {
-                        echo $this->Element('help/page_help');
-                    } ?>
-                </div>
-                <div class="sidebar-sticky">
+            <nav class="col-md-2 col-sm-12 d-md-block bg-light">
+              
+                <div class="sidebar-sticky h-auto mb-2">
                     <?= $this->fetch('tb_sidebar') ?>
                 </div>
             </nav>
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <main role="main" class="col-md-9 col-sm-12 ml-sm-auto col-lg-10 pt-3 px-4">
                 <?php
-/**
- * Default `flash` block.
- */
-if (!$this->fetch('tb_flash')) {
-    $this->start('tb_flash');
-    if (isset($this->Flash)) {
-        echo $this->Flash->render();
-    }
-    $this->end();
-}
-$this->end();
+                /**
+                 * Default `flash` block.
+                 */
+                if (!$this->fetch('tb_flash')) {
+                    $this->start('tb_flash');
+                    if (isset($this->Flash)) {
+                        echo $this->Flash->render();
+                    }
+                    $this->end();
+                }
+                $this->end();
 
-$this->start('tb_body_end');
-echo '</body>';
-$this->end();
+                $this->start('tb_body_end');
+                echo '</body>';
+                $this->end();
 
-$this->append('content', '</main></div></div>');
-echo $this->fetch('content');
+                $this->append('content', '</main></div></div>');
+                echo $this->fetch('content');
