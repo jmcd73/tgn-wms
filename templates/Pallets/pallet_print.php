@@ -44,7 +44,9 @@ $this->Html->script(
 <div class="row">
     <?php foreach ($forms  as $key => $palletForm): ?>
     <?php $formName = $key; ?>
-    <div class="col">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="card mb-4 mb-sm-4 mb-md-0">
+            <div class="card-body">
         <?php echo $this->Form->create(
             $palletForm,
             [
@@ -120,6 +122,8 @@ $this->Html->script(
                 ]
             ); ?>
         <?php echo $this->Form->end(); ?>
+        </div>
+        </div>
     </div> <!-- enn col-lg-6 -->
     <?php endforeach; ?>
 </div>
