@@ -17,6 +17,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
+        <th scope="col"><?= $this->Paginator->sort('active') ?></th>
             <th scope="col"><?= $this->Paginator->sort('example_image') ?></th>
             <th scope="col"><?= $this->Paginator->sort('name') ?></th>
             <th scope="col"><?= $this->Paginator->sort('description') ?></th>
@@ -28,6 +29,7 @@
 
         <?php if (!$printTemplate->hasValue('parent_id')): ?>
         <tr>
+        <td><?= $this->Html->activeIcon($printTemplate->active) ?></td>
             <td colspan="3">
                 <h4><?= $this->Html->link($printTemplate->name, ['action' => 'view', $printTemplate->id] ); ?></h4>
             </td>
@@ -39,7 +41,7 @@
         </tr>
         <?php else: ?>
         <tr>
-          
+          <td><?= $this->Html->activeIcon($printTemplate->active) ?></td>
          
             <td><?= $printTemplate->hasValue('example_image') ? $this->Html->link($this->Html->image(
                 $templateRoot . $printTemplate->example_image,
