@@ -44,6 +44,10 @@
                 <td><?= h($printTemplate->description) ?></td>
             </tr>
             <tr>
+                <th scope="row"><?= __('Print Class') ?></th>
+                <td><?= h($printTemplate->print_class) ?></td>
+            </tr>
+            <tr>
                 <th scope="row"><?= __('Text Template') ?></th>
                 <td><?= h($printTemplate->text_template) ?></td>
             </tr>

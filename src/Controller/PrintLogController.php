@@ -143,11 +143,12 @@ class PrintLogController extends AppController
         $glabelsRoot = $this->PrintLog->getSetting('TEMPLATE_ROOT');
 
         $printTemplatesThreaded = $this->PrintLog
-            ->getSettingsTable('PrintTemplates')->find(
-                'threaded'
-            )->order([
+            ->getSettingsTable('PrintTemplates')
+            ->find('threaded')
+            ->order([
                 'lft' => 'ASC',
-            ])->where([
+            ])
+            ->where([
                 'active' => 1,
                 'show_in_label_chooser' => 1,
             ])->toArray();
@@ -188,7 +189,7 @@ class PrintLogController extends AppController
 
             $printerDetails = $this->PrintLog->getLabelPrinterById($data['printer_id']);
 
-            $printResult = LabelFactory::create($this->request->getParam('action'))
+            $printResult = LabelFactory::create( $printTemplate['carton_template']['print_class'], $this->request->getParam('action'))
                 ->format($printTemplate['carton_template'], $data)
                     ->print($printerDetails);
 
@@ -272,7 +273,7 @@ class PrintLogController extends AppController
                     $glabelsData['printer']
                 );
 
-                $printResult = LabelFactory::create($action)
+                $printResult = LabelFactory::create($template->details->print_class, $action)
                     ->format($glabelsData)
                         ->print($printerDetails, $template);
 
@@ -326,8 +327,12 @@ class PrintLogController extends AppController
                 );
 
                 $printerDetails = $this->PrintLog->getLabelPrinterById($data['printer']);
-
-                $printResult = LabelFactory::create($this->request->getParam('action'))
+                tog([
+                    $template->details->print_class, $action,
+                    $printerDetails, $template,
+                    $this->request->getData(),
+                ]);
+                $printResult = LabelFactory::create($template->details->print_class, $action)
                         ->format($this->request->getData())
                             ->print($printerDetails, $template);
 
@@ -390,7 +395,7 @@ class PrintLogController extends AppController
 
                 $printerDetails = $this->PrintLog->getLabelPrinterById($glabelsData['printer']);
 
-                $printResult = LabelFactory::create($this->request->getParam('action'))
+                $printResult = LabelFactory::create($template->details->print_class, $this->request->getParam('action'))
                     ->format($glabelsData)
                         ->print($printerDetails, $template);
 
@@ -442,7 +447,7 @@ class PrintLogController extends AppController
                     $glabelsData['printer']
                 );
 
-                $printResult = LabelFactory::create($this->request->getParam('action'))
+                $printResult = LabelFactory::create($template->details->print_class, $this->request->getParam('action'))
                     ->format($glabelsData)
                         ->print($printerDetails, $template);
 
@@ -495,7 +500,7 @@ class PrintLogController extends AppController
                     $glabelsData['printer']
                 );
 
-                $printResult = LabelFactory::create($this->request->getParam('action'))
+                $printResult = LabelFactory::create($template->details->print_class, $this->request->getParam('action'))
                     ->format($glabelsData)->print(
                         $printerDetails,
                         $template
@@ -558,7 +563,7 @@ class PrintLogController extends AppController
                 $formData
             );
 
-            $printResult = LabelFactory::create($this->request->getParam('action'))
+            $printResult = LabelFactory::create($printTemplate->print_class, $this->request->getParam('action'))
                 ->format($printTemplate, $formData)
                     ->print($printerDetails);
 
@@ -599,7 +604,7 @@ class PrintLogController extends AppController
 
                 $data['csv'] = $template->details->text_template;
 
-                $printResult = LabelFactory::create($this->request->getParam('action'))
+                $printResult = LabelFactory::create($template->details->print_class, $this->request->getParam('action'))
                     ->format($data)
                         ->print(
                             $printerDetails,
@@ -666,7 +671,7 @@ class PrintLogController extends AppController
                 $glabelsData = $data + $saveData;
                 $printerDetails = $this->PrintLog->getLabelPrinterById($glabelsData['printer']);
 
-                $printResult = LabelFactory::create($this->request->getParam('action'))
+                $printResult = LabelFactory::create($template->details->print_class, $this->request->getParam('action'))
                     ->format($glabelsData)
                         ->print($printerDetails, $template);
 
@@ -766,7 +771,7 @@ class PrintLogController extends AppController
                 'Pallets::lookup'
             );
 
-            $printResult = LabelFactory::create($this->request->getParam('action'))
+            $printResult = LabelFactory::create($template->details->print_class, $this->request->getParam('action'))
                 ->format($cabLabelData)
                 ->print($printerDetails, $template);
 
@@ -904,7 +909,7 @@ class PrintLogController extends AppController
                 $pallet->items->print_template->id
             );
 
-            $printResult = LabelFactory::create($this->request->getParam('action'))
+            $printResult = LabelFactory::create($template->details->print_class, $this->request->getParam('action'))
                 ->format($cabLabelData)
                 ->print($printerDetails, $template);
 

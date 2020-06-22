@@ -231,7 +231,7 @@ class PalletsController extends AppController
 
                 $template = $this->PrintLog->getGlabelsProject($printTemplateId);
 
-                $printResult = LabelFactory::create($this->request->getParam('action'))
+                $printResult = LabelFactory::create($template->details->print_class, $this->request->getParam('action'))
                     ->format($cabLabelData)
                     ->print($printerDetails, $template);
 
@@ -1127,7 +1127,7 @@ class PalletsController extends AppController
 
             $isPrintDebugMode = Configure::read('pallet_print_debug');
 
-            $printResult = LabelFactory::create($action)
+            $printResult = LabelFactory::create($pallet['items']['print_template']['print_class'], $action)
                 ->format($pallet['items']['print_template'], $cabLabelData)
                 ->print($printerDetails);
 

@@ -114,4 +114,9 @@ class CtrlComponent extends Component
         sort($flattened);
         return array_combine($flattened, $flattened);
     }
+
+    public function getPrintClasses(){
+        $printClasses = Configure::read('PrintLabelClasses');
+        return Hash::combine($printClasses, '{s}', '{s}');
+    }
 }

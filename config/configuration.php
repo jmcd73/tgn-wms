@@ -1,7 +1,7 @@
 <?php
 
 $appName = 'Toggen WMS';
-$companyName = 'Toggen Systems';
+$companyName = 'Australasian Food Exports Pty Ltd';
 
 $glabelsBatchBinary = file_exists('/.dockerenv') ? [
     '/usr/bin/xvfb-run', '--',
@@ -30,22 +30,17 @@ return [
     'timezones' => DateTimeZone::AUSTRALIA, // extras with a pipe | DateTimeZone::EUROPE,
     'dateFormat' => 'd/m/Y',
     'BestBeforeDateEditors' => [],
-    'PrintLabels' => [
+    'PrintLabelClasses' => [
         // mappings for controller print actions to their classes
         // used by Lib/PrintLabels/LabelFactory.php
         'glabelSampleLabels' => '\App\Lib\PrintLabels\Glabel\GlabelSample',
-        'keepRefrigerated' => '\App\Lib\PrintLabels\Glabel\CustomLabel',
-        'customPrint' => '\App\Lib\PrintLabels\Glabel\CustomLabel',
+        'customLabel' => '\App\Lib\PrintLabels\Glabel\CustomLabel',
         'shippingLabels' => '\App\Lib\PrintLabels\Glabel\ShippingLabel',
         'crossdockLabels' => '\App\Lib\PrintLabels\Glabel\CrossdockLabel',
         'shippingLabelsGeneric' => '\App\Lib\PrintLabels\Glabel\ShippingLabelGeneric',
         'bigNumber' => '\App\Lib\PrintLabels\Zebra\TextLabel',
         'printCartonLabels' => '\App\Lib\PrintLabels\CabLabel\CartonLabel',
         'sampleLabels' => '\App\Lib\PrintLabels\Glabel\SampleLabel',
-        'palletPrint' =>  '\App\Lib\PrintLabels\Glabel\SsccLabel',
-	//'\App\Lib\PrintLabels\CabLabel\PalletPrint',
-        'palletReprint' =>  '\App\Lib\PrintLabels\Glabel\SsccLabel',
-	//'\App\Lib\PrintLabels\CabLabel\PalletPrint',
         'ssccLabel' => '\App\Lib\PrintLabels\Glabel\SsccLabel',
     ],
     // specify the Controller and actions that need a default printer set

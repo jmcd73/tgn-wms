@@ -14,17 +14,15 @@ class LabelFactory
      * @param  string                                           $action Action Name in controller
      * @throws \App\Lib\Exception\MissingConfigurationException
      */
-    public static function create(string $action)
+    public static function create(string $printClass, $action)
     {
-        $actionToClassMap = Configure::read('PrintLabels');
-
         /**
          * Autoloader for PrintClasses
          */
-        if (isset($actionToClassMap[$action]) && class_exists($actionToClassMap[$action])) {
-            return new $actionToClassMap[$action]($action);
+        if (class_exists($printClass)) {
+            return new $printClass($action);
         } else {
-            throw new MissingConfigurationException('Cannot find Lib/Print class for ' . $action);
+            throw new MissingConfigurationException('Cannot find ' . $printClass);
         }
     }
 }

@@ -13,6 +13,8 @@ class Template
     public function __construct(PrintTemplate $template, string $glabelsRoot)
     {
         $this->details = $template;
+        $this->print_class = $template->print_class;
+        
         $this->image = DS . $glabelsRoot . DS . $template->example_image;
         // code...
     }

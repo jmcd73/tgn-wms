@@ -33,6 +33,7 @@
               echo $this->Form->control('parent_id', ['options' => $parentPrintTemplates, 'empty' => true, 'escape' => false]);
               echo $this->Form->control('name');
               echo $this->Form->control('description');
+              echo $this->Form->control('print_class', ['empty' => true]);
               echo $this->Form->control('upload_file_template', ['type' => 'file']);
               echo $this->Form->control('upload_example_image', ['type' => 'file']);
               echo $this->Form->control('controller_action', ['empty' => true]);

@@ -1,12 +1,16 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
+
+use Cake\Core\Configure;
 
 /**
  * PrintTemplates Controller
  *
  * @property \App\Model\Table\PrintTemplatesTable $PrintTemplates
+ * @property \App\Controller\Component\CtrlComponent $Ctrl
  *
  * @method \App\Model\Entity\PrintTemplate[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
@@ -49,7 +53,8 @@ class PrintTemplatesController extends AppController
         $this->set(compact('printTemplate', 'templateRoot'));
     }
 
-    public function sendFile($id) {
+    public function sendFile($id)
+    {
 
         $templateRoot = DS . $this->PrintTemplates->getSetting('TEMPLATE_ROOT') . DS;
 
@@ -63,7 +68,6 @@ class PrintTemplatesController extends AppController
         );
 
         return $response;
-
     }
 
     /**
@@ -81,8 +85,8 @@ class PrintTemplatesController extends AppController
                 $targetPath = WWW_ROOT . $this->PrintTemplates->getSetting('TEMPLATE_ROOT');
 
                 $image = $this->request->getData('upload_example_image');
-       
-                if ($image->getError() === UPLOAD_ERR_OK ) {
+
+                if ($image->getError() === UPLOAD_ERR_OK) {
                     $example_image_name = $image->getClientFilename();
                     $example_image_type = $image->getClientMediaType();
                     $example_image_size = $image->getSize();
@@ -111,13 +115,18 @@ class PrintTemplatesController extends AppController
             }
             $this->Flash->error(__('The print template could not be saved. Please, try again.'));
         }
+
         $parentPrintTemplates = $this->PrintTemplates->ParentPrintTemplates->find('treeList', [
             'order' => ['lft' => 'ASC'],
             'spacer' => '&nbsp;&nbsp;&nbsp;&nbsp;',
-            'limit' => 200]);
+            'limit' => 200
+        ]);
 
         $controllerActions = $this->Ctrl->getPrintActions();
-        $this->set(compact('printTemplate', 'parentPrintTemplates', 'controllerActions'));
+
+        $printClasses = $this->Ctrl->getPrintClasses();
+
+        $this->set(compact('printTemplate', 'printClasses', 'parentPrintTemplates', 'controllerActions'));
     }
 
     /**
@@ -174,7 +183,10 @@ class PrintTemplatesController extends AppController
         $controllerActions = $this->Ctrl->getPrintActions();
         $templateRoot = DS . $this->PrintTemplates->getSetting('TEMPLATE_ROOT') . DS;
         $parentPrintTemplates = $this->PrintTemplates->ParentPrintTemplates->find('list', ['limit' => 200]);
-        $this->set(compact('printTemplate', 'parentPrintTemplates', 'controllerActions', 'templateRoot'));
+
+        $printClasses = $this->Ctrl->getPrintClasses();
+
+        $this->set(compact('printTemplate', 'parentPrintTemplates', 'printClasses', 'controllerActions', 'templateRoot'));
     }
 
     /**
