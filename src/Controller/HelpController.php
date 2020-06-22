@@ -14,6 +14,15 @@ use Cake\Routing\Router;
  */
 class HelpController extends AppController
 {
+
+    public function initialize(): void
+    {
+
+        parent::initialize();
+        $this->docsRoot = $this->Help->getSetting('DOCUMENTATION_ROOT');
+        $this->fullPathDocumentationRoot = WWW_ROOT . $this->docsRoot;
+        
+    }
     /**
      * Index method
      *
@@ -60,8 +69,8 @@ class HelpController extends AppController
             $this->Flash->error(__('The help could not be saved. Please, try again.'));
         }
 
-        $documentationRoot = ROOT . $this->Help->getSetting('DOCUMENTATION_ROOT');
-        $mdFiles = $this->Help->listMdFiles($documentationRoot);
+        
+        $mdFiles = $this->Help->listMdFiles($this->fullPathDocumentationRoot);
         $markdownDocuments = array_combine($mdFiles, $mdFiles);
         $controllerActions = $this->Ctrl->getMenuActions();
         $this->set(compact('controllerActions', 'documentationRoot', 'markdownDocuments'));
@@ -91,8 +100,7 @@ class HelpController extends AppController
             $this->Flash->error(__('The help could not be saved. Please, try again.'));
         }
 
-        $documentationRoot = ROOT . $this->Help->getSetting('DOCUMENTATION_ROOT');
-        $mdFiles = $this->Help->listMdFiles($documentationRoot);
+        $mdFiles = $this->Help->listMdFiles($this->fullPathDocumentationRoot);
         $markdownDocuments = array_combine($mdFiles, $mdFiles);
         $controllerActions = $this->Ctrl->getMenuActions();
         $this->set(compact('controllerActions', 'documentationRoot', 'markdownDocuments'));
@@ -129,15 +137,15 @@ class HelpController extends AppController
     public function viewPageHelp($id = null)
     {
         $help = $this->Help->get($id);
-        $docsRoot = $this->Help->getSetting('DOCUMENTATION_ROOT');
-        $mdDocumentPath = WWW_ROOT . $docsRoot .
+  
+        $mdDocumentPath = $this->fullPathDocumentationRoot .
             DS . $help->markdown_document;
 
         $markdown = $this->Help->getMarkdown($mdDocumentPath);
 
         $baseUrl = Router::url('/');
 
-        $markdown = str_replace('src="' . DS . $docsRoot, 'src="' . $baseUrl . $docsRoot, $markdown);
+        $markdown = str_replace('src="' . DS . $this->docsRoot, 'src="' . $baseUrl . $this->docsRoot, $markdown);
 
         $this->set(compact('help', 'markdown'));
     }

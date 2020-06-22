@@ -31,7 +31,9 @@
             echo $this->Form->control('description');
             echo $this->Form->control('url');
             echo $this->Form->control('title');
-            echo $this->Form->control('parent_id', ['options' => $parentMenus, 'empty' => true]);
+            echo $this->Form->control('parent_id', ['options' => $parentMenus, 
+            'escape' => false,
+            'empty' => true]);
             echo $this->Form->control('bs_url');
             echo $this->Form->control('extra_args');
         ?>
