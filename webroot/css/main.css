@@ -607,8 +607,6 @@ th a.desc:after {
 div.context-help {
   height: 50px;
   background-color: rgb(52, 58, 64, 0.8);
-
-  position: relative;
   padding: 0.75rem 1.25rem;
   margin-bottom: 1rem;
 }
@@ -904,3 +902,14 @@ div.alert-danger::before {
 .cake-debug {
   margin-left: 30em;
 }
+
+.sidebar-sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 48px; /* Height of navbar */
+  height: calc(100vh - 48px);
+  padding-top: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
