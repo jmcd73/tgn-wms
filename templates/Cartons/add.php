@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Carton $carton
@@ -25,12 +26,12 @@
     <fieldset>
         <legend><?= __('Add Carton') ?></legend>
         <?php
-            echo $this->Form->control('pallet_id', ['options' => $pallets, 'empty' => true]);
-            echo $this->Form->control('count');
-            echo $this->Form->control('best_before', ['empty' => true]);
-            echo $this->Form->control('production_date', ['empty' => true]);
-            echo $this->Form->control('item_id', ['options' => $items, 'empty' => true]);
-            echo $this->Form->control('user_id', ['options' => $users, 'empty' => true]);
+        echo $this->Form->control('pallet_id', ['options' => $pallets, 'empty' => true]);
+        echo $this->Form->control('count');
+        echo $this->Form->control('best_before', ['empty' => true]);
+        echo $this->Form->control('production_date', ['empty' => true]);
+        echo $this->Form->control('item_id', ['options' => $items, 'empty' => true]);
+        echo $this->Form->control('user_id', ['options' => $users, 'empty' => true]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
