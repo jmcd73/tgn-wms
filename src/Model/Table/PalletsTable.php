@@ -980,8 +980,8 @@ class PalletsTable extends Table
         return $inventory_status_note;
     }
 
-    public function getLabelCopies($labelCopies)
+    public function getLabelCopies($labelCopies): int
     {
-        return $labelCopies ?? $this->getSetting('sscc_default_label_copies');
+        return $labelCopies > 0 ? $labelCopies : $this->getSetting('sscc_default_label_copies');
     }
 }
