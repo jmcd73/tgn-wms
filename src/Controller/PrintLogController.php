@@ -147,11 +147,7 @@ class PrintLogController extends AppController
             ->find('threaded')
             ->order([
                 'lft' => 'ASC',
-            ])
-            ->where([
-                'active' => 1,
-                'show_in_label_chooser' => 1,
-            ])->toArray();
+            ]);
 
         $this->set(compact('glabelsRoot', 'printTemplatesThreaded'));
     }
@@ -905,18 +901,32 @@ class PrintLogController extends AppController
 
             $isPrintDebugMode = Configure::read('pallet_print_debug');
 
-            $template = $this->PrintLog->getGlabelsProject(
-                $pallet->items->print_template->id
-            );
+            if ( $pallet->items->print_template->is_file_template ) {
 
-            $printResult = LabelFactory::create($template->details->print_class, $this->request->getParam('action'))
+                $template = $this->PrintLog->getGlabelsProject(
+                    $pallet->items->print_template->id
+                );
+                $printResult = LabelFactory::create($template->details->print_class, $this->request->getParam('action'))
                 ->format($cabLabelData)
                 ->print($printerDetails, $template);
 
+                $template = $template->details;
+                
+            } else {
+                
+                $template = $pallet->items->print_template;
+               // debug($template);
+                $printResult = LabelFactory::create($template->print_class, $this->request->getParam('action'))
+                ->format($template, $cabLabelData)
+                ->print($printerDetails);
+            }
+            
+
+          
             $this->handlePrintResult(
                 $printResult,
                 $printerDetails,
-                $template->details,
+                $template,
                 $saveData
             );
         }

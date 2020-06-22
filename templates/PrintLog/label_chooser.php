@@ -8,7 +8,12 @@
         </div>
     </div>
     <?php foreach ($printTemplatesThreaded as $printTemplate): ?>
-    <div class="row">
+     
+        <?php if ( !($printTemplate->active && $printTemplate->show_in_label_chooser) ) {
+            continue;
+        } ?>
+    
+        <div class="row">
         <div class="col">
             <h3><?= $printTemplate['name'] ; ?></h3>
             <p><?=  $printTemplate['description'] ; ?></p>
@@ -17,8 +22,7 @@
     <div class="row">
         <?php foreach ($printTemplate['children'] as $ptc) : ?>
         <?php list($controller, $action) = explode('::', $ptc['controller_action']); ?>
-
-        <?php if (empty($controller) || empty($action)) {
+        <?php if (empty($controller) || empty($action) || !($ptc->active && $ptc->show_in_label_chooser) ) {
     continue;
 } ?>
         <div class="col-3 mb-4">

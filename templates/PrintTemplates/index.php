@@ -31,7 +31,7 @@
         <tr>
         <td><?= $this->Html->activeIcon($printTemplate->active) ?></td>
             <td colspan="3">
-                <h4><?= $this->Html->link($printTemplate->name, ['action' => 'view', $printTemplate->id] ); ?></h4>
+                <h5><?= $this->Html->link($printTemplate->name, ['action' => 'view', $printTemplate->id] ); ?> - <?= h($printTemplate->description); ?> </h5>
             </td>
             <td class="actions">
             <?= $this->element('PrintTemplates/actions', [

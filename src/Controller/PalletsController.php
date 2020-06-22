@@ -128,7 +128,11 @@ class PalletsController extends AppController
 
                 $pallet_ref = $this->Pallets->createPalletRef($productTypeId);
 
-                $item_detail = $this->Pallets->Items->get($data['item']);
+                $item_detail = $this->Pallets->Items->get($data['item'], [
+                    'contain' => [
+                        'PrintTemplates'
+                    ]
+                ]);
 
                 $labelCopies = $this->Pallets->getLabelCopies($item_detail->pallet_label_copies);
 
@@ -177,35 +181,6 @@ class PalletsController extends AppController
                         'user_id' => $this->Authentication->getIdentity()->getIdentifier(),
                     ];
 
-                // the print template contents which has the replace tokens in it
-
-               /* $printTemplate = $this->Pallets->Items->PrintTemplates->find()
-                    ->where([
-                        'id' => $printTemplateId,
-                        'active' => 1,
-                    ])
-                    ->firstOrFail()->toArray();
-                if (empty($printTemplate)) {
-                    throw new MissingConfigurationException(
-                        [
-                            'message' => __(
-                                'Print Template Missing: Check the <strong>"Pallet Label Print Template"</strong> setting of item <a href="%s">%s</a>',
-                                Router::url(
-                                    [
-                                        'controller' => 'Items',
-                                        'action' => 'edit',
-                                        $item_detail['Item']['id'],
-                                    ]
-                                ),
-                                $item_detail['Item']['code']
-                            ),
-                        ],
-                        500
-                    );
-                }
-                 */
-
-
                 $cabLabelData = [
                     'companyName' => Configure::read('companyName'),
                     'internalProductCode' => $item_detail['code'],
@@ -228,12 +203,27 @@ class PalletsController extends AppController
                 ];
 
                 $this->loadModel('PrintLog');
+             
+                if ( $item_detail->print_template->is_file_template ) {
 
-                $template = $this->PrintLog->getGlabelsProject($printTemplateId);
-
-                $printResult = LabelFactory::create($template->details->print_class, $this->request->getParam('action'))
+                    $template = $this->PrintLog->getGlabelsProject(
+                        $item_detail->print_template->id
+                    );
+                    $printResult = LabelFactory::create($template->details->print_class, $this->request->getParam('action'))
                     ->format($cabLabelData)
                     ->print($printerDetails, $template);
+    
+                    $template = $template->details;
+                    
+                } else {
+                    
+                    $template = $item_detail->print_template;
+              
+                    $printResult = LabelFactory::create($template->print_class, $this->request->getParam('action'))
+                    ->format($template, $cabLabelData)
+                    ->print($printerDetails);
+
+                }
 
                 $isPrintDebugMode = Configure::read('pallet_print_debug');
 
