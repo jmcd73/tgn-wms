@@ -42,6 +42,7 @@ return [
         'printCartonLabels' => '\App\Lib\PrintLabels\CabLabel\CartonLabel',
         'sampleLabels' => '\App\Lib\PrintLabels\Glabel\SampleLabel',
         'ssccLabel' => '\App\Lib\PrintLabels\Glabel\SsccLabel',
+        'cabSsccLabel' => '\App\Lib\PrintLabels\CabLabel\PalletPrint'
     ],
     // specify the Controller and actions that need a default printer set
     'Ctrl' => [
