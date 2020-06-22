@@ -37,3 +37,4 @@ dev/glabels/glabels-3.99-master561-x86_64.AppImage
 dev/glabels/test.pdf
 dev/glabels/test2.pdf
 config/app_local.php
+dev/glabels/ubuntu20.04/shippingLabelTest.sh

@@ -156,9 +156,9 @@ class Label
      * @param  string $template Template from config
      * @return void
      */
-    private function setGlabelsTemplate($template)
+    private function setGlabelsTemplate(GlabelsProject $template)
     {
-        $this->glabelsTemplate = realpath($template->file_path);
+        $this->glabelsTemplate = realpath($template->filePath);
     }
 
     public function formatLocalDate($date)
