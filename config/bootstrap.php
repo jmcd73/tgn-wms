@@ -230,4 +230,4 @@ if (!function_exists('tog')) {
     }
 }
 
-Configure::write('pallet_print_debug', true);
+Configure::write('pallet_print_debug', false);
