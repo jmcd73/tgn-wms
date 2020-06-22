@@ -900,3 +900,7 @@ div.alert-danger::before {
 .brand-image {
   max-height: 26px;
 }
+
+.cake-debug {
+  margin-left: 30em;
+}

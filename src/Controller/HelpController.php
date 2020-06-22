@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Routing\Router;
+
 /**
  * Help Controller
  *
@@ -127,11 +129,16 @@ class HelpController extends AppController
     public function viewPageHelp($id = null)
     {
         $help = $this->Help->get($id);
-
-        $mdDocumentPath = ROOT . $this->Help->getSetting('DOCUMENTATION_ROOT') .
+        $docsRoot = $this->Help->getSetting('DOCUMENTATION_ROOT');
+        $mdDocumentPath = WWW_ROOT . $docsRoot .
             DS . $help->markdown_document;
 
         $markdown = $this->Help->getMarkdown($mdDocumentPath);
+
+        $baseUrl = Router::url('/');
+
+        $markdown = str_replace('src="' . DS . $docsRoot, 'src="' . $baseUrl . $docsRoot, $markdown);
+
         $this->set(compact('help', 'markdown'));
     }
 }
