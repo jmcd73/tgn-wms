@@ -51,9 +51,10 @@
                 'printer_id',
                 [
                     'type' => 'radio',
+                    'label' => '',
                     'default' => $printers['default'] ? $printers['default'] : '',
                     'options' => $printers['printers'],
-                    'legend' => false,
+
                 ]
             ); ?>
             <h4 class="tpad">Label Copies</h4>
@@ -63,6 +64,7 @@
                 [
                     'type' => 'radio',
                     'legend' => false,
+                    'label' => '',
                     'options' => $labelCopiesList,
                     'default' => $inputDefaultCopies,
                 ]
