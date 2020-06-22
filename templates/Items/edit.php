@@ -37,8 +37,14 @@
         <?php
                   echo $this->Form->control('brand');
                   echo $this->Form->control('variant');
+                  echo $this->Form->control('quantity_description');
                   echo $this->Form->control('unit_net_contents');
                   echo $this->Form->control('unit_of_measure');
+                  echo $this->Form->control('batch_format', [
+                    'type' => 'select',  
+                    'options' => $formatList,
+                    'empty' => true
+                    ]);
                   echo $this->Form->control('item_comment'); ?>
     </div>
     <div class="col">
@@ -54,10 +60,7 @@
                 'empty' => true,
                 'options' => $printTemplates, ]);
             echo $this->Form->control('pallet_label_copies');
-            echo $this->Form->control('item_wait_hrs', [
-                'escape' => false,
-                'label' => 'Item Wait Hrs<span class="secondary-text">Enable wait time in hours for QA checks. Disables
-                    ability to put on a shipment for this number of hours</span>', ]); ?>
+        ?>
     </div>
 </div>
 <?= $this->Form->button(__('Submit')) ?>

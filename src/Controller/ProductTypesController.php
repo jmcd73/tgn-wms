@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Event\EventInterface;
+use App\Lib\Utility\Batch;
 
 /**
  * ProductTypes Controller
@@ -77,9 +78,10 @@ class ProductTypesController extends AppController
             $this->Flash->error(__('The product type could not be saved. Please, try again.'));
         }
         $locations = $this->ProductTypes->Locations->find('list')->where(['is_hidden' => 0]);
+        $batchFormats = (new Batch)->getFormatList();
 
         $inventoryStatuses = $this->ProductTypes->InventoryStatuses->find('list', ['limit' => 200]);
-        $this->set(compact('productType', 'inventoryStatuses', 'locations'));
+        $this->set(compact('productType', 'batchFormats', 'inventoryStatuses', 'locations'));
     }
 
     /**
@@ -106,8 +108,9 @@ class ProductTypesController extends AppController
         $inventoryStatuses = $this->ProductTypes->InventoryStatuses->find('list', ['limit' => 200]);
 
         $locations = $this->ProductTypes->Locations->find('list')->where(['is_hidden' => 0]);
+        $batchFormats = (new Batch)->getFormatList();
 
-        $this->set(compact('productType', 'inventoryStatuses', 'locations'));
+        $this->set(compact('productType','batchFormats', 'inventoryStatuses', 'locations'));
     }
 
     /**

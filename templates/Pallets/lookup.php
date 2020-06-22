@@ -228,12 +228,12 @@ echo $this->Form->control(
                             );
                             ?>
                         <?php echo $this->Html->link(__('View'), ['action' => 'view', $pallet['id']], ['class' => 'btn btn-secondary btn-sm mb-1 view  mb-1 btn-sm']); ?>
-                        <?php echo $this->Html->link(__('Reprint'), ['action' => 'palletReprint', $pallet['id']], ['class' => 'btn  mb-1  btn-secondary reprint btn-sm']); ?>
-                        <?php if ($isAdmin) : ?>
+                        <?php echo $this->Html->link(__('Reprint'), ['controller' => 'PrintLog', 'action' => 'palletLabelReprint', $pallet['id']], ['class' => 'btn  mb-1  btn-secondary reprint btn-sm']); ?>
+                       <!--  <?php if ($isAdmin) : ?>
                         <?php echo $this->Html->link(__('Glabels Reprint'), [
                             'controller' => 'PrintLabels',
                             'action' => 'ssccLabel', $pallet['id'], ], ['class' => 'btn reprint btn-secondary btn-sm']); ?>
-                        <?php endif; ?>
+                        <?php endif; ?> -->
                     </td>
                 </tr>
                 <?php endforeach; ?>

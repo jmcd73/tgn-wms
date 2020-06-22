@@ -37,7 +37,7 @@
         <?php foreach ($productionLines as $productionLine) : ?>
         <tr>
             <td><?= $this->Number->format($productionLine->id) ?></td>
-            <td><?= h($productionLine->active) ?></td>
+            <td><?= $this->Html->activeIcon($productionLine->active); ?></td>
             <td><?= $productionLine->has('printer') ? $this->Html->link($productionLine->printer->name, ['controller' => 'Printers', 'action' => 'view', $productionLine->printer->id]) : '' ?>
             </td>
             <td><?= h($productionLine->name) ?></td>

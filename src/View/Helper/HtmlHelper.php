@@ -57,4 +57,16 @@ class HtmlHelper extends \BootstrapUI\View\Helper\HtmlHelper
 
         return 'class="' . trim(implode(' ', $classes)) . '"';
     }
+
+     /**
+     * buildClass takes an array or string of classes and returns
+     * class="class1 class2 class4"
+     * @param  mixed  $classes array or string
+     * @return string
+     */
+    public function activeIcon($bool)
+    {
+        
+            return (bool) $bool ? $this->icon('check') : $this->icon('times');
+    }
 }

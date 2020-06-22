@@ -39,6 +39,9 @@ class SsccLabel extends Label implements GlabelInterface
         'SSCC_BC' => 'ssccBarcode', // [00]999999999999999995
         'PRINTER' => 'printer',
         'COMPANY_NAME' => 'companyName',
+        'BRAND' => 'brand',
+        'VARIANT' => 'variant',
+        'QUANTITY_DESCRIPTION' => 'quantity_description',
     ];
 
     public function __construct($action)

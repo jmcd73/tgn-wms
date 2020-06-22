@@ -89,7 +89,7 @@
                     <td><?= h($productTypes->storage_temperature) ?></td>
                     <td><?= h($productTypes->code_regex) ?></td>
                     <td><?= h($productTypes->code_regex_description) ?></td>
-                    <td><?= h($productTypes->active) ?></td>
+                    <td><?= $this->Html->activeIcon($productTypes->active); ?></td>
                     <td><?= h($productTypes->next_serial_number) ?></td>
                     <td><?= h($productTypes->serial_number_format) ?></td>
                     <td><?= h($productTypes->enable_pick_app) ?></td>

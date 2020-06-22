@@ -3,15 +3,12 @@ declare(strict_types=1);
 
 namespace App\Lib\Utility;
 
+
 class Barcode
 {
     public $sscc = null;
 
     public $companyPrefixLength = 0;
-
-    public function __construct()
-    {
-    }
 
     public function isValidBarcode($barcode)
     {

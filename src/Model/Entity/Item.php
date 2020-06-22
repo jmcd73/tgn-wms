@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Entity;
@@ -80,5 +81,7 @@ class Item extends Entity
         'cartons' => true,
         'labels' => true,
         'pallets' => true,
+        'quantity_description' => true,
+        'batch_format' => true,
     ];
 }

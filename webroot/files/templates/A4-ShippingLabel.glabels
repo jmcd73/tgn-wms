@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<Glabels-document version="4.0">
+  <Template size="A4" description="A4 Shipping Label" brand="PPS Shipping Labels 1 UP A4 100 Pack" part="PPS78167">
+    <Label-rectangle y_waste="0pt" id="0" width="565.795pt" height="819.496pt" round="0pt" x_waste="0pt">
+      <Markup-margin size="9.01417pt"/>
+      <Layout x0="14.7402pt" y0="11.1969pt" dy="819.496pt" ny="1" dx="565.795pt" nx="1"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="false">
+    <Object-text align="hcenter" font_underline="false" shadow_y="0pt" color="0xff" a4="0" wrap="word" lock_aspect_ratio="false" a1="0" font_size="30" a3="1" a2="0" shadow="false" line_spacing="1" font_weight="normal" a0="1" x="9.8975pt" auto_shrink="false" y="253.004pt" shadow_color="0x0" font_family="Sans" valign="top" w="546pt" h="64.996pt" font_italic="false" shadow_x="0pt" a5="0" shadow_opacity="1">
+      <p>${QUANTITY_DESCRIPTION}</p>
+    </Object-text>
+    <Object-text align="hcenter" font_underline="false" shadow_y="0pt" color="0xff" a4="0" wrap="word" lock_aspect_ratio="false" a1="0" font_size="30" a3="1" a2="0" shadow="false" line_spacing="1" font_weight="normal" a0="1" x="14.3975pt" auto_shrink="false" y="404.152pt" shadow_color="0x0" font_family="Sans" valign="top" w="537pt" h="68.848pt" font_italic="false" shadow_x="0pt" a5="0" shadow_opacity="1">
+      <p>Carton Quantity: ${QUANTITY}</p>
+    </Object-text>
+    <Object-text align="hcenter" font_underline="false" shadow_y="0pt" color="0xff" a4="0" wrap="word" lock_aspect_ratio="false" a1="0" font_size="30" a3="1" a2="0" shadow="false" line_spacing="1" font_weight="normal" a0="1" x="23.3975pt" auto_shrink="false" y="305.746pt" shadow_color="0x0" font_family="Sans" valign="top" w="519pt" h="49.254pt" font_italic="false" shadow_x="0pt" a5="0" shadow_opacity="1">
+      <p>Batch: ${BATCH}</p>
+    </Object-text>
+    <Object-text align="hcenter" font_underline="false" shadow_y="0pt" color="0xff" a4="0" wrap="word" lock_aspect_ratio="false" a1="0" font_size="100" a3="1" a2="0" shadow="false" line_spacing="1" font_weight="normal" a0="1" x="17.228pt" auto_shrink="false" y="-1.5918pt" shadow_color="0x0" font_family="Sans" valign="top" w="531.339pt" h="170.592pt" font_italic="false" shadow_x="0pt" a5="0" shadow_opacity="1">
+      <p>${ITEMCODE}</p>
+    </Object-text>
+    <Object-text align="hcenter" font_underline="false" shadow_y="1.3pt" color="0xff" a4="0" wrap="word" lock_aspect_ratio="false" a1="0" font_size="30" a3="1" a2="0" shadow="false" line_spacing="1" font_weight="normal" a0="1" x="19.0965pt" auto_shrink="false" y="205pt" shadow_color="0xff" font_family="Sans" valign="top" w="527.602pt" h="52pt" font_italic="false" shadow_x="1.3pt" a5="0" shadow_opacity="0.5">
+      <p>${VARIANT}</p>
+    </Object-text>
+    <Object-text align="hcenter" font_underline="false" shadow_y="1.3pt" color="0xff" a4="0" wrap="word" lock_aspect_ratio="false" a1="0" font_size="45" a3="1" a2="0" shadow="false" line_spacing="1" font_weight="normal" a0="1" x="11.3975pt" auto_shrink="false" y="137pt" shadow_color="0xff" font_family="Sans" valign="top" w="543pt" h="76pt" font_italic="false" shadow_x="1.3pt" a5="0" shadow_opacity="0.5">
+      <p>${BRAND}</p>
+    </Object-text>
+    <Object-text align="hcenter" font_underline="false" shadow_y="1.3pt" color="0xff" a4="0" wrap="word" lock_aspect_ratio="false" a1="0" font_size="30" a3="1" a2="0" shadow="false" line_spacing="1" font_weight="normal" a0="1" x="93.3975pt" auto_shrink="false" y="357pt" shadow_color="0xff" font_family="Sans" valign="top" w="379pt" h="62pt" font_italic="false" shadow_x="1.3pt" a5="0" shadow_opacity="0.5">
+      <p>Expiry: ${BB_HR}</p>
+    </Object-text>
+    <Object-barcode lock_aspect_ratio="false" y="655.055pt" a2="0" a4="0" a1="0" a3="1" backend="zint" text="true" w="340.157pt" a5="0" style="gs1-128" x="112.819pt" h="119.055pt" a0="1" checksum="true" data="${SSCC_BC}" color="0xff"/>
+    <Object-text align="right" font_underline="false" shadow_y="0pt" color="0xff" a4="0" wrap="word" lock_aspect_ratio="false" a1="0" font_size="26" a3="1" a2="0" shadow="false" line_spacing="1" font_weight="normal" a0="1" x="12.8975pt" auto_shrink="false" y="765.408pt" shadow_color="0x0" font_family="Sans" valign="top" w="548pt" h="47.5918pt" font_italic="false" shadow_x="0pt" a5="0" shadow_opacity="1">
+      <p>${PLREF}</p>
+    </Object-text>
+    <Object-barcode lock_aspect_ratio="false" y="527pt" a2="0" a4="0" a1="0" a3="1" backend="zint" text="true" w="340.157pt" a5="0" style="gs1-128" x="112.819pt" h="110.551pt" a0="1" checksum="true" data="${CONCAT_BC}" color="0xff"/>
+  </Objects>
+  <Merge type="Text/Comma/Line1Keys" src="/dev/stdin"/>
+  <Data/>
+</Glabels-document>

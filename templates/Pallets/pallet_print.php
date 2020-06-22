@@ -72,6 +72,7 @@ $this->Html->script(
                 'empty' => true,
                 'label' => 'Item',
                 'options' => $items,
+                'data-queryurl' => $this->Url->build(['controller' => 'items', 'action' => 'getBatchList']),
             ]
         ); ?>
         <?php echo $this->Form->control(
@@ -101,9 +102,11 @@ $this->Html->script(
         <?php echo $this->Form->control(
                 $formName . '-batch_no',
                 [
-                    'options' => $batch_nos,
-                    'label' => 'Batch No.',
-                    'empty' => true,
+                 
+                    'label' => 'Batch No.' . $this->Html->tag( 'span',  'Example for this product type for today: <strong>' . $exampleBatchNo . '</strong>' , ['class' => 'secondary-text']),
+                    'class' => 'batch',
+                    'escape' => false
+                 
                 ]
             ); ?>
         <?php echo $this->Form->button(

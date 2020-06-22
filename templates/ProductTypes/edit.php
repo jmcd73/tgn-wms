@@ -64,6 +64,7 @@
 
             echo $this->Form->control('next_serial_number');
             echo $this->Form->control('serial_number_format');
+            echo $this->Form->control('batch_format', [ 'empty' => true]);
 
         ?>
     </fieldset>

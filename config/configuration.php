@@ -11,6 +11,17 @@ $glabelsBatchBinary = file_exists('/.dockerenv') ? [
 ];
 
 return [
+    // in Lib/Utility/Barcode
+    'BATCH_FORMATS' => [
+        'YDDDXX' => [
+            'description' => "YDDDXX e.g. 2020 Jan 5 batch 3 = 000503 (default)",
+            'start' => 1,
+            'end' => 99
+        ],
+        'YDDD' => [
+            'description' => "YDDD e.g. 2020 Jan 5 = 0005. Squeaky Gate",
+            ]
+        ],
     'ALLOWED_METHODS' => ['PUT', 'POST'],
     'ALLOWED_ORIGINS' => ['http://localhost:3000', 'http://localhost:8082'],
     'MAX_COPIES' => 100,

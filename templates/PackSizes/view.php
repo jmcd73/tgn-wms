@@ -74,7 +74,7 @@
                 <?php foreach ($packSize->items as $items): ?>
                 <tr>
                     <td><?= h($items->id) ?></td>
-                    <td><?= h($items->active) ?></td>
+                    <td><?= $this->Html->activeIcon($items->active); ?></td>
                     <td><?= h($items->code) ?></td>
                     <td><?= h($items->description) ?></td>
                     <td><?= h($items->quantity) ?></td>

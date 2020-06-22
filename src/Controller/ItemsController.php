@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Lib\Utility\Batch;
+
 /**
  * Items Controller
  *
@@ -87,7 +89,27 @@ class ItemsController extends AppController
         $printTemplates = $this->Items->PrintTemplates->find('treeList', [
             'spacer' => '&nbsp;&nbsp;',
             'limit' => 200, ]);
-        $this->set(compact('item', 'packSizes', 'productTypes', 'printTemplates'));
+        
+        $formatList = (new Batch)->getFormatList();
+
+        $this->set(compact('item', 'packSizes', 'productTypes', 'printTemplates', 'formatList'));
+    }
+
+
+    public function getBatchList($id = null) {
+        $batchList = [];
+
+        if($id) {
+            $item = $this->Items->get($id);
+            $batchFormat = $item->batch_format;
+            $batchList = (new Batch)->getBatchNumbers($batchFormat);
+        }
+        
+
+        $this->set('batchList',  $batchList);
+        
+        $this->viewBuilder()->setOption('serialize', ['batchList']);
+
     }
 
     /**
@@ -117,7 +139,9 @@ class ItemsController extends AppController
             'spacer' => '&nbsp;&nbsp;',
             'limit' => 200, ]);
         $cartonTemplates = $this->Items->CartonTemplates->find('list');
-        $this->set(compact('item', 'packSizes', 'productTypes', 'printTemplates', 'cartonTemplates'));
+        $formatList = (new Batch)->getFormatList();
+
+        $this->set(compact('formatList', 'item', 'packSizes', 'productTypes', 'printTemplates', 'cartonTemplates'));
     }
 
     /**

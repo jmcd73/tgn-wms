@@ -816,4 +816,142 @@ class PrintLogController extends AppController
             )
         );
     }
+
+    public function palletLabelReprint($id = null)
+    {
+        $controllerAction = $this->getControllerAction();
+
+        $palletTable = TableRegistry::get('Pallets');
+
+        if ($id === null) {
+            return $this->redirect($this->referer());
+        }
+
+        $options = [
+            'contain' => [
+                'Items' => [
+                    'ProductTypes',
+                    'PrintTemplates',
+                ],
+            ],
+        ];
+
+        $pallet = $palletTable->get($id, $options);
+
+        //tog(['pl' => $pallet]);
+
+        $palletTable->getValidator()->add('printer_id', 'required', [
+            'rule' => 'notBlank',
+            'message' => 'Please select a printer',
+        ]);
+
+        if ($this->request->is(['post', 'put'])) {
+            $data = $this->request->getData();
+
+            $pallet_ref = $pallet['pl_ref'];
+
+            $replaceTokens = json_decode($pallet['items']['print_template']['replace_tokens']);
+
+            if (!isset($pallet['items']['print_template']) || empty($pallet['items']['print_template'])) {
+                throw new MissingConfigurationException(__('Please configure a print template for item %s', $pallet['item']));
+            }
+
+            // get the printer queue name
+            $printerId = $data['printer_id'];
+
+            $printerDetails = $palletTable->getLabelPrinterById($printerId);
+
+            $dateFormats = [
+                'bb_bc' => 'ymd',
+                'bb_hr' => 'd/m/y',
+            ];
+
+            $bestBeforeDates = $this->PrintLog->formatLabelDates(
+                $pallet['bb_date'],
+                $dateFormats
+            );
+
+            $cabLabelData = [
+                'printDate' => $pallet['print_date'],
+                'companyName' => Configure::read('companyName'),
+                'internalProductCode' => $pallet['items']['code'],
+                'reference' => $pallet['pl_ref'],
+                'sscc' => $pallet['sscc'],
+                'description' => $pallet['items']['description'],
+                'gtin14' => $pallet['gtin14'],
+                'quantity' => $pallet['qty'],
+                'bestBeforeHr' => $bestBeforeDates['bb_hr'],
+                'bestBeforeBc' => $bestBeforeDates['bb_bc'],
+                'batch' => $pallet['batch'],
+                'numLabels' => $data['copies'],
+                'ssccBarcode' => '[00]' . $pallet['sscc'],
+                'itemBarcode' => '[02]' . $pallet['gtin14'] .
+                    '[15]' . $bestBeforeDates['bb_bc'] . '[10]' . $pallet['batch'] .
+                    '[37]' . $pallet['qty'],
+                    'brand' =>  $pallet->items['brand'],
+                    'variant'=>  $pallet->items['variant'],
+                    'quantity_description' =>  $pallet->items['quantity_description'],
+            ];
+
+            $saveData = $this->PrintLog->formatPrintLogData(
+                $controllerAction,
+                $cabLabelData
+            );
+
+            $isPrintDebugMode = Configure::read('pallet_print_debug');
+
+            $template = $this->PrintLog->getGlabelsProject(
+                $pallet->items->print_template->id
+            );
+
+            $printResult = LabelFactory::create($this->request->getParam('action'))
+                ->format($cabLabelData)
+                ->print($printerDetails, $template);
+
+            $this->handlePrintResult(
+                $printResult,
+                $printerDetails,
+                $template->details,
+                $saveData
+            );
+        }
+
+        $printers = $palletTable->getLabelPrinters(
+            $controllerAction
+        );
+
+        // unset this as the default printer is configured
+        // for the reprint Controller/Action in Printers
+
+        $labelCopies = $pallet['pallet_label_copies'] > 0
+            ? $pallet['pallet_label_copies']
+            : $this->PrintLog->getSetting('sscc_default_label_copies');
+
+        $tag = 'Pallet';
+
+        $labelCopiesList = [];
+
+        for ($i = 1; $i <= $labelCopies; $i++) {
+            if ($i > 1) {
+                $tag = Inflector::pluralize($tag);
+            } else {
+                $tag = Inflector::singularize($tag);
+            }
+            $labelCopiesList[$i] = $i . ' ' . $tag;
+        }
+
+        $refer = $this->request->referer();
+
+        $inputDefaultCopies = $this->PrintLog->getSetting('sscc_default_label_copies');
+
+        $this->set(
+            compact(
+                'labelCopiesList',
+                'pallet',
+                'printers',
+                'refer',
+                'inputDefaultCopies'
+            )
+        );
+    }
 }

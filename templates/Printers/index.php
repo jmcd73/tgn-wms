@@ -28,7 +28,7 @@
         <?php foreach ($printers as $printer) : ?>
         <tr>
             <td><?= $this->Number->format($printer->id) ?></td>
-            <td><?= h($printer->active) ?></td>
+            <td><?= $this->Html->activeIcon($printer->active); ?></td>
             <td><?= h($printer->name) ?></td>
             <td><?= h($printer->options) ?></td>
             <td><?= h($printer->queue_name) ?></td>

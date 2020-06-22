@@ -91,6 +91,10 @@ class ItemsTable extends Table
             ->boolean('active')
             ->requirePresence('active', 'create')
             ->notEmptyString('active');
+           /*  $validator
+            ->scalar('batch_format')
+            ->requirePresence('batch_format', 'create')
+            ->notEmptyString('batch_format'); */
 
         $validator
             ->scalar('code')

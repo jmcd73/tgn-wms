@@ -34,7 +34,7 @@
         <?php foreach ($menus as $menu) : ?>
         <tr>
             <td><?= $this->Number->format($menu->id) ?></td>
-            <td><?= h($menu->active) ?></td>
+            <td><?= $this->Html->activeIcon($menu->active); ?></td>
             <td><?= h($menu->divider) ?></td>
             <td><?= h($menu->admin_menu) ?></td>
             <td><?= h($menu->name) ?></td>

@@ -126,7 +126,7 @@
                 <?php foreach ($menu->child_menus as $childMenus): ?>
                 <tr>
                     <td><?= h($childMenus->id) ?></td>
-                    <td><?= h($childMenus->active) ?></td>
+                    <td><?= $this->Html->activeIcon($childMenus->active); ?></td>
                     <td><?= h($childMenus->divider) ?></td>
                     <td><?= h($childMenus->header) ?></td>
                     <td><?= h($childMenus->admin_menu) ?></td>

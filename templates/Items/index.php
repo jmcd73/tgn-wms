@@ -22,7 +22,7 @@
             <th scope="col"><?= $this->Paginator->sort('product_type_id') ?></th>
             <th scope="col"><?= $this->Paginator->sort('code') ?></th>
             <th scope="col"><?= $this->Paginator->sort('description') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('quantity') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('quantity', 'Qty Per Pallet') ?></th>
             <th scope="col"><?= $this->Paginator->sort('trade_unit') ?></th>
             <th scope="col"><?= $this->Paginator->sort('days_life') ?></th>
             <th scope="col"><?= $this->Paginator->sort('pallet_template_id') ?></th>
@@ -32,7 +32,7 @@
     <tbody>
         <?php foreach ($items as $item) : ?>
         <tr>
-            <td><?= h($item->active) ?></td>
+            <td><?= $this->Html->activeIcon($item->active); ?></td>
             <td><?= $item->has('product_type') ? $this->Html->link($item->product_type->name, ['controller' => 'ProductTypes', 'action' => 'view', $item->product_type->id]) : '' ?>
             </td>
             <td><?= h($item->code) ?></td>

@@ -157,7 +157,7 @@
                 <?php foreach ($printTemplate->items as $items): ?>
                 <tr>
                     <td><?= h($items->id) ?></td>
-                    <td><?= h($items->active) ?></td>
+                    <td><?= $this->Html->activeIcon($items->active); ?></td>
                     <td><?= h($items->code) ?></td>
                     <td><?= h($items->description) ?></td>
                     <td><?= h($items->quantity) ?></td>
@@ -224,7 +224,7 @@
                     <td><?= h($childPrintTemplates->description) ?></td>
                     <td><?= h($childPrintTemplates->text_template) ?></td>
                     <td><?= h($childPrintTemplates->file_template) ?></td>
-                    <td><?= h($childPrintTemplates->active) ?></td>
+                    <td><?= $this->Html->activeIcon($childPrintTemplates->active); ?></td>
                     <td><?= h($childPrintTemplates->is_file_template) ?></td>
                     <td><?= h($childPrintTemplates->controller_action) ?></td>
                     <td><?= h($childPrintTemplates->print_controller) ?></td>

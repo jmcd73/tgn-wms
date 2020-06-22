@@ -150,7 +150,7 @@
                 <?php foreach ($printer->production_lines as $productionLines): ?>
                 <tr>
                     <td><?= h($productionLines->id) ?></td>
-                    <td><?= h($productionLines->active) ?></td>
+                    <td><?= $this->Html->activeIcon($productionLines->active); ?></td>
                     <td><?= h($productionLines->printer_id) ?></td>
                     <td><?= h($productionLines->name) ?></td>
                     <td><?= h($productionLines->product_type_id) ?></td>

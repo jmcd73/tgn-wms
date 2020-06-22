@@ -34,7 +34,7 @@
         <?php foreach ($users as $user) : ?>
         <tr>
             <td><?= $this->Number->format($user->id) ?></td>
-            <td><?= h($user->active) ?></td>
+            <td><?= $this->Html->activeIcon($user->active); ?></td>
             <td><?= h($user->username) ?></td>
             <td><?= $user->hasValue('password') ? h($this->Text->truncate($user->password, 10)) : '' ?></td>
             <td><?= h($user->role) ?></td>

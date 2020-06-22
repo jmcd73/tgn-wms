@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Item $item
@@ -39,6 +40,10 @@
     <div class="table-responsive">
         <table class="table table-striped">
             <tr>
+                <th scope="row"><?= __('Active') ?></th>
+                <td><?= $this->Html->activeIcon($item->active); ?></td>
+            </tr>
+            <tr>
                 <th scope="row"><?= __('Code') ?></th>
                 <td><?= h($item->code) ?></td>
             </tr>
@@ -51,6 +56,10 @@
                 <td><?= h($item->trade_unit) ?></td>
             </tr>
             <tr>
+                <th scope="row"><?= __('Consumer Unit') ?></th>
+                <td><?= h($item->consumer_unit) ?></td>
+            </tr>
+            <tr>
                 <th scope="row"><?= __('Pack Size') ?></th>
                 <td><?= $item->has('pack_size') ? $this->Html->link($item->pack_size->id, ['controller' => 'PackSizes', 'action' => 'view', $item->pack_size->id]) : '' ?>
                 </td>
@@ -60,10 +69,7 @@
                 <td><?= $item->has('product_type') ? $this->Html->link($item->product_type->name, ['controller' => 'ProductTypes', 'action' => 'view', $item->product_type->id]) : '' ?>
                 </td>
             </tr>
-            <tr>
-                <th scope="row"><?= __('Consumer Unit') ?></th>
-                <td><?= h($item->consumer_unit) ?></td>
-            </tr>
+         
             <tr>
                 <th scope="row"><?= __('Brand') ?></th>
                 <td><?= h($item->brand) ?></td>
@@ -71,6 +77,11 @@
             <tr>
                 <th scope="row"><?= __('Variant') ?></th>
                 <td><?= h($item->variant) ?></td>
+            </tr>
+
+            <tr>
+                <th scope="row"><?= __('Quantity Description') ?></th>
+                <td><?= h($item->quantity_description) ?></td>
             </tr>
             <tr>
                 <th scope="row"><?= __('Unit Of Measure') ?></th>
@@ -117,10 +128,7 @@
                 <th scope="row"><?= __('Modified') ?></th>
                 <td><?= h($item->modified) ?></td>
             </tr>
-            <tr>
-                <th scope="row"><?= __('Active') ?></th>
-                <td><?= $item->active ? __('Yes') : __('No'); ?></td>
-            </tr>
+
         </table>
     </div>
     <div class="row">

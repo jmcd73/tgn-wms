@@ -27,27 +27,7 @@ class TgnUtilsBehavior extends Behavior
      */
     protected $_defaultConfig = [];
 
-    /**
-     *  return array of batch numbers formatted for cakephp select options
-     * $batch_nos = [
-     *      601201 => '6012 - 01',
-     *      601202 => '6012 - 02'
-     *  ]
-     *
-     * @return array Array of batch numbers
-     */
-    public function getBatchNumbers()
-    {
-        $now = Time::now();
-
-        $batch_prefix = substr((string) $now->year, 3) . sprintf('%03d', $now->dayOfYear);
-
-        for ($i = 1; $i <= 99; $i++) {
-            $batch_nos[$batch_prefix . sprintf('%02d', $i)] = $batch_prefix . ' - ' . sprintf('%02d', $i);
-        }
-
-        return $batch_nos;
-    }
+  
 
     public function getSettingsTable($tableName = 'Settings')
     {

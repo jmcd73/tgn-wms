@@ -39,7 +39,7 @@
             <td><?= h($shift->comment) ?></td>
             <td><?= h($shift->created) ?></td>
             <td><?= h($shift->modified) ?></td>
-            <td><?= h($shift->active) ?></td>
+            <td><?= $this->Html->activeIcon($shift->active); ?></td>
             <td><?= h($shift->for_prod_dt) ?></td>
             <td><?= h($shift->start_time) ?></td>
             <td><?= h($shift->stop_time) ?></td>

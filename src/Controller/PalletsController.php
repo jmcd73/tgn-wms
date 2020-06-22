@@ -17,6 +17,7 @@ use Cake\I18n\FrozenTime;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
+use App\Lib\Utility\Batch;
 
 /**
  * Pallets Controller
@@ -220,7 +221,10 @@ class PalletsController extends AppController
                     'ssccBarcode' => '[00]' . $sscc,
                     'itemBarcode' => '[02]' .$item_detail['trade_unit'] .
                         '[15]' . $bestBeforeDates['bb_bc'] . '[10]' .  $data['batch_no'] .
-                        '[37]' . $qty
+                        '[37]' . $qty,
+                    'brand' =>  $item_detail['brand'],
+                    'variant'=>  $item_detail['variant'],
+                    'quantity_description' =>  $item_detail['quantity_description'],
                 ];
 
                 $this->loadModel('PrintLog');
@@ -251,9 +255,9 @@ class PalletsController extends AppController
         } // end of post check
         // populate form
 
-        $batch_nos = $this->Pallets->getBatchNumbers();
-
         $items = $this->Pallets->Items->getPalletPrintItems($productTypeId);
+
+        $exampleBatchNo = (new Batch)->getBatchNumbers($productType['batch_format']);
 
         $refer = $this->request->getPath();
 
@@ -261,14 +265,15 @@ class PalletsController extends AppController
             compact(
                 'items',
                 'productionLines',
-                'batch_nos',
                 'productType',
                 'productTypes',
                 'refer',
-                'forms'
+                'forms',
+                'exampleBatchNo'
             )
         );
     }
+
 
     /**
      * Index method

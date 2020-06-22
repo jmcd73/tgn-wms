@@ -58,6 +58,7 @@ echo $this->Form->end();
                 echo $this->Form->control('min_days_life');
                 echo $this->Form->control('brand');
                 echo $this->Form->control('variant');
+                echo $this->Form->control('quantity_description');
                 echo $this->Form->control('unit_net_contents');
                 echo $this->Form->control('unit_of_measure');
                 echo $this->Form->control('item_comment'); ?>
@@ -75,10 +76,7 @@ echo $this->Form->end();
                 'empty' => true,
                 'options' => $printTemplates, ]);
             echo $this->Form->control('pallet_label_copies');
-            echo $this->Form->control('item_wait_hrs', [
-                'escape' => false,
-                'label' => 'Item Wait Hrs<span class="secondary-text">Enable wait time in hours for QA checks. Disables
-                    ability to put on a shipment for this number of hours</span>', ]); ?>
+         ?>
             </div>
         </div>
     </fieldset>

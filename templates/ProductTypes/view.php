@@ -164,7 +164,7 @@
                 <?php foreach ($productType->items as $items): ?>
                 <tr>
                     <td><?= h($items->id) ?></td>
-                    <td><?= h($items->active) ?></td>
+                    <td><?= $this->Html->activeIcon($items->active); ?></td>
                     <td><?= h($items->code) ?></td>
                     <td><?= h($items->description) ?></td>
                     <td><?= h($items->quantity) ?></td>
@@ -211,7 +211,7 @@
                 <?php foreach ($productType->production_lines as $productionLines): ?>
                 <tr>
                     <td><?= h($productionLines->id) ?></td>
-                    <td><?= h($productionLines->active) ?></td>
+                    <td><?= $this->Html->activeIcon($productionLines->active); ?></td>
                     <td><?= h($productionLines->printer_id) ?></td>
                     <td><?= h($productionLines->name) ?></td>
                     <td><?= h($productionLines->product_type_id) ?></td>
@@ -253,7 +253,7 @@
                     <td><?= h($shifts->comment) ?></td>
                     <td><?= h($shifts->created) ?></td>
                     <td><?= h($shifts->modified) ?></td>
-                    <td><?= h($shifts->active) ?></td>
+                    <td><?= $this->Html->activeIcon($shifts->active); ?></td>
                     <td><?= h($shifts->for_prod_dt) ?></td>
                     <td><?= h($shifts->start_time) ?></td>
                     <td><?= h($shifts->stop_time) ?></td>

@@ -59,5 +59,6 @@ class ProductType extends Entity
         'production_lines' => true,
         'shifts' => true,
         'shipments' => true,
+        'batch_format' => true,
     ];
 }
