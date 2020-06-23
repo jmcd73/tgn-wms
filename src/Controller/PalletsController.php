@@ -371,7 +371,7 @@ class PalletsController extends AppController
             $this->Flash->error(__('The pallet could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect($this->request->referer());
     }
 
     /**
@@ -507,31 +507,7 @@ class PalletsController extends AppController
         );
     }
 
-    /**
-     * @param  ID    $id ID of Pallet
-     * @return mixed
-     */
-    public function changeLocation($id = null)
-    {
-        if (!$this->Pallets->exists($id)) {
-            throw new NotFoundException(__('Invalid label'));
-        }
-        if ($this->request->is(['post', 'put'])) {
-            if ($this->Pallets->save($this->request->getData())) {
-                $this->Flash->set(__('The label has been saved.'));
-
-                return $this->redirect(['action' => 'onhand']);
-            } else {
-                $this->Flash->set(__('The label could not be saved. Please, try again.'));
-            }
-        } else {
-            $this->request->withData($this->Pallets->get($id));
-        }
-        $locations = $this->Pallets->Locations->find('list');
-        $shipments = $this->Pallets->Shipments->find('list');
-        $this->set(compact('locations', 'shipments'));
-    }
-
+  
     /**
      * @param string $aisle Aisle to find columns and levels for
      *
