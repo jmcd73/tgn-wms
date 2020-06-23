@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -63,11 +64,9 @@ return [
         ],
         [
             'controller' => 'Pallets',
-            'action' => ['multiEdit',
-            ],
+            'action' => ['multiEdit',],
             'bypassAuth' => true,
         ],
-
         [
             'controller' => 'ProductTypes',
             'action' => 'view',
@@ -82,14 +81,14 @@ return [
             'action' => '*',
         ],
         [
-            'role' => 'user',
+            'role' => [ 'user', 'qty_editor' ],
             'controller' => 'Users',
             'action' => [
                 'accessDenied', 'logout',
             ],
         ],
         [
-            'role' => 'user',
+            'role' => [ 'user', 'qty_editor' ],
             'controller' => [
                 'Users',
                 'Shifts',
@@ -106,9 +105,8 @@ return [
             'action' => '*',
             'allowed' => false,
         ],
-
         [
-            'role' => 'user',
+            'role' => [ 'user', 'qty_editor' ],
             'controller' => '*',
             'action' => [
                 'display',
@@ -118,7 +116,7 @@ return [
             ],
         ],
         [
-            'role' => 'user',
+            'role' => [ 'user', 'qty_editor' ],
             'controller' => ['Pallets'],
             'action' => ['bulkStatusRemove'],
             'allowed' => function ($userEntity, $role, $request) {
@@ -127,10 +125,11 @@ return [
             },
         ],
         [
-            'role' => 'user',
+            // user role cannot delete or edit add 
+            'role' => [ 'user', 'qty_editor' ],
             'controller' => ['PrintLog', 'Pallets', 'Items', 'Cartons', 'Shipments'],
             // allow all actions except these by prepending * to action
-            '*action' => ['add', 'delete', 'edit'],
+            '*action' => ['add', 'edit'],
         ],
     ],
 ];
