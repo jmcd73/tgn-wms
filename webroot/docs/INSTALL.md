@@ -30,14 +30,15 @@
 
    ```sh
    #!/bin/sh
+   WEB_DIR=test
    CUPS_PORT=652
    APACHE_PORT=8052
    DOCKER_TAG=tgn/php74\:v13 # tag (-t) you used for docker build
    VOLUME=~/sites/tgnwms/
-   CONTAINER_NAME=tgnwms
+   CONTAINER_NAME=${WEB_DIR}
 
    docker run  --name $CONTAINER_NAME \
-   -v ${VOLUME}:/var/www  -d \
+   -v ${VOLUME}:/var/www/${WEBDIR}  -d \
    -p ${CUPS_PORT}:631 -p ${APACHE_PORT}:80 $DOCKER_TAG
    ```
 
@@ -51,7 +52,7 @@
 
    > [http://localhost:652/](http://localhost:652/)
    >
-   > [http://localhost:8052](http://localhost:8052)
+   > [http://localhost:8052/test](http://localhost:8052/test)
 
    You should get the CUPS admin page for the first URL and a HTTP 500 ERROR for the second
 
@@ -77,7 +78,7 @@
    Still in the docker container...
 
    ```sh
-   cd /var/www
+   cd /var/www/test
 
    # install the PHP dependencies
    composer install
@@ -125,10 +126,10 @@
 10. Copy bootstrap, jquery and popper.js into webroot/bootstrap_u_i
 
     ```sh
-    cd /var/www/vendor/friendsofcake/bootstrap-ui/node_modules/
-    cp -rv bootstrap/dist/* /var/www/webroot/bootstrap_u_i/
-    cp -rv jquery/dist/* /var/www/webroot/bootstrap_u_i/js/
-    cp -rv popper.js/dist/umd/* /var/www/webroot/bootstrap_u_i/js/
+    cd /var/www/test/vendor/friendsofcake/bootstrap-ui/node_modules/
+    cp -rv bootstrap/dist/* /var/www/test/webroot/bootstrap_u_i/
+    cp -rv jquery/dist/* /var/www/test/webroot/bootstrap_u_i/js/
+    cp -rv popper.js/dist/umd/* /var/www/test/webroot/bootstrap_u_i/js/
     ```
 
     Edit the file to have the correct host, user, db, password parameters

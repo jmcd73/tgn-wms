@@ -55,8 +55,8 @@ It uses open source components to provide simple pallet and label printing and p
 
 ## Installation
 
-See [docs/INSTALL.md](docs/INSTALL.md)
+See [docs/INSTALL.md](webroot/docs/INSTALL.md)
 
 ## Configuration
 
-See [docs/SETUP.md](docs/SETUP.md)
+See [docs/SETUP.md](webroot/docs/SETUP.md)
