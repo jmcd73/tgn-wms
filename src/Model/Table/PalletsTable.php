@@ -983,7 +983,12 @@ class PalletsTable extends Table
         return $inventory_status_note;
     }
 
-    public function getLabelCopies($labelCopies): int
+    /**
+     * getLabelCopies
+     * @param mixed $labelCopies 
+     * @return int 
+     */
+    public function getLabelCopies(int $labelCopies): int
     {
         $copies =  $labelCopies > 0 ? $labelCopies : $this->getSetting('sscc_default_label_copies');
 
