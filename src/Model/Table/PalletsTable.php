@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -9,6 +10,7 @@ use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\I18n\Date;
 use Cake\ORM\Entity;
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
@@ -270,9 +272,9 @@ class PalletsTable extends Table
      * locationSpaceUsageOptions method
      * @param  string $filter        string of either 'all' or 'available'
      * @param  string $productTypeId if productTypeId is all then no filter other wise pass in ID
-     * @return array  returns an option array configured correctly to find location availability
+     * @return \Cake\ORM\Query returns an option array configured correctly to find location availability
      */
-    public function locationSpaceUsageOptions($filter, $productTypeId = 'all')
+    public function locationSpaceUsageOptions($filter, $productTypeId = 'all'): Query
     {
         $query = $this->find();
         //'COUNT(Pallets.id) < L.pallet_capacity'
@@ -349,7 +351,8 @@ class PalletsTable extends Table
             'conditions' => [
                 'active' => 1,
                 'for_prod_dt' => 0,
-            ], ]);
+            ],
+        ]);
 
         $reports = [];
         $xml_shift_report = [];
@@ -572,47 +575,47 @@ class PalletsTable extends Table
                 'cartonRecordCount' => $query->func()->count('c.id'),
             ]
         )
-        ->join(
-            [
-                'c' => [
-                    'table' => 'cartons',
-                    'type' => 'LEFT',
-                    'conditions' => [
-                        'c.pallet_id = Pallets.id',
+            ->join(
+                [
+                    'c' => [
+                        'table' => 'cartons',
+                        'type' => 'LEFT',
+                        'conditions' => [
+                            'c.pallet_id = Pallets.id',
+                        ],
                     ],
                 ],
-            ],
-        )->contain([
-            'Items',
-            'Shipments',
-            'Locations',
-            'ProductionLines',
-        ])->where([
-            'AND' => [
-                'Pallets.product_type_id' => $productTypeId,
+            )->contain([
+                'Items',
+                'Shipments',
+                'Locations',
+                'ProductionLines',
+            ])->where([
+                'AND' => [
+                    'Pallets.product_type_id' => $productTypeId,
+                    'OR' => [
+                        'Shipments.shipped IS NULL',
+                        'Shipments.shipped' => 0,
+                    ],
+                    'OR' => [
+                        [
+                            'Pallets.print_date >=' => $startDateTime,
+                            'Pallets.print_date <=' => $endDateTime,
+                        ],
+                        [
+                            'Pallets.qty_modified >=' => $startDateTime,
+                            'Pallets.qty_modified <=' => $endDateTime,
+                        ],
+                    ],
+                ],
+            ])->having([
                 'OR' => [
-                    'Shipments.shipped IS NULL',
-                    'Shipments.shipped' => 0,
+                    'cartonRecordCount > 1',
+                    'Items.quantity <> Pallets.qty',
                 ],
-                'OR' => [
-                    [
-                        'Pallets.print_date >=' => $startDateTime,
-                        'Pallets.print_date <=' => $endDateTime,
-                    ],
-                    [
-                        'Pallets.qty_modified >=' => $startDateTime,
-                        'Pallets.qty_modified <=' => $endDateTime,
-                    ],
-                ],
-            ],
-        ])->having([
-            'OR' => [
-                'cartonRecordCount > 1',
-                'Items.quantity <> Pallets.qty',
-            ],
-        ])->group([
-            'Pallets.id',
-        ]);
+            ])->group([
+                'Pallets.id',
+            ]);
 
         $palletIds = $this->find()->select(['id' => 'Pallets__id'])->from(['sub' => $matchingPallets]);
         $cartons = $this->Cartons->find()->contain([
@@ -647,8 +650,8 @@ class PalletsTable extends Table
                 case 'print_date':
                     $options[] = [$searchKey . ' LIKE ' => $searchValue . '%'];
                     break;
-                // skip standard search keys because they are
-                // for paginate not conditions
+                    // skip standard search keys because they are
+                    // for paginate not conditions
                 case 'page':
                 case 'sort':
                 case 'direction':
@@ -982,6 +985,8 @@ class PalletsTable extends Table
 
     public function getLabelCopies($labelCopies): int
     {
-        return $labelCopies > 0 ? $labelCopies : $this->getSetting('sscc_default_label_copies');
+        $copies =  $labelCopies > 0 ? $labelCopies : $this->getSetting('sscc_default_label_copies');
+
+        return (int) $copies;
     }
 }
