@@ -142,22 +142,6 @@ return [
             ],
         ],
     ],
-    /*
-     * The datasources key allows you to set an environment variable
-     * in Apache using SetEnv ENVIRONMENT HOME
-     * and it will then map to your database.php DB configuration
-     * so setting ENVIRONMENT to HOME will load the $home property
-     * in the DATABASE_CONFIG class specified in
-     * app/Config/database.php
-     *
-     * SetEnv ENVIRONMENT LIVE|HOME|TEST in .htaccess
-     * */
-    'datasources' => [
-        'HOME' => 'default',
-        'TEST' => 'test',
-        'NEWTEST' => 'palletsTest',
-        'TGN' => 'tgn',
-    ],
     'navbar' => [
         'brand' => [
             'title' => 'Toggen home',
