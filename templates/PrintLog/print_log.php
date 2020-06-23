@@ -1,40 +1,36 @@
-<?php
-
-?>
-
-<div class="container">
 <table class="table table-bordered table-condensed table-striped table-responsive">
     <thead>
         <tr>
-<th><?= $this->Paginator->sort('id'); ?></th>
-  <th><?= $this->Paginator->sort('controller_action'); ?></th>
+            <th><?= $this->Paginator->sort('id'); ?></th>
+            <th><?= $this->Paginator->sort('controller_action'); ?></th>
             <th><?= $this->Paginator->sort('print_data'); ?></th>
             <th><?= $this->Paginator->sort('created'); ?></th>
             <th><?= $this->Paginator->sort('modified'); ?></th>
-            </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($printItems as $item): ?>
-                <tr>
-        <td><?= h($item['PrintLabel']['id']); ?></td>
-        <td><?= h($item['PrintLabel']['controller_action']); ?></td>
-        <td><pre style="background-color: inherit; border: 0px;"><?= json_encode(
-                json_decode($item['PrintLabel']['print_data']),
-                JSON_PRETTY_PRINT
-        ); ?></pre></td>
-
-        <td><?= h($item['PrintLabel']['created']); ?></td>
-        <td><?= h($item['PrintLabel']['modified']); ?></td>
         </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($printItems as $item) : ?>
+            <tr>
+                <td><?= h($item['PrintLabel']['id']); ?></td>
+                <td><?= h($item['PrintLabel']['controller_action']); ?></td>
+                <td>
+                    <pre style="background-color: inherit; border: 0px;"><?= json_encode(
+                                                                                json_decode($item['PrintLabel']['print_data']),
+                                                                                JSON_PRETTY_PRINT
+                                                                            ); ?></pre>
+                </td>
+
+                <td><?= h($item['PrintLabel']['created']); ?></td>
+                <td><?= h($item['PrintLabel']['modified']); ?></td>
+            </tr>
         <?php endforeach; ?>
-        </tbody>
-        </table>
-        <p>
-    <?php
+    </tbody>
+</table>
+<p><?php
     echo $this->Paginator->counter([
         'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
     ]);
-    ?>	</p>
+    ?></p>
 <div class="pagination pagination-large">
     <ul class="pagination">
         <?php
@@ -45,8 +41,4 @@
         echo $this->Paginator->last('last &raquo;', ['escape' => false, 'tag' => 'li']);
         ?>
     </ul>
-</div>
-
-</div>
-
 </div>

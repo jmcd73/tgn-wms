@@ -1,7 +1,7 @@
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 
-<div class="container">
-    <div class="row h-100 justify-content-center align-items-center">
+<div class="row">
+    <div class="h-100 justify-content-center align-items-center">
         <div class="col">
             <h3 class="text-center"><?php echo __('Select Print Type'); ?></h3>
             <ul class="nav justify-content-center">

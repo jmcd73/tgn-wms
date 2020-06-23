@@ -12,7 +12,7 @@ $this->Html->script(
 
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 
-<div class="container">
+
     <div class="row">
         <div class="col-lg-12">
             <h4>Move Pallet</h4>
@@ -57,4 +57,3 @@ $this->Html->script(
             <?= $this->Form->end(); ?>
         </div>
     </div>
-</div>

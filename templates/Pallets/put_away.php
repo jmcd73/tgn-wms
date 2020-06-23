@@ -11,7 +11,7 @@ $this->Html->script(
 );
 ?>
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
-<div class="container">
+
     <?php
 echo $this->Form->create($pallet);
 ?>
@@ -73,4 +73,3 @@ echo $this->Form->control('pl_ref', [
         </div>
     </div>
     <?=$this->Form->end(); ?>
-</div>

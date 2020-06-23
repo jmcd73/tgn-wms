@@ -1,6 +1,6 @@
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 
-<div class="container">
+
     <div class="row">
         <div class="col-md-6 col-lg-6">
             <?= $this->Form->create($form); ?>
@@ -31,4 +31,3 @@
             ]); ?>
         </div>
     </div>
-</div>

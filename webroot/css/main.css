@@ -867,6 +867,13 @@ div.alert-info::before {
   content: "\f05a\00a0";
 }
 
+.go-back::before {
+  font-family: "Font awesome 5 Free";
+  font-weight: 900;
+  content: "\f0a5\00a0";
+}
+
+
 div.alert-warning::before {
   font-family: "Font awesome 5 Free";
   font-weight: 900;

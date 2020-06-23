@@ -29,7 +29,7 @@ $submit_url = $this->Url->build([
 ?>
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 
-<div class="container">
+
     <div class="row">
         <div class="col-md-4">
             <?= $this->Form->create($form);?>
@@ -101,5 +101,4 @@ $submit_url = $this->Url->build([
             ]); ?>
         </div>
     </div>
-</div>
 </div>

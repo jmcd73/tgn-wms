@@ -12,13 +12,14 @@
 ]); ?>
 <?php endforeach; ?>
 
-<div class="container">
     <div class="row">
+        <div class="col">
         <?= $this->Html->tag('div', null, [
             'class' => 'col',
             'data-baseUrl' => $baseUrl, 'id' => 'root', ]); ?>
+        </div>
     </div>
-</div>
+
 <?php foreach ($js as $script): ?>
 
 <?= $this->Html->script($script); ?>

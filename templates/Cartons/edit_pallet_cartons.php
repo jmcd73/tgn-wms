@@ -15,7 +15,8 @@
     ]
 ); ?>
 
-<div class="container">
+<div class="row">
+<div class="col">
 
 
     <h4><?php echo $palletCartons['code_desc']; ?></h4>
@@ -60,4 +61,5 @@
 
     <?php echo $this->Form->submit(); ?>
     <?php echo $this->Form->end(); ?>
-</div> <!-- end container -->
+</div> <!-- end col -->
+</div> <!-- end row -->

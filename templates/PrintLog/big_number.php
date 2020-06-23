@@ -1,6 +1,4 @@
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
-<div class="container">
-
     <div class="row">
         <div class="col-4">
             <?=
@@ -46,4 +44,3 @@
             ]); ?>
         </div>
     </div>
-</div>

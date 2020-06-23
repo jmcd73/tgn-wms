@@ -1,9 +1,8 @@
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 <?php $this->Html->script('dayofyear', ['block' => 'from_view']); ?>
 
-<div class="container">
-    <div class="row">
-        <div class="col-6">
+<div class="row">
+        <div class="col">
             <h3>Batch number calculator</h3>
             <p>Batch numbers contain the ordinal day of the year. You can use this page to find the date a pallet was
                 produced by </p>
@@ -48,5 +47,3 @@
             </form>
         </div>
     </div>
-</div>
-</div>

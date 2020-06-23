@@ -26,16 +26,16 @@
         <table class="table table-striped">
             <tr>
                 <th scope="row"><?= __('Pallet') ?></th>
-                <td><?= $carton->has('pallet') ? $this->Html->link($carton->pallet->id, ['controller' => 'Pallets', 'action' => 'view', $carton->pallet->id]) : '' ?></td>
+                <td><?= $carton->has('pallet') ? $this->Html->link($carton->pallet->pl_ref, ['controller' => 'Pallets', 'action' => 'view', $carton->pallet->id]) : '' ?></td>
             </tr>
-            <tr>
+           <!--  <tr>
                 <th scope="row"><?= __('Item') ?></th>
                 <td><?= $carton->has('item') ? $this->Html->link($carton->item->id, ['controller' => 'Items', 'action' => 'view', $carton->item->id]) : '' ?></td>
             </tr>
             <tr>
                 <th scope="row"><?= __('User') ?></th>
                 <td><?= $carton->has('user') ? $this->Html->link($carton->user->id, ['controller' => 'Users', 'action' => 'view', $carton->user->id]) : '' ?></td>
-            </tr>
+            </tr> -->
             <tr>
                 <th scope="row"><?= __('Id') ?></th>
                 <td><?= $this->Number->format($carton->id) ?></td>

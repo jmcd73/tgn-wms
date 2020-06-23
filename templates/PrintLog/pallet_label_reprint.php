@@ -1,5 +1,5 @@
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
-<div class="container">
+
     <div class="row">
         <div class="col-6">
             <h3><?=__('Reprint Label'); ?></h3>
@@ -78,4 +78,3 @@
             <?=$this->Form->end(); ?>
         </div>
     </div>
-</div>

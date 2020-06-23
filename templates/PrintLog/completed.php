@@ -14,7 +14,6 @@ $this->Html->script('//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highli
 echo $this->Html->scriptBlock('hljs.initHighlightingOnLoad();', ['block' => 'from_view']);
 ?>
 
-<div class="container">
     <!--  <dl class="dl-horizontal">
         <dt>Print Type</dt>
         <dd> <?= $completed['PrintLabel']['controller_action']; ?></dd>
@@ -52,4 +51,3 @@ echo $this->Html->scriptBlock('hljs.initHighlightingOnLoad();', ['block' => 'fro
             ]); ?>
         </div>
     </div>
-</div>

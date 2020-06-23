@@ -1,6 +1,6 @@
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 
-<div class="container">
+
     <div class="row">
         <div class="col">
             <h1>Label Chooser</h1>
@@ -51,4 +51,3 @@
 
 
     <?php endforeach; ?>
-</div>
