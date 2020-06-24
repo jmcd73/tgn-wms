@@ -6,6 +6,7 @@ namespace App\Model\Behavior;
 use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
 use Cake\I18n\FrozenDate;
+use \Cake\I18n\FrozenTime;
 use Cake\I18n\Time;
 use Cake\Log\LogTrait;
 use Cake\ORM\Behavior;
@@ -165,8 +166,6 @@ class TgnUtilsBehavior extends Behavior
 
         $productTypeArray = $productType->toArray();
 
-        // $this->log(print_r($productTypeArray, true));
-
         $serialNumberFormat = $productTypeArray['serial_number_format'];
 
         $serialNumber = $productType['next_serial_number'];
@@ -225,7 +224,7 @@ class TgnUtilsBehavior extends Behavior
      * @param  array                 $dateFormats As above example
      * @return array                 of date strings
      */
-    public function formatLabelDates($dateObject, $dateFormats)
+    public function formatLabelDates(FrozenTime $dateObject, array $dateFormats): array
     {
         $dates = [];
         foreach ($dateFormats as $k => $v) {

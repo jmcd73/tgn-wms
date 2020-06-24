@@ -4,14 +4,13 @@ declare(strict_types=1);
 namespace App\Lib\PrintLabels;
 
 use App\Lib\Exception\MissingConfigurationException;
-use Cake\Core\Configure;
 
 class LabelFactory
 {
     /**
      * Method create
-     *
-     * @param  string                                           $action Action Name in controller
+     * @param $string $printClass Print class e.g. \App\Lib\PrintLabels\Glabels\Sscc
+     * @param  string  $action Action Name in controller
      * @throws \App\Lib\Exception\MissingConfigurationException
      */
     public static function create(string $printClass, $action)

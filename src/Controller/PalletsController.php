@@ -93,14 +93,18 @@ class PalletsController extends AppController
 
         if ($this->request->is('post')) {
             $data = $this->request->getData();
+            
             $formName = $data['formName'];
 
             if ($forms[$formName]->validate($data)) {
+
                 $newData = [];
+                
                 foreach ($data as $key => $value) {
                     $newKey = str_replace($formName . '-', '', $key);
                     $newData[$newKey] = $value;
                 }
+                
                 $data = $newData;
 
                 $productionLineId = $data['production_line'];
