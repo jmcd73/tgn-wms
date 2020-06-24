@@ -40,10 +40,15 @@ class ApplicationTest extends IntegrationTestCase
         $app->bootstrap();
         $plugins = $app->getPlugins();
 
-        $this->assertCount(3, $plugins);
+        $this->assertCount(7, $plugins);
         $this->assertSame('Bake', $plugins->get('Bake')->getName());
         $this->assertSame('DebugKit', $plugins->get('DebugKit')->getName());
         $this->assertSame('Migrations', $plugins->get('Migrations')->getName());
+        $this->assertSame('BootstrapUI', $plugins->get('BootstrapUI')->getName());
+        $this->assertSame('Authorization', $plugins->get('Authorization')->getName());
+        $this->assertSame('Authentication', $plugins->get('Authentication')->getName());
+        $this->assertSame('CakeDC/Auth', $plugins->get('CakeDC/Auth')->getName());
+       
     }
 
     /**
@@ -81,7 +86,7 @@ class ApplicationTest extends IntegrationTestCase
         $this->assertInstanceOf(ErrorHandlerMiddleware::class, $middleware->current());
         $middleware->seek(1);
         $this->assertInstanceOf(AssetMiddleware::class, $middleware->current());
-        $middleware->seek(2);
+        $middleware->seek(3);
         $this->assertInstanceOf(RoutingMiddleware::class, $middleware->current());
     }
 }
