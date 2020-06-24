@@ -115,19 +115,22 @@ class PalletsController extends AppController
                 $productionLineName = $productionLine['name'];
 
                 $printerId = $productionLine['printer_id'];
+                try {
+                    $printerDetails = $this->Pallets->Printers->get($printerId);
 
-                $printerDetails = $this->Pallets->Printers->get($printerId);
-
-                if (empty($printerDetails)) {
-                    throw new MissingConfigurationException(
-                        [
-                            'message' => 'Missing Printer',
-                            'printer' => $printerId,
-                        ],
-                        404
-                    );
+                } catch (\Throwable $th) {
+        
+                        throw new MissingConfigurationException(
+                            [
+                                'message' => 'Printer',
+                                'printer' => $printerId,
+                            ],
+                            404
+                        );
+        
+    
                 }
-
+                
                 $sscc = $this->Pallets->generateSSCCWithCheckDigit();
 
                 $pallet_ref = $this->Pallets->createPalletRef($productTypeId);
@@ -1076,8 +1079,10 @@ class PalletsController extends AppController
                 'bb_hr' => 'd/m/y',
             ];
 
+            $bb_date = new FrozenTime($pallet['bb_date']);
+            
             $bestBeforeDates = $this->Pallets->formatLabelDates(
-                $pallet['bb_date'],
+                $bb_date,
                 $dateFormats
             );
 

@@ -38,5 +38,10 @@ endif;
 <p class="error">
     <strong><?= __d('cake', 'Error') ?>: </strong>
     <?= __d('cake', 'The requested address {0} was not found on this server.', "<strong>'{$url}'</strong>") ?>
+    
 </p>
+
+<p class="error"><?= $error->getMessage() ?></p>
+
+
 <?= $this->Html->link(__('Back'), 'javascript:history.back()');

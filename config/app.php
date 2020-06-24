@@ -181,7 +181,8 @@ return [
      */
     'Error' => [
         'errorLevel' => E_ALL & ~E_USER_DEPRECATED,
-        'exceptionRenderer' => ExceptionRenderer::class,
+       // 'exceptionRenderer' => ExceptionRenderer::class,
+        'exceptionRenderer' => AppExceptionRenderer::class,
         'skipLog' => [],
         'log' => true,
         'trace' => true,

@@ -17,9 +17,11 @@ use App\Lib\PrintLabels\ResultTrait;
 use App\Lib\PrintLabels\Template;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
-use ShippingLabelGeneric;
+use App\Lib\PrintLabels\Glabel\ShippingLabelGeneric;
+
 
 /**
  * PrintLog Controller
@@ -323,11 +325,7 @@ class PrintLogController extends AppController
                 );
 
                 $printerDetails = $this->PrintLog->getLabelPrinterById($data['printer']);
-                tog([
-                    $template->details->print_class, $action,
-                    $printerDetails, $template,
-                    $this->request->getData(),
-                ]);
+         
                 $printResult = LabelFactory::create($template->details->print_class, $action)
                         ->format($this->request->getData())
                             ->print($printerDetails, $template);
@@ -732,8 +730,10 @@ class PrintLogController extends AppController
                 'bb_hr' => 'd/m/y',
             ];
 
+            $bb_date = new FrozenTime($pallet['bb_date']);
+
             $bestBeforeDates = $this->PrintLog->formatLabelDates(
-                $pallet['bb_date'],
+                $bb_date,
                 $dateFormats
             );
 
@@ -867,8 +867,10 @@ class PrintLogController extends AppController
                 'bb_hr' => 'd/m/y',
             ];
 
+            $bb_date = new FrozenTime($pallet['bb_date']);
+
             $bestBeforeDates = $this->PrintLog->formatLabelDates(
-                $pallet['bb_date'],
+                $bb_date,
                 $dateFormats
             );
 
