@@ -108,24 +108,13 @@ $this->Html->script(
                                     $formName . '-batch_no',
                                     [
 
-                                        'label' => 'Custom Batch No.' . $this->Html->tag('span',  'Enter custom batch', ['class' => 'secondary-text']),
+                                        'label' => 'Batch No.' . $this->Html->tag('span',  'Example <strong>' . $exampleBatchNo . '</strong>', ['class' => 'secondary-text']),
                                         'class' => 'batch',
                                         'escape' => false
 
                                     ]
                                 ); ?>
-                                <!-- </div>
-                            <div class="col">
-                          <?php echo $this->Form->control(
-                                $formName . '-batch_no',
-                                [
-
-                                    'label' => 'Auto Batch No.' . $this->Html->tag('span',  'Select Auto: <strong>' . $exampleBatchNo . '</strong>', ['class' => 'secondary-text']),
-                                    'class' => 'batch',
-                                    'escape' => false
-
-                                ]
-                            ); ?> -->
+                           
                             </div>
                         </div>
 

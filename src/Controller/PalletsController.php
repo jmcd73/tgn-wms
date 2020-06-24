@@ -377,8 +377,17 @@ class PalletsController extends AppController
         } else {
             $this->Flash->error(__('The pallet could not be deleted. Please, try again.'));
         }
+        $this->request->trustProxy = true;
+        $referer = $this->request->referer($local = false);
+        $host = $this->request->host();
+        $scheme = $this->request->scheme();
+        tog($scheme, $host, $scheme . '://' . $host , $referer);
+        if( preg_match('/^' . $scheme . ':\/\/' . $host .'/' , $referer ) === 1 ) {
+            return $this->redirect($referer);
+        }
 
-        return $this->redirect($this->request->referer());
+        return $this->redirect(['action' => 'index']);
+       
     }
 
     /**
