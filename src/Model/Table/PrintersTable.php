@@ -7,6 +7,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Http\ServerRequest;
 
 /**
  * Printers Model
@@ -107,13 +108,20 @@ class PrintersTable extends Table
         return $rules;
     }
 
-    public function getCupsURL($request)
+    /**
+     * 
+     * @param \Cake\Http\ServerRequest $request 
+     * @return string 
+     */
+    public function getCupsURL(ServerRequest $request): string
     {
-        $getEnv = getenv('CUPS_PORT');
+        $cupsPort = getenv('CUPS_PORT');
+        $webDir = getenv('WEB_DIR');
+
 
         // if its not in a docker container then
         // return the default port
-        $cupsPort = $getEnv === false ? 631 : $getEnv;
+        $cupsPort = $cupsPort === false ? 631 : $cupsPort;
 
         // $request->is('ssl') ? 'https' : 'http';
         // scheme must be https to add printers
@@ -121,6 +129,12 @@ class PrintersTable extends Table
         $host = $request->host();
         $hostPart = explode(':', $host)[0];
 
-        return sprintf('%s://%s:%s', $scheme, $hostPart, $cupsPort);
+        if($hostPart === 'localhost') {
+            return sprintf('%s://%s:%s', $scheme, $hostPart, $cupsPort);
+        } else {
+            return sprintf('%s://%s/%s', $scheme, $host, $webDir . '/cups/');
+        }
+
+        
     }
 }
