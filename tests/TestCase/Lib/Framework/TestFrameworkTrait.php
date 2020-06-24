@@ -7,7 +7,12 @@ use Cake\Filesystem\Folder;
 
 trait TestFrameworkTrait
 {
-    protected $outputDir = '/home/jm/sites/afewms/PDF';
+
+    protected $outputDir = '';
+
+    public function __construct() {
+        $this->outputDir = '/var/www/' . getenv('WEB_DIR') . '/PDF';
+    }
 
     public function stripSpacesAndNewLines($inputString)
     {

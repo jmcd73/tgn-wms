@@ -26,10 +26,7 @@ class ShipmentsTableTest extends TestCase
      */
     protected $fixtures = [
         'app.Shipments',
-        'app.Operators',
-        'app.TruckRegistrations',
         'app.ProductTypes',
-        'app.Labels',
         'app.Pallets',
     ];
 
