@@ -64,7 +64,7 @@ class PagesControllerTest extends TestCase
     {
         Configure::write('debug', false);
         $this->get('/pages/not_existing');
-
+        
         $this->assertResponseError();
         $this->assertResponseContains('Error');
     }
