@@ -7,7 +7,7 @@ use Cake\Filesystem\Folder;
 
 trait TestFrameworkTrait
 {
-    protected $outputDir = '/Users/jmcd/sites/tgn-wms-cakephp4/PDF';
+    protected $outputDir = '/home/jm/sites/afewms/PDF';
 
     public function stripSpacesAndNewLines($inputString)
     {

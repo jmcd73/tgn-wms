@@ -12,6 +12,7 @@ use App\Lib\PrintLabels\Glabel\ShippingLabelGeneric;
 use App\Lib\PrintLabels\LabelFactory;
 use Cake\Log\LogTrait;
 use Cake\TestSuite\TestCase;
+use Cake\Core\Configure;
 
 /**
  * Carton Test Case
@@ -30,7 +31,7 @@ class LabelFactoryTest extends TestCase
      *
      * @return void
      */
-    public function tearDown():void
+    public function tearDown(): void
     {
         parent::tearDown();
     }
@@ -42,40 +43,38 @@ class LabelFactoryTest extends TestCase
      */
     public function testLabelFactoryWorks()
     {
-        $LabelFactory = LabelFactory::create('glabelSampleLabels');
 
-        $expectedClass = '\App\Lib\PrintLabels\Glabel\GlabelSample';
+        $testClasses = Configure::read('PrintLabelClasses');
 
-        $this->assertInstanceOf($expectedClass, $LabelFactory);
+        foreach ($testClasses as $k => $className ) {
+
+                $LabelFactory = LabelFactory::create($className, 'james');
+
+                $this->assertInstanceOf($className, $LabelFactory);
+        }
+
     }
+
+
 
     public function testLabelFactoryThrows()
     {
-        $bogusAction = 'bogusAction';
-        $expectedMessage = 'Cannot find Lib/Print class for ' . $bogusAction;
-        $this->expectException(MissingConfigurationException::class, $expectedMessage);
-        LabelFactory::create($bogusAction);
-    }
-
-    public function testAllClassesExist()
-    {
-        $bogusActions = LabelFactory::$actionToClassMap;
-
-        foreach ($bogusActions as $key => $value) {
-            $expectedClass = $value;
-            $LabelFactory = LabelFactory::create($key);
-            $this->assertInstanceOf($expectedClass, $LabelFactory);
-        }
+        $bogusClass = '\App\Lib\Harhar';
+        $expectedMessage = 'Cannot find ' . $bogusClass;
+        $this->expectException(MissingConfigurationException::class);
+        $this->expectExceptionMessage($expectedMessage);
+        LabelFactory::create($bogusClass, 'james');
     }
 
     public function testPrintCountIsCorrect()
     {
-        $classMap = LabelFactory::$actionToClassMap;
+        $classMap = Configure::read('PrintLabelClasses');
+
         echo "\n";
         foreach ($classMap as $key => $value) {
             $expectedClass = $value;
-            $labelFactory = LabelFactory::create($key);
-            echo $key . ':' . $value . ' variablePages = "' . (string) $labelFactory->getVariablePages() . '"' . "\n";
+            $labelFactory = LabelFactory::create($value, 'james');
+            echo $value . ' variablePages = "' . (string) $labelFactory->getVariablePages() . '"' . "\n";
             $this->assertInstanceOf($expectedClass, $labelFactory);
         }
     }
