@@ -1,7 +1,6 @@
 <?php
 
 $appName = 'Toggen WMS';
-$companyName = 'Australasian Food Exports Pty Ltd';
 
 $glabelsBatchBinary = file_exists('/.dockerenv') ? [
     '/usr/bin/xvfb-run', '--',
@@ -65,13 +64,7 @@ return [
                 'customPrint',
                 'sampleLabels',
                 'ssccLabel', ],
-        ], ],
-    // setting in settings table that holds the GS1 Company Prefix for use with
-    // SSCC labels
-    'SSCC_COMPANY_PREFIX' => 'sscc_company_prefix',
-    'SSCC_EXTENSION_DIGIT' => 'sscc_extension_digit',
-    'SSCC_REF' => 'sscc_ref',
-    'companyName' => $companyName,
+        ], ],    
     'applicationName' => $appName,
     'labelMaxCopies' => 400,
     'App' => [
@@ -81,7 +74,6 @@ return [
         'limit' => 20,
         'maxLimit' => 30,
     ],
-    'MaxShippingLabels' => 70,
     'LabelsRolesActions' => [
         [
             'roles' => ['qa'], // single value must be array
