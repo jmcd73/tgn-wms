@@ -32,6 +32,7 @@ class RbacPolicy extends CakedcRbacPolicy
     protected $_defaultConfig = [
         'adapter' => [
             'className' => Rbac::class,
+            'log' => false,
         ],
     ];
 
