@@ -119,6 +119,9 @@ class CtrlComponent extends Component
 
     public function getPrintClasses(){
         $printClasses = Configure::read('PrintLabelClasses');
-        return Hash::combine($printClasses, '{s}', '{s}');
+      
+        sort($printClasses, SORT_STRING);
+      
+        return Hash::combine($printClasses, '{n}', '{n}');
     }
 }
