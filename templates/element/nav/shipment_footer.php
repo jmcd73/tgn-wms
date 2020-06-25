@@ -1,13 +1,9 @@
-<?php
-use Cake\Core\Configure;
-
-$navbarInverse = !Configure::read('navbarInverse') ? '' : ' navbar-inverse';
-
-?>
-<div class="navbar fixed-bottom navbar-light bg-light<?=$navbarInverse; ?>">
-    <div class="row">
-        <div class="col text-center">
-            <button type="submit" class="col-lg-offset-5 btn btn-primary navbar-btn">Submit</button>
+<div class="navbar fixed-bottom navbar-light bg-light">
+    <div class="container">
+        <div class="row w-100 text-center">
+            <div class="col">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
         </div>
     </div>
 </div>
