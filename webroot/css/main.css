@@ -920,3 +920,7 @@ div.alert-danger::before {
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
 
+div.form-group.multicheckbox.is-invalid > div.invalid-feedback {
+  display: block;
+  font-size: .9rem;
+}

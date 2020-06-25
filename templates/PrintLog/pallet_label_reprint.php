@@ -52,9 +52,8 @@
                 [
                     'type' => 'radio',
                     'label' => '',
-                    'default' => $printers['default'] ? $printers['default'] : '',
+                    'value' => $printers['default'] ? $printers['default'] : '',
                     'options' => $printers['printers'],
-
                 ]
             ); ?>
             <h4 class="tpad">Label Copies</h4>

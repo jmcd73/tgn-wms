@@ -8,6 +8,9 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 use Cake\Http\ServerRequest;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
+use PhpParser\Node\Expr\Instanceof_;
 
 /**
  * Printers Model
@@ -44,6 +47,7 @@ class PrintersTable extends Table
 
         $this->setTable('printers');
         $this->setDisplayField('name');
+        $this->addBehavior('TgnUtils');
         $this->setPrimaryKey('id');
 
         $this->hasMany('Pallets', [
@@ -73,7 +77,6 @@ class PrintersTable extends Table
         $validator
             ->scalar('name')
             ->maxLength('name', 45)
-            ->allowEmptyString('name')
             ->add('name', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
@@ -87,13 +90,17 @@ class PrintersTable extends Table
             ->allowEmptyString('queue_name');
 
         $validator
-            ->scalar('set_as_default_on_these_actions')
-            ->maxLength('set_as_default_on_these_actions', 2000)
-            ->allowEmptyString('set_as_default_on_these_actions');
+            ->allowEmptyString('set_as_default_on_these_actions')
+            ->add('set_as_default_on_these_actions', 'checkDups', [
+                'rule' => 'checkActionsDups',
+                'message' => 'No dups',
+                'provider' => 'table'
+            ]);
 
         return $validator;
     }
 
+    
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
@@ -104,6 +111,14 @@ class PrintersTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->isUnique(['name']));
+        $rules->addDelete($rules->isNotLinkedTo(
+            'ProductionLines', 'production_lines', 
+            'Please unlinked printer from production lines before deleting this printer'
+        ));
+        $rules->addDelete($rules->isNotLinkedTo(
+            'Pallets', 'printers', 
+            'Printers can not be deleted when they have pallets associated with them'
+        ));
 
         return $rules;
     }
@@ -134,7 +149,71 @@ class PrintersTable extends Table
         } else {
             return sprintf('%s://%s/%s', $scheme, $host, $webDir . '/cups/');
         }
+    }
 
+    /**
+     *
+     * @param  \Cake\Event\Event                $event   Event
+     * @param  \Cake\Datasource\EntityInterface $entity  EntityInterface
+     * @param  array                            $options Options array
+     * @return void
+     * @throws \Cake\Core\Exception
+     */
+    public function beforeSave(Event $event, EntityInterface $entity, $options = [])
+    {
+      
+    } 
+
+    public function checkActionsDups($value, $context) {
         
+        if ($context['newRecord']) {
+            $options = [ 1 => 1 ]; 
+        } else {
+            $options = [ 'NOT' => [ 'id' => $context['data']['id']]];
+        }
+
+        $records = $this->find()->where($options)->toArray();
+        
+        $matches = [];
+
+       
+        if(is_array($value)) {
+           $compare = $value ;
+        } elseif (strlen($value) > 0) {
+            $compare = explode("\n", $value);
+        } else {
+            return true;
+        }
+
+        foreach ($records as $record ) {
+            if(strlen($record['set_as_default_on_these_actions']) > 0 ) {
+                $actions = explode("\n", $record['set_as_default_on_these_actions']);
+                $intersect = array_intersect($compare, $actions);
+                if(count($intersect) > 0 ) {
+                    $matches[] = [ 
+                        'printer' => $record['name'],
+                        'matches' => $intersect
+                    ];
+                }
+             
+            }
+         
+        }
+
+       // tog($records, $value, $matches);
+     
+        if(count($matches) > 0) {
+            $msg = 'You need to remove ';
+            foreach($matches as $match) {
+                    $msg .= join(", ", $match['matches']) . ' from ' . $match['printer'] .'. ';
+            }
+            $msg .= " to add it as a default on this printer.";
+            return $msg;
+        }
+
+        tog("Got to return true");
+
+        return true;
+
     }
 }

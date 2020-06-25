@@ -841,8 +841,6 @@ class PrintLogController extends AppController
 
         $pallet = $palletTable->get($id, $options);
 
-        //tog(['pl' => $pallet]);
-
         $palletTable->getValidator()->add('printer_id', 'required', [
             'rule' => 'notBlank',
             'message' => 'Please select a printer',

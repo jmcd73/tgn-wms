@@ -95,6 +95,8 @@ class CtrlComponent extends Component
                 }
             }
         }
+        
+        sort($flattened, SORT_STRING);
 
         return array_combine($flattened, $flattened);
     }

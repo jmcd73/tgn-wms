@@ -46,6 +46,12 @@ class Printer extends Entity
 
     protected function _getArrayOfActions()
     {
-        return explode("\n", $this->set_as_default_on_these_actions);
+        if( is_string( $this->set_as_default_on_these_actions )) {
+            return explode("\n", $this->set_as_default_on_these_actions);
+        }
+        
+        return [];
     }
+
+   
 }
