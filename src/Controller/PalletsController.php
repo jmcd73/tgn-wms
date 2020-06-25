@@ -93,18 +93,18 @@ class PalletsController extends AppController
 
         if ($this->request->is('post')) {
             $data = $this->request->getData();
-            
+
             $formName = $data['formName'];
 
             if ($forms[$formName]->validate($data)) {
 
                 $newData = [];
-                
+
                 foreach ($data as $key => $value) {
                     $newKey = str_replace($formName . '-', '', $key);
                     $newData[$newKey] = $value;
                 }
-                
+
                 $data = $newData;
 
                 $productionLineId = $data['production_line'];
@@ -117,20 +117,17 @@ class PalletsController extends AppController
                 $printerId = $productionLine['printer_id'];
                 try {
                     $printerDetails = $this->Pallets->Printers->get($printerId);
-
                 } catch (\Throwable $th) {
-        
-                        throw new MissingConfigurationException(
-                            [
-                                'message' => 'Printer',
-                                'printer' => $printerId,
-                            ],
-                            404
-                        );
-        
-    
+
+                    throw new MissingConfigurationException(
+                        [
+                            'message' => 'Printer',
+                            'printer' => $printerId,
+                        ],
+                        404
+                    );
                 }
-                
+
                 $sscc = $this->Pallets->generateSSCCWithCheckDigit();
 
                 $pallet_ref = $this->Pallets->createPalletRef($productTypeId);
@@ -201,35 +198,33 @@ class PalletsController extends AppController
                     'batch' => $data['batch_no'],
                     'numLabels' => $labelCopies,
                     'ssccBarcode' => '[00]' . $sscc,
-                    'itemBarcode' => '[02]' .$item_detail['trade_unit'] .
+                    'itemBarcode' => '[02]' . $item_detail['trade_unit'] .
                         '[15]' . $bestBeforeDates['bb_bc'] . '[10]' .  $data['batch_no'] .
                         '[37]' . $qty,
                     'brand' =>  $item_detail['brand'],
-                    'variant'=>  $item_detail['variant'],
+                    'variant' =>  $item_detail['variant'],
                     'quantity_description' =>  $item_detail['quantity_description'],
                 ];
 
                 $this->loadModel('PrintLog');
-             
-                if ( $item_detail->print_template->is_file_template ) {
+
+                if ($item_detail->print_template->is_file_template) {
 
                     $template = $this->PrintLog->getGlabelsProject(
                         $item_detail->print_template->id
                     );
                     $printResult = LabelFactory::create($template->details->print_class, $this->request->getParam('action'))
-                    ->format($cabLabelData)
-                    ->print($printerDetails, $template);
-    
-                    $template = $template->details;
-                    
-                } else {
-                    
-                    $template = $item_detail->print_template;
-              
-                    $printResult = LabelFactory::create($template->print_class, $this->request->getParam('action'))
-                    ->format($template, $cabLabelData)
-                    ->print($printerDetails);
+                        ->format($cabLabelData)
+                        ->print($printerDetails, $template);
 
+                    $template = $template->details;
+                } else {
+
+                    $template = $item_detail->print_template;
+
+                    $printResult = LabelFactory::create($template->print_class, $this->request->getParam('action'))
+                        ->format($template, $cabLabelData)
+                        ->print($printerDetails);
                 }
 
                 $isPrintDebugMode = Configure::read('pallet_print_debug');
@@ -381,13 +376,12 @@ class PalletsController extends AppController
         $referer = $this->request->referer($local = false);
         $host = $this->request->host();
         $scheme = $this->request->scheme();
-        tog($scheme, $host, $scheme . '://' . $host , $referer);
-        if( preg_match('/^' . $scheme . ':\/\/' . $host .'/' , $referer ) === 1 ) {
+      
+        if (preg_match('/^' . $scheme . ':\/\/' . $host . '/', $referer) === 1) {
             return $this->redirect($referer);
         }
 
         return $this->redirect(['action' => 'index']);
-       
     }
 
     /**
@@ -523,7 +517,7 @@ class PalletsController extends AppController
         );
     }
 
-  
+
     /**
      * @param string $aisle Aisle to find columns and levels for
      *
@@ -1089,7 +1083,7 @@ class PalletsController extends AppController
             ];
 
             $bb_date = new FrozenTime($pallet['bb_date']);
-            
+
             $bestBeforeDates = $this->Pallets->formatLabelDates(
                 $bb_date,
                 $dateFormats
