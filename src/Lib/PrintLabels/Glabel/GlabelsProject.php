@@ -9,6 +9,7 @@ use App\Lib\PrintLabels\Template;
 use App\Model\Entity\PrintTemplate;
 use Cake\Core\Configure;
 use SimpleXMLElement;
+use App\Lib\Utility\SettingsTrait;
 
 use InvalidArgumentException;
 
@@ -20,6 +21,7 @@ use InvalidArgumentException;
  */
 class GlabelsProject extends Template
 {
+    use SettingsTrait;
     private $mergePath = '/dev/stdin';
     public $filePath = '';
     private $companyName = '';
@@ -28,7 +30,7 @@ class GlabelsProject extends Template
     {
         parent::__construct($template, $glabelsRoot);
 
-        $this->companyName = Configure::read("companyName");
+        $this->companyName = $this->getSetting("COMPANY_NAME");
 
         $this->filePath = $this->getFilePath($template, $glabelsRoot);
 
@@ -95,7 +97,7 @@ class GlabelsProject extends Template
 
     public function replaceCompanyName($haystack): array
     {
-        $replaced = str_replace('{{COMPANYNAME}}', $this->companyName, $haystack, $count);
+        $replaced = str_replace('{{COMPANY_NAME}}', $this->companyName, $haystack, $count);
         return [$replaced, $count];
     }
 }
