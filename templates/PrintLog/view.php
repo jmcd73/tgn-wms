@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\PrintLog $printLog
@@ -37,7 +38,9 @@
         </table>
     </div>
     <div class="row">
-        <h4><?= __('Print Data') ?></h4>
-        <?= $this->Text->autoParagraph(h($printLog->print_data)); ?>
+        <div class="col">
+            <h4><?= __('Print Data') ?></h4>
+            <pre><?= '<script>document.write(JSON.stringify(' . $printLog->print_data . ', null, "    "))</script>'; ?></pre>  
+        </div>
     </div>
 </div>

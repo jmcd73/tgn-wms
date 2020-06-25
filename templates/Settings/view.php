@@ -33,7 +33,9 @@
         </table>
     </div>
     <div class="row">
+        <div class="col">
         <h4><?= __('Comment') ?></h4>
         <?= $this->Text->autoParagraph(h($setting->comment)); ?>
+        </div>
     </div>
 </div>
