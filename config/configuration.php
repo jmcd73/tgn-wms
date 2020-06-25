@@ -53,6 +53,7 @@ return [
             ],
             'PrintLog' => [
                 'printCartonLabels',
+                'palletLabelReprint',
                 'cartonPrint',
                 'crossdockLabels',
                 'shippingLabels',
@@ -64,7 +65,8 @@ return [
                 'customPrint',
                 'sampleLabels',
                 'ssccLabel', ],
-        ], ],    
+        ], ],
+    
     'applicationName' => $appName,
     'labelMaxCopies' => 400,
     'App' => [
