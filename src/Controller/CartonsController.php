@@ -137,18 +137,15 @@ class CartonsController extends AppController
             ]
         )->contain(['Cartons', 'Shipments', 'Items'])->first();
 
-        $this->log(print_r($palletCartons, true));
 
         if (isset($palletCartons['shipment']['shipped']) && (bool)$palletCartons['shipment']['shipped']) {
             $this->Flash->error('Cannot edit cartons on a pallet that is already shipped');
 
-            return $this->redirect($this->referer());
+            return $this->redirect($this->request->referer(false));
         }
 
         if ($this->request->is(['POST', 'PUT'])) {
             $data = $this->request->getData();
-
-            $this->log('DATA' . print_r($data, true));
 
             $update = array_filter($data['cartons'], function ($item) {
                 return $item['count'] > 0 && $item['production_date'];
@@ -195,11 +192,14 @@ class CartonsController extends AppController
 
             if ($update) {
                 $entities = $this->Cartons->find()->where(['id IN' => $updateIds]);
+                foreach($update as $k => $v) {
+                    $update[$k]['user_id'] = $user->get('id');
+                }
                 $patched = $this->Cartons->patchEntities($entities, $update);
                 foreach ($patched as $p) {
                     $this->log(print_r($p->getErrors(), true));
                 }
-                $this->log(print_r($patched, true));
+              
                 if ($this->Cartons->saveMany($patched)) {
                     $updateOK = true;
                 } else {
@@ -216,13 +216,9 @@ class CartonsController extends AppController
             }
 
             if (($update && $updateOK) || ($deleteIds && $deleteOK)) {
-                return $this->redirect(
-                    [
-                        'controller' => 'Pallets',
-                        'action' => 'view',
-                        $palletId,
-                    ]
-                );
+                $this->Flash->success("Successfully updated carton records");
+              
+                return $this->redirect($this->request->getData('referer'));
             }
         }
         $cartons = $palletCartons['cartons'];
@@ -238,6 +234,8 @@ class CartonsController extends AppController
             $palletCartons['pallets']['qty_user_id'] = $user->get('id');
         }
 
-        $this->set(compact('palletCartons'));
+        $referer = $this->request->referer(false);
+        
+        $this->set(compact('palletCartons', 'referer'));
     }
 }

@@ -101,10 +101,13 @@ class LocationsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $location = $this->Locations->get($id);
-        if ($this->Locations->delete($location)) {
+        $result = $this->Locations->delete($location);
+        if ($result) {
             $this->Flash->success(__('The location has been deleted.'));
         } else {
-            $this->Flash->error(__('The location could not be deleted. Please, try again.'));
+            $error = $this->Locations->formatValidationErrors($location->getErrors());
+            
+            $this->Flash->error(__('The location could not be deleted. Please, try again. {0}' , $error));
         }
 
         return $this->redirect(['action' => 'index']);

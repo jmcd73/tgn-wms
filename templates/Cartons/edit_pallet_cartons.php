@@ -30,6 +30,7 @@
     <?php echo $this->Form->create($palletCartons) ?>
     <?php echo $this->Form->hidden('items.days_life', ['id' => 'ItemDaysLife']); ?>
     <?php echo $this->Form->hidden('qty_user_id'); ?>
+    <?php echo $this->Form->hidden('referer', [ 'value' => $referer]); ?>
     <?php $key = 0; ?>
     <?php foreach ($palletCartons['cartons'] as $carton): ?>
     <?php echo $this->Form->hidden('cartons.' . $key . '.pallet_id'); ?>

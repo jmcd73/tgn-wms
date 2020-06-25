@@ -8,7 +8,7 @@
 
 <?php $this->start('tb_actions'); ?>
 <li><?= $this->Html->link(__('New Printer'), ['action' => 'add'], ['class' => 'nav-link']) ?></li>
-<li><?= $this->Html->link(__('Cups Admin'), $cupsUrl, ['class' => 'nav-link external', 'target' => '_blank']) ?></li>
+<li><?= $this->Html->link(__('CUPS Admin'), $cupsUrl, ['class' => 'nav-link external', 'target' => '_blank']) ?></li>
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', '<ul class="nav flex-column">' . $this->fetch('tb_actions') . '</ul>'); ?>
 
@@ -19,7 +19,7 @@
             <th scope="col"><?= $this->Paginator->sort('active') ?></th>
             <th scope="col"><?= $this->Paginator->sort('name') ?></th>
             <th scope="col"><?= $this->Paginator->sort('options') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('queue_name') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('queue_name' , 'CUPS Queue Name') ?></th>
             <th scope="col"><?= $this->Paginator->sort('set_as_default_on_these_actions') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>

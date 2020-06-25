@@ -9,7 +9,7 @@ class SsccLabel extends Label implements GlabelInterface
 {
     /**
      *   $cabLabelData = [
-                'companyName' => Configure::read('companyName'),
+                'companyName' => $companyName,
                 'internalProductCode' => $palletRecord['Item']['code'],
                 'reference' => $palletRecord['Pallet']['pl_ref'],
                 'sscc' => $palletRecord['Pallet']['sscc'],

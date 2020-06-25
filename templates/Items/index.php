@@ -38,8 +38,7 @@
             <td><?= h($item->code) ?></td>
             <td><?= h($item->description) ?></td>
             <td><?= $this->Number->format($item->quantity) ?></td>
-            <td><?= h($item->trade_unit) ?></td>
-
+            <td><small><strong>GTIN14: </strong></small><?= h($item->trade_unit) . '<br/><small><strong>GTIN13: </strong></small>'.  h($item->consumer_unit)?></td>
             <td><?= $this->Number->format($item->days_life) ?></td>
             <td><?= $item->has('print_template') ? $this->Html->link($item->print_template->name, ['controller' => 'PrintTemplates', 'action' => 'view', $item->print_template->id]) : '' ?>
             </td>

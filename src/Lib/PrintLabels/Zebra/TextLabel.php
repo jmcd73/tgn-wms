@@ -20,8 +20,6 @@ class TextLabel extends Label implements TextLabelInterface
     {
         $printTemplateContents = $printTemplate['text_template'];
 
-        $companyName = Configure::read('companyName');
-
         if (empty($printTemplateContents)) {
             throw new MissingConfigurationException('Cannot find print template for bigNumber');
         }

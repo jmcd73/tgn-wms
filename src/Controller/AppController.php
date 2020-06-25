@@ -22,6 +22,7 @@ use Cake\Core\Configure;
 use Cake\Database\Query;
 use Cake\Event\EventInterface;
 use Cake\ORM\TableRegistry;
+use App\Lib\Utility\SettingsTrait;
 
 /**
  * Application Controller
@@ -33,6 +34,11 @@ use Cake\ORM\TableRegistry;
  */
 class AppController extends Controller
 {
+
+    use SettingsTrait;
+
+    public $companyName = '';
+
     protected $controllerActionsToSkip = [
         'menus::buildMenu',
         'toolbar_access::history_state',
@@ -56,6 +62,9 @@ class AppController extends Controller
         $this->loadComponent('Flash');
 
         $ctrlSettings = Configure::read('Ctrl.printControllersActions');
+
+        $this->companyName = $this->getSetting('COMPANY_NAME');
+        
         $this->loadComponent('Ctrl', $ctrlSettings);
 
         /*
@@ -87,9 +96,13 @@ class AppController extends Controller
             //pr($result->getStatus());
         }
 
+       
+
         $menuTree = $this->getMenuTree();
 
-        $this->set(compact('menuTree'));
+        $companyName = $this->companyName;
+
+        $this->set(compact('menuTree', 'companyName'));
 
         $controllerAction = $this->getControllerAction();
 

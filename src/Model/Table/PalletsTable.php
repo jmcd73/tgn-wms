@@ -17,6 +17,7 @@ use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
+
 /**
  * Pallets Model
  *
@@ -949,6 +950,7 @@ class PalletsTable extends Table
             'print_date' => 'production_date',
             'bb_date' => 'best_before',
             'id' => 'pallet_id',
+            'user_id' => 'user_id'
         ];
 
         if ($isNew) {
@@ -956,6 +958,8 @@ class PalletsTable extends Table
             foreach ($fields as $palletField => $cartonField) {
                 $cartonRecord[$cartonField] = $entity->get($palletField);
             }
+            
+            
 
             $carton = $this->Cartons->newEntity($cartonRecord);
 

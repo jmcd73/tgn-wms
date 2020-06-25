@@ -186,7 +186,7 @@ class PalletsController extends AppController
                     ];
 
                 $cabLabelData = [
-                    'companyName' => Configure::read('companyName'),
+                    'companyName' => $this->companyName,
                     'internalProductCode' => $item_detail['code'],
                     'reference' => $pallet_ref,
                     'sscc' => $sscc,
@@ -440,7 +440,7 @@ class PalletsController extends AppController
                     )
                 ) {
                     $this->Flash->success(__('The data has been saved.'));
-                    return $this->redirect($this->request->referer());
+                    return $this->redirect($this->request->referer(false));
                 };
             }
         }
@@ -590,7 +590,7 @@ class PalletsController extends AppController
 
         $pallet->product_type_id = $item_data['id'];
 
-        $referer = $this->referer();
+        $referer = $this->request->referer(false);
         //$restricted = $this->isAuthorized($this->Auth->user()) ? false : true;
         $restricted = false;
         $user = $this->Authentication->getIdentity();
@@ -827,7 +827,7 @@ class PalletsController extends AppController
             }
         }
 
-        $referer = $this->referer();
+        $referer = $this->request->referer(false);
 
         $availableLocations = $this->Pallets->getAvailableLocations('available', $pallet->product_type_id);
 
@@ -1090,7 +1090,7 @@ class PalletsController extends AppController
             );
 
             $cabLabelData = [
-                'companyName' => Configure::read('companyName'),
+                'companyName' => $this->companyName,
                 'internalProductCode' => $pallet['items']['code'],
                 'reference' => $pallet['pl_ref'],
                 'sscc' => $pallet['sscc'],
@@ -1143,9 +1143,9 @@ class PalletsController extends AppController
             $labelCopiesList[$i] = $i . ' ' . $tag;
         }
 
-        $refer = $this->referer();
+        $refer = $this->request->referer(false);
 
-        $inputDefaultCopies = $this->Pallets->getSetting('sscc_default_label_copies');
+        $inputDefaultCopies = $this->getSetting('sscc_default_label_copies');
 
         $this->set(
             compact(
@@ -1242,7 +1242,7 @@ class PalletsController extends AppController
     {
         //$this->Pallet->Behaviors->load('Containable');
 
-        $cooldown = $this->Pallets->getSetting('cooldown');
+        $cooldown = $this->Pallets->getSetting('COOL_DOWN_HRS');
         $searchForm = new OnhandSearchForm();
 
         /*  $this->Pallet->virtualFields['oncooldown'] = 'TIMESTAMPDIFF(HOUR, Pallet.cooldown_date, NOW()) < ' . $cooldown;
@@ -1290,6 +1290,7 @@ class PalletsController extends AppController
             'Locations' => [
                 'fields' => ['id', 'location'],
             ],
+            'Cartons'
         ];
 
         $options = $this->Pallets->getViewOptions($containSettings);

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Behavior;
 
+use App\Lib\Exception\MissingConfigurationException;
 use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
 use Cake\I18n\FrozenDate;
@@ -13,6 +14,8 @@ use Cake\ORM\Behavior;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
+use App\Lib\Utility\SettingsTrait;
+
 
 /**
  * TgnUtils behavior
@@ -20,6 +23,7 @@ use Cake\Utility\Inflector;
 class TgnUtilsBehavior extends Behavior
 {
     use LogTrait;
+    use SettingsTrait;
 
     /**
      * Default configuration.
@@ -29,31 +33,6 @@ class TgnUtilsBehavior extends Behavior
     protected $_defaultConfig = [];
 
   
-
-    public function getSettingsTable($tableName = 'Settings')
-    {
-        return TableRegistry::getTableLocator()->get($tableName);
-    }
-
-    /**
-     * @param  string $settingname the name of the setting in the settings.setting field of the db
-     * @param  bool   $inComment   some settings are stored in the comment field as they have CR or JSON
-     * @return string
-     */
-    public function getSetting($settingname, bool $inComment = false)
-    {
-        $setting = $this->getSettingsTable()->find()->where(['name' => $settingname])->firstOrFail();
-
-        $setting = $setting->toArray();
-
-        $this->settingId = $setting['id'];
-
-        $slug = $inComment ? 'comment' : 'setting';
-
-        // if it's an array then return the setting otherwise empty string
-
-        return is_array($setting) ? $setting[$slug] : '';
-    }
 
     /**
      * Generate an SSCC number with check digit
@@ -73,11 +52,11 @@ class TgnUtilsBehavior extends Behavior
      */
     public function generateSSCC()
     {
-        $ssccExtensionDigit = $this->getSetting(Configure::read('SSCC_EXTENSION_DIGIT'));
+        $ssccExtensionDigit = $this->getSetting('SSCC_EXTENSION_DIGIT');
 
         $ssccCompanyPrefix = $this->getCompanyPrefix();
 
-        $ssccReferenceNumber = $this->getReferenceNumber(Configure::read('SSCC_REF'), $ssccCompanyPrefix);
+        $ssccReferenceNumber = $this->getReferenceNumber('SSCC_REF', $ssccCompanyPrefix);
 
         return $ssccExtensionDigit . $ssccCompanyPrefix . $ssccReferenceNumber;
     }
@@ -149,7 +128,7 @@ class TgnUtilsBehavior extends Behavior
 
     public function getCompanyPrefix()
     {
-        return $this->getSetting(Configure::read('SSCC_COMPANY_PREFIX'));
+        return $this->getSetting('SSCC_COMPANY_PREFIX');
     }
 
     /**

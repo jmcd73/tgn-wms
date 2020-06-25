@@ -539,6 +539,8 @@ class ShipmentsController extends AppController
         $file_name = $shipment->shipper . $suffix;
 
         $this->response = $this->response->withType('pdf');
+        
+        $companyName = $this->companyName;
 
         $this->set(
             compact(

@@ -8,6 +8,9 @@ use Cake\Core\Configure;
 
 $this->Html->css('BootstrapUI.dashboard', ['block' => true]);
 $this->prepend('tb_body_attrs', ' class="' . implode(' ', [$this->request->getParam('controller'), $this->request->getParam('action')]) . '" ');
+ ?>
+<?php
+
 $this->start('tb_body_start');
 ?>
 
@@ -18,6 +21,11 @@ $this->start('tb_body_start');
             <nav class="col-md-2 col-sm-12 d-md-block bg-light">
               
                 <div class="sidebar-sticky h-auto mb-2">
+                    <?php if( !empty($helpPage)): ?>
+                        <ul class="nav flex-column">
+                            <li><?= $this->element('help/page_help'); ?></li>
+                        </ul>
+                    <?php endif; ?>
                     <?= $this->fetch('tb_sidebar') ?>
                 </div>
             </nav>

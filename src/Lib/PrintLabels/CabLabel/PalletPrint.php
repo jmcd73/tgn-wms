@@ -21,8 +21,6 @@ class PalletPrint extends Label implements TextLabelInterface
         $printTemplateContents = $printTemplate['text_template'];
         $templateTokens = json_decode($printTemplate['replace_tokens']);
 
-        $companyName = Configure::read('companyName');
-
         if (empty($printTemplateContents) || empty($templateTokens)) {
             throw new MissingConfigurationException('Cannot find print template for bigNumber');
         }

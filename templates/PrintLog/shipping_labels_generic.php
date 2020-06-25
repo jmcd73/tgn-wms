@@ -24,7 +24,7 @@ use Cake\Core\Configure;
             'maxlength' => 48,
             'size' => 48,
 
-            'default' => Configure::read('companyName'),
+            'default' => $companyName,
             'placeholder' => 'Company Name',
         ]); ?>
         <?= $this->Form->control('productName', [

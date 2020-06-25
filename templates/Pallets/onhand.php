@@ -42,6 +42,10 @@ use App\View\Helper\ToggenHelper;
         On cooldown
         <span class="label label-primary"><?php echo $cooldown; ?> hours</span>
     </div>
+    <div class="bg-secondary alert">
+        <?= $this->Html->icon('calendar-plus'); ?>
+              <span class="label label-primary">Mixed date pallet</span>
+    </div>
 </div>
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', $this->fetch('tb_actions')); ?>
@@ -83,6 +87,9 @@ use App\View\Helper\ToggenHelper;
                         $cls = 'bg-warning';
                     } elseif ($pallet['dont_ship']) {
                         $cls = 'bg-danger';
+
+                    } elseif ( count($pallet['cartons']) > 1 ) {
+                        $cls = 'bg-secondary';
                     } else {
                         $cls = '';
                     }
@@ -90,6 +97,7 @@ use App\View\Helper\ToggenHelper;
                 ?>
                 <tr>
                     <td <?= $classString; ?>>
+                        <?php if($pallet->has('location')): ?>
                         <?php echo $this->Html->tag('a', '', [
                             'id' => $pallet['pl_ref'],
                             'class' => 'anchor', ]);
@@ -103,6 +111,9 @@ use App\View\Helper\ToggenHelper;
                                 ]
                             );
                         ?>
+                        <?php else: ?>
+                            Missing Location 
+                        <?php endif; ?>
                     </td>
                     <td <?= $classString; ?>><?=  h($pallet->code_desc); ?></td>
                     <td <?= $classString; ?>>

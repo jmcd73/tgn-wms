@@ -19,7 +19,7 @@ class HelpController extends AppController
     {
 
         parent::initialize();
-        $this->docsRoot = $this->Help->getSetting('DOCUMENTATION_ROOT');
+        $this->docsRoot = $this->getSetting('DOCUMENTATION_ROOT');
         $this->fullPathDocumentationRoot = WWW_ROOT . $this->docsRoot;
         
     }
@@ -73,7 +73,10 @@ class HelpController extends AppController
         $mdFiles = $this->Help->listMdFiles($this->fullPathDocumentationRoot);
         $markdownDocuments = array_combine($mdFiles, $mdFiles);
         $controllerActions = $this->Ctrl->getMenuActions();
-        $this->set(compact('controllerActions', 'documentationRoot', 'markdownDocuments'));
+
+        $this->set('documentationRoot', $this->docRoot);
+
+        $this->set(compact('controllerActions', 'markdownDocuments'));
 
         $this->set(compact('help'));
     }
@@ -103,8 +106,9 @@ class HelpController extends AppController
         $mdFiles = $this->Help->listMdFiles($this->fullPathDocumentationRoot);
         $markdownDocuments = array_combine($mdFiles, $mdFiles);
         $controllerActions = $this->Ctrl->getMenuActions();
-        $this->set(compact('controllerActions', 'documentationRoot', 'markdownDocuments'));
+        $this->set(compact('controllerActions', 'markdownDocuments'));
         $this->set(compact('help'));
+        $this->set('documentationRoot', $this->docsRoot);
     }
 
     /**

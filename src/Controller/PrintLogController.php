@@ -285,7 +285,7 @@ class PrintLogController extends AppController
                 $this->Flash->error('Invalid data');
             }
         }
-        $maxShippingLabels = $this->PrintLog->getSetting('MaxShippingLabels');
+        $maxShippingLabels = $this->PrintLog->getSetting('MAX_SHIPPING_LABELS');
 
         $sequence = $this->PrintLog->createSequenceList($maxShippingLabels);
 
@@ -293,7 +293,7 @@ class PrintLogController extends AppController
             $controllerAction
         );
 
-        $companyName = Configure::read('companyName');
+        $companyName = $this->companyName;
 
         $this->set(compact('template', 'companyName', 'sequence', 'printers', 'form'));
     }
@@ -304,7 +304,7 @@ class PrintLogController extends AppController
      */
     public function shippingLabels()
     {
-        $maxShippingLabels = $this->PrintLog->getSetting('MaxShippingLabels');
+        $maxShippingLabels = $this->PrintLog->getSetting('MAX_SHIPPING_LABELS');
 
         $shippingLabel = new ShippingLabelsForm();
 
@@ -343,7 +343,7 @@ class PrintLogController extends AppController
 
         $sequence = $this->PrintLog->createSequenceList($maxShippingLabels);
 
-        $totalLabels = $this->PrintLog->getSetting('shipping_label_total');
+        $totalLabels = $this->PrintLog->getSetting('MAX_SHIPPING_LABELS');
 
         $printers = $this->PrintLog->getLabelPrinters(
             $this->request->getParam('controller') . '::' . $this->request->getParam('action')
@@ -404,7 +404,9 @@ class PrintLogController extends AppController
             }
         }
 
-        $this->set(compact('template', 'printers', 'form'));
+        $companyName = $this->companyName;
+
+        $this->set(compact('template', 'printers', 'form', 'companyName'));
     }
 
     /**
@@ -635,7 +637,7 @@ class PrintLogController extends AppController
 
         $form = new SampleLabelForm();
 
-        $maxShippingLabels = $this->PrintLog->getSetting('MaxShippingLabels');
+        $maxShippingLabels = $this->PrintLog->getSetting('MAX_SHIPPING_LABELS');
         $controller = $this->request->getParam('controller');
         $action = $this->request->getParam('action');
 
@@ -690,7 +692,7 @@ class PrintLogController extends AppController
         $palletTable = TableRegistry::get('Pallets');
 
         if ($id === null) {
-            return $this->redirect($this->referer());
+            return $this->redirect($this->request->referer(false));
         }
 
         $options = [
@@ -739,7 +741,7 @@ class PrintLogController extends AppController
 
             $cabLabelData = [
                 'printDate' => $pallet['print_date'],
-                'companyName' => Configure::read('companyName'),
+                'companyName' => $this->companyName,
                 'internalProductCode' => $pallet['items']['code'],
                 'reference' => $pallet['pl_ref'],
                 'sscc' => $pallet['sscc'],
@@ -788,7 +790,7 @@ class PrintLogController extends AppController
 
         $labelCopies = $pallet['pallet_label_copies'] > 0
             ? $pallet['pallet_label_copies']
-            : $this->PrintLog->getSetting('sscc_default_label_copies');
+            : $this->PrintLog->getSetting('SSCC_DEFAULT_LABEL_COPIES');
 
         $tag = 'Pallet';
 
@@ -805,7 +807,7 @@ class PrintLogController extends AppController
 
         $refer = $this->request->referer();
 
-        $inputDefaultCopies = $this->PrintLog->getSetting('sscc_default_label_copies');
+        $inputDefaultCopies = $this->PrintLog->getSetting('SSCC_DEFAULT_LABEL_COPIES');
 
         $this->set(
             compact(
@@ -825,7 +827,7 @@ class PrintLogController extends AppController
         $palletTable = TableRegistry::get('Pallets');
 
         if ($id === null) {
-            return $this->redirect($this->referer());
+            return $this->redirect($this->request->referer(false));
         }
 
         $options = [
@@ -876,7 +878,7 @@ class PrintLogController extends AppController
 
             $cabLabelData = [
                 'printDate' => $pallet['print_date'],
-                'companyName' => Configure::read('companyName'),
+                'companyName' => $this->companyName,
                 'internalProductCode' => $pallet['items']['code'],
                 'reference' => $pallet['pl_ref'],
                 'sscc' => $pallet['sscc'],
@@ -942,7 +944,7 @@ class PrintLogController extends AppController
 
         $labelCopies = $pallet['pallet_label_copies'] > 0
             ? $pallet['pallet_label_copies']
-            : $this->PrintLog->getSetting('sscc_default_label_copies');
+            : $this->PrintLog->getSetting('SSCC_DEFAULT_LABEL_COPIES');
 
         $tag = 'Copy';
 
@@ -959,7 +961,7 @@ class PrintLogController extends AppController
 
         $refer = $this->request->referer();
 
-        $inputDefaultCopies = $this->PrintLog->getSetting('sscc_default_label_copies');
+        $inputDefaultCopies = $this->PrintLog->getSetting('SSCC_DEFAULT_LABEL_COPIES');
 
         $this->set(
             compact(
