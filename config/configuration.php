@@ -9,6 +9,8 @@ $glabelsBatchBinary = file_exists('/.dockerenv') ? [
     '/usr/local/bin/glabels-batch-qt', '--',
 ];
 
+$glabelsBatchBinary = [ '/usr/local/bin/glabels-3-batch' ];
+
 return [
     // in Lib/Utility/Barcode
     'BATCH_FORMATS' => [
@@ -24,7 +26,7 @@ return [
     'ALLOWED_METHODS' => ['PUT', 'POST'],
     'ALLOWED_ORIGINS' => ['http://localhost:3000', 'http://localhost:8082'],
     'MAX_COPIES' => 100,
-    'GLABELS_LIBRARY_PATH' => '/usr/local/glabels-qt/usr/lib',
+    'GLABELS_LIBRARY_PATH' => '/usr/local/glabels-qt/usr/lib', // not needed for glabels-3-batch
     'GLABELS_BATCH_BINARY' => $glabelsBatchBinary,
     'timezones' => DateTimeZone::AUSTRALIA, // extras with a pipe | DateTimeZone::EUROPE,
     'dateFormat' => 'd/m/Y',

@@ -75,7 +75,7 @@ class PrintersController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             }
-            tog($printer->getErrors());
+            
             $this->Flash->error(__('The printer could not be saved. Please, try again.'));
         }
 

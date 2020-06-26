@@ -115,8 +115,6 @@ class ShipmentsTable extends Table
         ]);
 
         /* $rules->addUpdate(function ($entity, $options) {
-            //tog($entity->getDirty(), $options, $entity);
-
             return $entity->shipped && $entity->isDirty('shipped');
         }, 'cantUpdate', [
             'errorField' => 'shipped',

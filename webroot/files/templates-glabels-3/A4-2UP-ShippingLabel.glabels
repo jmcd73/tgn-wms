@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<Glabels-document xmlns="http://glabels.org/xmlns/3.0/">
+  <Template brand="PPS Shipping Labels 2 UP 100 Pack" part="PPS78168" size="A4" description="Shipping labels">
+    <Meta category="user-defined"/>
+    <Label-rectangle id="0" width="199.6mm" height="143.5mm" round="0mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin size="0mm"/>
+      <Layout nx="1" ny="2" x0="5.2mm" y0="5mm" dx="199.6mm" dy="143.5mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="True">
+    <Object-text x="3.736mm" y="3.70729mm" w="136.028mm" h="10.5833mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="24" font_weight="Regular" font_italic="False" line_spacing="1">Australasian Food Exports Pty Ltd</Span>
+    </Object-text>
+    <Object-text x="3.4105mm" y="18.7005mm" w="136.679mm" h="20.4611mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="50" font_weight="Regular" font_italic="False" line_spacing="1">
+        <Field name="4"/>
+      </Span>
+    </Object-text>
+    <Object-text x="3.4105mm" y="170.378mm" w="136.679mm" h="20.4611mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="50" font_weight="Regular" font_italic="False" line_spacing="1"><Field name="5"/> of <Field name="6"/></Span>
+    </Object-text>
+    <Object-text x="3.4105mm" y="142.623mm" w="136.679mm" h="20.4611mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="50" font_weight="Regular" font_italic="False" line_spacing="1">
+        <Field name="3"/>
+      </Span>
+    </Object-text>
+    <Object-text x="3.4105mm" y="46.2312mm" w="136.679mm" h="86.6401mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="50" font_weight="Regular" font_italic="False" line_spacing="1">
+        <Field name="2"/>
+      </Span>
+    </Object-text>
+  </Objects>
+  <Merge type="Text/Comma" src="/dev/stdin"/>
+  <Data/>
+</Glabels-document>

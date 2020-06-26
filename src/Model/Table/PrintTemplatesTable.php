@@ -152,9 +152,9 @@ class PrintTemplatesTable extends Table
             ->allowEmptyFile('upload_file_template')
             ->uploadedFile('upload_file_template', [
                 'types' => ['application/gzip', 'text/xml'], // only PNG image files
-                'minSize' => 800, // Min 1 KB
-                'maxSize' => 1024 * 1024, // Max 1 MB
-            ])
+                'minSize' => 100, // Min 1 KB
+                'maxSize' => 1024 * 1024 * 3, // Max 1 MB
+            ], 'Wrong size')
          /*    ->add('upload_file_template', 'minImageSize', [
                 'rule' => ['imageSize', [
                     // Min 10x10 pixel
@@ -170,6 +170,7 @@ class PrintTemplatesTable extends Table
                 ]],
             ]) */
             ->add('upload_file_template', 'filename', [
+                'message' => 'Not a directory',
                 'rule' => function (UploadedFileInterface $file) {
                     // filename must not be a path
                     $filename = $file->getClientFilename();
@@ -181,6 +182,7 @@ class PrintTemplatesTable extends Table
                 },
             ])
             ->add('upload_file_template', 'extension', [
+                'message' => 'Invalid extension',
                 'rule' => ['extension', ['glabels']], // .png file extension only
             ]);
 
@@ -200,9 +202,10 @@ class PrintTemplatesTable extends Table
     ->add('upload_example_image', 'maxImageSize', [
         'rule' => ['imageSize', [
             // Max 100x100 pixel
-            'width' => [Validation::COMPARE_LESS_OR_EQUAL, 3000],
-            'height' => [Validation::COMPARE_LESS_OR_EQUAL, 3000],
-        ]],
+            'width' => [Validation::COMPARE_LESS_OR_EQUAL, 4000],
+            'height' => [Validation::COMPARE_LESS_OR_EQUAL, 4000],
+        ],
+    'message' => "Too many pixels. Max pixels: " . 4000],
     ])
     ->add('upload_example_image', 'filename', [
         'rule' => function (UploadedFileInterface $file) {
@@ -239,6 +242,5 @@ class PrintTemplatesTable extends Table
 
     public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options)
     {
-        //tog($event, $entity, $options);
     }
 }

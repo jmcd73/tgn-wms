@@ -458,7 +458,6 @@ class ShipmentsController extends AppController
                     'shipment' => $result,
                 ];
             }
-            // tog($msg, json_encode($shipment));
 
             return $this->response->withStringBody(json_encode($shipment))->withType('application/json');
         }

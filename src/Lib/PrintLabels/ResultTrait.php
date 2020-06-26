@@ -43,7 +43,7 @@ trait ResultTrait
                 $printerDetails['name'],
                 $err
             );
-            tog($printResult);
+
             $this->Flash->error($message, ['escape' => false]);
             $controller = $this->request->getParam('controller');
             $action = $this->request->getParam('action');

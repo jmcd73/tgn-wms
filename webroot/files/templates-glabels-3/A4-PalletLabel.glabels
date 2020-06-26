@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<Glabels-document xmlns="http://glabels.org/xmlns/3.0/">
+  <Template brand="PPS Shipping Labels 1 UP A4 100 Pack" part="PPS78167" size="A4" description="A4 Shipping Label">
+    <Meta category="user-defined"/>
+    <Label-rectangle id="0" width="199.6mm" height="289.1mm" round="0mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin size="3.18mm"/>
+      <Layout nx="1" ny="1" x0="5.20002mm" y0="3.95002mm" dx="199.6mm" dy="289.1mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="False">
+    <Object-text x="3.43522mm" y="4.42427mm" w="192.73mm" h="63.5814mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="130" font_weight="Regular" font_italic="False" line_spacing="1">
+        <Field name="ITEMCODE"/>
+      </Span>
+    </Object-text>
+    <Object-text x="3.0749mm" y="53.5585mm" w="193.525mm" h="32.8083mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="60" font_weight="Regular" font_italic="False" line_spacing="1">
+        <Field name="BRAND"/>
+      </Span>
+    </Object-text>
+    <Object-text x="1.2904mm" y="81.8145mm" w="191.853mm" h="32.8083mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="40" font_weight="Regular" font_italic="False" line_spacing="1">
+        <Field name="VARIANT"/>
+      </Span>
+    </Object-text>
+    <Object-text x="-12.113mm" y="98.4961mm" w="223.826mm" h="18mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="50" font_weight="Regular" font_italic="False" line_spacing="1">
+        <Field name="QUANTITY_DESCRIPTION"/>
+      </Span>
+    </Object-text>
+    <Object-text x="3.8735mm" y="120.309mm" w="192.784mm" h="16mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="40" font_weight="Regular" font_italic="False" line_spacing="1">Batch: <Field name="BATCH"/></Span>
+    </Object-text>
+    <Object-text x="-0.520281mm" y="151.395mm" w="195.956mm" h="16mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="40" font_weight="Regular" font_italic="False" line_spacing="1">Carton Qauntity: <Field name="QUANTITY"/></Span>
+    </Object-text>
+    <Object-text x="1.32598mm" y="135.516mm" w="197.29mm" h="16mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="40" font_weight="Regular" font_italic="False" line_spacing="1">Expiry: <Field name="BB_HR"/></Span>
+    </Object-text>
+    <Object-text x="113.635mm" y="265.663mm" w="82.9421mm" h="20mm" justify="Right" valign="Bottom" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="40" font_weight="Regular" font_italic="False" line_spacing="1">
+        <Field name="PLREF"/>
+      </Span>
+    </Object-text>
+    <Object-barcode x="40.5322mm" y="184.449mm" w="118.536mm" h="40mm" backend="zint" style="GS1-128" text="True" checksum="True" color="0x000000ff" field="CONCAT_BC" format="18" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0"/>
+    <Object-barcode x="54.1399mm" y="231.713mm" w="91.3202mm" h="38.0821mm" backend="zint" style="GS1-128" text="True" checksum="True" color="0x000000ff" field="SSCC_BC" format="18" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0"/>
+  </Objects>
+  <Merge type="Text/Comma/Line1Keys" src="/dev/stdin"/>
+  <Data/>
+</Glabels-document>

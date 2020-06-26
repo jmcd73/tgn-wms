@@ -417,8 +417,6 @@ class Label
             $this->printContent
         );
 
-        tog($results);
-
         //cat merge.csv | glabels-3-batch -o /dev/stdout -i - 100x50sample.glabels | \
         // sed -n '/%PDF-1.5/,/%%EOF/p' | lpr -PPDF -J jobname
 

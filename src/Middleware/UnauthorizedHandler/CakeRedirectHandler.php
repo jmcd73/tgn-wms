@@ -105,8 +105,6 @@ class CakeRedirectHandler extends CakedcCakeRedirectHandler
             throw $exception;
         }
 
-        // tog('AUTHJM', $request->getAttribute('authentication')->getIdentity());
-
         $options = $this->customRedirect($exception, $request, $options);
 
         $url = $this->getUrl($request, $options);

@@ -200,8 +200,6 @@ class PrintersTable extends Table
          
         }
 
-       // tog($records, $value, $matches);
-     
         if(count($matches) > 0) {
             $msg = 'You need to remove ';
             foreach($matches as $match) {
@@ -211,9 +209,6 @@ class PrintersTable extends Table
             return $msg;
         }
 
-        tog("Got to return true");
-
         return true;
-
     }
 }
