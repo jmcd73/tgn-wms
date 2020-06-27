@@ -28,5 +28,6 @@ class Setting extends Entity
         'name' => true,
         'setting' => true,
         'comment' => true,
+        'setting_in_comment' => true,
     ];
 }

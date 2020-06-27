@@ -17,9 +17,12 @@
     <fieldset>
         <legend><?= __('Edit Setting') ?></legend>
         <?php
+            
             echo $this->Form->control('name');
             echo $this->Form->control('setting');
+            echo $this->Form->control('setting_in_comment');
             echo $this->Form->control('comment');
+          
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

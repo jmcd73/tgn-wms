@@ -1145,7 +1145,7 @@ class PalletsController extends AppController
 
         $refer = $this->request->referer(false);
 
-        $inputDefaultCopies = $this->getSetting('sscc_default_label_copies');
+        $inputDefaultCopies = $this->getSetting('SSCC_DEFAULT_LABEL_COPIES');
 
         $this->set(
             compact(

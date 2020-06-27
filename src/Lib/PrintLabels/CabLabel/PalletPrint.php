@@ -38,11 +38,6 @@ class PalletPrint extends Label implements TextLabelInterface
 
     public function print(Printer $printer)
     {
-        $printSettings = $this->getPrintSettings(
-            $printer,
-            $this->action
-        );
-
-        return $this->sendPrint($this->printContent, $printSettings);
+        return $this->sendPrint($this->printContent, $printer);
     }
 }

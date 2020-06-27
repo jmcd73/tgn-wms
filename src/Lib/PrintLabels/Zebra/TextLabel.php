@@ -7,6 +7,7 @@ use App\Lib\Exception\MissingConfigurationException;
 use App\Lib\PrintLabels\CabLabel\CabLabel;
 use App\Lib\PrintLabels\Interfaces\TextLabelInterface;
 use App\Lib\PrintLabels\Label;
+use App\Model\Entity\Printer;
 use Cake\Core\Configure;
 
 class TextLabel extends Label implements TextLabelInterface
@@ -47,13 +48,13 @@ class TextLabel extends Label implements TextLabelInterface
         return $this;
     }
 
-    public function print($printer)
+    /**
+     * 
+     * @param mixed $printer 
+     * @return array 
+     */
+    public function print(Printer $printer): array
     {
-        $printSettings = $this->getPrintSettings(
-            $printer,
-            $this->action
-        );
-
-        return $this->sendPrint($this->printContent, $printSettings);
+        return $this->sendPrint($this->printContent, $printer);
     }
 }

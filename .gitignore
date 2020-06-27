@@ -40,3 +40,5 @@ config/app_local.php
 dev/glabels/ubuntu20.04/shippingLabelTest.sh
 .phpunit.result.cache
 .phpunit.result.cache
+src/Mailer/mailer.php
+src/Mailer/20200626172105-palletPrint.pdf

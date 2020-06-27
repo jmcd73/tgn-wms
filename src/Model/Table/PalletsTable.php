@@ -16,7 +16,7 @@ use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
-
+use App\Mailer\AppMailer;
 
 /**
  * Pallets Model
@@ -60,6 +60,9 @@ class PalletsTable extends Table
     public function initialize(array $config): void
     {
         parent::initialize($config);
+
+      //  $mailer = new AppMailer();
+      //  $this->getEventManager()->on($mailer);
 
         $this->setTable('pallets');
         $this->setDisplayField('id');
@@ -994,7 +997,7 @@ class PalletsTable extends Table
      */
     public function getLabelCopies(int $labelCopies): int
     {
-        $copies =  $labelCopies > 0 ? $labelCopies : $this->getSetting('sscc_default_label_copies');
+        $copies =  $labelCopies > 0 ? $labelCopies : $this->getSetting('SSCC_DEFAULT_LABEL_COPIES');
 
         return (int) $copies;
     }

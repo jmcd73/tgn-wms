@@ -16,10 +16,9 @@ trait SettingsTrait {
 
     /**
      * @param  string $settingName the name of the setting in the settings.setting field of the db
-     * @param  bool   $inComment   some settings are stored in the comment field as they have CR or JSON
-     * @return string string 
+     * @return mixed string 
      */
-    public function getSetting($settingName, bool $inComment = false): string
+    public function getSetting($settingName)
     {
         try {
             $setting = $this->getSettingsTable()->find()->where(['name' => $settingName])->firstOrFail();
@@ -27,16 +26,28 @@ trait SettingsTrait {
             throw new MissingConfigurationException('Setting missing ' . $settingName );
         }
         
+        $this->settingId = $setting->id;
 
-        $setting = $setting->toArray();
+        return $this->getSettingFormatted($setting);
+    }
 
-        $this->settingId = $setting['id'];
+    /**
+     * 
+     * @param mixed $setting 
+     * @return mixed 
+     */
+    public function getSettingFormatted($setting) {
 
-        $slug = $inComment ? 'comment' : 'setting';
+        if($setting->setting_in_comment) {
+            $setting = explode("\r\n", $setting->comment);
+            $setting = array_values(array_filter($setting, function($line) {
+                return ! preg_match('/^\s*#/', $line);
+            }));
 
-        // if it's an array then return the setting otherwise empty string
-
-        return is_array($setting) ? $setting[$slug] : '';
+        } else { 
+            $setting = $setting->setting;
+        }
+        return $setting;
     }
 
 

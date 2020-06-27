@@ -18,8 +18,7 @@ use Cake\ORM\Entity;
  * @property int $product_type_id
  *
  * @property \App\Model\Entity\ProductType[] $product_types
- * @property \App\Model\Entity\Label[] $labels
- * @property \App\Model\Entity\Pallet[] $pallets
+  * @property \App\Model\Entity\Pallet[] $pallets
  */
 class Location extends Entity
 {

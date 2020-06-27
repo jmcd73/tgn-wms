@@ -15,8 +15,7 @@ use Cake\ORM\Entity;
  * @property string $comment
  * @property bool|null $allow_bulk_status_change
  *
- * @property \App\Model\Entity\Label[] $labels
- * @property \App\Model\Entity\Pallet[] $pallets
+  * @property \App\Model\Entity\Pallet[] $pallets
  * @property \App\Model\Entity\ProductType[] $product_types
  */
 class InventoryStatus extends Entity

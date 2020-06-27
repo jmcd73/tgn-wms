@@ -16,8 +16,7 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Printer $printer
  * @property \App\Model\Entity\ProductType $product_type
- * @property \App\Model\Entity\Label[] $labels
- * @property \App\Model\Entity\Pallet[] $pallets
+  * @property \App\Model\Entity\Pallet[] $pallets
  */
 class ProductionLine extends Entity
 {

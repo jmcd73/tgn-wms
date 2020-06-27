@@ -16,8 +16,7 @@ use Cake\ORM\Entity;
  * @property string|null $queue_name
  * @property string|null $set_as_default_on_these_actions
  *
- * @property \App\Model\Entity\Label[] $labels
- * @property \App\Model\Entity\Pallet[] $pallets
+  * @property \App\Model\Entity\Pallet[] $pallets
  * @property \App\Model\Entity\ProductionLine[] $production_lines
  */
 class Printer extends Entity
