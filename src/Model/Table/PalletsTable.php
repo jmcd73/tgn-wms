@@ -16,7 +16,8 @@ use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
-
+use App\Mailer\AppMailer;
+use App\Model\Table\CartonsTable;
 
 /**
  * Pallets Model
@@ -61,6 +62,9 @@ class PalletsTable extends Table
     {
         parent::initialize($config);
 
+        //  $mailer = new AppMailer();
+        //  $this->getEventManager()->on($mailer);
+
         $this->setTable('pallets');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
@@ -98,6 +102,10 @@ class PalletsTable extends Table
         $this->hasMany('Cartons', [
             'foreignKey' => 'pallet_id',
         ]);
+
+        $cartons = new CartonsTable();
+        $this->getEventManager()->on($cartons);
+
     }
 
     /**
@@ -942,9 +950,19 @@ class PalletsTable extends Table
      */
     public function afterSave(Event $event, EntityInterface $entity, $options = [])
     {
-        $isNew = $entity->isNew();
+        if ($entity->isNew()) {
+            // pallet table fields are keys, carton table fields are values
 
-        // pallet table fields are keys, carton table fields are values
+            $event = new Event('Model.Cartons.addCartonRecord', $entity);
+            
+            $this->getEventManager()->dispatch($event);
+
+        }
+    }
+    
+
+    public function addCartonRecord($myvar,  $pallet){
+
         $fields = [
             'qty' => 'count',
             'print_date' => 'production_date',
@@ -953,21 +971,19 @@ class PalletsTable extends Table
             'user_id' => 'user_id'
         ];
 
-        if ($isNew) {
-            $cartonRecord = [];
-            foreach ($fields as $palletField => $cartonField) {
-                $cartonRecord[$cartonField] = $entity->get($palletField);
-            }
-            
-            
-
-            $carton = $this->Cartons->newEntity($cartonRecord);
-
-            if (!$this->Cartons->save($carton)) {
-                throw new Exception('Could not save Carton record in Pallet.php afterSave method');
-            }
+        $cartonRecord = [];
+        foreach ($fields as $palletField => $cartonField) {
+            $cartonRecord[$cartonField] = $pallet->get($palletField);
         }
+
+        $carton = $this->newEntity($cartonRecord);
+
+        if (!$this->Cartons->save($carton)) {
+            throw new Exception('Could not save Carton record in Pallet.php afterSave method');
+        }
+
     }
+    
 
     /**
      * @param  array $sndata $this->data
@@ -994,7 +1010,7 @@ class PalletsTable extends Table
      */
     public function getLabelCopies(int $labelCopies): int
     {
-        $copies =  $labelCopies > 0 ? $labelCopies : $this->getSetting('sscc_default_label_copies');
+        $copies =  $labelCopies > 0 ? $labelCopies : $this->getSetting('SSCC_DEFAULT_LABEL_COPIES');
 
         return (int) $copies;
     }

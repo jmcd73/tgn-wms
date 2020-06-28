@@ -57,6 +57,9 @@ class SsccLabel extends Label implements GlabelInterface
     public function format($labelData)
     {
         $this->setPrintContentArray($labelData);
+        $this->setReference($labelData['reference']);
+        $this->setBatch($labelData['batch']);
+        $this->setItemCode($labelData['internalProductCode']);
 
         $printArrayValues = $this->getArrayProperties($labelData, array_values($this->headings));
 

@@ -3,10 +3,14 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\ORM\Entity;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Core\Exception\Exception;
+use Cake\Event\Event;
+use Cake\Event\EventListenerInterface;
 
 /**
  * Cartons Model
@@ -31,8 +35,43 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class CartonsTable extends Table
+class CartonsTable extends Table implements EventListenerInterface
 {
+
+    public function implementedEvents(): array
+    {
+        return [
+            'Model.Cartons.addCartonRecord' => 'addCartonRecord'
+        ];
+    }
+
+    public function addCartonRecord(Event $event){
+
+        $pallet = $event->getSubject();
+        
+        $fields = [
+            'qty' => 'count',
+            'print_date' => 'production_date',
+            'bb_date' => 'best_before',
+            'id' => 'pallet_id',
+            'user_id' => 'user_id',
+            'item_id' => 'item_id'
+        ];
+
+        $cartonRecord = [];
+
+        foreach ($fields as $palletField => $cartonField) {
+            $cartonRecord[$cartonField] = $pallet->get($palletField);
+        }
+
+        $carton = $this->newEntity($cartonRecord);
+
+        if (!$this->save($carton)) {
+            throw new Exception('Could not save Carton record triggered by Model.Pallets.afterSave method');
+        }
+    }
+    
+
     /**
      * Initialize method
      *

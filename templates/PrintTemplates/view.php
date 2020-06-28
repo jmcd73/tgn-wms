@@ -57,6 +57,10 @@
                 $this->Html->link($printTemplate->file_template, ['action' => 'sendFile', $printTemplate->id]): ''; ?></td>
             </tr>
             <tr>
+                <th scope="row"><?= __('Send via Email') ?></th>
+                <td><?= $this->Html->activeIcon($printTemplate->send_email) ?></td>
+            </tr>
+            <tr>
                 <th scope="row"><?= __('Controller/Action') ?></th>
                 <td><?= h($printTemplate->controller_action) ?></td>
             </tr>

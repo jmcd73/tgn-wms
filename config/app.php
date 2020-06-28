@@ -247,6 +247,11 @@ return [
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],
+        'production' => [
+            'transport' => 'AWS_SES',
+            'from' => [ 'no-reply@ausfoodexports.com.au' => 'AFE Production' ],
+            'log' => true 
+        ]
     ],
 
     /*

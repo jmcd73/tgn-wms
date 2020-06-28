@@ -20,9 +20,10 @@
         <tr>
             <th scope="col"><?= $this->Paginator->sort('active') ?></th>
             <th scope="col"><?= $this->Paginator->sort('show_in_label_chooser') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('send_email') ?></th>
             <th scope="col"><?= $this->Paginator->sort('example_image') ?></th>
             <th scope="col"><?= $this->Paginator->sort('name') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('description') ?></th>
+        
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>
     </thead>
@@ -33,7 +34,8 @@
                 <tr>
                     <td><?= $this->Html->activeIcon($printTemplate->active) ?></td>
                     <td><?= $this->Html->activeIcon($printTemplate->show_in_label_chooser) ?></td>
-                    <td colspan="2">
+                
+                    <td colspan="3">
                         <h5><?= $this->Html->link($printTemplate->name, ['action' => 'view', $printTemplate->id]); ?> - <?= h($printTemplate->description); ?> </h5>
                     </td>
                     <td class="actions">
@@ -46,6 +48,7 @@
                 <tr>
                     <td><?= $this->Html->activeIcon($printTemplate->active) ?></td>
                     <td><?= $this->Html->activeIcon($printTemplate->show_in_label_chooser) ?></td>
+                    <td><?= $this->Html->activeIcon($printTemplate->send_email) ?></td>
                     <td><?= $printTemplate->hasValue('example_image') ? $this->Html->link($this->Html->image(
                             $templateRoot . $printTemplate->example_image,
                             [
