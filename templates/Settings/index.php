@@ -15,7 +15,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+           
             <th scope="col"><?= $this->Paginator->sort('name') ?></th>
             <th scope="col"><?= $this->Paginator->sort('setting') ?></th>
             <th scope="col"><?= $this->Paginator->sort('setting_in_comment') ?></th>
@@ -26,7 +26,6 @@
     <tbody>
         <?php foreach ($settings as $setting) : ?>
             <tr>
-                <td><?= $this->Number->format($setting->id) ?></td>
                 <td><?= h($setting->name) ?></td>
                 <td><?= h($setting->setting) ?></td>
                 <td><?= $this->Html->activeIcon($setting->setting_in_comment) ?></td>
