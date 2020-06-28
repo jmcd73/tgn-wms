@@ -29,7 +29,7 @@
       </Span>
     </Object-text>
     <Object-text x="3.8735mm" y="120.309mm" w="192.784mm" h="16mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
-      <Span color="0x000000ff" font_family="Sans" font_size="40" font_weight="Regular" font_italic="False" line_spacing="1">Batch: <Field name="BATCH"/></Span>
+      <Span color="0x000000ff" font_family="Sans" font_size="40" font_weight="Regular" font_italic="False" line_spacing="1">Batch: A <Field name="BATCH"/></Span>
     </Object-text>
     <Object-text x="-0.520281mm" y="151.395mm" w="195.956mm" h="16mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
       <Span color="0x000000ff" font_family="Sans" font_size="40" font_weight="Regular" font_italic="False" line_spacing="1">Carton Qauntity: <Field name="QUANTITY"/></Span>
