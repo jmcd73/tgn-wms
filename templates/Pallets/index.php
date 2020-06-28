@@ -45,7 +45,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+           
             <th scope="col"><?= $this->Paginator->sort('production_line_id') ?></th>
             <th scope="col"><?= $this->Paginator->sort('description') ?></th>
             <th scope="col"><?= $this->Paginator->sort('item_id') ?></th>
@@ -78,7 +78,6 @@
     <tbody>
         <?php foreach ($pallets as $pallet) : ?>
         <tr>
-            <td><?= $this->Number->format($pallet->id) ?></td>
             <td><?= $pallet->has('production_lines') ? $this->Html->link($pallet->production_lines->name, ['controller' => 'ProductionLines', 'action' => 'view', $pallet->production_lines->id]) : '' ?>
             </td>
             <td><?= h($pallet->description) ?></td>

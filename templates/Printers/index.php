@@ -15,7 +15,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+           
             <th scope="col"><?= $this->Paginator->sort('active') ?></th>
             <th scope="col"><?= $this->Paginator->sort('name') ?></th>
             <th scope="col"><?= $this->Paginator->sort('options') ?></th>
@@ -27,7 +27,6 @@
     <tbody>
         <?php foreach ($printers as $printer) : ?>
         <tr>
-            <td><?= $this->Number->format($printer->id) ?></td>
             <td><?= $this->Html->activeIcon($printer->active); ?></td>
             <td><?= h($printer->name) ?></td>
             <td><?= h($printer->options) ?></td>

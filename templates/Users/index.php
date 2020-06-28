@@ -19,14 +19,10 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col"><?= $this->Paginator->sort('id') ?></th>
             <th scope="col"><?= $this->Paginator->sort('active') ?></th>
             <th scope="col"><?= $this->Paginator->sort('username') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('password') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('role') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
             <th scope="col"><?= $this->Paginator->sort('full_name') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('role') ?></th>
             <th scope="col"><?= $this->Paginator->sort('timezone') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>
@@ -34,14 +30,10 @@
     <tbody>
         <?php foreach ($users as $user) : ?>
             <tr>
-                <td><?= $this->Number->format($user->id) ?></td>
                 <td><?= $this->Html->activeIcon($user->active); ?></td>
                 <td><?= h($user->username) ?></td>
-                <td><?= $user->hasValue('password') ? h($this->Text->truncate($user->password, 10)) : '' ?></td>
-                <td><?= h($user->role) ?></td>
-                <td><?= h($user->created) ?></td>
-                <td><?= h($user->modified) ?></td>
                 <td><?= h($user->full_name) ?></td>
+                <td><?= h($user->role) ?></td>
                 <td><?= h($user->timezone) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $user->id], ['title' => __('View'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>

@@ -16,7 +16,7 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+       
         <th scope="col"><?= $this->Paginator->sort('pack_size') ?></th>
         <th scope="col"><?= $this->Paginator->sort('comment') ?></th>
         <th scope="col"><?= $this->Paginator->sort('created') ?></th>
@@ -27,7 +27,6 @@
     <tbody>
         <?php foreach ($packSizes as $packSize) : ?>
         <tr>
-            <td><?= $this->Number->format($packSize->id) ?></td>
             <td><?= h($packSize->pack_size) ?></td>
             <td><?= h($packSize->comment) ?></td>
             <td><?= h($packSize->created) ?></td>
