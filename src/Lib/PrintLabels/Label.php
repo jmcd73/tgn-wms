@@ -396,10 +396,8 @@ class Label
             $printer,
             '-#',
             $this->glabelPrintCopies,
-            '-J',
-            $jobId,
             '-T',
-            $jobId,
+            $jobId
         ];
 
         $returnValue = $this->runProcess(

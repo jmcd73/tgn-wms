@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Lib\PrintLabels;
@@ -16,7 +17,7 @@ trait PalletPrintResultTrait
     private $_defaultConfig = [
         'templates' => [
             'createMessage' => 'Pallet labels for <strong>{{codeDesc}}</strong> with reference' .
-            ' <strong>{{reference}}</strong> have been sent to <strong>{{printer}}</strong>',
+                ' <strong>{{reference}}</strong> have been sent to <strong>{{printer}}</strong>',
             'debug' => '<strong>IN DEBUG MODE: </strong> {{debug}} {{message}}',
         ],
     ];

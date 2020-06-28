@@ -34,6 +34,14 @@ class PrintLogController extends AppController
 {
     use ResultTrait;
 
+    public function initialize(): void
+    {
+            parent::initialize();
+            
+            $this->getEventManager()->on($this->PrintLog);
+            
+    }
+
     /**
      * Index method
      *
@@ -160,9 +168,9 @@ class PrintLogController extends AppController
      */
     public function completed($printLogId = null)
     {
-        $completed = $this->PrintLog->get($printLogId);
+        /* $completed = $this->PrintLog->get($printLogId);
 
-        $this->set(compact('completed'));
+        $this->set(compact('completed')); */
     }
 
     /**

@@ -143,16 +143,14 @@ class TgnUtilsBehavior extends Behavior
 
         $productType = $productTypeModel->get($productTypeId);
 
-        $productTypeArray = $productType->toArray();
+        $serialNumberFormat = $productType->serial_number_format;
 
-        $serialNumberFormat = $productTypeArray['serial_number_format'];
-
-        $serialNumber = $productType['next_serial_number'];
+        $serialNumber = $productType->next_serial_number;
 
         $productType->next_serial_number = ++$serialNumber;
 
         if (!$productTypeModel->save($productType)) {
-            throw new Exception('Failed to save the serial number for ' . $productTypeArray['name']);
+            throw new Exception('Failed to save the serial number for ' . $productType->name);
         }
 
         return sprintf($serialNumberFormat, $serialNumber);

@@ -116,7 +116,7 @@ class PalletsController extends AppController
 
                 $printerId = $productionLine['printer_id'];
                 try {
-                    $printerDetails = $this->Pallets->Printers->get($printerId);
+                    $printer = $this->Pallets->Printers->get($printerId);
                 } catch (\Throwable $th) {
 
                     throw new MissingConfigurationException(
@@ -172,7 +172,7 @@ class PalletsController extends AppController
                         'pl_ref' => $pallet_ref,
                         'gtin14' => $item_detail['trade_unit'],
                         'sscc' => $sscc,
-                        'printer' => $printerDetails['name'],
+                        'printer' => $printer['name'],
                         'printer_id' => $printerId,
                         'print_date' => $print_date,
                         'cooldown_date' => $print_date,
@@ -215,7 +215,7 @@ class PalletsController extends AppController
                     );
                     $printResult = LabelFactory::create($template->details->print_class, $this->request->getParam('action'))
                         ->format($cabLabelData)
-                        ->print($printerDetails, $template);
+                        ->print($printer, $template);
 
                     $template = $template->details;
                 } else {
@@ -224,14 +224,14 @@ class PalletsController extends AppController
 
                     $printResult = LabelFactory::create($template->print_class, $this->request->getParam('action'))
                         ->format($template, $cabLabelData)
-                        ->print($printerDetails);
+                        ->print($printer);
                 }
 
                 $isPrintDebugMode = Configure::read('pallet_print_debug');
 
                 $this->handleResult(
                     $printResult,
-                    $printerDetails,
+                    $printer,
                     $pallet_ref,
                     $palletData,
                     $isPrintDebugMode,
@@ -1074,7 +1074,7 @@ class PalletsController extends AppController
             // get the printer queue name
             $printerId = $data['printer_id'];
 
-            $printerDetails = $this->Pallets->Printers->get($printerId);
+            $printer = $this->Pallets->Printers->get($printerId);
 
             $dateFormats = [
                 'bb_date' => 'Y-m-d',
@@ -1107,11 +1107,11 @@ class PalletsController extends AppController
 
             $printResult = LabelFactory::create($pallet['items']['print_template']['print_class'], $action)
                 ->format($pallet['items']['print_template'], $cabLabelData)
-                ->print($printerDetails);
+                ->print($printer);
 
             $this->handleResult(
                 $printResult,
-                $printerDetails,
+                $printer,
                 $pallet_ref,
                 $pallet,
                 $isPrintDebugMode,

@@ -22,7 +22,7 @@ class PalletPrint extends Label implements TextLabelInterface
         $templateTokens = json_decode($printTemplate['replace_tokens']);
 
         if (empty($printTemplateContents) || empty($templateTokens)) {
-            throw new MissingConfigurationException('Cannot find print template for bigNumber');
+            throw new MissingConfigurationException('Cannot find print template');
         }
 
         $this->setReference($labelValues['reference']);

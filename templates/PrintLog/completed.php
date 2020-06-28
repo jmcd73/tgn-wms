@@ -35,19 +35,17 @@ echo $this->Html->scriptBlock('hljs.initHighlightingOnLoad();', ['block' => 'fro
     </dl> -->
 
     <div class="row">
-        <div class="col-lg-3"></div>
+      
         <div class="col-lg-3 col-md-4 col-sm-12 text-center">
-            <?= $this->Html->link('Back to ' . $completed['controller_action'], [
-                'action' => explode('::', $completed['controller_action'])[1],
-            ], [
-                'class' => 'btn btn-link',
+            <?= $this->Html->link('Go back' , 'javascript:window.history.back()', [
+                'class' => 'go-back btn btn-secondary',
             ]); ?>
         </div>
         <div class="col-lg-3 col-md-4 col-sm-12 text-center">
             <?= $this->Html->link('Print another type of label', [
                 'action' => 'labelChooser',
             ], [
-                'class' => 'btn btn-link',
+                'class' => 'btn btn-primary print',
             ]); ?>
         </div>
     </div>

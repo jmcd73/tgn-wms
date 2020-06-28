@@ -54,7 +54,17 @@
                 'size' => 20,
                 'placeholder' => 'SO-M000056',
             ]);?>
-            <?= $this->Form->submit('Print');?>
+            <div class="row">
+                <div class="col-md-2">
+
+                </div>
+                <div class="col-md-10">
+                <?= $this->Form->button('Print', [ 
+                'type' => 'submit',
+                'class' => 'print']);?>
+                </div>
+            </div>
+            
             <?=$this->Form->end();?>
         </div>
         <div class="col-3">
