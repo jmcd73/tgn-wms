@@ -37,43 +37,6 @@ class AppMailerTest extends TestCase
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
-
-       /**
-     * Test sendLabel method
-     *
-     * @return void
-     */
-    public function testEmptyEmail(): void
-    {
-        
-    }
-
-    /**
-     * Test addressParse method
-     *
-     * @return void
-     */
-    public function testAddressParse(): void
-    {
-
-        $input = [
-            'James McDonald <james@toggen.com.au>',
-            'Lisa McDonald <lisa@toggen.com.au>'
-        ];
-
-        $expected = [
-            'james@toggen.com.au' => 'James McDonald' ,
-            'lisa@toggen.com.au' => 'Lisa McDonald'
-        ];
-        
-        $mailer = new AppMailer();
-        
-        $actual = $mailer->addressParse($input);
-
-        $this->assertEquals($expected, $actual);
-
-    }
-
     /**
      * Test getSettingsTable method
      *

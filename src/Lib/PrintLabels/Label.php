@@ -4,12 +4,14 @@ namespace App\Lib\PrintLabels;
 
 use App\Lib\Exception\GlabelsException;
 use App\Lib\PrintLabels\Glabel\GlabelsProject;
-use Cake\Core\Configure;
-use Cake\I18n\FrozenDate;
-use Cake\Event\EventManager;
-use Cake\Event\Event;
+use App\Lib\Utility\SettingsTrait;
 use App\Mailer\AppMailer;
+use Cake\Core\Configure;
+use Cake\Event\Event;
+use Cake\Event\EventManager;
+use Cake\I18n\FrozenDate;
 use SplFileObject;
+
 
 /**
  * Label base class
@@ -17,6 +19,7 @@ use SplFileObject;
 class Label
 {
     use PrinterListTrait;
+    use SettingsTrait;
 
     /**
      * When a multipage print contains the same content on each page
@@ -72,11 +75,12 @@ class Label
     /**
      * @var string
      */
-    protected $jobId = '';
+    protected $jobId = null;
 
-    protected $reference = '';
+    protected $reference = null;
 
-    protected $glabelsBatch = '';
+    protected $glabelsBatch = null;
+
 
     /**
      *
@@ -86,11 +90,24 @@ class Label
 
     protected $glabelsBatchLibraryPath = '';
 
+    public $emailBodyFormat = '<strong>Batch: </strong> %s
+    <strong>Item: </strong>%s
+    <strong>Reference: </strong>%s
+    <strong>JobId: </strong>%s';
+
+    public function createEmailBody() {
+        if(! empty($this->getItemCode())) {
+            return sprintf($this->emailBodyFormat, $this->getBatch(), $this->getItemCode(), $this->getReference(), $this->getJobId() );
+        } else {
+            return '';
+        }
+        
+    }
     public function __construct($action)
     {
-        $mailer = new AppMailer();
+        /*   $mailer = new AppMailer();
         EventManager::instance()->on($mailer);
-
+ */
         $this->glabelsBatchCommand = Configure::read('GLABELS_BATCH_BINARY');
         $this->glabelsBatchLibraryPath = Configure::read('GLABELS_LIBRARY_PATH');
         $this->action = $action;
@@ -98,14 +115,16 @@ class Label
         $this->setCwd(TMP);
     }
 
-    public function setItemCode($code) {
+    public function setItemCode($code)
+    {
         $this->itemCode = $code;
     }
 
-    public function getItemCode() {
+    public function getItemCode()
+    {
         return $this->itemCode;
     }
-    
+
     public function setBatch(string $batch)
     {
         $this->batch = $batch;
@@ -172,7 +191,7 @@ class Label
         } else {
             throw new GlabelsException(
                 'value: ' . $value . ' does not exist in ' .
-                print_r($this->printContentArray, true)
+                    print_r($this->printContentArray, true)
             );
         }
     }
@@ -407,7 +426,7 @@ class Label
     {
         $this->setGlabelsTemplate($template);
 
-        if( $template->details->glabels_copies > 1 ) {
+        if ($template->details->glabels_copies > 1) {
             $this->glabelsCopies = $template->details->glabels_copies;
         }
 
@@ -450,9 +469,14 @@ class Label
 
             $this->setPrintContent(file_get_contents($this->getPdfOutFile()));
 
-            $event = new Event('Label.Glabel.printSuccess', $this);
-            
-            EventManager::instance()->dispatch($event);
+            $to = $this->addressParse($this->getSetting('EMAIL_PALLET_LABEL_TO'));
+
+            if ( !empty($to) && $template->details->send_email ) {
+
+                $event = new Event('Label.Glabel.printSuccess', $this, ['toAddresses' => $to, 'emailBody' => $this->createEmailBody() ]);
+
+                EventManager::instance()->dispatch($event);
+            }
 
             unlink($this->getPdfOutFile());
         }
@@ -467,10 +491,10 @@ class Label
          * This grabs the PDF file out of the PDF
          */
 
-     
-      
-        
-       
+
+
+
+
         return $this->sendPdfToLpr($printerDetails);
     }
 
@@ -502,7 +526,7 @@ class Label
             $descriptorspec,
             $pipes,
             $this->getCwd(), //cwd orig TMP
-           $env
+            $env
         );
 
         // writing straight to stdin works
@@ -528,15 +552,15 @@ class Label
      * @param  array  $print_settings as an array
      * @return void
      */
-    public function createTempFile($print_content)
+    public function createTempFile($print_content): void
     {
-        $tempFile = TMP . sprintf( 'PrintTempFile-%s.txt', $this->action);
+        $tempFile = TMP . sprintf('PrintTempFile-%s.txt', $this->action);
 
         $print_file = new SplFileObject($tempFile, 'w');
-        
-        chmod ($print_file->getRealPath(), 0666);
 
         $print_file->fwrite($print_content);
+
+        chmod($print_file->getRealPath(), 0666);
 
         $print_file = null;
     }

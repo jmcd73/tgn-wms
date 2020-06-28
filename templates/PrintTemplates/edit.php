@@ -30,6 +30,7 @@
         <legend><?= __('Edit Print Template') ?></legend>
         <?php
         echo $this->Form->control('active');
+        echo $this->Form->control('send_email', ['label' =>'Send print via email']);
         echo $this->Form->control('show_in_label_chooser');
         echo $this->Form->control('is_file_template', ['label' => 'Glabels template']);
         echo $this->Form->control('glabels_copies', ['label' => 'Glabels number of copies']);

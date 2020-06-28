@@ -31,6 +31,7 @@ require __DIR__ . '/paths.php';
  */
 require CORE_PATH . 'config' . DS . 'bootstrap.php';
 
+use App\Mailer\AppMailer;
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
@@ -38,6 +39,7 @@ use Cake\Database\TypeFactory;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\ConsoleErrorHandler;
 use Cake\Error\ErrorHandler;
+use Cake\Event\EventManager;
 use Cake\Http\ServerRequest;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
@@ -231,3 +233,7 @@ if (!function_exists('tog')) {
 }
 
 Configure::write('pallet_print_debug', false);
+
+
+$mailer = new AppMailer();
+EventManager::instance()->on($mailer);

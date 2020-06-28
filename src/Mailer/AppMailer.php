@@ -2,90 +2,67 @@
 
 namespace App\Mailer;
 
-use Cake\Event\EventInterface;
+use App\Lib\Exception\MissingConfigurationException;
 use Cake\Mailer\Mailer;
-use Cake\Datasource\EntityInterface;
-use ArrayObject;
 use Cake\Event\Event;
-use App\Lib\PrintLabels\Label;
 use Cake\Core\Exception\Exception;
 use InvalidArgumentException;
-use App\Lib\Utility\SettingsTrait;
+use Cake\Mailer\Exception\MissingActionException;
+use BadMethodCallException;
+/*
+ * The Mailer class already implements EntityInterface
+ * but if you class doesn't you need add this use
+ * use Cake\Datasource\EntityInterface;
+ * 
+ * class Custom implements EntityInterface
+ */
 
 class AppMailer extends Mailer
 {
-    use SettingsTrait;
 
     public function implementedEvents(): array
     {
         return [
-            //'Model.afterSave' => 'onPalletPrint'
             'Label.Glabel.printSuccess' => 'sendLabel'
         ];
     }
 
-
     /**
      * 
      * @param Event $subject 
-     * @param mixed $data 
-     * @param mixed $moredata 
      * @return void 
+     * @throws MissingConfigurationException 
      * @throws Exception 
      * @throws InvalidArgumentException 
+     * @throws MissingActionException 
+     * @throws BadMethodCallException 
      */
-    public function sendLabel(Event $subject)
+    public function sendLabel(Event $subject, $toAddresses, $emailBody )
     {
-        //tog("TGNEvent", $subject, "TGNData", $data, "TGNMore", $moredata, $subject->getSubject()->getPdfOutFile());
+       $this->send('sendLabelPdfAttachment', [ $subject->getSubject(), $toAddresses, $emailBody ]);
+    }
 
-        $to = $this->addressParse($this->getSetting('EMAIL_PALLET_LABEL_TO'));
-
-        if(empty($to)) {
-            return; 
-        }
-
-        $labels = $subject->getSubject();
-
+    public function sendLabelPdfAttachment($label, array $toAddresses, string $emailBody ){
+        
+        /* 
         $itemCode = $labels->getItemCode();
         $batch = $labels->getBatch();
         $reference = $labels->getReference();
-        $jobId = $labels->getJobId();
-        $pdfFile = $labels->getPdfOutFile();
+        $jobId = $labels->getJobId(); 
+        */
 
-        $filename = sprintf(
-            '%s-%s-%s-%s',
-            $itemCode,
-            $batch,
-            $reference,
-            $jobId
-        );
-
+        $pdfFile = $label->getPdfOutFile();
         
         $this->setProfile('production')
-            ->setTo($to)
-            ->setEmailFormat('both')
-            ->setAttachments([$filename . '.pdf' => $pdfFile ])
-            ->setSubject(sprintf('Pallet label %s printed', $reference, ))
-            ->viewBuilder()->setVars(compact('itemCode', 'batch', 'reference', 'jobId'))
-            ->setTemplate('send_label'); // By default template with same name as method name is used.
-
-        $this->send();
+            ->setTo($toAddresses)
+            ->setEmailFormat('html') // html and text
+            ->setAttachments([$label->getJobId() . '.pdf' => $pdfFile ])
+            ->setSubject(sprintf('Label - %s', $label->getJobId(), ))
+            ->setViewVars(['content' => $emailBody ])
+            ->viewBuilder()
+            //->setVars(compact('itemCode', 'batch', 'reference', 'jobId')) 
+            ->setTemplate('default');
     }
 
-    public function addressParse(array $addresses)
-    {
-
-        $add = [];
-        foreach ($addresses as $addressLine) {
-            $add = array_merge($add, mailparse_rfc822_parse_addresses($addressLine));
-        }
-
-        $formatted = [];
-
-        foreach ($add as $a) {
-            $formatted[$a['address']] = $a['display'];
-        }
-
-        return $formatted;
-    }
+  
 }
