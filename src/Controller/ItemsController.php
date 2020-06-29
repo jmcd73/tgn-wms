@@ -161,7 +161,7 @@ class ItemsController extends AppController
         } catch (\Cake\ORM\Exception\PersistenceFailedException $e) {
             $errors = $this->Items->flattenAndFormatValidationErrors($e->getEntity()->getErrors());
 
-            $this->Flash->error(__('The item could not be deleted. Please, try again. {0}', $errors));
+            $this->Flash->error(__('The item could not be deleted. Please, try again. {0}', $errors), ['escape' => false]);
         }
 
         return $this->redirect(['action' => 'index']);

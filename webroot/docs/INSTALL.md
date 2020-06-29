@@ -26,37 +26,33 @@
    ```
 5. Run the container
 
-   Edit the docker-command.sh file
+   Create a `.docker-env` file in docker/ 
+
 
    ```sh
-   #!/bin/sh
    WEB_DIR=test
-   CUPS_PORT=652
-   APACHE_PORT=8052
-   DOCKER_TAG=tgn/php74\:v13 # tag (-t) you used for docker build
-   VOLUME=~/sites/tgnwms/
+   CUPS_PORT=8632
+   APACHE_PORT=8092
+   DOCKER_TAG=tgn/tgn-wms-glabels:v25
+   VOLUME=~/sites/afewms/
    CONTAINER_NAME=${WEB_DIR}
-
-   docker run  --name $CONTAINER_NAME \
-   -v ${VOLUME}:/var/www/${WEBDIR}  -d \
-   -p ${CUPS_PORT}:631 -p ${APACHE_PORT}:80 $DOCKER_TAG
    ```
 
-   Run it
+   Run `docker-run.sh` to start the container
 
    ```
-   ./docker-command.sh
+   ./docker-run.sh
    ```
 
 6. Test connection to CUPS and Apache
 
-   > [http://localhost:652/](http://localhost:652/)
+   > [http://localhost:${CUPS_PORT}/](http://localhost:${CUPS_PORT}/)
    >
-   > [http://localhost:8052/test](http://localhost:8052/test)
+   > [http://localhost:${APACHE_PORT}/test](http://localhost:${APACHE_PORT}/test)
 
    You should get the CUPS admin page for the first URL and a HTTP 500 ERROR for the second
 
-   Note that Google Chrome will refuse to connect to the https://localhost:652 page. So to add or remove printers you need to use Firefox or Safari
+   Note that Google Chrome will refuse to connect to the https://localhost:${CUPS_PORT} page. So to add or remove printers you need to use Firefox or Safari
 
 7. Login to the docker container
 
@@ -132,7 +128,7 @@
     cp -rv popper.js/dist/umd/* /var/www/test/webroot/bootstrap_u_i/js/
     ```
 
-    Edit the file to have the correct host, user, db, password parameters
+    Edit the `config/app_local.php` file to have the correct host, user, db, password parameters
 
     ```php
 
@@ -153,12 +149,12 @@
 
     ```sh
     cd /var/www
-    co htaccess.txt .htaccess
+    cp htaccess.txt .htaccess
     cd webroot/
-    mv htaccess.txt .htaccess
+    cp htaccess.txt .htaccess
     ```
 
-12. At this point if the above instructions are correct you should be able to connect to [http://localhost:8052](http://localhost:8052) and get the login screen
+12. At this point if the above instructions are correct you should be able to connect to [http://localhost:${APACHE_PORT}](http://localhost:${APACHE_PORT}) and get the login screen
 
 | Username          | Password | Role Description                                                                        |
 | ----------------- | -------- | --------------------------------------------------------------------------------------- |

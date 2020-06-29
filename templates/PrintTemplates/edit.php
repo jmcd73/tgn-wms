@@ -35,7 +35,9 @@
                 echo $this->Form->control('show_in_label_chooser');
                 echo $this->Form->control('is_file_template', ['label' => 'Glabels template']);
                 echo $this->Form->control('send_email', ['label' => 'Send print via email']); ?>
-                <?= $this->Form->button(__('Submit')) ?>
+                <?= $this->Form->button(__('Submit'), [
+                    'type' => 'submit',
+                    'class' => 'mb-4']) ?>
                 <?= $printTemplate->hasValue('example_image') ? $this->element('printImage/card', [
                     'name' => $printTemplate->name,
                     'description' => $printTemplate->description,

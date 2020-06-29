@@ -10,7 +10,7 @@ interface LabelInterface
      * @param  array  $labelData from view
      * @return string
      */
-    public function format($printTemplate, $printData);
+    public function format(\App\Model\Entity\PrintTemplate $printTemplate, array $printData);
 
     public function print(\App\Model\Entity\Printer $printer);
 }

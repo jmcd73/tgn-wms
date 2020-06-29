@@ -10,6 +10,7 @@ use App\Lib\PrintLabels\Glabel\GlabelsProject;
 use Cake\I18n\FrozenTime;
 use Cake\Core\Configure;
 use Cake\Event\EventManager;
+use App\Controller\PalletsController;
 
 class PrintLabel implements EventListenerInterface
 {

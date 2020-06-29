@@ -42,7 +42,7 @@ echo $this->Html->scriptBlock('hljs.initHighlightingOnLoad();', ['block' => 'fro
             ]); ?>
         </div>
         <div class="col-lg-3 col-md-4 col-sm-12 text-center">
-            <?= $this->Html->link('Print another type of label', [
+            <?= $this->Html->link('Choose another label to print', [
                 'action' => 'labelChooser',
             ], [
                 'class' => 'btn btn-primary print',
