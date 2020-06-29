@@ -159,7 +159,7 @@ class ItemsController extends AppController
             $this->Items->deleteOrFail($item);
             $this->Flash->success(__('The item has been deleted.'));
         } catch (\Cake\ORM\Exception\PersistenceFailedException $e) {
-            $errors = $this->Items->formatValidationErrors($e->getEntity()->getErrors());
+            $errors = $this->Items->flattenAndFormatValidationErrors($e->getEntity()->getErrors());
 
             $this->Flash->error(__('The item could not be deleted. Please, try again. {0}', $errors));
         }

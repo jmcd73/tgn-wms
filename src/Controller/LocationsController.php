@@ -105,7 +105,7 @@ class LocationsController extends AppController
         if ($result) {
             $this->Flash->success(__('The location has been deleted.'));
         } else {
-            $error = $this->Locations->formatValidationErrors($location->getErrors());
+            $error = $this->Locations->flattenAndFormatValidationErrors($location->getErrors());
             
             $this->Flash->error(__('The location could not be deleted. Please, try again. {0}' , $error));
         }

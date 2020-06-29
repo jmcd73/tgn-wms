@@ -204,7 +204,7 @@ class CartonsController extends AppController
                     $updateOK = true;
                 } else {
                     $validationErrors = $this->Cartons->validationErrors;
-                    $errorText = $this->Cartons->formatValidationErrors($validationErrors);
+                    $errorText = $this->Cartons->flattenAndFormatValidationErrors($validationErrors);
                     if ($errorText) {
                         $msg = __('<strong>Update Error: </strong> %s', $errorText);
                     } else {
