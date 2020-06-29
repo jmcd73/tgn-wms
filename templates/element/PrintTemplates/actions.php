@@ -1,14 +1,12 @@
-<div class="row">
-<div class="col">
+<div class="form-row">
 <?php
 echo $this->Form->create(null, [
-    'style' => 'width: 120px;',
+    'style' => 'width: 80px;',
     'url' => [
         'action' => 'move',
         $id,
     ],
 ]);
-
 echo $this->Form->control('amount', [
     'label' => false,
     'placeholder' => '1',
@@ -30,9 +28,7 @@ echo $this->Form->control('amount', [
         ]
     ),
 ]);
-
 echo $this->Form->end(); ?>
-</div>
 <div class="col">
 <?= $this->Html->link(__('View'), ['action' => 'view', $id], ['title' => __('View'), 'class' => 'btn btn-secondary btn-sm mr-1 mb-1']) ?>
 <?= $this->Html->link(__('Edit'), ['action' => 'edit', $id], ['title' => __('Edit'), 'class' => 'btn btn-secondary btn-sm mr-1 mb-1']) ?>
@@ -45,6 +41,6 @@ echo $this->Form->end(); ?>
         'class' => 'btn btn-danger btn-sm mb-1',
     ]
 ) ?>
-
 </div>
+
 </div>

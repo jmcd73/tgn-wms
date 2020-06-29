@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace App\Lib\PrintLabels\Glabel;
 
-use App\Lib\PrintLabels\Interfaces\GlabelInterface;
+use App\Lib\PrintLabels\Interfaces\LabelInterface;
 use App\Lib\PrintLabels\Label;
 
-class GlabelSample extends Label implements GlabelInterface
+class GlabelSample extends Label implements LabelInterface
 {
     public function __construct($action)
     {

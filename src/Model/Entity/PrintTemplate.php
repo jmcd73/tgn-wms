@@ -71,4 +71,35 @@ class PrintTemplate extends Entity
         'print_class' => true,
         'send_email' => true,
     ];
+
+    protected $_virtual = ['action', 'controller'];
+
+    protected function _getAction()
+    {
+        tog($this->getActionOrController($this->controller_action, 1 ));
+        return $this->getActionOrController($this->controller_action, 1 );
+        
+        
+    }
+
+    protected function _getController()
+    {
+        tog($this->getActionOrController($this->controller_action, 0 ));
+        return $this->getActionOrController($this->controller_action, 0 );
+        
+    }
+
+    protected function getActionOrController($controllerAction, $index) {
+
+        $action = null;
+
+        if (is_null($controllerAction)) {
+            return null;
+        }
+        if(preg_match('/::/', $controllerAction) === 1) {
+            $action = explode("::", $controllerAction)[$index];
+        }
+        
+        return $action;
+    }
 }

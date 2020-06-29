@@ -3,8 +3,22 @@ declare(strict_types=1);
 
 namespace App\Lib\Utility;
 use Cake\I18n\FrozenTime;
+use Cake\Core\InstanceConfigTrait;
 
 trait FormatDateTrait {
+    use InstanceConfigTrait;
+       /**
+     * Default configuration.
+     *
+     * @var array
+     */
+    protected $_defaultConfig = [
+        'labelDateFormats' =>   [
+            'bb_date' => 'Y-m-d',
+            'bb_bc' => 'ymd',
+            'bb_hr' => 'd/m/y',
+        ]
+    ];
 
      /**
      * FormatLabelDates given a dateString and an array of dateFormats as follows

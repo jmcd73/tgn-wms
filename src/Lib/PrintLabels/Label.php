@@ -5,7 +5,6 @@ namespace App\Lib\PrintLabels;
 use App\Lib\Exception\GlabelsException;
 use App\Lib\PrintLabels\Glabel\GlabelsProject;
 use App\Lib\Utility\SettingsTrait;
-use App\Mailer\AppMailer;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventManager;
@@ -18,8 +17,7 @@ use SplFileObject;
  */
 class Label
 {
-    use PrinterListTrait;
-    use SettingsTrait;
+    use PrinterListTrait, SettingsTrait;
 
     /**
      * When a multipage print contains the same content on each page
@@ -38,6 +36,7 @@ class Label
     public $printerQueue = '';
     public $options = '';
     public $action = '';
+    
 
     /**
      * @var int $glabelPrintCopies
@@ -200,9 +199,10 @@ class Label
      * @param  string $template Template from config
      * @return void
      */
-    private function setGlabelsTemplate(GlabelsProject $template)
+    protected function setGlabelsTemplate(GlabelsProject $template)
     {
-        $this->glabelsTemplate = realpath($template->filePath);
+        $this->glabelsTemplate = $template;
+        $this->glabelsTemplateFullPath = realpath($template->filePath);
     }
 
     public function formatLocalDate($date)
@@ -226,7 +226,10 @@ class Label
     {
         return $this->glabelsTemplate;
     }
-
+    public function getGlabelsTemplateFullPath()
+    {
+        return $this->glabelsTemplateFullPath;
+    }
     /**
      * @return mixed
      */
@@ -383,17 +386,17 @@ class Label
     /**
      * send gLabels PDF to designated LPR printer
      *
-     * @param  string $printer Print queue name
+     * @param \App\Model\Entity\Printer $printer Print queue name
      * @return array  Array with stdout stderr cmd and return_value
      */
-    public function sendPdfToLpr($printer): array
+    public function sendPdfToLpr(\App\Model\Entity\Printer $printer): array
     {
         $jobId = $this->getJobId();
 
         $cmdArgs = [
             'lpr',
             '-P',
-            $printer,
+            $printer->queue_name,
             '-#',
             $this->glabelPrintCopies,
             '-T',
@@ -420,9 +423,9 @@ class Label
      * @param  array                                      $printerDetails Printer Information
      * @return array                                      Array holding the results of the lpr command
      */
-    public function glabelsBatchPrint(GlabelsProject $template, $printerDetails): array
+    public function glabelsBatchPrint($printer): array
     {
-        $this->setGlabelsTemplate($template);
+        $template = $this->getGlabelsTemplate();
 
         if ($template->details->glabels_copies > 1) {
             $this->glabelsCopies = $template->details->glabels_copies;
@@ -440,7 +443,7 @@ class Label
                 // '-m', // crop marks
                 '-o',
                 $this->getPdfOutFile(),
-                $this->getGlabelsTemplate(),
+                $this->getGlabelsTemplateFullPath(),
             ]
         );
 
@@ -452,6 +455,9 @@ class Label
         if ($this->variablePages) {
             $this->setPrintCopies(1);
         }
+
+        tog('cmdArgs', $cmdArgs);
+
 
         $results = $this->runProcess(
             $cmdArgs,
@@ -478,22 +484,8 @@ class Label
 
             unlink($this->getPdfOutFile());
         }
-        /*
-                $pdfPattern = '/(%PDF-1.5.*%%EOF)/s';
-
-                $this->log($results['stdout']);
-
-                preg_match($pdfPattern, $results['stdout'], $matches);
-         */
-        /**
-         * This grabs the PDF file out of the PDF
-         */
-
-
-
-
-
-        return $this->sendPdfToLpr($printerDetails);
+      
+        return $this->sendPdfToLpr($printer);
     }
 
     /**
@@ -578,7 +570,7 @@ class Label
 
         $cmd = [
             '/usr/bin/lpr',
-            '-P', $printer->name,
+            '-P', $printer->queue_name,
             $printer->options,
             '-J',
             $this->getJobId()

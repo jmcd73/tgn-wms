@@ -23,7 +23,7 @@ class GlabelsProject extends Template
 {
     use SettingsTrait;
     private $mergePath = '/dev/stdin';
-    public $filePath = '';
+    public $sourceFilePath = '';
     private $companyName = '';
 
     public function __construct(PrintTemplate $template, string $glabelsRoot)
@@ -32,9 +32,13 @@ class GlabelsProject extends Template
 
         $this->companyName = $this->getSetting("COMPANY_NAME");
 
-        $this->filePath = $this->getFilePath($template, $glabelsRoot);
+        $this->sourceFilePath = $this->getFilePath($template, $glabelsRoot);
+        $this->targetFilePath = TMP . $template->file_template;
 
-        $this->editGlabelsProject($this->filePath, $this->mergePath);
+        $this->editGlabelsProject($this->sourceFilePath, $this->mergePath);
+
+        $this->filePath = $this->targetFilePath;
+
     }
 
     public function editGlabelsProject($filePath, $mergePath)
@@ -42,9 +46,7 @@ class GlabelsProject extends Template
         $contents = $this->getProjectContents($filePath);
         [$contents, $replaceCount] = $this->replaceCompanyName($contents);
         [$glabelsDocument, $mergeCount] = $this->setMergePath($contents, $mergePath);
-        if ($replaceCount > 0 | $mergeCount > 0) {
-            $this->saveProject($filePath, $glabelsDocument);
-        }
+        $this->saveProject($this->targetFilePath, $glabelsDocument);
     }
 
     public function getFilePath(PrintTemplate $template, $glabelsRoot)

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Lib\Exception\MissingConfigurationException;
-use App\Mailer\AppMailer;
 use App\Model\Table\CartonsTable;
 use App\Model\Table\Traits\UpdateCounterCacheTrait;
 use Cake\Core\Exception\Exception;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\I18n\Date;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -19,10 +19,6 @@ use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
-use App\Lib\PrintLabels\LabelFactory;
-use App\Lib\PrintLabels\PrintLabel;
-use Cake\Core\Configure;
-use Cake\I18n\FrozenTime;
 
 /**
  * Pallets Model
@@ -1023,7 +1019,7 @@ class PalletsTable extends Table
         return (int) $copies;
     }
 
-    public function addPalletRecord($data)
+    public function createPalletEntity($data)
     {
         $productType = $this->Items->ProductTypes->get($data['productType']);
 
@@ -1097,5 +1093,10 @@ class PalletsTable extends Table
             ];
 
             return $this->newEntity($palletData);
+    }
+    public function persistPalletRecord(Event $event) {
+
+        $this->save($event->getSubject());
+
     }
 }

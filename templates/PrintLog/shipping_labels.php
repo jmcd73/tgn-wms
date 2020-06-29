@@ -45,8 +45,8 @@
                 'placeholder' => 'Enter the state or destination title',
             ]);?>
             <?=$this->Form->control('address', [
-                'maxLength' => 48,
-                'size' => 48,
+                'maxLength' => 100,
+                'size' => 100,
                 'placeholder' => 'Enter the address',
             ]);?>
             <?=$this->Form->control('reference', [

@@ -7,19 +7,15 @@ namespace App\Controller;
 use App\Form\LookupSearchForm;
 use App\Form\OnhandSearchForm;
 use App\Form\PalletPrintForm;
-use App\Lib\Exception\MissingConfigurationException;
-use App\Lib\PrintLabels\LabelFactory;
 use App\Lib\PrintLabels\PalletPrintResultTrait;
+use App\Lib\PrintLabels\PrintLabel;
+use App\Lib\Utility\Batch;
 use Cake\Core\Configure;
+use Cake\Event\Event;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
-use Cake\I18n\FrozenTime;
-use Cake\Routing\Router;
 use Cake\Utility\Hash;
-use Cake\Utility\Inflector;
-use App\Lib\Utility\Batch;
-use Cake\Event\Event;
-use App\Lib\PrintLabels\PrintLabel;
+
 /**
  * Pallets Controller
  *
@@ -65,15 +61,11 @@ class PalletsController extends AppController
             $forms[$form] = (new PalletPrintForm())->setFormName($form);
         }
 
-       
-
         $productTypes = $this->Pallets->Items->ProductTypes->find('list', [
             'conditions' => [
                 'ProductTypes.active' => 1,
             ],
         ]);
-
-        $isPrintDebugMode = Configure::read('pallet_print_debug');
 
         if (!$productTypeId) {
             $this->Flash->error('Select a product type from the actions on the left');
@@ -110,16 +102,25 @@ class PalletsController extends AppController
 
                 $newData['user_id'] = $this->Authentication->getIdentity()->getIdentifier();
         
-                $pallet = $this->Pallets->addPalletRecord($newData);
+                $pallet = $this->Pallets->createPalletEntity($newData);
 
                 $item = $this->Pallets->Items->get($newData['item'], [
                     'contain' => 
                      [ 'PrintTemplates' , 'ProductTypes' ]
                 ]);
 
+                $productionLine = $this->Pallets->ProductionLines->get($newData['production_line'], [
+                    'contain' => 'Printers'
+                ]);
+
                 if(! $pallet->hasErrors()) {
-                    $this->Flash->success("Pallet record added");
-                    $event = new Event('PrintLabels.palletPrint', $pallet, [ 'item' => $item ]);
+                    $this->Flash->success($this->createMessage($pallet, $productionLine->printer), ['escape' => false]);
+                    $event = new Event('PrintLabels.palletPrint', $pallet, [ 
+                        'item' => $item, 
+                        'printer' => $productionLine->printer, 
+                        'company' => $this->companyName,
+                        'action' => $this->request->getParam('action')
+                        ]);
                     $this->getEventManager()->dispatch($event);
                 } else {
                     $errors = $this->Pallets->flattenAndFormatValidationErrors($pallet->getErrors());
@@ -919,132 +920,6 @@ class PalletsController extends AppController
             ],
         ]);
         $this->set(compact('productTypes'));
-    }
-
-    /**
-     * view method
-     *
-     * @throws NotFoundException
-     * @param  string            $id ID of Pallet
-     * @return mixed
-     */
-    public function palletReprint($id = null)
-    {
-        $controller = $this->request->getParam('controller');
-        $action = $this->request->getParam('action');
-
-        $pallet = $this->Pallets->get(
-            $id,
-            [
-                'contain' => [
-                    'Items' => [
-                        'ProductTypes',
-                        'PrintTemplates',
-                    ],
-                ],
-            ]
-        );
-
-        $this->Pallets->getValidator()->add('printer_id', 'required', [
-            'rule' => 'notBlank',
-            'message' => 'Please select a printer',
-        ]);
-
-        if ($this->request->is(['post', 'put'])) {
-            $data = $this->request->getData();
-            $pallet_ref = $pallet->pl_ref;
-
-            if (!isset($pallet['items']['print_template']) || empty($pallet['items']['print_template'])) {
-                throw new MissingConfigurationException(__('Please configure a print template for item %s', $pallet['item']));
-            }
-
-            $replaceTokens = json_decode($pallet->items->print_template->replace_tokens);
-
-            // get the printer queue name
-            $printerId = $data['printer_id'];
-
-            $printer = $this->Pallets->Printers->get($printerId);
-
-            $dateFormats = [
-                'bb_date' => 'Y-m-d',
-                'bb_bc' => 'ymd',
-                'bb_hr' => 'd/m/y',
-            ];
-
-            $bb_date = new FrozenTime($pallet['bb_date']);
-
-            $bestBeforeDates = $this->Pallets->formatLabelDates(
-                $bb_date,
-                $dateFormats
-            );
-
-            $cabLabelData = [
-                'companyName' => $this->companyName,
-                'internalProductCode' => $pallet['items']['code'],
-                'reference' => $pallet['pl_ref'],
-                'sscc' => $pallet['sscc'],
-                'description' => $pallet['items']['description'],
-                'gtin14' => $pallet['gtin14'],
-                'quantity' => $pallet['qty'],
-                'bestBeforeHr' => $bestBeforeDates['bb_hr'],
-                'bestBeforeBc' => $bestBeforeDates['bb_bc'],
-                'batch' => $pallet['batch'],
-                'numLabels' => $this->request->getData()['copies'],
-            ];
-
-            $isPrintDebugMode = Configure::read('pallet_print_debug');
-
-            $printResult = LabelFactory::create($pallet['items']['print_template']['print_class'], $action)
-                ->format($pallet['items']['print_template'], $cabLabelData)
-                ->print($printer);
-
-            $this->handleResult(
-                $printResult,
-                $printer,
-                $pallet_ref,
-                $pallet,
-                $isPrintDebugMode,
-                $this->request->referer(),
-                false
-            );
-        }
-
-        $printers = $this->Pallets->getLabelPrinters(
-            $controller . '::' . $action
-        );
-
-        // unset this as the default printer is configured
-        // for the reprint Controller/Action in Printers
-        unset($pallet['printer_id']);
-
-        $labelCopies = $this->Pallets->getLabelCopies($pallet->items->pallet_label_copies);
-
-        $tag = 'Pallet';
-
-        $labelCopiesList = [];
-
-        for ($i = 1; $i <= $labelCopies; $i++) {
-            if ($i > 1) {
-                $tag = Inflector::pluralize($tag);
-            } else {
-                $tag = Inflector::singularize($tag);
-            }
-            $labelCopiesList[$i] = $i . ' ' . $tag;
-        }
-
-        $refer = $this->request->referer(false);
-
-        $inputDefaultCopies = $this->getSetting('SSCC_DEFAULT_LABEL_COPIES');
-
-        $this->set(
-            compact(
-                'labelCopiesList',
-                'pallet',
-                'printers',
-                'refer',
-                'inputDefaultCopies'
-            )
-        );
     }
 
     /**

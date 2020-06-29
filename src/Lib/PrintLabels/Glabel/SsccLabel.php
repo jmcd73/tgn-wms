@@ -2,10 +2,10 @@
 
 namespace App\Lib\PrintLabels\Glabel;
 
-use App\Lib\PrintLabels\Interfaces\GlabelInterface;
+use App\Lib\PrintLabels\Interfaces\LabelInterface;
 use App\Lib\PrintLabels\Label;
 
-class SsccLabel extends Label implements GlabelInterface
+class SsccLabel extends Label implements LabelInterface
 {
     /**
      *   $cabLabelData = [
@@ -49,13 +49,15 @@ class SsccLabel extends Label implements GlabelInterface
         parent::__construct($action);
     }
 
-    public function print($printerDetails, $glabelsProject)
+    public function print($printer)
     {
-        return $this->glabelsBatchPrint($glabelsProject, $printerDetails['queue_name']);
+        return $this->glabelsBatchPrint($printer);
     }
 
-    public function format($labelData)
+    public function format($template, $labelData)
     {
+        tog("TEMPLATE", $template, $labelData);
+        $this->setGlabelsTemplate($template);
         $this->setPrintContentArray($labelData);
         $this->setReference($labelData['reference']);
         $this->setBatch($labelData['batch']);

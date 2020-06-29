@@ -1,0 +1,7 @@
+PURCHASE_ORDER,BOOKED_DATE,SENDTO_NAME,SENDTO_ADDR1,SENDTO_ADDR2,TOTAL_PLS,PL_NUM,SENDING_CO
+"PO 123456",25/06/2020,"Australasian Food Exports Pty Ltd","Unit 2 38 Eastfield Rd","Ringwood East VIC Australia 3135",9,7,"Australasian Food Exports Pty Ltd"
+"PO 123456",25/06/2020,"Australasian Food Exports Pty Ltd","Unit 2 38 Eastfield Rd","Ringwood East VIC Australia 3135",9,7,"Australasian Food Exports Pty Ltd"
+"PO 123456",25/06/2020,"Australasian Food Exports Pty Ltd","Unit 2 38 Eastfield Rd","Ringwood East VIC Australia 3135",9,8,"Australasian Food Exports Pty Ltd"
+"PO 123456",25/06/2020,"Australasian Food Exports Pty Ltd","Unit 2 38 Eastfield Rd","Ringwood East VIC Australia 3135",9,8,"Australasian Food Exports Pty Ltd"
+"PO 123456",25/06/2020,"Australasian Food Exports Pty Ltd","Unit 2 38 Eastfield Rd","Ringwood East VIC Australia 3135",9,9,"Australasian Food Exports Pty Ltd"
+"PO 123456",25/06/2020,"Australasian Food Exports Pty Ltd","Unit 2 38 Eastfield Rd","Ringwood East VIC Australia 3135",9,9,"Australasian Food Exports Pty Ltd"
