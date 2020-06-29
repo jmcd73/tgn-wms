@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \App\View\AppView                                                            $this
  * @var \App\Model\Entity\PrintTemplate                                              $printTemplate
@@ -25,22 +26,36 @@
     <?= $this->Form->create($printTemplate, ['type' => 'file']) ?>
     <fieldset>
         <legend><?= __('Add Print Template') ?></legend>
-        <?php
-              echo $this->Form->control('active');
-              echo $this->Form->control('is_file_template', ['label' => 'Glabels template']);
-              echo $this->Form->control('send_email', ['label' =>'Send print via email']);
-              echo $this->Form->control('glabels_copies', ['label' => 'Glabels number of copies']);
-              echo $this->Form->control('show_in_label_chooser');
-              echo $this->Form->control('parent_id', ['options' => $parentPrintTemplates, 'empty' => true, 'escape' => false]);
-              echo $this->Form->control('name');
-              echo $this->Form->control('description');
-              echo $this->Form->control('print_class', ['empty' => true]);
-              echo $this->Form->control('upload_file_template', ['type' => 'file']);
-              echo $this->Form->control('upload_example_image', ['type' => 'file']);
-              echo $this->Form->control('controller_action', ['empty' => true]);
-              echo $this->Form->control('text_template', ['type' => 'textarea']);
-        ?>
+        <div class="row">
+            <div class="col-md-12 col-lg-3">
+                <?php
+                echo $this->Form->control('active');
+                echo $this->Form->control('show_in_label_chooser');
+                echo $this->Form->control('is_file_template', ['label' => 'Glabels template']);
+                echo $this->Form->control('send_email', ['label' => 'Send print via email']);
+                ?>
+                 <?= $this->Form->button(__('Submit')) ?>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <?php
+                echo $this->Form->control('parent_id', ['options' => $parentPrintTemplates, 'empty' => true, 'escape' => false]);
+                echo $this->Form->control('name');
+                echo $this->Form->control('description');
+                echo $this->Form->control('print_class', ['empty' => true]);
+                echo $this->Form->control('controller_action', ['empty' => true]);
+                echo $this->Form->control('glabels_copies', ['label' => 'Glabels number of copies']);
+                ?>
+            </div>
+            <div class="col-md-12 col-lg-5">
+                <?php
+                echo $this->Form->control('upload_file_template', ['type' => 'file']);
+                echo $this->Form->control('upload_example_image', ['type' => 'file']);
+                echo $this->Form->control('text_template', ['type' => 'textarea']);
+                echo $this->Form->control('replace_tokens', ['type' => 'textarea']);
+                ?>
+            </div>
+        </div>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+   
     <?= $this->Form->end() ?>
 </div>

@@ -32,6 +32,7 @@ require __DIR__ . '/paths.php';
 require CORE_PATH . 'config' . DS . 'bootstrap.php';
 
 use App\Mailer\AppMailer;
+use App\Model\Table\PalletsTable;
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
@@ -237,3 +238,5 @@ Configure::write('pallet_print_debug', false);
 
 $mailer = new AppMailer();
 EventManager::instance()->on($mailer);
+$pallets = new PalletsTable();
+EventManager::instance()->on('Model.Pallets.persistPalletRecord', [ $pallets, 'persistPalletRecord'] );

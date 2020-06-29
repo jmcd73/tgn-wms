@@ -42,3 +42,4 @@ dev/glabels/ubuntu20.04/shippingLabelTest.sh
 .phpunit.result.cache
 src/Mailer/mailer.php
 src/Mailer/20200626172105-palletPrint.pdf
+config/Migrations/schema-dump-default.lock

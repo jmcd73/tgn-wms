@@ -2,23 +2,25 @@
 
 namespace App\Lib\PrintLabels\Glabel;
 
-use App\Lib\PrintLabels\Interfaces\GlabelInterface;
+use App\Lib\PrintLabels\Interfaces\LabelInterface;
 use App\Lib\PrintLabels\Label;
 
-class ShippingLabelGeneric extends Label implements GlabelInterface
+class ShippingLabelGeneric extends Label implements LabelInterface
 {
     public function __construct($action)
     {
         parent::__construct($action);
     }
 
-    public function print($printerDetails, $glabelsProject)
+    public function print($printerDetails)
     {
-        return $this->glabelsBatchPrint($glabelsProject, $printerDetails['queue_name']);
+        return $this->glabelsBatchPrint($printerDetails);
     }
 
-    public function format($labelData)
+    public function format( $glabelsProject, $labelData)
     {
+        $this->setGlabelsTemplate($glabelsProject);
+        
         $this->setPrintContentArray($labelData);
 
         $this->formatShippingLabelsGeneric($labelData);

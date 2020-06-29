@@ -551,7 +551,9 @@ a.btn.calendar-week::before {
 }
 a.btn.reprint::before,
 a.btn.reprint::before,
-button.print::before {
+a.btn.print::before,
+button.print::before,
+input[type="submit"].print.btn::before {
   font-family: "Font awesome 5 Free";
   font-weight: 900;
   content: "\f02f\00a0";
@@ -772,6 +774,13 @@ button.move-down::before {
   font-weight: 900;
 
   content: "\f0d7";
+}
+
+
+a.go-back::before {
+  font-family: "Font awesome 5 Free";
+  font-weight: 900;
+  content: "\f0a5\00a0";
 }
 
 .card-body.open {

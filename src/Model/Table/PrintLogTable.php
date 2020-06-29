@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Lib\PrintLabels\Glabel\GlabelsProject;
+use Cake\Event\Event;
 use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -34,6 +35,21 @@ use Cake\Validation\Validator;
  */
 class PrintLogTable extends Table
 {
+
+    public function implementedEvents(): array
+    {
+        return [ 'Model.PrintLog.savePrintRecord' => 'savePrintRecord'];
+    }
+
+
+    public function savePrintRecord(Event $event ) {
+        $newEntity = $this->newEntity($event->getSubject());
+        $savedEntity = $this->save($newEntity);
+
+    }
+
+
+
     /**
      * Initialize method
      *
@@ -86,7 +102,6 @@ class PrintLogTable extends Table
     public function getGlabelsProject($controllerAction): GlabelsProject
     {
         $options = [
-          
             'active' => 1,
         ];
     

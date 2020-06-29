@@ -9,7 +9,7 @@
   </Template>
   <Objects id="0" rotate="True">
     <Object-text x="3.736mm" y="3.70729mm" w="136.028mm" h="10.5833mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
-      <Span color="0x000000ff" font_family="Sans" font_size="24" font_weight="Regular" font_italic="False" line_spacing="1">Australasian Food Exports Pty Ltd</Span>
+      <Span color="0x000000ff" font_family="Sans" font_size="24" font_weight="Regular" font_italic="False" line_spacing="1">{{COMPANY_NAME}}</Span>
     </Object-text>
     <Object-text x="3.4105mm" y="18.7005mm" w="136.679mm" h="20.4611mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
       <Span color="0x000000ff" font_family="Sans" font_size="50" font_weight="Regular" font_italic="False" line_spacing="1">

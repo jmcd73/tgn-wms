@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace App\Lib\PrintLabels\CabLabel;
 
 use App\Lib\Exception\MissingConfigurationException;
-use App\Lib\PrintLabels\Interfaces\TextLabelInterface;
+use App\Lib\PrintLabels\Interfaces\LabelInterface;
 use App\Lib\PrintLabels\Label;
 use App\Model\Entity\Printer;
 use Cake\Core\Configure;
 
-class PalletPrint extends Label implements TextLabelInterface
+class PalletPrint extends Label implements LabelInterface
 {
     public function __construct($action)
     {
@@ -22,7 +22,7 @@ class PalletPrint extends Label implements TextLabelInterface
         $templateTokens = json_decode($printTemplate['replace_tokens']);
 
         if (empty($printTemplateContents) || empty($templateTokens)) {
-            throw new MissingConfigurationException('Cannot find print template for bigNumber');
+            throw new MissingConfigurationException('Cannot find print template');
         }
 
         $this->setReference($labelValues['reference']);

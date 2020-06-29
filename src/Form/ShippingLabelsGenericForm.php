@@ -31,7 +31,7 @@ class ShippingLabelsGenericForm extends Form
      */
     protected function _buildSchema(Schema $schema): Schema
     {
-        return $schema->addField('copies', 'integer');
+        return $schema->addField('copies', 'integer', 'printer');
     }
 
     /**
@@ -42,7 +42,9 @@ class ShippingLabelsGenericForm extends Form
      */
     public function validationDefault(Validator $validator): Validator
     {
-        return $validator->lessThanOrEqual('copies', $this->maxCopies, 'Copies must be no more than ' . $this->maxCopies);
+        return $validator
+            ->notEmpty('printer', "Please select a printer")
+            ->lessThanOrEqual('copies', $this->maxCopies, 'Copies must be no more than ' . $this->maxCopies);
     }
 
     /**

@@ -45,8 +45,8 @@
                 'placeholder' => 'Enter the state or destination title',
             ]);?>
             <?=$this->Form->control('address', [
-                'maxLength' => 48,
-                'size' => 48,
+                'maxLength' => 100,
+                'size' => 100,
                 'placeholder' => 'Enter the address',
             ]);?>
             <?=$this->Form->control('reference', [
@@ -54,7 +54,17 @@
                 'size' => 20,
                 'placeholder' => 'SO-M000056',
             ]);?>
-            <?= $this->Form->submit('Print');?>
+            <div class="row">
+                <div class="col-md-2">
+
+                </div>
+                <div class="col-md-10">
+                <?= $this->Form->button('Print', [ 
+                'type' => 'submit',
+                'class' => 'print']);?>
+                </div>
+            </div>
+            
             <?=$this->Form->end();?>
         </div>
         <div class="col-3">

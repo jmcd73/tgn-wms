@@ -9,7 +9,7 @@ $glabelsBatchBinary = file_exists('/.dockerenv') ? [
     '/usr/local/bin/glabels-batch-qt', '--',
 ];
 
-$glabelsBatchBinary = [ '/usr/local/bin/glabels-3-batch' ];
+$glabelsBatchBinary = ['/usr/local/bin/glabels-3-batch'];
 
 return [
     // in Lib/Utility/Barcode
@@ -21,8 +21,8 @@ return [
         ],
         'YDDD' => [
             'description' => "YDDD e.g. 2020 Jan 5 = 0005. Squeaky Gate",
-            ]
-        ],
+        ]
+    ],
     'ALLOWED_METHODS' => ['PUT', 'POST'],
     'ALLOWED_ORIGINS' => ['http://localhost:3000', 'http://localhost:8082'],
     'MAX_COPIES' => 100,
@@ -66,11 +66,11 @@ return [
                 'customPrint',
                 'customPrint',
                 'sampleLabels',
-                'ssccLabel', ],
-        ], ],
-    
+                'ssccLabel',
+            ],
+        ],
+    ],
     'applicationName' => $appName,
-    'labelMaxCopies' => 400,
     'App' => [
         'title' => 'Toggen',
     ],
@@ -105,7 +105,8 @@ return [
         [
             'value' => 4,
             'slug' => 'view_in_lookup_table',
-            'display' => 'Visble in Pallet Track (always select this)', ],
+            'display' => 'Visble in Pallet Track (always select this)',
+        ],
         [
             'value' => 8,
             'slug' => 'view_in_remove_status',

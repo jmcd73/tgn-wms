@@ -31,4 +31,6 @@ class PrintLog extends Entity
         'created' => true,
         'modified' => true,
     ];
+
+   
 }

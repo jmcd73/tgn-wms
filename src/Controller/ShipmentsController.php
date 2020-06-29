@@ -142,7 +142,7 @@ class ShipmentsController extends AppController
                 $pallets
             ), ['escape' => false]);
         } else {
-            $errors = $this->Shipments->formatValidationErrors($shipment->getErrors());
+            $errors = $this->Shipments->flattenAndFormatValidationErrors($shipment->getErrors());
             $this->Flash->error($errors);
         }
 
@@ -339,7 +339,7 @@ class ShipmentsController extends AppController
             } else {
                 $errorText = '';
 
-                $errors = $this->Shipments->formatValidationErrors($patched->getErrors()) ;
+                $errors = $this->Shipments->flattenAndFormatValidationErrors($patched->getErrors()) ;
 
                 $this->Flash->error($errors);
             }

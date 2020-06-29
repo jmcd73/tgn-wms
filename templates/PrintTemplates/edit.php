@@ -28,32 +28,45 @@
     <?= $this->Form->create($printTemplate, ['type' => 'file']) ?>
     <fieldset>
         <legend><?= __('Edit Print Template') ?></legend>
-        <?php
-        echo $this->Form->control('active');
-        echo $this->Form->control('send_email', ['label' =>'Send print via email']);
-        echo $this->Form->control('show_in_label_chooser');
-        echo $this->Form->control('is_file_template', ['label' => 'Glabels template']);
-        echo $this->Form->control('glabels_copies', ['label' => 'Glabels number of copies']);
-
-        echo $this->Form->control('parent_id', ['options' => $parentPrintTemplates, 'empty' => true]);
-        echo $this->Form->control('name');
-        echo $this->Form->control('description');
-        echo $this->Form->control('print_class', ['empty' => true]);
-        echo $this->Form->control('file_template', ['readonly']);
-        echo $this->Form->control('upload_file_template', ['type' => 'file']);
-        echo $this->Form->control('example_image', ['readonly']);
-        echo $this->Form->control('upload_example_image', ['type' => 'file']);
-        echo $printTemplate->hasValue('example_image') ? $this->element('printImage/card', [
-            'name' => $printTemplate->name,
-            'description' => $printTemplate->description,
-            'image' => $templateRoot . $printTemplate->example_image,
-        ]) : '';
-
-        echo $this->Form->control('controller_action', ['empty' => true]);
-        echo $this->Form->control('text_template', ['type' => 'textarea']);
-        echo $this->Form->control('replace_tokens', ['type' => 'textarea']);
-        ?>
+        <div class="row">
+            <div class="col-md-12 col-lg-3">
+                <?php
+                echo $this->Form->control('active');
+                echo $this->Form->control('show_in_label_chooser');
+                echo $this->Form->control('is_file_template', ['label' => 'Glabels template']);
+                echo $this->Form->control('send_email', ['label' => 'Send print via email']); ?>
+                <?= $this->Form->button(__('Submit'), [
+                    'type' => 'submit',
+                    'class' => 'mb-4']) ?>
+                <?= $printTemplate->hasValue('example_image') ? $this->element('printImage/card', [
+                    'name' => $printTemplate->name,
+                    'description' => $printTemplate->description,
+                    'image' => $templateRoot . $printTemplate->example_image,
+                ]) : '';
+        
+                ?>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <?php
+                echo $this->Form->control('parent_id', ['options' => $parentPrintTemplates, 'empty' => true, 'escape' => false]);
+                echo $this->Form->control('name');
+                echo $this->Form->control('description');
+                echo $this->Form->control('print_class', ['empty' => true]);
+                echo $this->Form->control('controller_action', ['empty' => true]);
+                echo $this->Form->control('glabels_copies', ['label' => 'Glabels number of copies']);
+                ?>
+            </div>
+            <div class="col-md-12 col-lg-5">
+                <?php
+                echo $this->Form->control('upload_file_template', ['type' => 'file']);
+                echo $this->Form->control('upload_example_image', ['type' => 'file']);
+                echo $this->Form->control('text_template', ['type' => 'textarea']);
+                echo $this->Form->control('replace_tokens', ['type' => 'textarea']);
+                ?>
+            </div>
+        </div>
+      
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+
     <?= $this->Form->end() ?>
 </div>

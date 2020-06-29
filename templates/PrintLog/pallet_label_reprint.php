@@ -72,7 +72,9 @@
                 'type' => 'hidden',
                 'value' => $refer,
             ]); ?>
-            <?php echo $this->Form->submit('Reprint'); ?>
+            <?php echo $this->Form->button('Reprint', [
+                'type' => 'submit',
+                'class' => 'print']); ?>
 
             <?=$this->Form->end(); ?>
         </div>

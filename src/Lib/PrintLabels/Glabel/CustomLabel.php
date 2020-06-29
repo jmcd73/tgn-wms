@@ -3,23 +3,26 @@ declare(strict_types=1);
 
 namespace App\Lib\PrintLabels\Glabel;
 
-use App\Lib\PrintLabels\Interfaces\GlabelInterface;
+use App\Lib\PrintLabels\Interfaces\LabelInterface;
 use App\Lib\PrintLabels\Label;
 
-class CustomLabel extends Label implements GlabelInterface
+class CustomLabel extends Label implements LabelInterface
 {
     public function __construct($action)
     {
         parent::__construct($action);
     }
 
-    public function print($printerDetails, $glabelsProject)
+    public function print($printerDetails)
     {
-        return $this->glabelsBatchPrint($glabelsProject, $printerDetails['queue_name']);
+        return $this->glabelsBatchPrint($printerDetails);
     }
 
-    public function format($labelData)
+    public function format($template, $labelData)
     {
+        
+        $this->setGlabelsTemplate($template);
+
         $this->setPrintContentArray($labelData);
 
         $this->formatCustomLabel($labelData);
@@ -33,7 +36,7 @@ class CustomLabel extends Label implements GlabelInterface
      */
     public function formatCustomLabel($printArray)
     {
-        $printThis = '';
+        $printThis = 'bogus data needed to get a print happening';
 
         $copies = $printArray['copies'];
 
@@ -44,6 +47,7 @@ class CustomLabel extends Label implements GlabelInterface
             $this->glabelsMergeCSV = false;
         }
         $this->setPrintCopies($copies);
+
         $this->setPrintContent($printThis);
     }
 }
