@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Lib\Exception\MissingConfigurationException;
+use App\Mailer\AppMailer;
+use App\Model\Table\CartonsTable;
 use App\Model\Table\Traits\UpdateCounterCacheTrait;
 use Cake\Core\Exception\Exception;
 use Cake\Datasource\EntityInterface;
@@ -16,8 +19,10 @@ use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
-use App\Mailer\AppMailer;
-use App\Model\Table\CartonsTable;
+use App\Lib\PrintLabels\LabelFactory;
+use App\Lib\PrintLabels\PrintLabel;
+use Cake\Core\Configure;
+use Cake\I18n\FrozenTime;
 
 /**
  * Pallets Model
@@ -105,7 +110,6 @@ class PalletsTable extends Table
 
         $cartons = new CartonsTable();
         $this->getEventManager()->on($cartons);
-
     }
 
     /**
@@ -170,7 +174,9 @@ class PalletsTable extends Table
             ->maxLength('pl_ref', 10)
             ->requirePresence('pl_ref', 'create')
             ->notEmptyString('pl_ref')
-            ->add('pl_ref', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->add('pl_ref', 'unique', [
+                'message' => "The pallet reference number must be unique",
+                'rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->scalar('sscc')
@@ -953,15 +959,18 @@ class PalletsTable extends Table
         if ($entity->isNew()) {
             // pallet table fields are keys, carton table fields are values
 
-            $event = new Event('Model.Cartons.addCartonRecord', $entity);
-            
-            $this->getEventManager()->dispatch($event);
+            $events = [ 'Model.Cartons.addCartonRecord' ];
 
+            foreach ($events as $e ) {
+                $event = new Event($e, $entity);
+                $this->getEventManager()->dispatch($event);
+            }    
         }
     }
-    
 
-    public function addCartonRecord($myvar,  $pallet){
+
+    public function addCartonRecord($myvar,  $pallet)
+    {
 
         $fields = [
             'qty' => 'count',
@@ -981,9 +990,8 @@ class PalletsTable extends Table
         if (!$this->Cartons->save($carton)) {
             throw new Exception('Could not save Carton record in Pallet.php afterSave method');
         }
-
     }
-    
+
 
     /**
      * @param  array $sndata $this->data
@@ -1013,5 +1021,81 @@ class PalletsTable extends Table
         $copies =  $labelCopies > 0 ? $labelCopies : $this->getSetting('SSCC_DEFAULT_LABEL_COPIES');
 
         return (int) $copies;
+    }
+
+    public function addPalletRecord($data)
+    {
+        $productType = $this->Items->ProductTypes->get($data['productType']);
+
+        // if the product_type has a default save location defined
+        // set location_id else return 0
+
+        $locationId = $productType->location_id > 0 ? $productType->location_id : 0;
+
+        $inventoryStatusId = ($productType->inventory_status_id > 0)
+            ? $productType->inventory_status_id : 0;
+
+        $productionLine = $this->Items
+            ->ProductTypes->ProductionLines->get($data['production_line']);
+
+        try {
+            $printer = $this->Printers->get($productionLine->printer_id);
+        } catch (\Throwable $th) {
+            throw new MissingConfigurationException(
+                [
+                    'message' => 'Printer',
+                    'printer' => $productionLine->printer_id
+                ],
+                404
+            );
+        }
+
+        $sscc = $this->generateSSCCWithCheckDigit();
+
+        $pallet_ref = $this->createPalletRef($data['productType']);
+
+        $item_detail = $this->Items->get($data['item'], [
+            'contain' => [
+                'PrintTemplates'
+            ]
+        ]);
+
+        $qty = $data['qty'] ?? $item_detail->quantity;
+
+        $days_life = $item_detail->days_life;
+
+        $print_date = new FrozenTime();
+
+        $print_date_plus_days_life = $print_date->addDays($days_life);
+
+        $bestBeforeDates = $this->formatLabelDates($print_date_plus_days_life);
+
+        $palletData =
+            [
+                'item' => $item_detail['code'],
+                'min_days_life' => $item_detail['min_days_life'],
+                'description' => $item_detail['description'],
+                'bb_date' => $bestBeforeDates['bb_date'],
+                'item_id' => $data['item'],
+                'batch' => $data['batch_no'],
+                'qty' => $qty,
+                'qty_previous' => 0,
+                'pl_ref' => $pallet_ref,
+                'gtin14' => $item_detail['trade_unit'],
+                'sscc' => $sscc,
+                'printer' => $printer['name'],
+                'printer_id' => $productionLine->printer_id,
+                'print_date' => $print_date,
+                'cooldown_date' => $print_date,
+                'location_id' => $locationId,
+                'shipment_id' => 0,
+                'inventory_status_id' => $inventoryStatusId,
+                'production_line' => $productionLine->name,
+                'production_line_id' => $productionLine->id,
+                'product_type_id' => $productType['id'],
+                'user_id' => $data['user_id']
+            ];
+
+            return $this->newEntity($palletData);
     }
 }

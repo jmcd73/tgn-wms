@@ -15,7 +15,7 @@ use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use App\Lib\Utility\SettingsTrait;
-
+use App\Lib\Utility\FormatDateTrait;
 
 /**
  * TgnUtils behavior
@@ -24,13 +24,20 @@ class TgnUtilsBehavior extends Behavior
 {
     use LogTrait;
     use SettingsTrait;
-
+    use FormatDateTrait;
+    
     /**
      * Default configuration.
      *
      * @var array
      */
-    protected $_defaultConfig = [];
+    protected $_defaultConfig = [
+        'labelDateFormats' =>   [
+            'bb_date' => 'Y-m-d',
+            'bb_bc' => 'ymd',
+            'bb_hr' => 'd/m/y',
+        ]
+    ];
 
   
 
@@ -184,34 +191,6 @@ class TgnUtilsBehavior extends Behavior
     }
 
     /**
-     * FormatLabelDates given a dateString and an array of dateFormats as follows
-     *
-     * [
-     *     'bb_date' => 'dd/mm/yy',
-     *     'mysl_date' => 'yyyy-MM-dd'
-     * ]
-     *
-     * returns the dates with the Initial keys e.g.
-     * [
-     *     'bb_date' => '31/01/73',
-     *     'mysql_date' => '1973-01-31'
-     * ]
-     *
-     * @param  \Cake\I18n\FrozenTime $dateObject  The date as a string
-     * @param  array                 $dateFormats As above example
-     * @return array                 of date strings
-     */
-    public function formatLabelDates(FrozenTime $dateObject, array $dateFormats): array
-    {
-        $dates = [];
-        foreach ($dateFormats as $k => $v) {
-            $dates[$k] = $dateObject->format($v);
-        }
-
-        return $dates;
-    }
-
-    /**
      * formats date as YYmmdd
      *
      * @param  string $date   Date string
@@ -334,15 +313,40 @@ class TgnUtilsBehavior extends Behavior
         // get Validation errors and append them into a string
 
         foreach ($validationErrors as $key => $value) {
+            $parent = $key;
             if (is_array($value)) {
                 $errorMessage[] = $this->formatValidationErrors($value, $errorMessage);
             } else {
-                $errorMessage[] = $value;
+                $errorMessage[] = $parent . ': ' . $value;
             }
         }
 
         return join('. ', array_unique($errorMessage));
     }
+    /**
+     * @param array $validationErrors The Validation Errors from an entity
+     * @return string
+     */
+    public function flattenAndFormatValidationErrors(array $validationErrors = []): string
+    {
+        // get Validation errors and append them into a string
+
+       $flattened = Hash::flatten($validationErrors);
+       $msg = [];
+       foreach($flattened as $key => $error) {
+           [ $field, $rule ] = explode(".", $key);
+           $currentMessage = sprintf(
+               'Validation for <strong>%s</strong> field has failed in rule <strong>%s</strong> with error: <strong>%s</strong>',
+                $field, 
+                $rule, 
+                $error
+            );
+           $msg[] = $currentMessage;
+       }
+       
+       return join(" ", $msg);
+    }
+    
 
     /**
      * getViewPermNumber returns the perm number when given the text
