@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Behavior;
@@ -105,32 +106,31 @@ class TgnUtilsBehavior extends Behavior
     }
 
     /**
+     * Returns the current reference number stored in settings table record
+     * and increments and saves the number in the table record
+     * 
      * @param  string $settingName   setting name
      * @param  int    $companyPrefix the GS1 company prefix
-     * @return string a number with leading zeros
+     * @return string a number formatted with appropriate number of leading zeros depending on companyPrefix length
+     * 
      */
     public function getReferenceNumber($settingName, $companyPrefix)
     {
-        $next_val = $this->getSetting($settingName) + 1;
+        $referenceNumber = $this->getSetting($settingName);
 
         $companyPrefixLength = strlen($companyPrefix);
 
         $fmt = '%0' . (16 - $companyPrefixLength) . 'd';
 
-        $saveThis = [
-            'id' => $this->settingId,
-            'setting' => $next_val,
-        ];
-
         $settingsTable = $this->getSettingsTable();
 
         $settingRecord = $settingsTable->get($this->settingId);
 
-        $settingRecord->setting = $next_val;
+        $settingRecord->setting = $referenceNumber + 1;
 
         $settingsTable->save($settingRecord);
 
-        return sprintf($fmt, $next_val);
+        return sprintf($fmt, $referenceNumber);
     }
 
     public function getCompanyPrefix()
@@ -154,7 +154,7 @@ class TgnUtilsBehavior extends Behavior
 
         $serialNumber = $productType->next_serial_number;
 
-        $productType->next_serial_number = ++$serialNumber;
+        $productType->next_serial_number = $serialNumber + 1;
 
         if (!$productTypeModel->save($productType)) {
             throw new Exception('Failed to save the serial number for ' . $productType->name);
@@ -333,8 +333,8 @@ class TgnUtilsBehavior extends Behavior
 
        $flattened = Hash::flatten($validationErrors);
        $msg = [];
-       foreach($flattened as $key => $error) {
-           [ $field, $rule ] = explode(".", $key);
+        foreach ($flattened as $key => $error) {
+            [$field, $rule] = explode(".", $key);
            $currentMessage = sprintf(
                'Validation for <strong>%s</strong> field has failed in rule <strong>%s</strong> with error: <strong>%s</strong>',
                 $field, 

@@ -149,7 +149,7 @@ class PrintTemplatesController extends AppController
             $printTemplate = $this->PrintTemplates->patchEntity($printTemplate, $this->request->getData());
        
             if (!$printTemplate->getErrors()) {
-                $targetPath = WWW_ROOT . DS . $this->PrintTemplates->getSetting('TEMPLATE_ROOT');
+                $targetPath = WWW_ROOT . $this->PrintTemplates->getSetting('TEMPLATE_ROOT');
 
                 $image = $this->request->getData('upload_example_image');
              

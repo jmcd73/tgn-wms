@@ -12,6 +12,7 @@ use Cake\TestSuite\TestCase;
  */
 class TgnTestComponentTest extends TestCase
 {
+
     /**
      * Test subject
      *
@@ -27,8 +28,14 @@ class TgnTestComponentTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        $this->markTestIncomplete();
         $registry = new ComponentRegistry();
         $this->TgnTest = new TgnTestComponent($registry);
+    }
+
+    public function testWouldBeGood()
+    {
+        $this->markTestIncomplete();
     }
 
     /**

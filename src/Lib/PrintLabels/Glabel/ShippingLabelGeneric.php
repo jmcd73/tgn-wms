@@ -2,10 +2,10 @@
 
 namespace App\Lib\PrintLabels\Glabel;
 
-use App\Lib\PrintLabels\Interfaces\LabelInterface;
+use App\Lib\PrintLabels\Interfaces\GlabelsInterface;
 use App\Lib\PrintLabels\Label;
 
-class ShippingLabelGeneric extends Label implements LabelInterface
+class ShippingLabelGeneric extends Label implements GlabelsInterface
 {
     public function __construct($action)
     {

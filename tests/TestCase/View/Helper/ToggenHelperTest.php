@@ -12,6 +12,7 @@ use Cake\View\View;
  */
 class ToggenHelperTest extends TestCase
 {
+   
     /**
      * Test subject
      *
@@ -26,11 +27,18 @@ class ToggenHelperTest extends TestCase
      */
     public function setUp(): void
     {
+        $this->markTestIncomplete();
         parent::setUp();
         $view = new View();
         $this->Toggen = new ToggenHelper($view);
     }
 
+    public function testWouldBeGood()
+    {
+        $this->markTestIncomplete();
+    }
+
+    
     /**
      * tearDown method
      *

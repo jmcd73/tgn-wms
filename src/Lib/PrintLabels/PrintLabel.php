@@ -56,16 +56,20 @@ class PrintLabel implements EventListenerInterface
             'quantity_description' =>  $item->quantity_description,
         ];
 
+        $printClass = $item->print_template->print_class;
+        
+
         if ($item->print_template->is_file_template) {
 
             $glabelsRoot = $this->getSetting('TEMPLATE_ROOT');
             $template = new GlabelsProject($item->print_template, $glabelsRoot);
+
         } else {
 
             $template = $item->print_template;
         }
         
-        $printResult = LabelFactory::create($template->details->print_class, $action)
+        $printResult = LabelFactory::create($printClass, $action)
             ->format($template, $cabLabelData)
             ->print($printer, $template);
 

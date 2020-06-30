@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace App\Lib\PrintLabels\CabLabel;
 
 use App\Lib\Exception\MissingConfigurationException;
-use App\Lib\PrintLabels\Interfaces\LabelInterface;
+use App\Lib\PrintLabels\Interfaces\TextLabelInterface;
 use App\Lib\PrintLabels\Label;
 use App\Model\Entity\Printer; ;
 
-class CartonLabel extends Label implements LabelInterface
+class CartonLabel extends Label implements TextLabelInterface
 {
     public function __construct($action)
     {

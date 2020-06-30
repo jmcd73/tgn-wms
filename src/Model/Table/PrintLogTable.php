@@ -43,9 +43,8 @@ class PrintLogTable extends Table
 
 
     public function savePrintRecord(Event $event ) {
-        $newEntity = $this->newEntity($event->getSubject());
+        $newEntity = $this->newEntity((array) $event->getSubject());
         $savedEntity = $this->save($newEntity);
-
     }
 
 
@@ -97,26 +96,29 @@ class PrintLogTable extends Table
      *
      * @param  string                                     $controller controller name
      * @param  string                                     $action     action name
-     * @return \App\Lib\PrintLabels\Glabel\GlabelsProject
+     * @return mixed App\Lib\PrintLabels\Glabel\GlabelsProject|App\Model\Entity\PrintTemplate
      */
-    public function getGlabelsProject($controllerAction): GlabelsProject
+    public function getTemplate($controllerActionOrId)
     {
         $options = [
             'active' => 1,
         ];
     
-        if(is_numeric($controllerAction)) {
-                $options['id'] = $controllerAction;
+        if(is_numeric($controllerActionOrId)) {
+                $options['id'] = $controllerActionOrId;
         } else {
-            $options['controller_action'] = $controllerAction;
+            $options['controller_action'] = $controllerActionOrId;
         }
         
-        $glabelsTemplate = TableRegistry::get('PrintTemplates')->find()
+        $template = TableRegistry::get('PrintTemplates')->find()
             ->where($options)->first();
 
-        $glabelsRoot = $this->getSetting('TEMPLATE_ROOT');
-
-        return new GlabelsProject($glabelsTemplate, $glabelsRoot);
+            if($template->is_file_template) {
+                $glabelsRoot = $this->getSetting('TEMPLATE_ROOT');
+                return new GlabelsProject($template, $glabelsRoot);
+            } else {
+                return $template;
+            } 
     }
 
     /**

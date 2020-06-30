@@ -38,7 +38,7 @@ class AppMailerTest extends TestCase
         $this->markTestIncomplete('Not implemented yet.');
     }
     /**
-     * Test getSettingsTable method
+     * Test getTable method
      *
      * @return void
      */

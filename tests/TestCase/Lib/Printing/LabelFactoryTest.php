@@ -74,7 +74,7 @@ class LabelFactoryTest extends TestCase
         foreach ($classMap as $key => $value) {
             $expectedClass = $value;
             $labelFactory = LabelFactory::create($value, 'james');
-            echo $value . ' variablePages = "' . (string) $labelFactory->getVariablePages() . '"' . "\n";
+            // echo $value . ' variablePages = "' . (string) $labelFactory->getVariablePages() . '"' . "\n";
             $this->assertInstanceOf($expectedClass, $labelFactory);
         }
     }

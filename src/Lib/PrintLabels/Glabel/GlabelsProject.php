@@ -25,6 +25,7 @@ class GlabelsProject extends Template
     private $mergePath = '/dev/stdin';
     public $sourceFilePath = '';
     private $companyName = '';
+    public $print_class = '';
 
     public function __construct(PrintTemplate $template, string $glabelsRoot)
     {
@@ -32,13 +33,15 @@ class GlabelsProject extends Template
 
         $this->companyName = $this->getSetting("COMPANY_NAME");
 
+        $this->print_class = $template->print_class;
+
         $this->sourceFilePath = $this->getFilePath($template, $glabelsRoot);
+        
         $this->targetFilePath = TMP . $template->file_template;
 
         $this->editGlabelsProject($this->sourceFilePath, $this->mergePath);
 
         $this->filePath = $this->targetFilePath;
-
     }
 
     public function editGlabelsProject($filePath, $mergePath)
