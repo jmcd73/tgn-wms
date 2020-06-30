@@ -40,71 +40,6 @@ class TgnUtilsBehavior extends Behavior
         ]
     ];
 
-  
-
-    /**
-     * Generate an SSCC number with check digit
-     *
-     * @return string
-     *                phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
-     */
-    public function generateSSCCWithCheckDigit()
-    {
-        $sscc = $this->generateSSCC();
-
-        return $sscc . $this->generateCheckDigit($sscc);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function generateSSCC()
-    {
-        $ssccExtensionDigit = $this->getSetting('SSCC_EXTENSION_DIGIT');
-
-        $ssccCompanyPrefix = $this->getCompanyPrefix();
-
-        $ssccReferenceNumber = $this->getReferenceNumber('SSCC_REF', $ssccCompanyPrefix);
-
-        return $ssccExtensionDigit . $ssccCompanyPrefix . $ssccReferenceNumber;
-    }
-
-    //phpcs:enable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
-
-    /**
-     * when fed a barcode number returns the GS1 checkdigit number
-     *
-     * @param  string $number barcode number
-     * @return string barcode number
-     */
-    public function generateCheckDigit($number)
-    {
-        $sum = 0;
-        $index = 0;
-        $cd = 0;
-        for ($i = strlen($number); $i > 0; $i--) {
-            $digit = substr($number, $i - 1, 1);
-            $index++;
-
-            $ret = $index % 2;
-            if ($ret == 0) {
-                $sum += $digit * 1;
-            } else {
-                $sum += $digit * 3;
-            }
-        }
-        $mod_sum = $sum % 10;
-        // if it exactly divide the checksum is 0
-        if ($mod_sum == 0) {
-            $cd = 0;
-        } else {
-            // go to the next multiple of 10 above and subtract
-            $cd = 10 - $mod_sum + $sum - $sum;
-        }
-
-        return $cd;
-    }
-
     /**
      * Returns the current reference number stored in settings table record
      * and increments and saves the number in the table record
@@ -118,10 +53,6 @@ class TgnUtilsBehavior extends Behavior
     {
         $referenceNumber = $this->getSetting($settingName);
 
-        $companyPrefixLength = strlen($companyPrefix);
-
-        $fmt = '%0' . (16 - $companyPrefixLength) . 'd';
-
         $settingsTable = $this->getSettingsTable();
 
         $settingRecord = $settingsTable->get($this->settingId);
@@ -130,7 +61,7 @@ class TgnUtilsBehavior extends Behavior
 
         $settingsTable->save($settingRecord);
 
-        return sprintf($fmt, $referenceNumber);
+        return $referenceNumber;
     }
 
     public function getCompanyPrefix()
@@ -144,21 +75,13 @@ class TgnUtilsBehavior extends Behavior
      * @param  int    $productTypeId product_type_id of current product
      * @return string
      */
-    public function createPalletRef($productTypeId)
+    public function createPalletRef($productTypeId, $serialNumber)
     {
         $productTypeModel = $this->getSettingsTable('ProductTypes');
 
         $productType = $productTypeModel->get($productTypeId);
 
         $serialNumberFormat = $productType->serial_number_format;
-
-        $serialNumber = $productType->next_serial_number;
-
-        $productType->next_serial_number = $serialNumber + 1;
-
-        if (!$productTypeModel->save($productType)) {
-            throw new Exception('Failed to save the serial number for ' . $productType->name);
-        }
 
         return sprintf($serialNumberFormat, $serialNumber);
     }

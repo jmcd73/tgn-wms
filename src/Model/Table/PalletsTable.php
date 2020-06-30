@@ -19,6 +19,7 @@ use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
+use App\Lib\Utility\Barcode;
 
 /**
  * Pallets Model
@@ -1046,9 +1047,12 @@ class PalletsTable extends Table
             );
         }
 
-        $sscc = $this->generateSSCCWithCheckDigit();
-
-        $pallet_ref = $this->createPalletRef($data['productType']);
+        $extensionDigit = $this->getSetting('SSCC_EXTENSION_DIGIT');
+        $companyPrefix = $this->getCompanyPrefix();
+        $serialNumber = $this->getReferenceNumber('SSCC_REF', $companyPrefix);
+        $sscc = (new Barcode($extensionDigit, $companyPrefix, $serialNumber))->getSscc();
+        
+        $pallet_ref = $this->createPalletRef($data['productType'], $serialNumber);
 
         $item_detail = $this->Items->get($data['item'], [
             'contain' => [
