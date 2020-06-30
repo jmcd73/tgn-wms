@@ -32,7 +32,7 @@
       <Span color="0x000000ff" font_family="Sans" font_size="40" font_weight="Regular" font_italic="False" line_spacing="1">Batch: A <Field name="BATCH"/></Span>
     </Object-text>
     <Object-text x="-0.520281mm" y="151.395mm" w="195.956mm" h="16mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
-      <Span color="0x000000ff" font_family="Sans" font_size="40" font_weight="Regular" font_italic="False" line_spacing="1">Carton Qauntity: <Field name="QUANTITY"/></Span>
+      <Span color="0x000000ff" font_family="Sans" font_size="40" font_weight="Regular" font_italic="False" line_spacing="1">Carton Quantity: <Field name="QUANTITY"/></Span>
     </Object-text>
     <Object-text x="1.32598mm" y="135.516mm" w="197.29mm" h="16mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
       <Span color="0x000000ff" font_family="Sans" font_size="40" font_weight="Regular" font_italic="False" line_spacing="1">Expiry: <Field name="BB_HR"/></Span>

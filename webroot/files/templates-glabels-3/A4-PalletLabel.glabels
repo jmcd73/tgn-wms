@@ -29,10 +29,10 @@
       </Span>
     </Object-text>
     <Object-text x="3.8735mm" y="120.309mm" w="192.784mm" h="16mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
-      <Span color="0x000000ff" font_family="Sans" font_size="40" font_weight="Regular" font_italic="False" line_spacing="1">Batch: <Field name="BATCH"/></Span>
+      <Span color="0x000000ff" font_family="Sans" font_size="40" font_weight="Regular" font_italic="False" line_spacing="1">Batch: A <Field name="BATCH"/></Span>
     </Object-text>
     <Object-text x="-0.520281mm" y="151.395mm" w="195.956mm" h="16mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
-      <Span color="0x000000ff" font_family="Sans" font_size="40" font_weight="Regular" font_italic="False" line_spacing="1">Carton Qauntity: <Field name="QUANTITY"/></Span>
+      <Span color="0x000000ff" font_family="Sans" font_size="40" font_weight="Regular" font_italic="False" line_spacing="1">Carton Quantity: <Field name="QUANTITY"/></Span>
     </Object-text>
     <Object-text x="1.32598mm" y="135.516mm" w="197.29mm" h="16mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
       <Span color="0x000000ff" font_family="Sans" font_size="40" font_weight="Regular" font_italic="False" line_spacing="1">Expiry: <Field name="BB_HR"/></Span>
@@ -45,6 +45,6 @@
     <Object-barcode x="40.5322mm" y="184.449mm" w="118.536mm" h="40mm" backend="zint" style="GS1-128" text="True" checksum="True" color="0x000000ff" field="CONCAT_BC" format="18" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0"/>
     <Object-barcode x="54.1399mm" y="231.713mm" w="91.3202mm" h="38.0821mm" backend="zint" style="GS1-128" text="True" checksum="True" color="0x000000ff" field="SSCC_BC" format="18" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0"/>
   </Objects>
-  <Merge type="Text/Comma/Line1Keys" src="/dev/stdin"/>
+  <Merge type="Text/Comma/Line1Keys" src="/home/jm/sites/afewms/webroot/files/templates-glabels-3/design/A4-PalletLabel.csv"/>
   <Data/>
 </Glabels-document>
