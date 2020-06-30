@@ -107,6 +107,7 @@ class PalletsTable extends Table
 
         $cartons = new CartonsTable();
         $this->getEventManager()->on($cartons);
+
     }
 
     /**
@@ -1093,7 +1094,8 @@ class PalletsTable extends Table
                 'production_line' => $productionLine->name,
                 'production_line_id' => $productionLine->id,
                 'product_type_id' => $productType['id'],
-                'user_id' => $data['user_id']
+                'user_id' => $data['user_id'],
+                'product_type_serial' => $productType->next_serial_number
             ];
 
             return $this->newEntity($palletData);

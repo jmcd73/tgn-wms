@@ -59,5 +59,6 @@ class ProductType extends Entity
         'shifts' => true,
         'shipments' => true,
         'batch_format' => true,
+        
     ];
 }

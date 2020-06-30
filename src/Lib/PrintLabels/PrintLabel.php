@@ -77,8 +77,13 @@ class PrintLabel implements EventListenerInterface
         $isPrintDebugMode = Configure::read('pallet_print_debug');
 
         if ($printResult['return_value'] === 0) {
-            $event = new Event('Model.Pallets.persistPalletRecord', $pallet);
-            EventManager::instance()->dispatch($event);
+
+            $events = [ 'Model.Pallets.persistPalletRecord','Model.ProductTypes.incrementNextSerialNumber' ];
+            foreach($events as $eventName){
+                $event = new Event($eventName, $pallet);
+                EventManager::instance()->dispatch($event);
+            }
+
         } else {
             /* $event = new Event('Model.Pallets.persistPalletRecord', $pallet );
             EventManager::instance()->dispatch($event); */

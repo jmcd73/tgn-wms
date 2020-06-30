@@ -7,6 +7,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
 
 /**
  * ProductTypes Model
@@ -81,6 +82,10 @@ class ProductTypesTable extends Table
         ]);
     }
 
+    public function implementedEvents(): array
+    {
+        return [ 'Model.ProductTypes.incrementNextSerialNumber' => 'incrementProductTypeSerialNumber']; 
+    }
     /**
      * Default validation rules.
      *
@@ -150,5 +155,13 @@ class ProductTypesTable extends Table
         $rules->add($rules->existsIn(['location_id'], 'Locations'));
 
         return $rules;
+    }
+
+    public function incrementProductTypeSerialNumber(Event $event){
+        $pallet = $event->getSubject();
+        $productTypeId = $pallet->product_type_id;
+        $productType = $this->get($productTypeId);
+        $productType->next_serial_number = ++$productType->next_serial_number;
+        $this->save($productType);
     }
 }
