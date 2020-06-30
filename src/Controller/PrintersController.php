@@ -137,9 +137,10 @@ class PrintersController extends AppController
             $this->Flash->success(__('The printer has been deleted.'));
         } else {
             $error = $this->Printers->flattenAndFormatValidationErrors($printer->getErrors());
-            $this->Flash->error(__('The printer could not be deleted. Please, try again. ' . $error));
+            $this->Flash->error(__('The printer could not be deleted. Please, try again. ' . $error), [ 'escape' => false ] );
         }
-
+        
         return $this->redirect(['action' => 'index']);
     }
 }
+
