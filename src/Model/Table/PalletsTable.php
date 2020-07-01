@@ -1119,12 +1119,31 @@ class PalletsTable extends Table
     {
         $pallet = $event->getSubject();
         $printContent = $labelClass->getGlabelsPrintContent();
+        
         $fileNameParts = [ $pallet->pl_ref , $pallet->batch, $pallet->item ];
-        $targetFileName = join('-', $fileNameParts) . '.pdf';
+        $targetFileName = join('-', $fileNameParts) . $this->getFileExtension($printContent);
         $targetFullPath = WWW_ROOT . $labelOutputPath . '/' . $targetFileName;
         file_put_contents($targetFullPath, $printContent);
         chmod($targetFullPath, 0666 );
         $pallet->pallet_label_filename = $targetFileName;
         $this->save($pallet);
+    }
+
+    public function getFileExtension($printContent)
+    {
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        $fileType = $finfo->buffer($printContent);
+        
+        switch ($fileType) {
+            case 'application/pdf':
+                    $ext = '.pdf';
+                    break;
+            case 'text/plain':                 
+            default:
+                $ext = '.txt';
+                break;
+        }
+        
+        return $ext;
     }
 }
