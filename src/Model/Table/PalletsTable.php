@@ -56,10 +56,15 @@ class PalletsTable extends Table
 
     public function implementedEvents(): array
     {
-        return [
-            'Model.Pallets.persistPalletRecord' => 'persistPalletRecord',
-            'Model.Pallets.savePalletLabelFilename' => 'savePalletLabelFilename'
-        ];
+        $events = array_merge(
+            parent::implementedEvents(),
+            [
+                'Model.Pallets.persistPalletRecord' => 'persistPalletRecord',
+                'Model.Pallets.savePalletLabelFilename' => 'savePalletLabelFilename'
+            ]
+        );
+
+        return $events;
     }
     /**
      * Initialize method
@@ -114,7 +119,6 @@ class PalletsTable extends Table
 
         $cartons = new CartonsTable();
         $this->getEventManager()->on($cartons);
-
     }
 
     /**
@@ -181,7 +185,8 @@ class PalletsTable extends Table
             ->notEmptyString('pl_ref')
             ->add('pl_ref', 'unique', [
                 'message' => "The pallet reference number must be unique",
-                'rule' => 'validateUnique', 'provider' => 'table']);
+                'rule' => 'validateUnique', 'provider' => 'table'
+            ]);
 
         $validator
             ->scalar('sscc')
@@ -964,12 +969,12 @@ class PalletsTable extends Table
         if ($entity->isNew()) {
             // pallet table fields are keys, carton table fields are values
 
-            $events = [ 'Model.Cartons.addCartonRecord' ];
+            $events = ['Model.Cartons.addCartonRecord'];
 
-            foreach ($events as $e ) {
-                $event = new Event($e, $entity);
-                $this->getEventManager()->dispatch($event);
-            }    
+            foreach ($events as $e) {
+                $evt = new Event($e, $entity);
+                $this->getEventManager()->dispatch($evt);
+            }
         }
     }
 
@@ -1060,7 +1065,7 @@ class PalletsTable extends Table
         $serialNumber = $this->getReferenceNumber('SSCC_REF');
 
         $sscc = (new Barcode($extensionDigit, $companyPrefix, $serialNumber))->getSscc();
-        
+
         $pallet_ref = $this->createPalletRef($data['productType'], $serialNumber);
 
         $item_detail = $this->Items->get($data['item'], [
@@ -1106,25 +1111,25 @@ class PalletsTable extends Table
                 'product_type_serial' => $productType->next_serial_number
             ];
 
-            return $this->newEntity($palletData);
+        return $this->newEntity($palletData);
     }
-    
-    public function persistPalletRecord(Event $event) {
+
+    public function persistPalletRecord(Event $event)
+    {
 
         $this->save($event->getSubject());
-
     }
 
     public function savePalletLabelFilename(Event $event, \App\Lib\PrintLabels\Label $labelClass, $labelOutputPath)
     {
         $pallet = $event->getSubject();
         $printContent = $labelClass->getGlabelsPrintContent();
-        
-        $fileNameParts = [ $pallet->pl_ref , $pallet->batch, $pallet->item ];
+
+        $fileNameParts = [$pallet->pl_ref, $pallet->batch, $pallet->item];
         $targetFileName = join('-', $fileNameParts) . $this->getFileExtension($printContent);
         $targetFullPath = WWW_ROOT . $labelOutputPath . '/' . $targetFileName;
         file_put_contents($targetFullPath, $printContent);
-        chmod($targetFullPath, 0666 );
+        chmod($targetFullPath, 0666);
         $pallet->pallet_label_filename = $targetFileName;
         $this->save($pallet);
     }
@@ -1133,17 +1138,17 @@ class PalletsTable extends Table
     {
         $finfo = new \finfo(FILEINFO_MIME_TYPE);
         $fileType = $finfo->buffer($printContent);
-        
+
         switch ($fileType) {
             case 'application/pdf':
-                    $ext = '.pdf';
-                    break;
-            case 'text/plain':                 
+                $ext = '.pdf';
+                break;
+            case 'text/plain':
             default:
                 $ext = '.txt';
                 break;
         }
-        
+
         return $ext;
     }
 }

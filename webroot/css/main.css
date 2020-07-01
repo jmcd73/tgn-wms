@@ -509,6 +509,12 @@ a.nav-link.pdf::before {
   content: "\f1c1\00a0";
 }
 
+a.nav-link.txt::before {
+  font-family: "Font awesome 5 Free";
+  font-weight: 900;
+  content: "\f15c\00a0";
+}
+
 a.btn.delete::before,
 button.cancel::before {
   font-family: "Font awesome 5 Free";

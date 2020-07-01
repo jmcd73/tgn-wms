@@ -36,12 +36,14 @@ $this->Html->script(
             <p class="card-text"><?php echo __('{0} most recent', $lastPrintsCount); ?></p>
             <ul class="nav flex-column">
                 <?php foreach ($lastPrints as $lastPrint) : ?>
+                <?php $parts = explode('.', $lastPrint->pallet_label_filename); 
+                $ext = end($parts); ?>
                     <?= $this->Html->tag(
                         'li',
                         $this->Html->link(
                             $lastPrint->item . ' - ' . $lastPrint->pl_ref,
                             ['action' => 'sendFile', $lastPrint->id],
-                            ['class' => 'nav-link pdf']
+                            ['class' => 'nav-link ' . $ext ]
                         ),
                         ['class' => 'nav-item']
                     ); ?>

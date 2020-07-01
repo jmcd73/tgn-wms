@@ -84,7 +84,9 @@ class ProductTypesTable extends Table
 
     public function implementedEvents(): array
     {
-        return [ 'Model.ProductTypes.incrementNextSerialNumber' => 'incrementProductTypeSerialNumber']; 
+        return array_merge(
+            parent::implementedEvents(),
+            [ 'Model.ProductTypes.incrementNextSerialNumber' => 'incrementProductTypeSerialNumber']); 
     }
     /**
      * Default validation rules.
