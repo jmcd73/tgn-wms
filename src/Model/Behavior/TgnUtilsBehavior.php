@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Behavior;
@@ -39,98 +40,28 @@ class TgnUtilsBehavior extends Behavior
         ]
     ];
 
-  
-
     /**
-     * Generate an SSCC number with check digit
-     *
-     * @return string
-     *                phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
-     */
-    public function generateSSCCWithCheckDigit()
-    {
-        $sscc = $this->generateSSCC();
-
-        return $sscc . $this->generateCheckDigit($sscc);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function generateSSCC()
-    {
-        $ssccExtensionDigit = $this->getSetting('SSCC_EXTENSION_DIGIT');
-
-        $ssccCompanyPrefix = $this->getCompanyPrefix();
-
-        $ssccReferenceNumber = $this->getReferenceNumber('SSCC_REF', $ssccCompanyPrefix);
-
-        return $ssccExtensionDigit . $ssccCompanyPrefix . $ssccReferenceNumber;
-    }
-
-    //phpcs:enable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
-
-    /**
-     * when fed a barcode number returns the GS1 checkdigit number
-     *
-     * @param  string $number barcode number
-     * @return string barcode number
-     */
-    public function generateCheckDigit($number)
-    {
-        $sum = 0;
-        $index = 0;
-        $cd = 0;
-        for ($i = strlen($number); $i > 0; $i--) {
-            $digit = substr($number, $i - 1, 1);
-            $index++;
-
-            $ret = $index % 2;
-            if ($ret == 0) {
-                $sum += $digit * 1;
-            } else {
-                $sum += $digit * 3;
-            }
-        }
-        $mod_sum = $sum % 10;
-        // if it exactly divide the checksum is 0
-        if ($mod_sum == 0) {
-            $cd = 0;
-        } else {
-            // go to the next multiple of 10 above and subtract
-            $cd = 10 - $mod_sum + $sum - $sum;
-        }
-
-        return $cd;
-    }
-
-    /**
+     * Returns the current reference number stored in settings table record
+     * and increments and saves the number in the table record
+     * 
      * @param  string $settingName   setting name
      * @param  int    $companyPrefix the GS1 company prefix
-     * @return string a number with leading zeros
+     * @return string a number formatted with appropriate number of leading zeros depending on companyPrefix length
+     * 
      */
     public function getReferenceNumber($settingName, $companyPrefix)
     {
-        $next_val = $this->getSetting($settingName) + 1;
-
-        $companyPrefixLength = strlen($companyPrefix);
-
-        $fmt = '%0' . (16 - $companyPrefixLength) . 'd';
-
-        $saveThis = [
-            'id' => $this->settingId,
-            'setting' => $next_val,
-        ];
+        $referenceNumber = $this->getSetting($settingName);
 
         $settingsTable = $this->getSettingsTable();
 
         $settingRecord = $settingsTable->get($this->settingId);
 
-        $settingRecord->setting = $next_val;
+        $settingRecord->setting = $referenceNumber + 1;
 
         $settingsTable->save($settingRecord);
 
-        return sprintf($fmt, $next_val);
+        return $referenceNumber;
     }
 
     public function getCompanyPrefix()
@@ -144,21 +75,13 @@ class TgnUtilsBehavior extends Behavior
      * @param  int    $productTypeId product_type_id of current product
      * @return string
      */
-    public function createPalletRef($productTypeId)
+    public function createPalletRef($productTypeId, $serialNumber)
     {
         $productTypeModel = $this->getSettingsTable('ProductTypes');
 
         $productType = $productTypeModel->get($productTypeId);
 
         $serialNumberFormat = $productType->serial_number_format;
-
-        $serialNumber = $productType->next_serial_number;
-
-        $productType->next_serial_number = ++$serialNumber;
-
-        if (!$productTypeModel->save($productType)) {
-            throw new Exception('Failed to save the serial number for ' . $productType->name);
-        }
 
         return sprintf($serialNumberFormat, $serialNumber);
     }
@@ -333,8 +256,8 @@ class TgnUtilsBehavior extends Behavior
 
        $flattened = Hash::flatten($validationErrors);
        $msg = [];
-       foreach($flattened as $key => $error) {
-           [ $field, $rule ] = explode(".", $key);
+        foreach ($flattened as $key => $error) {
+            [$field, $rule] = explode(".", $key);
            $currentMessage = sprintf(
                'Validation for <strong>%s</strong> field has failed in rule <strong>%s</strong> with error: <strong>%s</strong>',
                 $field, 

@@ -56,16 +56,20 @@ class PrintLabel implements EventListenerInterface
             'quantity_description' =>  $item->quantity_description,
         ];
 
+        $printClass = $item->print_template->print_class;
+        
+
         if ($item->print_template->is_file_template) {
 
             $glabelsRoot = $this->getSetting('TEMPLATE_ROOT');
             $template = new GlabelsProject($item->print_template, $glabelsRoot);
+
         } else {
 
             $template = $item->print_template;
         }
         
-        $printResult = LabelFactory::create($template->details->print_class, $action)
+        $printResult = LabelFactory::create($printClass, $action)
             ->format($template, $cabLabelData)
             ->print($printer, $template);
 
@@ -73,8 +77,13 @@ class PrintLabel implements EventListenerInterface
         $isPrintDebugMode = Configure::read('pallet_print_debug');
 
         if ($printResult['return_value'] === 0) {
-            $event = new Event('Model.Pallets.persistPalletRecord', $pallet);
-            EventManager::instance()->dispatch($event);
+
+            $events = [ 'Model.Pallets.persistPalletRecord','Model.ProductTypes.incrementNextSerialNumber' ];
+            foreach($events as $eventName){
+                $event = new Event($eventName, $pallet);
+                EventManager::instance()->dispatch($event);
+            }
+
         } else {
             /* $event = new Event('Model.Pallets.persistPalletRecord', $pallet );
             EventManager::instance()->dispatch($event); */

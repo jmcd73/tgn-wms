@@ -95,7 +95,7 @@ class SettingsTableTest extends TestCase
                 'id' => 3,
               'setting_in_comment' =>    false,
                 'name' =>    'SSCC_REF',
-                'setting' =>    '427',
+                'setting' =>    '619',
                 'comment' =>    'SSCC Reference number ',
             ],
             [

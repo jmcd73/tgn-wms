@@ -15,7 +15,6 @@
 <table class="table table-striped">
     <thead>
         <tr>
-           
             <th scope="col"><?= $this->Paginator->sort('active') ?></th>
             <th scope="col"><?= $this->Paginator->sort('name') ?></th>
             <th scope="col"><?= $this->Paginator->sort('options') ?></th>

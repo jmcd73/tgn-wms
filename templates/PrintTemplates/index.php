@@ -59,8 +59,9 @@
                             'escape' => false
                         ]) : '' ?></td>
                     <td>
-                        <p><?= h($printTemplate->name) ?></p>
-                        <p><?= h($printTemplate->description) ?></p>
+                        <?= h($printTemplate->name) ?><br />
+                        <?= h($printTemplate->description) ?><br>
+                        <small><?= h($printTemplate->print_class); ?></small>
                     </td>
                  
                     <td class="actions">

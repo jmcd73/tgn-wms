@@ -255,7 +255,7 @@ class PrintLogController extends AppController
 
         $action = $this->request->getParam('action');
 
-        $template = $this->PrintLog->getGlabelsProject(
+        $template = $this->PrintLog->getTemplate(
             $controllerAction
         );
 
@@ -319,7 +319,7 @@ class PrintLogController extends AppController
 
         $action = $this->request->getParam('action');
 
-        $template = $this->PrintLog->getGlabelsProject(
+        $template = $this->PrintLog->getTemplate(
             $controllerAction
         );
 
@@ -376,7 +376,7 @@ class PrintLogController extends AppController
         /**
          * @var GlabelsTemplate $template Glabels Configuration
          */
-        $template = $this->PrintLog->getGlabelsProject(
+        $template = $this->PrintLog->getTemplate(
             $controllerAction
         );
 
@@ -430,7 +430,7 @@ class PrintLogController extends AppController
             $controllerAction
         );
 
-        $template = $this->PrintLog->getGlabelsProject(
+        $template = $this->PrintLog->getTemplate(
             $controllerAction
         );
 
@@ -482,7 +482,7 @@ class PrintLogController extends AppController
             $controllerAction
         );
 
-        $template = $this->PrintLog->getGlabelsProject(
+        $template = $this->PrintLog->getTemplate(
             $controllerAction
         );
 
@@ -588,7 +588,7 @@ class PrintLogController extends AppController
     {
         $controllerAction = $this->getControllerAction();
 
-        $template = $this->PrintLog->getGlabelsProject($controllerAction);
+        $template = $this->PrintLog->getTemplate($controllerAction);
 
         $form = (new CustomPrintForm())->setCopies(Configure::read('MAX_COPIES'));
 
@@ -650,7 +650,7 @@ class PrintLogController extends AppController
         $controller = $this->request->getParam('controller');
         $action = $this->request->getParam('action');
 
-        $template = $this->PrintLog->getGlabelsProject(
+        $template = $this->PrintLog->getTemplate(
             $controllerAction
         );
 
@@ -774,7 +774,7 @@ class PrintLogController extends AppController
 
             $isPrintDebugMode = Configure::read('pallet_print_debug');
 
-            $template = $this->PrintLog->getGlabelsProject(
+            $template = $this->PrintLog->getTemplate(
                 'Pallets::lookup'
             );
 
@@ -902,28 +902,22 @@ class PrintLogController extends AppController
 
             $isPrintDebugMode = Configure::read('pallet_print_debug');
 
-            if ($pallet->items->print_template->is_file_template) {
-
-                $template = $this->PrintLog->getGlabelsProject(
+                
+            $template = $this->PrintLog->getTemplate(
                     $pallet->items->print_template->id
-                );
-                $printResult = LabelFactory::create($template->details->print_class, $this->request->getParam('action'))
-                    ->format($cabLabelData)
-                    ->print($printerDetails, $template);
+            );
+            
 
-                $template = $template->details;
-            } else {
-                $template = $pallet->items->print_template;
-                // debug($template);
-                $printResult = LabelFactory::create($template->print_class, $this->request->getParam('action'))
-                    ->format($template, $cabLabelData)
-                    ->print($printerDetails);
-            }
+            $printResult = LabelFactory::create($template->print_class, $this->request->getParam('action'))
+            ->format($template, $cabLabelData)
+            ->print($printerDetails);
+
+
 
             $this->handlePrintResult(
                 $printResult,
                 $printerDetails,
-                $template,
+                $pallet->items->print_template->is_file_template ? $template->details : $template,
                 $saveData
             );
         }

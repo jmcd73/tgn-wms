@@ -2,10 +2,10 @@
 
 namespace App\Lib\PrintLabels\Glabel;
 
-use App\Lib\PrintLabels\Interfaces\LabelInterface;
+use App\Lib\PrintLabels\Interfaces\GlabelsInterface;
 use App\Lib\PrintLabels\Label;
 
-class SsccLabel extends Label implements LabelInterface
+class SsccLabel extends Label implements GlabelsInterface
 {
     /**
      *   $cabLabelData = [
@@ -56,7 +56,7 @@ class SsccLabel extends Label implements LabelInterface
 
     public function format($template, $labelData)
     {
-        tog("TEMPLATE", $template, $labelData);
+
         $this->setGlabelsTemplate($template);
         $this->setPrintContentArray($labelData);
         $this->setReference($labelData['reference']);

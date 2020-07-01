@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace App\Lib\PrintLabels\Glabel;
 
-use App\Lib\PrintLabels\Interfaces\LabelInterface;
+use App\Lib\PrintLabels\Interfaces\GlabelsInterface;
 use App\Lib\PrintLabels\Label;
 
-class SampleLabel extends Label implements LabelInterface
+class SampleLabel extends Label implements GlabelsInterface
 {
     protected $mergeFields = [
         'productName',

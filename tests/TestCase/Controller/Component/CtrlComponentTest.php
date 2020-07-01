@@ -29,6 +29,12 @@ class CtrlComponentTest extends TestCase
         parent::setUp();
         $registry = new ComponentRegistry();
         $this->Ctrl = new CtrlComponent($registry);
+        $this->markTestIncomplete();
+    }
+
+    public function testWouldBeGood()
+    {
+        $this->markTestIncomplete();
     }
 
     /**
