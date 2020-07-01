@@ -462,9 +462,6 @@ class Label
             $this->setPrintCopies(1);
         }
 
-        tog('cmdArgs', $cmdArgs);
-
-
         $results = $this->runProcess(
             $cmdArgs,
             $this->printContent
