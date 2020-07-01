@@ -143,17 +143,23 @@ class PalletsController extends AppController
 
         $refer = $this->request->getPath();
 
+        $lastPrintsCount = (int) $this->getSetting('LABEL_DOWNLOAD_LIST');
+
         $lastPrints = $this->Pallets->find()
             ->select([ 'id', 'pallet_label_filename', 'pl_ref', 'item'])
             ->where(['pallet_label_filename IS NOT NULL'])
             ->order(['id' => 'DESC'])
-            ->limit(10);
+            ->limit($lastPrintsCount);
 
         $labelOutputPath = $this->getSetting('LABEL_OUTPUT_PATH');
 
+        $showLabelDownload = (bool) $lastPrintsCount;
+
         $this->set(
             compact(
+                'showLabelDownload',
                 'lastPrints',
+                'lastPrintsCount',
                 'labelOutputPath',
                 'items',
                 'productionLines',

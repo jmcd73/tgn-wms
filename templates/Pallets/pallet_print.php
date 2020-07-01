@@ -20,9 +20,7 @@ $this->Html->script(
 <ul class="nav flex-column">
     <?php foreach ($productTypes as $key => $pt) : ?>
         <?php
-
         $linkActive = (isset($productType) && is_numeric($productType->id) && $productType->id === $key) ? 'active' : ''; ?>
-
         <li class="nav-item">
             <?php echo $this->Html->link($pt, [
                 'action' => 'palletPrint',
@@ -31,21 +29,26 @@ $this->Html->script(
         </li>
     <?php endforeach; ?>
 </ul>
-<?php if (!$lastPrints->isEmpty()) : ?>
-    <h5><?php echo __('Download recent prints'); ?></h5>
-    <ul class="nav flex-column">
-        <?php foreach ($lastPrints as $lastPrint) : ?>
-            <?= $this->Html->tag(
-                'li',
-                $this->Html->link(
-                    $lastPrint->item . ' - ' . $lastPrint->pl_ref,
-                    ['action' => 'sendFile', $lastPrint->id ],
-                    ['class' => 'nav-link pdf']
-                ),
-                ['class' => 'nav-item']
-            ); ?>
-        <?php endforeach; ?>
-    </ul>
+<?php if (!$lastPrints->isEmpty() && $showLabelDownload) : ?>
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="car-title"><?php echo __('Download Labels'); ?></h5>
+            <p class="card-text"><?php echo __('{0} most recent', $lastPrintsCount); ?></p>
+            <ul class="nav flex-column">
+                <?php foreach ($lastPrints as $lastPrint) : ?>
+                    <?= $this->Html->tag(
+                        'li',
+                        $this->Html->link(
+                            $lastPrint->item . ' - ' . $lastPrint->pl_ref,
+                            ['action' => 'sendFile', $lastPrint->id],
+                            ['class' => 'nav-link pdf']
+                        ),
+                        ['class' => 'nav-item']
+                    ); ?>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    </div>
 <?php endif; ?>
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', '<div class="col">' . $this->fetch('tb_actions') . '</div>'); ?>
@@ -60,7 +63,7 @@ $this->Html->script(
     <div class="row">
         <?php foreach ($forms  as $key => $palletForm) : ?>
             <?php $formName = $key; ?>
-            <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="col-lg-5 col-md-6 col-sm-12">
                 <div class="card mb-4 mb-sm-4 mb-md-0">
                     <div class="card-body">
                         <?php echo $this->Form->create(
