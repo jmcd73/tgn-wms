@@ -1050,7 +1050,8 @@ class PalletsTable extends Table
 
         $extensionDigit = $this->getSetting('SSCC_EXTENSION_DIGIT');
         $companyPrefix = $this->getCompanyPrefix();
-        $serialNumber = $this->getReferenceNumber('SSCC_REF', $companyPrefix);
+        $serialNumber = $this->getReferenceNumber('SSCC_REF');
+
         $sscc = (new Barcode($extensionDigit, $companyPrefix, $serialNumber))->getSscc();
         
         $pallet_ref = $this->createPalletRef($data['productType'], $serialNumber);
@@ -1100,6 +1101,7 @@ class PalletsTable extends Table
 
             return $this->newEntity($palletData);
     }
+    
     public function persistPalletRecord(Event $event) {
 
         $this->save($event->getSubject());

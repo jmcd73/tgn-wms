@@ -49,19 +49,9 @@ class TgnUtilsBehavior extends Behavior
      * @return string a number formatted with appropriate number of leading zeros depending on companyPrefix length
      * 
      */
-    public function getReferenceNumber($settingName, $companyPrefix)
+    public function getReferenceNumber($settingName)
     {
-        $referenceNumber = $this->getSetting($settingName);
-
-        $settingsTable = $this->getSettingsTable();
-
-        $settingRecord = $settingsTable->get($this->settingId);
-
-        $settingRecord->setting = $referenceNumber + 1;
-
-        $settingsTable->save($settingRecord);
-
-        return $referenceNumber;
+        return $this->getSetting($settingName);
     }
 
     public function getCompanyPrefix()
