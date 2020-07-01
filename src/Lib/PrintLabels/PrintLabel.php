@@ -24,16 +24,11 @@ class PrintLabel implements EventListenerInterface
     public function labelPrint(Event $event, $item, $printer, $company, $action)
     {
 
-        tog("Label Printed", $item);
-
         $pallet = $event->getSubject();
 
         $bestBeforeDates = $this->formatLabelDates(new FrozenTime($pallet->bb_date));
 
-
         $labelCopies = $this->getLabelCopies($item->pallet_label_copies);
-
-        $printTemplateId = $item->pallet_template_id;
 
         $cabLabelData = [
             'companyName' => $company,
@@ -58,7 +53,6 @@ class PrintLabel implements EventListenerInterface
 
         $printClass = $item->print_template->print_class;
         
-
         if ($item->print_template->is_file_template) {
 
             $glabelsRoot = $this->getSetting('TEMPLATE_ROOT');
@@ -73,17 +67,20 @@ class PrintLabel implements EventListenerInterface
             ->format($template, $cabLabelData)
             ->print($printer, $template);
 
-
         $isPrintDebugMode = Configure::read('pallet_print_debug');
 
         if ($printResult['return_value'] === 0) {
+            $events = [ 
+                'Model.Pallets.persistPalletRecord',
+                'Model.ProductTypes.incrementNextSerialNumber',
+                'Model.Settings.incrementSsccRef'
+             ];
 
-            $events = [ 'Model.Pallets.persistPalletRecord','Model.ProductTypes.incrementNextSerialNumber' ];
             foreach($events as $eventName){
                 $event = new Event($eventName, $pallet);
                 EventManager::instance()->dispatch($event);
             }
-
+            
         } else {
             /* $event = new Event('Model.Pallets.persistPalletRecord', $pallet );
             EventManager::instance()->dispatch($event); */

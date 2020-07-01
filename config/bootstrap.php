@@ -32,7 +32,7 @@ require __DIR__ . '/paths.php';
 require CORE_PATH . 'config' . DS . 'bootstrap.php';
 
 use App\Mailer\AppMailer;
-use App\Model\Entity\ProductType;
+use App\Model\Table\SettingsTable;
 use App\Model\Table\PalletsTable;
 use App\Model\Table\ProductTypesTable;
 use Cake\Cache\Cache;
@@ -244,4 +244,8 @@ $pallets = new PalletsTable();
 EventManager::instance()->on('Model.Pallets.persistPalletRecord', [ $pallets, 'persistPalletRecord'] );
 $productTypes = new ProductTypesTable();
 EventManager::instance()->on($productTypes);
+
+$settings = new SettingsTable();
+EventManager::instance()->on($settings);
+
 
