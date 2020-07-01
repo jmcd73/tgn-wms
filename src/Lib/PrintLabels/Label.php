@@ -36,7 +36,7 @@ class Label
     public $printerQueue = '';
     public $options = '';
     public $action = '';
-    
+
 
     /**
      * @var int $glabelPrintCopies
@@ -94,14 +94,15 @@ class Label
     <strong>Reference: </strong>%s
     <strong>JobId: </strong>%s';
 
-    public function createEmailBody() {
-        if(! empty($this->getItemCode())) {
-            return sprintf($this->emailBodyFormat, $this->getBatch(), $this->getItemCode(), $this->getReference(), $this->getJobId() );
+    public function createEmailBody()
+    {
+        if (!empty($this->getItemCode())) {
+            return sprintf($this->emailBodyFormat, $this->getBatch(), $this->getItemCode(), $this->getReference(), $this->getJobId());
         } else {
             return '';
         }
-        
     }
+    
     public function __construct($action)
     {
         /*   $mailer = new AppMailer();
@@ -475,16 +476,15 @@ class Label
 
             $to = $this->addressParse($this->getSetting('EMAIL_PALLET_LABEL_TO'));
 
-            if ( !empty($to) && $template->details->send_email ) {
+            if (!empty($to) && $template->details->send_email) {
 
-                $event = new Event('Label.Glabel.printSuccess', $this, ['toAddresses' => $to, 'emailBody' => $this->createEmailBody() ]);
-
+                $event = new Event('Label.Glabel.printSuccess', $this, ['toAddresses' => $to, 'emailBody' => $this->createEmailBody()]);
                 EventManager::instance()->dispatch($event);
             }
 
             unlink($this->getPdfOutFile());
         }
-      
+
         return $this->sendPdfToLpr($printer);
     }
 
