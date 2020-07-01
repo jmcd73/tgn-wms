@@ -20,6 +20,7 @@ use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 use App\Lib\Utility\Barcode;
+use Cake\Event\EventManager;
 
 /**
  * Pallets Model
@@ -55,16 +56,12 @@ class PalletsTable extends Table
     use UpdateCounterCacheTrait;
 
     public function implementedEvents(): array
-    {
-        $events = array_merge(
-            parent::implementedEvents(),
-            [
+    {    
+            return [
+                'Model.afterSave' => 'afterSave',
                 'Model.Pallets.persistPalletRecord' => 'persistPalletRecord',
                 'Model.Pallets.savePalletLabelFilename' => 'savePalletLabelFilename'
-            ]
-        );
-
-        return $events;
+            ];
     }
     /**
      * Initialize method
@@ -75,9 +72,6 @@ class PalletsTable extends Table
     public function initialize(array $config): void
     {
         parent::initialize($config);
-
-        //  $mailer = new AppMailer();
-        //  $this->getEventManager()->on($mailer);
 
         $this->setTable('pallets');
         $this->setDisplayField('id');
@@ -116,9 +110,6 @@ class PalletsTable extends Table
         $this->hasMany('Cartons', [
             'foreignKey' => 'pallet_id',
         ]);
-
-        $cartons = new CartonsTable();
-        $this->getEventManager()->on($cartons);
     }
 
     /**
@@ -966,42 +957,13 @@ class PalletsTable extends Table
      */
     public function afterSave(Event $event, EntityInterface $entity, $options = [])
     {
+       tog($entity);
         if ($entity->isNew()) {
             // pallet table fields are keys, carton table fields are values
-
-            $events = ['Model.Cartons.addCartonRecord'];
-
-            foreach ($events as $e) {
-                $evt = new Event($e, $entity);
-                $this->getEventManager()->dispatch($evt);
-            }
+                $evt = new Event('Model.Cartons.addCartonRecord', $entity);
+               EventManager::instance()->dispatch($evt);
         }
     }
-
-
-    public function addCartonRecord($myvar,  $pallet)
-    {
-
-        $fields = [
-            'qty' => 'count',
-            'print_date' => 'production_date',
-            'bb_date' => 'best_before',
-            'id' => 'pallet_id',
-            'user_id' => 'user_id'
-        ];
-
-        $cartonRecord = [];
-        foreach ($fields as $palletField => $cartonField) {
-            $cartonRecord[$cartonField] = $pallet->get($palletField);
-        }
-
-        $carton = $this->newEntity($cartonRecord);
-
-        if (!$this->Cartons->save($carton)) {
-            throw new Exception('Could not save Carton record in Pallet.php afterSave method');
-        }
-    }
-
 
     /**
      * @param  array $sndata $this->data

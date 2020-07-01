@@ -41,14 +41,9 @@ class CartonsTable extends Table
 
     public function implementedEvents(): array
     {
-        $events = array_merge(
-            parent::implementedEvents(),
-            [
+            return [
                 'Model.Cartons.addCartonRecord' => 'addCartonRecord'
-            ]
-        );
-        tog($events);
-        return $events;
+            ];
     }
 
     public function addCartonRecord(Event $event)
@@ -75,7 +70,7 @@ class CartonsTable extends Table
 
         if (!$this->save($carton)) {
             throw new Exception('Could not save Carton record triggered by Model.Pallets.afterSave method');
-        }
+        } 
     }
 
 

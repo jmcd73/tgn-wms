@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -49,6 +50,7 @@ use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
 use Cake\Routing\Router;
 use Cake\Utility\Security;
+use App\Model\Table\CartonsTable;
 
 /*
  * See https://github.com/josegonzalez/php-dotenv for API details.
@@ -80,6 +82,7 @@ use Cake\Utility\Security;
  * idea to create multiple configuration files, and separate the configuration
  * that changes from configuration that does not. This makes deployment simpler.
  */
+
 try {
     Configure::config('default', new PhpConfig());
     Configure::load('app', 'default', false);
@@ -237,12 +240,8 @@ if (!function_exists('tog')) {
 
 Configure::write('pallet_print_debug', false);
 
-$eventClasses = [ AppMailer::class, PalletsTable::class, ProductTypesTable::class, SettingsTable::class ];
+$eventClasses = [CartonsTable::class, AppMailer::class, PalletsTable::class, ProductTypesTable::class, SettingsTable::class];
 
-foreach ($eventClasses as $eventClass ){
+foreach ($eventClasses as $eventClass) {
     EventManager::instance()->on(new $eventClass());
 }
-
-
-
-
