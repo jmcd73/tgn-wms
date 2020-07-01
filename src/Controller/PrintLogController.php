@@ -858,11 +858,11 @@ class PrintLogController extends AppController
 
             $pallet_ref = $pallet->pl_ref;
 
-            $replaceTokens = json_decode($pallet->items->print_template->replace_tokens);
-
-            if (!isset($pallet->items->print_template) || empty($pallet->items->print_template)) {
-                throw new MissingConfigurationException(__('Please configure a print template for item %s', $pallet['item']));
+            if (!$pallet->has('items')  || !$pallet->items->has('print_template')) {
+                throw new MissingConfigurationException(__('Please configure a print template for item {0}', $pallet->item));
             }
+
+            $replaceTokens = json_decode($pallet->items->print_template->replace_tokens);
 
             // get the printer queue name
             $printerId = $data['printer_id'];
@@ -902,15 +902,15 @@ class PrintLogController extends AppController
 
             $isPrintDebugMode = Configure::read('pallet_print_debug');
 
-                
+
             $template = $this->PrintLog->getTemplate(
-                    $pallet->items->print_template->id
+                $pallet->items->print_template->id
             );
-            
+
 
             $printResult = LabelFactory::create($template->print_class, $this->request->getParam('action'))
-            ->format($template, $cabLabelData)
-            ->print($printerDetails);
+                ->format($template, $cabLabelData)
+                ->print($printerDetails);
 
 
 
