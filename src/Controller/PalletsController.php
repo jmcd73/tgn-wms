@@ -143,8 +143,18 @@ class PalletsController extends AppController
 
         $refer = $this->request->getPath();
 
+        $lastPrints = $this->Pallets->find()
+            ->select([ 'id', 'pallet_label_filename', 'pl_ref', 'item'])
+            ->where(['pallet_label_filename IS NOT NULL'])
+            ->order(['id' => 'DESC'])
+            ->limit(10);
+
+        $labelOutputPath = $this->getSetting('LABEL_OUTPUT_PATH');
+
         $this->set(
             compact(
+                'lastPrints',
+                'labelOutputPath',
                 'items',
                 'productionLines',
                 'productType',
@@ -1125,5 +1135,20 @@ class PalletsController extends AppController
         }
 
         return $this->redirect($url);
+    }
+
+    public function sendFile($id)
+    {
+
+        $downloadFilePath = WWW_ROOT . $this->getSetting('LABEL_OUTPUT_PATH') . DS;
+
+        $pallet = $this->Pallets->get($id);
+
+        $response = $this->response->withFile(
+            $downloadFilePath . $pallet->pallet_label_filename,
+            ['download' => true, 'name' => $pallet->pallet_label_filename]
+        );
+
+        return $response;
     }
 }

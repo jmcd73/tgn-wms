@@ -54,6 +54,13 @@ class PalletsTable extends Table
 {
     use UpdateCounterCacheTrait;
 
+    public function implementedEvents(): array
+    {
+        return [
+            'Model.Pallets.persistPalletRecord' => 'persistPalletRecord',
+            'Model.Pallets.savePalletLabelFilename' => 'savePalletLabelFilename'
+        ];
+    }
     /**
      * Initialize method
      *
@@ -1106,5 +1113,18 @@ class PalletsTable extends Table
 
         $this->save($event->getSubject());
 
+    }
+
+    public function savePalletLabelFilename(Event $event, \App\Lib\PrintLabels\Label $labelClass, $labelOutputPath)
+    {
+        $pallet = $event->getSubject();
+        $printContent = $labelClass->getGlabelsPrintContent();
+        $fileNameParts = [ $pallet->pl_ref , $pallet->batch, $pallet->item ];
+        $targetFileName = join('-', $fileNameParts) . '.pdf';
+        $targetFullPath = WWW_ROOT . $labelOutputPath . '/' . $targetFileName;
+        file_put_contents($targetFullPath, $printContent);
+        chmod($targetFullPath, 0666 );
+        $pallet->pallet_label_filename = $targetFileName;
+        $this->save($pallet);
     }
 }

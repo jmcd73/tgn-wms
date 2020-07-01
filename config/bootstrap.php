@@ -237,15 +237,12 @@ if (!function_exists('tog')) {
 
 Configure::write('pallet_print_debug', false);
 
+$eventClasses = [ AppMailer::class, PalletsTable::class, ProductTypesTable::class, SettingsTable::class ];
 
-$mailer = new AppMailer();
-EventManager::instance()->on($mailer);
-$pallets = new PalletsTable();
-EventManager::instance()->on('Model.Pallets.persistPalletRecord', [ $pallets, 'persistPalletRecord'] );
-$productTypes = new ProductTypesTable();
-EventManager::instance()->on($productTypes);
+foreach ($eventClasses as $eventClass ){
+    EventManager::instance()->on(new $eventClass());
+}
 
-$settings = new SettingsTable();
-EventManager::instance()->on($settings);
+
 
 

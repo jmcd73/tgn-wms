@@ -31,6 +31,22 @@ $this->Html->script(
         </li>
     <?php endforeach; ?>
 </ul>
+<?php if (!$lastPrints->isEmpty()) : ?>
+    <h5><?php echo __('Download recent prints'); ?></h5>
+    <ul class="nav flex-column">
+        <?php foreach ($lastPrints as $lastPrint) : ?>
+            <?= $this->Html->tag(
+                'li',
+                $this->Html->link(
+                    $lastPrint->item . ' - ' . $lastPrint->pl_ref,
+                    ['action' => 'sendFile', $lastPrint->id ],
+                    ['class' => 'nav-link pdf']
+                ),
+                ['class' => 'nav-item']
+            ); ?>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', '<div class="col">' . $this->fetch('tb_actions') . '</div>'); ?>
 <?php if (!empty($productType)) : ?>
@@ -114,7 +130,7 @@ $this->Html->script(
 
                                     ]
                                 ); ?>
-                           
+
                             </div>
                         </div>
 

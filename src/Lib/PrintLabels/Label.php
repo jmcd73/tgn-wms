@@ -102,7 +102,12 @@ class Label
             return '';
         }
     }
-    
+
+    public function getGlabelsPrintContent()
+    {
+        return $this->printContent;
+    }
+
     public function __construct($action)
     {
         /*   $mailer = new AppMailer();
@@ -477,7 +482,6 @@ class Label
             $to = $this->addressParse($this->getSetting('EMAIL_PALLET_LABEL_TO'));
 
             if (!empty($to) && $template->details->send_email) {
-
                 $event = new Event('Label.Glabel.printSuccess', $this, ['toAddresses' => $to, 'emailBody' => $this->createEmailBody()]);
                 EventManager::instance()->dispatch($event);
             }

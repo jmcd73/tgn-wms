@@ -23,7 +23,6 @@ class PrintLabel implements EventListenerInterface
 
     public function labelPrint(Event $event, $item, $printer, $company, $action)
     {
-
         $pallet = $event->getSubject();
 
         $bestBeforeDates = $this->formatLabelDates(new FrozenTime($pallet->bb_date));
@@ -52,34 +51,40 @@ class PrintLabel implements EventListenerInterface
         ];
 
         $printClass = $item->print_template->print_class;
-        
-        if ($item->print_template->is_file_template) {
 
+        if ($item->print_template->is_file_template) {
             $glabelsRoot = $this->getSetting('TEMPLATE_ROOT');
             $template = new GlabelsProject($item->print_template, $glabelsRoot);
-
         } else {
-
             $template = $item->print_template;
         }
-        
-        $printResult = LabelFactory::create($printClass, $action)
-            ->format($template, $cabLabelData)
-            ->print($printer, $template);
 
-        $isPrintDebugMode = Configure::read('pallet_print_debug');
+        $labelClass = LabelFactory::create($printClass, $action)
+            ->format($template, $cabLabelData);
+
+        $printResult = $labelClass->print($printer, $template);
 
         if ($printResult['return_value'] === 0) {
-            $events = [ 
+            $events = [
                 'Model.Pallets.persistPalletRecord',
                 'Model.ProductTypes.incrementNextSerialNumber',
-                'Model.Settings.incrementSsccRef'
-             ];
+                'Model.Settings.incrementSsccRef',
+            ];
 
-            foreach($events as $eventName){
-                $event = new Event($eventName, $pallet);
-                EventManager::instance()->dispatch($event);
+            foreach ($events as $eventName) {
+                EventManager::instance()->dispatch(new Event($eventName, $pallet));
             }
+
+            $event = new Event(
+                'Model.Pallets.savePalletLabelFilename',
+                $pallet,
+                [
+                    'labelClass' => $labelClass,
+                    'labelOutputPath' => $this->getSetting('LABEL_OUTPUT_PATH')
+                ]
+            );
+
+            EventManager::instance()->dispatch($event);
             
         } else {
             /* $event = new Event('Model.Pallets.persistPalletRecord', $pallet );
