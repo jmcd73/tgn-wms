@@ -43,13 +43,6 @@ class AppMailer extends Mailer
     }
 
     public function sendLabelPdfAttachment($label, array $toAddresses, string $emailBody ){
-        
-        /* 
-        $itemCode = $labels->getItemCode();
-        $batch = $labels->getBatch();
-        $reference = $labels->getReference();
-        $jobId = $labels->getJobId(); 
-        */
 
         $pdfFile = $label->getPdfOutFile();
         
@@ -60,7 +53,6 @@ class AppMailer extends Mailer
             ->setSubject(sprintf('Label - %s', $label->getJobId(), ))
             ->setViewVars(['content' => $emailBody ])
             ->viewBuilder()
-            //->setVars(compact('itemCode', 'batch', 'reference', 'jobId')) 
             ->setTemplate('default');
     }
 

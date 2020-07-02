@@ -48,22 +48,19 @@ class PrintersFixture extends TestFixture
                 'options' => '',
                 'queue_name' => 'PDF',
                 'set_as_default_on_these_actions' => 'Pallets::lookup
+Pallets::palletPrint
 PrintLog::bigNumber
+PrintLog::cartonPrint
 PrintLog::crossdockLabels
+PrintLog::customPrint
 PrintLog::glabelSampleLabels
 PrintLog::keepRefrigerated
 PrintLog::palletLabelReprint
 PrintLog::printCartonLabels
+PrintLog::sampleLabels
 PrintLog::shippingLabels
+PrintLog::shippingLabelsGeneric
 PrintLog::ssccLabel',
-            ],
-            [
-                'id' => 24,
-                'active' => true,
-                'name' => 'TestPrinter',
-                'options' => '',
-                'queue_name' => 'TestPrinter',
-                'set_as_default_on_these_actions' => 'Pallets::palletPrint',
             ],
         ];
         parent::init();

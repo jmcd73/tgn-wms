@@ -118,6 +118,8 @@ class Label
         $this->action = $action;
         $this->setJobId($action);
         $this->setCwd(TMP);
+
+        
     }
 
     public function setItemCode($code)

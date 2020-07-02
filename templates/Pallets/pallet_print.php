@@ -16,6 +16,7 @@ $this->Html->script(
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 
 <?php $this->start('tb_actions'); ?>
+
 <h5><?php echo __('Select product type'); ?></h5>
 <ul class="nav flex-column">
     <?php foreach ($productTypes as $key => $pt) : ?>
@@ -29,7 +30,7 @@ $this->Html->script(
         </li>
     <?php endforeach; ?>
 </ul>
-<?php if (!$lastPrints->isEmpty() && $showLabelDownload) : ?>
+<?php if (isset($lastPrints) && ! $lastPrints->isEmpty() && $showLabelDownload) : ?>
     <div class="card mt-4">
         <div class="card-body">
             <h5 class="car-title"><?php echo __('Download Labels'); ?></h5>

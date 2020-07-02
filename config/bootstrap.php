@@ -46,6 +46,7 @@ use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
 use Cake\Routing\Router;
 use Cake\Utility\Security;
+use App\Mailer\AppMailer;
 
 /*
  * See https://github.com/josegonzalez/php-dotenv for API details.
@@ -236,3 +237,4 @@ if (!function_exists('tog')) {
 Configure::write('pallet_print_debug', false);
 
 
+EventManager::instance()->on(new AppMailer());

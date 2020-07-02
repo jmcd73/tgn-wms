@@ -42,9 +42,7 @@ class PalletsController extends AppController
             PrintLabel::class,
             ProductTypesTable::class,
             SettingsTable::class,
-            PalletsTable::class,
-            CartonsTable::class,
-            AppMailer::class,
+            PalletsTable::class
         ];
 
         foreach ($eventClasses as $eventClass) {
@@ -133,7 +131,7 @@ class PalletsController extends AppController
 
                 if (!$pallet->hasErrors()) {
                     $this->Flash->success($this->createMessage($pallet, $productionLine->printer), ['escape' => false]);
-                    
+
                     /* dispatch an event to the PrintLabel controller to 
                      * print labels and sendEmail
                      * */
@@ -216,12 +214,12 @@ class PalletsController extends AppController
 
         $labelOutputPath = $this->getSetting('LABEL_OUTPUT_PATH');
 
-        $showLabelDownload = (bool) $lastPrintsCount;
+        $showLabelDownload = (bool)$lastPrintsCount;
 
         $this->set(
             compact(
-                'showLabelDownload',
                 'lastPrints',
+                'showLabelDownload',
                 'lastPrintsCount',
                 'labelOutputPath',
                 'items',

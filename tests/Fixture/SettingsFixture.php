@@ -44,8 +44,8 @@ class SettingsFixture extends TestFixture
                 'id' => 3,
                 'setting_in_comment' => false,
                 'name' => 'SSCC_REF',
-                'setting' => '619',
-                'comment' => 'SSCC Reference number ',
+                'setting' => '149',
+                'comment' => 'The next SSCC Reference number',
             ],
             [
                 'id' => 4,
@@ -121,6 +121,23 @@ files/templates-glabels-4',
 # to disable send put a # at the start of the line
 James McDonald <james@toggen.com.au>
 #Lisa McDonald <lisa@toggen.com.au>
+',
+            ],
+            [
+                'id' => 67,
+                'setting_in_comment' => false,
+                'name' => 'LABEL_OUTPUT_PATH',
+                'setting' => 'files/output',
+                'comment' => 'relative path from WWW_ROOT for saving output files from GLabels Print',
+            ],
+            [
+                'id' => 68,
+                'setting_in_comment' => false,
+                'name' => 'LABEL_DOWNLOAD_LIST',
+                'setting' => '6',
+                'comment' => 'Whether to show the recently printed label download list
+0 to disable
+1 - 20 yes and number to show
 ',
             ],
         ];

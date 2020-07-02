@@ -44,14 +44,7 @@ class ProductionLinesFixture extends TestFixture
                 'id' => 3,
                 'active' => true,
                 'printer_id' => 6,
-                'name' => 'Line 1 - PDF Printer',
-                'product_type_id' => 3,
-            ],
-            [
-                'id' => 5,
-                'active' => true,
-                'printer_id' => 24,
-                'name' => 'TestLine',
+                'name' => 'Line 1',
                 'product_type_id' => 3,
             ],
         ];

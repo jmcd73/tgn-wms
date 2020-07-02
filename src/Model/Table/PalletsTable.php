@@ -23,6 +23,7 @@ use App\Lib\Utility\Barcode;
 use App\Model\Entity\Pallet;
 use Cake\Event\EventManager;
 
+
 /**
  * Pallets Model
  *
@@ -104,6 +105,8 @@ class PalletsTable extends Table
         $this->hasMany('Cartons', [
             'foreignKey' => 'pallet_id',
         ]);
+
+        $this->getEventManager()->on(new CartonsTable());
     }
 
 
@@ -129,10 +132,10 @@ class PalletsTable extends Table
 
         if ($entity->isNew() && $entity instanceof Pallet && $event->getSubject() instanceof PalletsTable) {
             $evt = new Event('Model.Cartons.addCartonRecord', $entity);
-            EventManager::instance()->dispatch($evt);
+            $this->getEventManager()->dispatch($evt);
 
             # stop event firing twice because for some reason it comes through twice
-            EventManager::instance()->off('Model.Cartons.addCartonRecord');
+            //$this->getEventManager()->off('Model.Cartons.addCartonRecord');
         }
     }
 
