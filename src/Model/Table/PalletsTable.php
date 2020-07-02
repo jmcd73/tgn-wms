@@ -139,8 +139,6 @@ class PalletsTable extends Table
 
     public function persistPalletRecord(Event $event)
     {
-        tog("persist");
-
         $this->save($event->getSubject());
     }
 

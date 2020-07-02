@@ -73,8 +73,6 @@ class CartonsTable extends Table
         if (!$this->save($carton)) {
             throw new Exception('Could not save Carton record triggered by Model.Pallets.afterSave method');
         }
-        
-        $event->setResult(['seen', true]);
     }
 
 

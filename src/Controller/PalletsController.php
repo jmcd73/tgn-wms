@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+
+use App\Mailer\AppMailer;
+use App\Model\Table\CartonsTable;
+use App\Model\Table\PalletsTable;
+use App\Model\Table\ProductTypesTable;
+use App\Model\Table\SettingsTable;
 use App\Form\LookupSearchForm;
 use App\Form\OnhandSearchForm;
 use App\Form\PalletPrintForm;
@@ -31,11 +37,19 @@ class PalletsController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-        
-        $labelPrint = new PrintLabel();
 
-        $this->getEventManager()->on($labelPrint);
+        $eventClasses = [
+            PrintLabel::class,
+            ProductTypesTable::class,
+            SettingsTable::class,
+            PalletsTable::class,
+            CartonsTable::class,
+            AppMailer::class,
+        ];
 
+        foreach ($eventClasses as $eventClass) {
+            $this->getEventManager()->on(new $eventClass);
+        }
     }
 
     public function beforeFilter(EventInterface $event)
@@ -103,32 +117,79 @@ class PalletsController extends AppController
                 }
 
                 $newData['user_id'] = $this->Authentication->getIdentity()->getIdentifier();
-        
+
+                /* create a pallet entity for the pallets table but don't persist it yet */
+
                 $pallet = $this->Pallets->createPalletEntity($newData);
 
                 $item = $this->Pallets->Items->get($newData['item'], [
-                    'contain' => 
-                     [ 'PrintTemplates' , 'ProductTypes' ]
+                    'contain' =>
+                    ['PrintTemplates', 'ProductTypes']
                 ]);
 
                 $productionLine = $this->Pallets->ProductionLines->get($newData['production_line'], [
                     'contain' => 'Printers'
                 ]);
 
-                if(! $pallet->hasErrors()) {
+                if (!$pallet->hasErrors()) {
                     $this->Flash->success($this->createMessage($pallet, $productionLine->printer), ['escape' => false]);
-                    $event = new Event('PrintLabels.palletPrint', $pallet, [ 
-                        'item' => $item, 
-                        'printer' => $productionLine->printer, 
+                    
+                    /* dispatch an event to the PrintLabel controller to 
+                     * print labels and sendEmail
+                     * */
+                    $event = new Event('PrintLabels.palletPrint', $pallet, [
+                        'item' => $item,
+                        'printer' => $productionLine->printer,
                         'company' => $this->companyName,
                         'action' => $this->request->getParam('action')
-                        ]);
+                    ]);
+
                     $this->getEventManager()->dispatch($event);
+
+                    $printResult = $event->getResult()['printResult'];
+
+                    $labelClass = $event->getResult()['labelClass'];
+
+                    if ($printResult['return_value'] === 0) {
+
+                        /* if print is successful 
+                         * increment serial numbers 
+                         * persist pallet entity and
+                         * create a carton record
+                        */
+                        $events = [
+                            'Model.ProductTypes.incrementNextSerialNumber',
+                            'Model.Settings.incrementSsccRef',
+                        ];
+
+                        foreach ($events as $eventName) {
+                            $evt =  new Event($eventName, $pallet);
+                            $this->getEventManager()->dispatch($evt);
+                        }
+
+                        $palletEvents = [
+                            'Model.Pallets.addPalletLabelFilename',
+                            'Model.Pallets.persistPalletRecord'
+                        ];
+
+                        foreach ($palletEvents as $eventName) {
+
+                            $evt = new Event(
+                                $eventName,
+                                $pallet,
+                                [
+                                    'labelClass' => $labelClass,
+                                    'labelOutputPath' => $this->getSetting('LABEL_OUTPUT_PATH')
+                                ]
+                            );
+
+                            $this->getEventManager()->dispatch($evt);
+                        }
+                    }
                 } else {
                     $errors = $this->Pallets->flattenAndFormatValidationErrors($pallet->getErrors());
-                    $this->Flash->error("Contact IT Support: " . $errors,  [ 'escape' => false]);
+                    $this->Flash->error("Contact IT Support: " . $errors,  ['escape' => false]);
                 }
-
             } else {
                 $this->Flash->error('There was a problem submitting your form.');
                 $forms[$this->request->getData()['formName']]->setData($this->request->getData());
@@ -148,7 +209,7 @@ class PalletsController extends AppController
         $lastPrintsCount = (int) $this->getSetting('LABEL_DOWNLOAD_LIST');
 
         $lastPrints = $this->Pallets->find()
-            ->select([ 'id', 'pallet_label_filename', 'pl_ref', 'item'])
+            ->select(['id', 'pallet_label_filename', 'pl_ref', 'item'])
             ->where(['pallet_label_filename IS NOT NULL'])
             ->order(['id' => 'DESC'])
             ->limit($lastPrintsCount);

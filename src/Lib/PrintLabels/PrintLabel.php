@@ -64,47 +64,7 @@ class PrintLabel implements EventListenerInterface
 
         $printResult = $labelClass->print($printer, $template);
 
-        if ($printResult['return_value'] === 0) {
-
-            $events = [
-                'Model.ProductTypes.incrementNextSerialNumber',
-                'Model.Settings.incrementSsccRef',
-            ];
-
-            foreach ($events as $eventName) {
-                $evt =  new Event($eventName, $pallet);
-                EventManager::instance()->dispatch($evt);
-            }
-
-            //'Model.Pallets.addPalletLabelFilename',
-            //'Model.Pallets.persistPalletRecord'
-
-            $palletEvents = [
-                
-                'Model.Pallets.addPalletLabelFilename',
-                'Model.Pallets.persistPalletRecord'
-            ];
-
-            foreach ($palletEvents as $eventName) {
-
-                $evt = new Event(
-                    $eventName,
-                    $pallet,
-                    [
-                        'labelClass' => $labelClass,
-                        'labelOutputPath' => $this->getSetting('LABEL_OUTPUT_PATH')
-                    ]
-                );
-
-                EventManager::instance()->dispatch($evt);
-           
-            }
-        } else {
-            /* $event = new Event('Model.Pallets.persistPalletRecord', $pallet );
-            EventManager::instance()->dispatch($event); */
-
-            tog("Failed to print", $printResult);
-        };
+        return compact('printResult' , 'labelClass'); 
     }
 
     /**

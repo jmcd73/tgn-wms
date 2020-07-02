@@ -32,10 +32,6 @@ require __DIR__ . '/paths.php';
  */
 require CORE_PATH . 'config' . DS . 'bootstrap.php';
 
-use App\Mailer\AppMailer;
-use App\Model\Table\SettingsTable;
-use App\Model\Table\PalletsTable;
-use App\Model\Table\ProductTypesTable;
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
@@ -50,7 +46,6 @@ use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
 use Cake\Routing\Router;
 use Cake\Utility\Security;
-use App\Model\Table\CartonsTable;
 
 /*
  * See https://github.com/josegonzalez/php-dotenv for API details.
@@ -240,14 +235,4 @@ if (!function_exists('tog')) {
 
 Configure::write('pallet_print_debug', false);
 
-$eventClasses = [
-    ProductTypesTable::class,
-    SettingsTable::class,
-    PalletsTable::class,
-    CartonsTable::class,
-    AppMailer::class,
-];
 
-foreach ($eventClasses as $eventClass) {
-    EventManager::instance()->on(new $eventClass);
-}
