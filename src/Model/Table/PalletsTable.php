@@ -20,6 +20,7 @@ use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 use App\Lib\Utility\Barcode;
+use App\Model\Entity\Pallet;
 use Cake\Event\EventManager;
 
 /**
@@ -55,14 +56,7 @@ class PalletsTable extends Table
 {
     use UpdateCounterCacheTrait;
 
-    public function implementedEvents(): array
-    {    
-            return [
-                'Model.afterSave' => 'afterSave',
-                'Model.Pallets.persistPalletRecord' => 'persistPalletRecord',
-                'Model.Pallets.savePalletLabelFilename' => 'savePalletLabelFilename'
-            ];
-    }
+
     /**
      * Initialize method
      *
@@ -110,6 +104,84 @@ class PalletsTable extends Table
         $this->hasMany('Cartons', [
             'foreignKey' => 'pallet_id',
         ]);
+    }
+
+
+    public function implementedEvents(): array
+    {
+        return [
+            'Model.afterSave' => 'afterSave',
+            'Model.Pallets.persistPalletRecord' => 'persistPalletRecord',
+            'Model.Pallets.addPalletLabelFilename' => 'addPalletLabelFilename'
+        ];
+    }
+
+    /**
+     *
+     * @param  \Cake\Event\Event                $event   Event
+     * @param  \Cake\Datasource\EntityInterface $entity  EntityInterface
+     * @param  array                            $options Options array
+     * @return void
+     * @throws \Cake\Core\Exception
+     */
+    public function afterSave(Event $event, EntityInterface $entity, $options = [])
+    {
+
+        if ($entity->isNew() && $entity instanceof Pallet && $event->getSubject() instanceof PalletsTable) {
+            $evt = new Event('Model.Cartons.addCartonRecord', $entity);
+            EventManager::instance()->dispatch($evt);
+
+            # stop event firing twice because for some reason it comes through twice
+            EventManager::instance()->off('Model.Cartons.addCartonRecord');
+        }
+    }
+
+
+    public function persistPalletRecord(Event $event)
+    {
+        tog("persist");
+
+        $this->save($event->getSubject());
+    }
+
+    public function addPalletLabelFilename(Event $event, \App\Lib\PrintLabels\Label $labelClass, $labelOutputPath)
+    {
+
+        $pallet = $event->getSubject();
+
+        $printContent = $labelClass->getGlabelsPrintContent();
+
+        $fileNameParts = [$pallet->pl_ref, $pallet->batch, $pallet->item];
+
+        $targetFileName = join('-', $fileNameParts) . $this->getFileExtension($printContent);
+
+        $targetFullPath = WWW_ROOT . $labelOutputPath . '/' . $targetFileName;
+
+        file_put_contents($targetFullPath, $printContent);
+
+        chmod($targetFullPath, 0666);
+
+        $pallet->pallet_label_filename = $targetFileName;
+
+        tog('inside addPalletLabelFileName', $event->getResult(), $event->getName());
+    }
+
+    public function getFileExtension($printContent)
+    {
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        $fileType = $finfo->buffer($printContent);
+
+        switch ($fileType) {
+            case 'application/pdf':
+                $ext = '.pdf';
+                break;
+            case 'text/plain':
+            default:
+                $ext = '.txt';
+                break;
+        }
+
+        return $ext;
     }
 
     /**
@@ -947,23 +1019,7 @@ class PalletsTable extends Table
         return $product_type;
     }
 
-    /**
-     *
-     * @param  \Cake\Event\Event                $event   Event
-     * @param  \Cake\Datasource\EntityInterface $entity  EntityInterface
-     * @param  array                            $options Options array
-     * @return void
-     * @throws \Cake\Core\Exception
-     */
-    public function afterSave(Event $event, EntityInterface $entity, $options = [])
-    {
-       tog($entity);
-        if ($entity->isNew()) {
-            // pallet table fields are keys, carton table fields are values
-                $evt = new Event('Model.Cartons.addCartonRecord', $entity);
-               EventManager::instance()->dispatch($evt);
-        }
-    }
+
 
     /**
      * @param  array $sndata $this->data
@@ -1074,43 +1130,5 @@ class PalletsTable extends Table
             ];
 
         return $this->newEntity($palletData);
-    }
-
-    public function persistPalletRecord(Event $event)
-    {
-
-        $this->save($event->getSubject());
-    }
-
-    public function savePalletLabelFilename(Event $event, \App\Lib\PrintLabels\Label $labelClass, $labelOutputPath)
-    {
-        $pallet = $event->getSubject();
-        $printContent = $labelClass->getGlabelsPrintContent();
-
-        $fileNameParts = [$pallet->pl_ref, $pallet->batch, $pallet->item];
-        $targetFileName = join('-', $fileNameParts) . $this->getFileExtension($printContent);
-        $targetFullPath = WWW_ROOT . $labelOutputPath . '/' . $targetFileName;
-        file_put_contents($targetFullPath, $printContent);
-        chmod($targetFullPath, 0666);
-        $pallet->pallet_label_filename = $targetFileName;
-        $this->save($pallet);
-    }
-
-    public function getFileExtension($printContent)
-    {
-        $finfo = new \finfo(FILEINFO_MIME_TYPE);
-        $fileType = $finfo->buffer($printContent);
-
-        switch ($fileType) {
-            case 'application/pdf':
-                $ext = '.pdf';
-                break;
-            case 'text/plain':
-            default:
-                $ext = '.txt';
-                break;
-        }
-
-        return $ext;
     }
 }

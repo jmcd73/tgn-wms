@@ -66,11 +66,15 @@ class CartonsTable extends Table
             $cartonRecord[$cartonField] = $pallet->get($palletField);
         }
 
+        tog("CR", $event->getResult(), $event->getName());
+
         $carton = $this->newEntity($cartonRecord);
 
         if (!$this->save($carton)) {
             throw new Exception('Could not save Carton record triggered by Model.Pallets.afterSave method');
-        } 
+        }
+        
+        $event->setResult(['seen', true]);
     }
 
 

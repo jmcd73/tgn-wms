@@ -31,7 +31,9 @@ class PalletsController extends AppController
     public function initialize(): void
     {
         parent::initialize();
+        
         $labelPrint = new PrintLabel();
+
         $this->getEventManager()->on($labelPrint);
 
     }
@@ -613,18 +615,12 @@ class PalletsController extends AppController
      */
     public function lookup()
     {
-        // $this->Authorization->skipAuthorization();
-
         $options = [];
 
         if (!empty($this->request->getQueryParams())) {
             $options = $this->Pallets->formatLookupActionConditions(
                 $this->request->getQueryParams()
             );
-
-            /*  $searchForm = $this->Pallets->formatLookupRequestData(
-                 $this->request->getQueryParams()
-             ); */
         }
 
         $searchForm = new LookupSearchForm();

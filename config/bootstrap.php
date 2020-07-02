@@ -240,8 +240,14 @@ if (!function_exists('tog')) {
 
 Configure::write('pallet_print_debug', false);
 
-$eventClasses = [CartonsTable::class, AppMailer::class, PalletsTable::class, ProductTypesTable::class, SettingsTable::class];
+$eventClasses = [
+    ProductTypesTable::class,
+    SettingsTable::class,
+    PalletsTable::class,
+    CartonsTable::class,
+    AppMailer::class,
+];
 
 foreach ($eventClasses as $eventClass) {
-    EventManager::instance()->on(new $eventClass());
+    EventManager::instance()->on(new $eventClass);
 }
