@@ -84,8 +84,20 @@ class ProductTypesTable extends Table
 
     public function implementedEvents(): array
     {
-        return [ 'Model.ProductTypes.incrementNextSerialNumber' => 'incrementProductTypeSerialNumber']; 
+        return [ 'Model.ProductTypes.incrementNextSerialNumber' => 'incrementProductTypeSerialNumber' ]; 
     }
+
+    public function incrementProductTypeSerialNumber(Event $event){
+        $pallet = $event->getSubject();
+        $productTypeId = $pallet->product_type_id;
+        $productType = $this->get($productTypeId);
+        
+        $productType->next_serial_number = ++$productType->next_serial_number;
+        
+        $this->save($productType);
+    
+    }
+
     /**
      * Default validation rules.
      *
@@ -157,11 +169,5 @@ class ProductTypesTable extends Table
         return $rules;
     }
 
-    public function incrementProductTypeSerialNumber(Event $event){
-        $pallet = $event->getSubject();
-        $productTypeId = $pallet->product_type_id;
-        $productType = $this->get($productTypeId);
-        $productType->next_serial_number = ++$productType->next_serial_number;
-        $this->save($productType);
-    }
+  
 }

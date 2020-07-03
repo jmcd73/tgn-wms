@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
@@ -6,6 +7,8 @@ namespace App\Test\TestCase\Controller;
 use App\Controller\HelpController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use App\Application;
+use Cake\ORM\TableRegistry;
 
 /**
  * App\Controller\HelpController Test Case
@@ -16,6 +19,20 @@ class HelpControllerTest extends TestCase
 {
     use IntegrationTestTrait;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+    }
+
+    public function authMe($userId)
+    {
+        $users = TableRegistry::get('Users');
+        $user = $users->get($userId);
+        $this->session(['Auth' => $user]);
+    }
+
+
+
     /**
      * Fixtures
      *
@@ -23,6 +40,8 @@ class HelpControllerTest extends TestCase
      */
     protected $fixtures = [
         'app.Help',
+        'app.Users',
+        'app.Settings'
     ];
 
     /**
@@ -32,7 +51,9 @@ class HelpControllerTest extends TestCase
      */
     public function testIndex(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->authMe(2);
+        $this->get(['controller' => 'Help', 'action' => 'index']);
+        $this->assertResponseOk();
     }
 
     /**
@@ -42,7 +63,9 @@ class HelpControllerTest extends TestCase
      */
     public function testView(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->authMe(2);
+        $this->get(['controller' => 'Help', 'action' => 'view', 7]);
+        $this->assertResponseOk();
     }
 
     /**
@@ -50,9 +73,34 @@ class HelpControllerTest extends TestCase
      *
      * @return void
      */
-    public function testAdd(): void
+    public function testAdminUserAddOK(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->authMe(1);
+        $this->enableCsrfToken();
+        //$this->disableErrorHandlerMiddleware();
+        $this->get(['controller' => 'Help', 'action' => 'add']);
+        $this->assertResponseOk(); // 302 to auth
+    }
+
+
+    /**
+     * Test add method
+     *
+     * @return void
+     */
+    public function testUserAdd(): void
+    {
+        $this->authMe(2);
+        $this->enableCsrfToken();
+        //$this->disableErrorHandlerMiddleware();
+        $this->get(['controller' => 'Help', 'action' => 'add']);
+        $this->assertRedirectEquals([
+            'controller' => 'Users',
+            'action' => 'access-denied',
+            '?' => [
+                'redirect' => '/help/add'
+            ]
+        ]);
     }
 
     /**
@@ -62,7 +110,17 @@ class HelpControllerTest extends TestCase
      */
     public function testEdit(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->authMe(2);
+
+        $this->get(['controller' => 'Help', 'action' => 'edit', 7]);
+
+        $this->assertRedirectEquals([
+            'controller' => 'Users',
+            'action' => 'access-denied',
+            '?' => [
+                'redirect' => '/help/edit/7'
+            ]
+        ]);
     }
 
     /**

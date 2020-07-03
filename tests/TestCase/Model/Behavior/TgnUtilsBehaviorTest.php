@@ -115,16 +115,16 @@ class TgnUtilsBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function testGetReferenceNumber(): void
+    public function testSsccGetReferenceNumber(): void
     {
         $reference = $this->TgnUtilsBehavior->getReferenceNumber('SSCC_REF','93529380');
-        $expected = '00000619';
+        $expected = '149';
 
         $this->assertEquals($expected, $reference);
 
         $nextRef = $this->TgnUtilsBehavior->getSetting('SSCC_REF');
 
-        $this->assertEquals(620, $nextRef);
+        $this->assertEquals(149, $nextRef);
     }
 
     /**
@@ -151,15 +151,9 @@ class TgnUtilsBehaviorTest extends TestCase
 
         $nsn0 = $nextReference->next_serial_number;
 
-        $actual = $this->TgnUtilsBehavior->createPalletRef($id);
+        $actual = $this->TgnUtilsBehavior->createPalletRef($id, $nsn0);
 
-        $nextReference = $productTypesTable->get($id);
-
-        $nsn1 = $nextReference->next_serial_number;
-
-        $this->assertEquals('A00561', $actual);
-
-        $this->assertEquals($nsn0 + 1, $nsn1);
+        $this->assertEquals('A00000149', $actual);
     }
 
     /**

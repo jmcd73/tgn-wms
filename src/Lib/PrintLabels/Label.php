@@ -102,7 +102,12 @@ class Label
             return '';
         }
     }
-    
+
+    public function getGlabelsPrintContent()
+    {
+        return $this->printContent;
+    }
+
     public function __construct($action)
     {
         /*   $mailer = new AppMailer();
@@ -113,6 +118,8 @@ class Label
         $this->action = $action;
         $this->setJobId($action);
         $this->setCwd(TMP);
+
+        
     }
 
     public function setItemCode($code)
@@ -457,9 +464,6 @@ class Label
             $this->setPrintCopies(1);
         }
 
-        tog('cmdArgs', $cmdArgs);
-
-
         $results = $this->runProcess(
             $cmdArgs,
             $this->printContent
@@ -477,7 +481,6 @@ class Label
             $to = $this->addressParse($this->getSetting('EMAIL_PALLET_LABEL_TO'));
 
             if (!empty($to) && $template->details->send_email) {
-
                 $event = new Event('Label.Glabel.printSuccess', $this, ['toAddresses' => $to, 'emailBody' => $this->createEmailBody()]);
                 EventManager::instance()->dispatch($event);
             }

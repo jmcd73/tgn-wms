@@ -2,7 +2,6 @@
 <phpunit
     colors="true"
     processIsolation="false"
-    stopOnFailure="false"
     cacheResult="true"
     bootstrap="tests/bootstrap.php"
     >

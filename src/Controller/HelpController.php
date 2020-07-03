@@ -17,7 +17,7 @@ class HelpController extends AppController
 
     public function initialize(): void
     {
-
+      
         parent::initialize();
         $this->docsRoot = $this->getSetting('DOCUMENTATION_ROOT');
         $this->fullPathDocumentationRoot = WWW_ROOT . $this->docsRoot;
@@ -74,7 +74,7 @@ class HelpController extends AppController
         $markdownDocuments = array_combine($mdFiles, $mdFiles);
         $controllerActions = $this->Ctrl->getMenuActions();
 
-        $this->set('documentationRoot', $this->docRoot);
+        $this->set('documentationRoot', $this->docsRoot);
 
         $this->set(compact('controllerActions', 'markdownDocuments'));
 

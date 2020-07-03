@@ -20,6 +20,9 @@ use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 use App\Lib\Utility\Barcode;
+use App\Model\Entity\Pallet;
+use Cake\Event\EventManager;
+
 
 /**
  * Pallets Model
@@ -54,6 +57,7 @@ class PalletsTable extends Table
 {
     use UpdateCounterCacheTrait;
 
+
     /**
      * Initialize method
      *
@@ -63,9 +67,6 @@ class PalletsTable extends Table
     public function initialize(array $config): void
     {
         parent::initialize($config);
-
-        //  $mailer = new AppMailer();
-        //  $this->getEventManager()->on($mailer);
 
         $this->setTable('pallets');
         $this->setDisplayField('id');
@@ -105,9 +106,82 @@ class PalletsTable extends Table
             'foreignKey' => 'pallet_id',
         ]);
 
-        $cartons = new CartonsTable();
-        $this->getEventManager()->on($cartons);
+        $this->getEventManager()->on(new CartonsTable());
+    }
 
+
+    public function implementedEvents(): array
+    {
+        return [
+            'Model.afterSave' => 'afterSave',
+            'Model.Pallets.persistPalletRecord' => 'persistPalletRecord',
+            'Model.Pallets.addPalletLabelFilename' => 'addPalletLabelFilename'
+        ];
+    }
+
+    /**
+     *
+     * @param  \Cake\Event\Event                $event   Event
+     * @param  \Cake\Datasource\EntityInterface $entity  EntityInterface
+     * @param  array                            $options Options array
+     * @return void
+     * @throws \Cake\Core\Exception
+     */
+    public function afterSave(Event $event, EntityInterface $entity, $options = [])
+    {
+
+        if ($entity->isNew() && $entity instanceof Pallet && $event->getSubject() instanceof PalletsTable) {
+            $evt = new Event('Model.Cartons.addCartonRecord', $entity);
+            $this->getEventManager()->dispatch($evt);
+
+            # stop event firing twice because for some reason it comes through twice
+            //$this->getEventManager()->off('Model.Cartons.addCartonRecord');
+        }
+    }
+
+
+    public function persistPalletRecord(Event $event)
+    {
+        $this->save($event->getSubject());
+    }
+
+    public function addPalletLabelFilename(Event $event, \App\Lib\PrintLabels\Label $labelClass, $labelOutputPath)
+    {
+
+        $pallet = $event->getSubject();
+
+        $printContent = $labelClass->getGlabelsPrintContent();
+
+        $fileNameParts = [$pallet->pl_ref, $pallet->batch, $pallet->item];
+
+        $targetFileName = join('-', $fileNameParts) . $this->getFileExtension($printContent);
+
+        $targetFullPath = WWW_ROOT . $labelOutputPath . '/' . $targetFileName;
+
+        file_put_contents($targetFullPath, $printContent);
+
+        chmod($targetFullPath, 0666);
+
+        $pallet->pallet_label_filename = $targetFileName;
+        
+    }
+
+    public function getFileExtension($printContent)
+    {
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        $fileType = $finfo->buffer($printContent);
+
+        switch ($fileType) {
+            case 'application/pdf':
+                $ext = '.pdf';
+                break;
+            case 'text/plain':
+            default:
+                $ext = '.txt';
+                break;
+        }
+
+        return $ext;
     }
 
     /**
@@ -174,7 +248,8 @@ class PalletsTable extends Table
             ->notEmptyString('pl_ref')
             ->add('pl_ref', 'unique', [
                 'message' => "The pallet reference number must be unique",
-                'rule' => 'validateUnique', 'provider' => 'table']);
+                'rule' => 'validateUnique', 'provider' => 'table'
+            ]);
 
         $validator
             ->scalar('sscc')
@@ -668,6 +743,7 @@ class PalletsTable extends Table
                 case 'page':
                 case 'sort':
                 case 'direction':
+                case 'limit':
                     break;
                 default:
 
@@ -944,51 +1020,6 @@ class PalletsTable extends Table
         return $product_type;
     }
 
-    /**
-     *
-     * @param  \Cake\Event\Event                $event   Event
-     * @param  \Cake\Datasource\EntityInterface $entity  EntityInterface
-     * @param  array                            $options Options array
-     * @return void
-     * @throws \Cake\Core\Exception
-     */
-    public function afterSave(Event $event, EntityInterface $entity, $options = [])
-    {
-        if ($entity->isNew()) {
-            // pallet table fields are keys, carton table fields are values
-
-            $events = [ 'Model.Cartons.addCartonRecord' ];
-
-            foreach ($events as $e ) {
-                $event = new Event($e, $entity);
-                $this->getEventManager()->dispatch($event);
-            }    
-        }
-    }
-
-
-    public function addCartonRecord($myvar,  $pallet)
-    {
-
-        $fields = [
-            'qty' => 'count',
-            'print_date' => 'production_date',
-            'bb_date' => 'best_before',
-            'id' => 'pallet_id',
-            'user_id' => 'user_id'
-        ];
-
-        $cartonRecord = [];
-        foreach ($fields as $palletField => $cartonField) {
-            $cartonRecord[$cartonField] = $pallet->get($palletField);
-        }
-
-        $carton = $this->newEntity($cartonRecord);
-
-        if (!$this->Cartons->save($carton)) {
-            throw new Exception('Could not save Carton record in Pallet.php afterSave method');
-        }
-    }
 
 
     /**
@@ -1053,7 +1084,7 @@ class PalletsTable extends Table
         $serialNumber = $this->getReferenceNumber('SSCC_REF');
 
         $sscc = (new Barcode($extensionDigit, $companyPrefix, $serialNumber))->getSscc();
-        
+
         $pallet_ref = $this->createPalletRef($data['productType'], $serialNumber);
 
         $item_detail = $this->Items->get($data['item'], [
@@ -1099,12 +1130,6 @@ class PalletsTable extends Table
                 'product_type_serial' => $productType->next_serial_number
             ];
 
-            return $this->newEntity($palletData);
-    }
-    
-    public function persistPalletRecord(Event $event) {
-
-        $this->save($event->getSubject());
-
+        return $this->newEntity($palletData);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -35,20 +36,21 @@ use Cake\Event\EventListenerInterface;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class CartonsTable extends Table implements EventListenerInterface
+class CartonsTable extends Table
 {
 
     public function implementedEvents(): array
     {
-        return [
-            'Model.Cartons.addCartonRecord' => 'addCartonRecord'
-        ];
+            return [
+                'Model.Cartons.addCartonRecord' => 'addCartonRecord'
+            ];
     }
 
-    public function addCartonRecord(Event $event){
+    public function addCartonRecord(Event $event)
+    {
 
         $pallet = $event->getSubject();
-        
+
         $fields = [
             'qty' => 'count',
             'print_date' => 'production_date',
@@ -70,7 +72,7 @@ class CartonsTable extends Table implements EventListenerInterface
             throw new Exception('Could not save Carton record triggered by Model.Pallets.afterSave method');
         }
     }
-    
+
 
     /**
      * Initialize method

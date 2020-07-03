@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Lib\PrintLabels\Zebra;
@@ -30,14 +31,11 @@ class TextLabel extends Label implements LabelInterface
 
         $templateTokens = json_decode($printTemplate->replace_tokens);
 
-        tog($templateTokens);
-
         $labelValues = [];
 
         foreach ($templateTokens as $ttKey => $ttValue) {
             $labelValues[$ttValue] = ${$ttValue};
         }
-
 
         $this->printContent = (new CabLabel(
             $labelValues,

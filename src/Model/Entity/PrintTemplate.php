@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Entity;
@@ -76,30 +77,25 @@ class PrintTemplate extends Entity
 
     protected function _getAction()
     {
-        tog($this->getActionOrController($this->controller_action, 1 ));
-        return $this->getActionOrController($this->controller_action, 1 );
-        
-        
+        return $this->getActionOrController($this->controller_action, 1);
     }
 
     protected function _getController()
     {
-        tog($this->getActionOrController($this->controller_action, 0 ));
-        return $this->getActionOrController($this->controller_action, 0 );
-        
+        return $this->getActionOrController($this->controller_action, 0);
     }
 
-    protected function getActionOrController($controllerAction, $index) {
-
+    protected function getActionOrController($controllerAction, $index)
+    {
         $action = null;
 
         if (is_null($controllerAction)) {
             return null;
         }
-        if(preg_match('/::/', $controllerAction) === 1) {
+        if (preg_match('/::/', $controllerAction) === 1) {
             $action = explode("::", $controllerAction)[$index];
         }
-        
+
         return $action;
     }
 }

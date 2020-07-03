@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -31,10 +32,6 @@ require __DIR__ . '/paths.php';
  */
 require CORE_PATH . 'config' . DS . 'bootstrap.php';
 
-use App\Mailer\AppMailer;
-use App\Model\Table\SettingsTable;
-use App\Model\Table\PalletsTable;
-use App\Model\Table\ProductTypesTable;
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
@@ -49,6 +46,7 @@ use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
 use Cake\Routing\Router;
 use Cake\Utility\Security;
+use App\Mailer\AppMailer;
 
 /*
  * See https://github.com/josegonzalez/php-dotenv for API details.
@@ -80,6 +78,7 @@ use Cake\Utility\Security;
  * idea to create multiple configuration files, and separate the configuration
  * that changes from configuration that does not. This makes deployment simpler.
  */
+
 try {
     Configure::config('default', new PhpConfig());
     Configure::load('app', 'default', false);
@@ -238,14 +237,4 @@ if (!function_exists('tog')) {
 Configure::write('pallet_print_debug', false);
 
 
-$mailer = new AppMailer();
-EventManager::instance()->on($mailer);
-$pallets = new PalletsTable();
-EventManager::instance()->on('Model.Pallets.persistPalletRecord', [ $pallets, 'persistPalletRecord'] );
-$productTypes = new ProductTypesTable();
-EventManager::instance()->on($productTypes);
-
-$settings = new SettingsTable();
-EventManager::instance()->on($settings);
-
-
+EventManager::instance()->on(new AppMailer());

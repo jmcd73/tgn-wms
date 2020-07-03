@@ -23,7 +23,6 @@ class PrintLabel implements EventListenerInterface
 
     public function labelPrint(Event $event, $item, $printer, $company, $action)
     {
-
         $pallet = $event->getSubject();
 
         $bestBeforeDates = $this->formatLabelDates(new FrozenTime($pallet->bb_date));
@@ -52,41 +51,20 @@ class PrintLabel implements EventListenerInterface
         ];
 
         $printClass = $item->print_template->print_class;
-        
-        if ($item->print_template->is_file_template) {
 
+        if ($item->print_template->is_file_template) {
             $glabelsRoot = $this->getSetting('TEMPLATE_ROOT');
             $template = new GlabelsProject($item->print_template, $glabelsRoot);
-
         } else {
-
             $template = $item->print_template;
         }
-        
-        $printResult = LabelFactory::create($printClass, $action)
-            ->format($template, $cabLabelData)
-            ->print($printer, $template);
 
-        $isPrintDebugMode = Configure::read('pallet_print_debug');
+        $labelClass = LabelFactory::create($printClass, $action)
+            ->format($template, $cabLabelData);
 
-        if ($printResult['return_value'] === 0) {
-            $events = [ 
-                'Model.Pallets.persistPalletRecord',
-                'Model.ProductTypes.incrementNextSerialNumber',
-                'Model.Settings.incrementSsccRef'
-             ];
+        $printResult = $labelClass->print($printer, $template);
 
-            foreach($events as $eventName){
-                $event = new Event($eventName, $pallet);
-                EventManager::instance()->dispatch($event);
-            }
-            
-        } else {
-            /* $event = new Event('Model.Pallets.persistPalletRecord', $pallet );
-            EventManager::instance()->dispatch($event); */
-
-            tog("Failed to print", $printResult);
-        };
+        return compact('printResult' , 'labelClass'); 
     }
 
     /**
