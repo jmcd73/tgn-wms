@@ -14,10 +14,10 @@ class AddLabelDownload extends AbstractMigration
      */
     public function up()
     {
-        $this->table('cartons')
+        /* $this->table('cartons')
             ->removeIndexByName('date_label_id')
             ->update();
-
+ */
         $this->table('cartons')
             ->addIndex(
                 [

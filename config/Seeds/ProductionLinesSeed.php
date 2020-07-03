@@ -4,9 +4,9 @@ declare(strict_types=1);
 use Migrations\AbstractSeed;
 
 /**
- * Cartons seed.
+ * ProductionLines seed.
  */
-class CartonsSeed extends AbstractSeed
+class ProductionLinesSeed extends AbstractSeed
 {
     /**
      * Run Method.
@@ -20,13 +20,19 @@ class CartonsSeed extends AbstractSeed
      */
     public function run()
     {
-        $data = [];
-
-        $table = $this->table('cartons');
+        $data = [
+            [
+                'id' => 3,
+                'active' => true,
+                'printer_id' => 6,
+                'name' => 'Line 1',
+                'product_type_id' => 3,
+            ],
+        ];
+        $table = $this->table('production_lines');
         
         $table->truncate();
-        
-        $table->insert($data)->save();
 
+        $table->insert($data)->save();
     }
 }

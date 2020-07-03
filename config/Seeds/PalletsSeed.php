@@ -23,7 +23,10 @@ class PalletsSeed extends AbstractSeed
         $data = [];
 
         $table = $this->table('pallets');
-        $table->insert($data)->save();
+
         $table->truncate();
+
+        $table->insert($data)->save();
+    
     }
 }

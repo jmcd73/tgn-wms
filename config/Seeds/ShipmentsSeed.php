@@ -23,7 +23,11 @@ class ShipmentsSeed extends AbstractSeed
         $data = [];
 
         $table = $this->table('shipments');
-        $table->insert($data)->save();
+
         $table->truncate();
+        
+        $table->insert($data)->save();
+
+        
     }
 }
