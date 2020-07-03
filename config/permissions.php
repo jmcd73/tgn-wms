@@ -51,6 +51,10 @@
  */
 
 return [
+      'canBestBeforeEdit' => [
+        'roles' => [ 'qa', 'qty_editor' ],
+        'users' => [ 'username' ]
+    ],
     'CakeDC/Auth.permissions' => [
         [
             'controller' => 'Users',
@@ -81,14 +85,14 @@ return [
             'action' => '*',
         ],
         [
-            'role' => [ 'user', 'qty_editor' ],
+            'role' => [ 'user', 'qty_editor', 'qa' ],
             'controller' => 'Users',
             'action' => [
                 'accessDenied', 'logout',
             ],
         ],
         [
-            'role' => [ 'user', 'qty_editor' ],
+            'role' => [ 'user', 'qty_editor', 'qa' ],
             'controller' => [
                 'Users',
                 'Shifts',
@@ -106,7 +110,7 @@ return [
             'allowed' => false,
         ],
         [
-            'role' => [ 'user', 'qty_editor' ],
+            'role' => [ 'user', 'qty_editor', 'qa' ],
             'controller' => '*',
             'action' => [
                 'display',
@@ -126,7 +130,7 @@ return [
         ],
         [
             // user role cannot delete or edit add 
-            'role' => [ 'user', 'qty_editor' ],
+            'role' => [ 'user', 'qty_editor', 'qa' ],
             'controller' => ['PrintLog', 'Pallets', 'Items', 'Cartons', 'Shipments'],
             // allow all actions except these by prepending * to action
             '*action' => ['add', 'edit'],

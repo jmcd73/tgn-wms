@@ -20,7 +20,7 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+       
         <th scope="col"><?= $this->Paginator->sort('pallet_id') ?></th>
         <th scope="col"><?= $this->Paginator->sort('count') ?></th>
         <th scope="col"><?= $this->Paginator->sort('best_before') ?></th>
@@ -35,7 +35,6 @@
     <tbody>
         <?php foreach ($cartons as $carton) : ?>
         <tr>
-            <td><?= $this->Number->format($carton->id) ?></td>
             <td><?= $carton->has('pallet') ? $this->Html->link($carton->pallet->id, ['controller' => 'Pallets', 'action' => 'view', $carton->pallet->id]) : '' ?></td>
             <td><?= $this->Number->format($carton->count) ?></td>
             <td><?= h($carton->best_before) ?></td>

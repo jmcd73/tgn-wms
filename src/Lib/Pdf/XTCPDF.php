@@ -9,9 +9,27 @@ use TCPDF;
 
 class XTCPDF extends TCPDF
 {
+    private $companyName = '';
     public $lineStyle = ['width' => 0.1];
     public $headerWidth = 175;
     private $_doubleLineConfig = [1, -4];
+
+    /**
+     * 
+     * @param mixed|null $name 
+     * @return string|void 
+     */
+    public function companyName($name = null)
+    {
+
+        if ($name && is_string($name)){
+            $this->companyName = $name;
+        } else {
+            return $this->companyName;
+        }
+        
+
+    }
 
     public function doubleLine($adjust = null)
     {
@@ -133,7 +151,7 @@ class XTCPDF extends TCPDF
         $this->Cell(
             0,
             0,
-            sprintf('%s %s', "\u{00A9}", Configure::read('companyName')),
+            sprintf('%s %s', "\u{00A9}", $this->companyName()),
             0,
             false,
             'L',

@@ -146,7 +146,6 @@ class UsersController extends AppController
 
                 return $this->redirect($target);
             } else {
-		 tog([ 'loginError' => $result ]); 
                 $this->Flash->error(__('Invalid username or password'));
             }
         }

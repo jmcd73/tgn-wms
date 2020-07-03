@@ -5,6 +5,7 @@ namespace App\Lib\PrintLabels;
 
 use App\Model\Entity\PrintTemplate;
 use Cake\ORM\Entity;
+use Cake\Event\Event;
 
 /**
  * trait ResultTrait
@@ -20,11 +21,13 @@ trait ResultTrait
         array $printResult,
         Entity $printerDetails,
         PrintTemplate $printTemplate,
-        array $saveData
+        array $saveData,
+        $referer = null
     ) {
         if ($printResult['return_value'] === 0) {
-            $newEntity = $this->PrintLog->newEntity($saveData);
-            $savedEntity = $this->PrintLog->save($newEntity);
+           
+            $event = new Event('Model.PrintLog.savePrintRecord', $saveData);
+            $this->{$this->modelClass}->getEventManager()->dispatch($event);
 
             $message = __(
                 'Sent <strong>{0}</strong> to printer <strong>{1}</strong>',
@@ -34,7 +37,10 @@ trait ResultTrait
 
             $this->Flash->success($message, ['escape' => false]);
 
-            return $this->redirect(['action' => 'completed', $savedEntity->id]);
+            $redirectTo = ! empty($referer) ? $referer : ['action' => 'completed'];
+
+            return $this->redirect($redirectTo);
+            
         } else {
             $err = empty($printResult['stderr']) ? $printResult['return_value'] : $printResult['stderr'] ;
             $message = __(
@@ -43,7 +49,7 @@ trait ResultTrait
                 $printerDetails['name'],
                 $err
             );
-            tog($printResult);
+
             $this->Flash->error($message, ['escape' => false]);
             $controller = $this->request->getParam('controller');
             $action = $this->request->getParam('action');

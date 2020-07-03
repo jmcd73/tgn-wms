@@ -22,6 +22,7 @@ use Cake\Core\Configure;
 use Cake\Database\Query;
 use Cake\Event\EventInterface;
 use Cake\ORM\TableRegistry;
+use App\Lib\Utility\SettingsTrait;
 
 /**
  * Application Controller
@@ -33,6 +34,11 @@ use Cake\ORM\TableRegistry;
  */
 class AppController extends Controller
 {
+
+    use SettingsTrait;
+
+    public $companyName = '';
+
     protected $controllerActionsToSkip = [
         'menus::buildMenu',
         'toolbar_access::history_state',
@@ -56,6 +62,9 @@ class AppController extends Controller
         $this->loadComponent('Flash');
 
         $ctrlSettings = Configure::read('Ctrl.printControllersActions');
+
+        $this->companyName = $this->getSetting('COMPANY_NAME');
+        
         $this->loadComponent('Ctrl', $ctrlSettings);
 
         /*
@@ -66,6 +75,7 @@ class AppController extends Controller
 
         $this->loadComponent('Authentication.Authentication');
         $this->loadComponent('Authorization.Authorization');
+        $this->loadModel('Menus');
     }
 
     public function beforeFilter(EventInterface $event)
@@ -82,14 +92,13 @@ class AppController extends Controller
             $isAdmin = $this->isAdmin($user);
 
             $this->set(compact('user'));
-            //} else {
-            //pr($result->getErrors());
-            //pr($result->getStatus());
         }
 
         $menuTree = $this->getMenuTree();
 
-        $this->set(compact('menuTree'));
+        $companyName = $this->companyName;
+
+        $this->set(compact('menuTree', 'companyName'));
 
         $controllerAction = $this->getControllerAction();
 
@@ -128,9 +137,7 @@ class AppController extends Controller
 
     public function getMenuTree(): Query
     {
-        $menuTable = $this->getTableLocator()->get('Menus');
-
-        return $menuTable->find('threaded')
+        return $this->Menus->find('threaded')
             ->where([
                 'active' => 1,
             ])->orderAsc('lft');

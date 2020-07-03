@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Entity;
@@ -30,7 +31,6 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Operator $operator
  * @property \App\Model\Entity\TruckRegistration $truck_registration
  * @property \App\Model\Entity\ProductType $product_type
- * @property \App\Model\Entity\Label[] $labels
  * @property \App\Model\Entity\Pallet[] $pallets
  */
 class Shipment extends Entity

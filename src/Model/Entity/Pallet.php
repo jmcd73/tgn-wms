@@ -1,8 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Authentication\IdentityInterface;
 use Cake\I18n\FrozenDate;
 use Cake\ORM\Entity;
 
@@ -49,6 +51,8 @@ use Cake\ORM\Entity;
  */
 class Pallet extends Entity
 {
+
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -97,6 +101,8 @@ class Pallet extends Entity
         'product_type' => true,
         'cartons' => true,
         'user_id' => true,
+        'product_type_serial' => true,
+        'pallet_label_filename' => true
     ];
 
     protected function _getCodeDesc()

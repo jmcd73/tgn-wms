@@ -7,6 +7,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
 
 /**
  * Settings Model
@@ -27,6 +28,21 @@ use Cake\Validation\Validator;
  */
 class SettingsTable extends Table
 {
+    public function implementedEvents(): array
+    {
+        return [ 
+            'Model.Settings.incrementSsccRef' => 'incrementSsccRef'
+        ];
+    }
+
+    public function incrementSsccRef(Event $event)
+    {
+        $settingRecord = $this->find()->where(['name' => 'SSCC_REF' ])->first();
+
+        $settingRecord->setting = ++$settingRecord->setting;
+
+        $this->save($settingRecord);
+    }
     /**
      * Initialize method
      *

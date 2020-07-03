@@ -14,7 +14,7 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+       
         <th scope="col"><?= $this->Paginator->sort('controller_action') ?></th>
         <th scope="col"><?= $this->Paginator->sort('created') ?></th>
         <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
@@ -24,7 +24,6 @@
     <tbody>
         <?php foreach ($printLog as $printLog) : ?>
         <tr>
-            <td><?= $this->Number->format($printLog->id) ?></td>
             <td><?= h($printLog->controller_action) ?></td>
             <td><?= h($printLog->created) ?></td>
             <td><?= h($printLog->modified) ?></td>

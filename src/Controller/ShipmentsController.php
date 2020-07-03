@@ -51,7 +51,9 @@ class ShipmentsController extends AppController
         $shipments = $this->paginate($this->Shipments);
         $productTypes = $this->Shipments->ProductTypes->find('list')->where(['active' => 1]);
 
-        $this->set(compact('shipments', 'productTypes'));
+        $showMixed = (bool) $this->getSetting("SHOW_ADD_MIXED");
+
+        $this->set(compact('shipments', 'productTypes', 'showMixed'));
     }
 
     /**
@@ -142,7 +144,7 @@ class ShipmentsController extends AppController
                 $pallets
             ), ['escape' => false]);
         } else {
-            $errors = $this->Shipments->formatValidationErrors($shipment->getErrors());
+            $errors = $this->Shipments->flattenAndFormatValidationErrors($shipment->getErrors());
             $this->Flash->error($errors);
         }
 
@@ -225,7 +227,9 @@ class ShipmentsController extends AppController
         $baseUrl = $this->request->getAttribute('webroot');
         $productTypes = $this->Shipments->ProductTypes->find('list');
 
-        $this->set(compact('js', 'css', 'baseUrl', 'productTypes', 'operation', 'productTypeOrId'));
+        $showMixed = (bool) $this->getSetting("SHOW_ADD_MIXED");
+
+        $this->set(compact('js', 'css', 'baseUrl', 'productTypes', 'operation', 'productTypeOrId'), 'showMixed');
     }
 
     /**
@@ -339,7 +343,7 @@ class ShipmentsController extends AppController
             } else {
                 $errorText = '';
 
-                $errors = $this->Shipments->formatValidationErrors($patched->getErrors()) ;
+                $errors = $this->Shipments->flattenAndFormatValidationErrors($patched->getErrors()) ;
 
                 $this->Flash->error($errors);
             }
@@ -458,7 +462,6 @@ class ShipmentsController extends AppController
                     'shipment' => $result,
                 ];
             }
-            // tog($msg, json_encode($shipment));
 
             return $this->response->withStringBody(json_encode($shipment))->withType('application/json');
         }
@@ -539,6 +542,8 @@ class ShipmentsController extends AppController
         $file_name = $shipment->shipper . $suffix;
 
         $this->response = $this->response->withType('pdf');
+        
+        $companyName = $this->companyName;
 
         $this->set(
             compact(

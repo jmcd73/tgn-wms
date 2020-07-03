@@ -1,8 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Behavior;
 
+use App\Lib\Exception\MissingConfigurationException;
 use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
 use Cake\I18n\FrozenDate;
@@ -13,6 +15,8 @@ use Cake\ORM\Behavior;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
+use App\Lib\Utility\SettingsTrait;
+use App\Lib\Utility\FormatDateTrait;
 
 /**
  * TgnUtils behavior
@@ -20,136 +24,39 @@ use Cake\Utility\Inflector;
 class TgnUtilsBehavior extends Behavior
 {
     use LogTrait;
-
+    use SettingsTrait;
+    use FormatDateTrait;
+    
     /**
      * Default configuration.
      *
      * @var array
      */
-    protected $_defaultConfig = [];
-
-  
-
-    public function getSettingsTable($tableName = 'Settings')
-    {
-        return TableRegistry::getTableLocator()->get($tableName);
-    }
-
-    /**
-     * @param  string $settingname the name of the setting in the settings.setting field of the db
-     * @param  bool   $inComment   some settings are stored in the comment field as they have CR or JSON
-     * @return string
-     */
-    public function getSetting($settingname, bool $inComment = false)
-    {
-        $setting = $this->getSettingsTable()->find()->where(['name' => $settingname])->firstOrFail();
-
-        $setting = $setting->toArray();
-
-        $this->settingId = $setting['id'];
-
-        $slug = $inComment ? 'comment' : 'setting';
-
-        // if it's an array then return the setting otherwise empty string
-
-        return is_array($setting) ? $setting[$slug] : '';
-    }
+    protected $_defaultConfig = [
+        'labelDateFormats' =>   [
+            'bb_date' => 'Y-m-d',
+            'bb_bc' => 'ymd',
+            'bb_hr' => 'd/m/y',
+        ]
+    ];
 
     /**
-     * Generate an SSCC number with check digit
-     *
-     * @return string
-     *                phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
-     */
-    public function generateSSCCWithCheckDigit()
-    {
-        $sscc = $this->generateSSCC();
-
-        return $sscc . $this->generateCheckDigit($sscc);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function generateSSCC()
-    {
-        $ssccExtensionDigit = $this->getSetting(Configure::read('SSCC_EXTENSION_DIGIT'));
-
-        $ssccCompanyPrefix = $this->getCompanyPrefix();
-
-        $ssccReferenceNumber = $this->getReferenceNumber(Configure::read('SSCC_REF'), $ssccCompanyPrefix);
-
-        return $ssccExtensionDigit . $ssccCompanyPrefix . $ssccReferenceNumber;
-    }
-
-    //phpcs:enable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
-
-    /**
-     * when fed a barcode number returns the GS1 checkdigit number
-     *
-     * @param  string $number barcode number
-     * @return string barcode number
-     */
-    public function generateCheckDigit($number)
-    {
-        $sum = 0;
-        $index = 0;
-        $cd = 0;
-        for ($i = strlen($number); $i > 0; $i--) {
-            $digit = substr($number, $i - 1, 1);
-            $index++;
-
-            $ret = $index % 2;
-            if ($ret == 0) {
-                $sum += $digit * 1;
-            } else {
-                $sum += $digit * 3;
-            }
-        }
-        $mod_sum = $sum % 10;
-        // if it exactly divide the checksum is 0
-        if ($mod_sum == 0) {
-            $cd = 0;
-        } else {
-            // go to the next multiple of 10 above and subtract
-            $cd = 10 - $mod_sum + $sum - $sum;
-        }
-
-        return $cd;
-    }
-
-    /**
+     * Returns the current reference number stored in settings table record
+     * and increments and saves the number in the table record
+     * 
      * @param  string $settingName   setting name
      * @param  int    $companyPrefix the GS1 company prefix
-     * @return string a number with leading zeros
+     * @return string a number formatted with appropriate number of leading zeros depending on companyPrefix length
+     * 
      */
-    public function getReferenceNumber($settingName, $companyPrefix)
+    public function getReferenceNumber($settingName)
     {
-        $next_val = $this->getSetting($settingName) + 1;
-
-        $companyPrefixLength = strlen($companyPrefix);
-
-        $fmt = '%0' . (16 - $companyPrefixLength) . 'd';
-
-        $saveThis = [
-            'id' => $this->settingId,
-            'setting' => $next_val,
-        ];
-
-        $settingsTable = $this->getSettingsTable();
-
-        $settingRecord = $settingsTable->get($this->settingId);
-
-        $settingRecord->setting = $next_val;
-
-        $settingsTable->save($settingRecord);
-
-        return sprintf($fmt, $next_val);
+        return $this->getSetting($settingName);
     }
 
     public function getCompanyPrefix()
     {
-        return $this->getSetting(Configure::read('SSCC_COMPANY_PREFIX'));
+        return $this->getSetting('SSCC_COMPANY_PREFIX');
     }
 
     /**
@@ -158,23 +65,13 @@ class TgnUtilsBehavior extends Behavior
      * @param  int    $productTypeId product_type_id of current product
      * @return string
      */
-    public function createPalletRef($productTypeId)
+    public function createPalletRef($productTypeId, $serialNumber)
     {
         $productTypeModel = $this->getSettingsTable('ProductTypes');
 
         $productType = $productTypeModel->get($productTypeId);
 
-        $productTypeArray = $productType->toArray();
-
-        $serialNumberFormat = $productTypeArray['serial_number_format'];
-
-        $serialNumber = $productType['next_serial_number'];
-
-        $productType->next_serial_number = ++$serialNumber;
-
-        if (!$productTypeModel->save($productType)) {
-            throw new Exception('Failed to save the serial number for ' . $productTypeArray['name']);
-        }
+        $serialNumberFormat = $productType->serial_number_format;
 
         return sprintf($serialNumberFormat, $serialNumber);
     }
@@ -204,34 +101,6 @@ class TgnUtilsBehavior extends Behavior
     public function getDateTimeStamp()
     {
         return date('Y-m-d H:i:s');
-    }
-
-    /**
-     * FormatLabelDates given a dateString and an array of dateFormats as follows
-     *
-     * [
-     *     'bb_date' => 'dd/mm/yy',
-     *     'mysl_date' => 'yyyy-MM-dd'
-     * ]
-     *
-     * returns the dates with the Initial keys e.g.
-     * [
-     *     'bb_date' => '31/01/73',
-     *     'mysql_date' => '1973-01-31'
-     * ]
-     *
-     * @param  \Cake\I18n\FrozenTime $dateObject  The date as a string
-     * @param  array                 $dateFormats As above example
-     * @return array                 of date strings
-     */
-    public function formatLabelDates(FrozenTime $dateObject, array $dateFormats): array
-    {
-        $dates = [];
-        foreach ($dateFormats as $k => $v) {
-            $dates[$k] = $dateObject->format($v);
-        }
-
-        return $dates;
     }
 
     /**
@@ -357,15 +226,40 @@ class TgnUtilsBehavior extends Behavior
         // get Validation errors and append them into a string
 
         foreach ($validationErrors as $key => $value) {
+            $parent = $key;
             if (is_array($value)) {
                 $errorMessage[] = $this->formatValidationErrors($value, $errorMessage);
             } else {
-                $errorMessage[] = $value;
+                $errorMessage[] = $parent . ': ' . $value;
             }
         }
 
         return join('. ', array_unique($errorMessage));
     }
+    /**
+     * @param array $validationErrors The Validation Errors from an entity
+     * @return string
+     */
+    public function flattenAndFormatValidationErrors(array $validationErrors = []): string
+    {
+        // get Validation errors and append them into a string
+
+       $flattened = Hash::flatten($validationErrors);
+       $msg = [];
+        foreach ($flattened as $key => $error) {
+            [$field, $rule] = explode(".", $key);
+           $currentMessage = sprintf(
+               'Validation for <strong>%s</strong> field has failed in rule <strong>%s</strong> with error: <strong>%s</strong>',
+                $field, 
+                $rule, 
+                $error
+            );
+           $msg[] = $currentMessage;
+       }
+       
+       return join(" ", $msg);
+    }
+    
 
     /**
      * getViewPermNumber returns the perm number when given the text

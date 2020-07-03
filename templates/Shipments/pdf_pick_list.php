@@ -8,6 +8,8 @@ $pdf = new XTCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8'
 
 $shipper = $shipment['shipper'];
 
+$pdf->companyName($companyName);
+
 $pdf->SetCreator(PDF_CREATOR);
 
 $pdf->SetAuthor($appName);

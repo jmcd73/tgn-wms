@@ -49,6 +49,7 @@ class LocationsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('TgnUtils');
 
         $this->belongsTo('ProductTypes', [
             'foreignKey' => 'product_type_id',
@@ -110,6 +111,12 @@ class LocationsTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['product_type_id'], 'ProductTypes'));
+
+        $rules->addDelete($rules->isNotLinkedTo(
+            'Pallets',
+            'pallets',
+            'Must have no pallets in location before deletion.'
+        ));
 
         return $rules;
     }

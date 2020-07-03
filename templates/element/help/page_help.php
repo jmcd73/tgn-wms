@@ -1,12 +1,12 @@
 <?= $this->Html->link(
-    'Context help ' . $this->Html->icon('question-circle', ['iconSet' => 'far']),
+    'Instructions ' . $this->Html->icon('question-circle', ['iconSet' => 'far']),
     [
         'controller' => 'Help',
         'action' => 'view_page_help',
         $helpPage['id'],
     ],
     [
-        'class' => 'context-help',
+        'class' => 'nav-link',
         'escape' => false,
         'title' => 'Click here for page specific help',
     ]

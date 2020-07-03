@@ -39,7 +39,11 @@ class CrossdockLabelForm extends Form
      */
     public function validationDefault(Validator $validator): Validator
     {
-        return $validator->notBlank('purchase_order', 'Please enter a purchase order');
+        $validator
+            ->notBlank('purchase_order', 'Please enter a purchase order')
+            ->integer('sequence-end')
+            ->integer('sequence-start');
+        return $validator;
     }
 
     /**

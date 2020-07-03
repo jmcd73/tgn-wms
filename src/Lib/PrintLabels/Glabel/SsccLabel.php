@@ -2,14 +2,14 @@
 
 namespace App\Lib\PrintLabels\Glabel;
 
-use App\Lib\PrintLabels\Interfaces\GlabelInterface;
+use App\Lib\PrintLabels\Interfaces\GlabelsInterface;
 use App\Lib\PrintLabels\Label;
 
-class SsccLabel extends Label implements GlabelInterface
+class SsccLabel extends Label implements GlabelsInterface
 {
     /**
      *   $cabLabelData = [
-                'companyName' => Configure::read('companyName'),
+                'companyName' => $companyName,
                 'internalProductCode' => $palletRecord['Item']['code'],
                 'reference' => $palletRecord['Pallet']['pl_ref'],
                 'sscc' => $palletRecord['Pallet']['sscc'],
@@ -49,14 +49,19 @@ class SsccLabel extends Label implements GlabelInterface
         parent::__construct($action);
     }
 
-    public function print($printerDetails, $glabelsProject)
+    public function print($printer)
     {
-        return $this->glabelsBatchPrint($glabelsProject, $printerDetails['queue_name']);
+        return $this->glabelsBatchPrint($printer);
     }
 
-    public function format($labelData)
+    public function format($template, $labelData)
     {
+
+        $this->setGlabelsTemplate($template);
         $this->setPrintContentArray($labelData);
+        $this->setReference($labelData['reference']);
+        $this->setBatch($labelData['batch']);
+        $this->setItemCode($labelData['internalProductCode']);
 
         $printArrayValues = $this->getArrayProperties($labelData, array_values($this->headings));
 

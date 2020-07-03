@@ -16,8 +16,7 @@ use Cake\ORM\Entity;
  * @property string|null $queue_name
  * @property string|null $set_as_default_on_these_actions
  *
- * @property \App\Model\Entity\Label[] $labels
- * @property \App\Model\Entity\Pallet[] $pallets
+  * @property \App\Model\Entity\Pallet[] $pallets
  * @property \App\Model\Entity\ProductionLine[] $production_lines
  */
 class Printer extends Entity
@@ -46,6 +45,12 @@ class Printer extends Entity
 
     protected function _getArrayOfActions()
     {
-        return explode("\n", $this->set_as_default_on_these_actions);
+        if( is_string( $this->set_as_default_on_these_actions )) {
+            return explode("\n", $this->set_as_default_on_these_actions);
+        }
+        
+        return [];
     }
+
+   
 }

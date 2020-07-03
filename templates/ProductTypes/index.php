@@ -40,7 +40,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+           
             <th scope="col"><?= $this->Paginator->sort('inventory_status_id') ?></th>
             <th scope="col"><?= $this->Paginator->sort('location_id') ?></th>
             <th scope="col"><?= $this->Paginator->sort('name') ?></th>
@@ -57,7 +57,6 @@
     <tbody>
         <?php foreach ($productTypes as $productType) : ?>
         <tr>
-            <td><?= $this->Number->format($productType->id) ?></td>
             <td><?= $productType->has('inventory_status') ? $this->Html->link($productType->inventory_status->name, ['controller' => 'InventoryStatuses', 'action' => 'view', $productType->inventory_status->id]) : '' ?>
             </td>
             <td>

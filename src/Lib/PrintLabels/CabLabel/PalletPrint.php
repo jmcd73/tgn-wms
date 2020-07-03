@@ -21,10 +21,8 @@ class PalletPrint extends Label implements TextLabelInterface
         $printTemplateContents = $printTemplate['text_template'];
         $templateTokens = json_decode($printTemplate['replace_tokens']);
 
-        $companyName = Configure::read('companyName');
-
         if (empty($printTemplateContents) || empty($templateTokens)) {
-            throw new MissingConfigurationException('Cannot find print template for bigNumber');
+            throw new MissingConfigurationException('Cannot find print template');
         }
 
         $this->setReference($labelValues['reference']);
@@ -40,11 +38,6 @@ class PalletPrint extends Label implements TextLabelInterface
 
     public function print(Printer $printer)
     {
-        $printSettings = $this->getPrintSettings(
-            $printer,
-            $this->action
-        );
-
-        return $this->sendPrint($this->printContent, $printSettings);
+        return $this->sendPrint($this->printContent, $printer);
     }
 }

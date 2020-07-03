@@ -2,14 +2,14 @@
 
 namespace App\Lib\PrintLabels\Interfaces;
 
-interface TextLabelInterface
+interface TextLabelInterface extends LabelInterface
 {
     /**
      * format function for input data
      *
-     * @param  array  $printTemplate template we are using
-     * @param  array  $formData      Form data from view
+     * @param  array  $labelData from view
      * @return string
      */
-    public function format($printTemplate, $formData);
+    public function format(\App\Model\Entity\PrintTemplate $printTemplate, array $printData);
+    
 }

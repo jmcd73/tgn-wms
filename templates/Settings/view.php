@@ -30,10 +30,16 @@
                 <th scope="row"><?= __('Id') ?></th>
                 <td><?= $this->Number->format($setting->id) ?></td>
             </tr>
+            <tr>
+                <th scope="row"><?= __('Setting in comment') ?></th>
+                <td><?= $this->Html->activeIcon($setting->setting_in_comment) ?></td>
+            </tr>
         </table>
     </div>
     <div class="row">
+        <div class="col">
         <h4><?= __('Comment') ?></h4>
         <?= $this->Text->autoParagraph(h($setting->comment)); ?>
+        </div>
     </div>
 </div>

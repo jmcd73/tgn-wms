@@ -16,7 +16,7 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+       
         <th scope="col"><?= $this->Paginator->sort('name') ?></th>
         <th scope="col"><?= $this->Paginator->sort('shift_minutes') ?></th>
         <th scope="col"><?= $this->Paginator->sort('comment') ?></th>
@@ -33,7 +33,6 @@
     <tbody>
         <?php foreach ($shifts as $shift) : ?>
         <tr>
-            <td><?= $this->Number->format($shift->id) ?></td>
             <td><?= h($shift->name) ?></td>
             <td><?= $this->Number->format($shift->shift_minutes) ?></td>
             <td><?= h($shift->comment) ?></td>

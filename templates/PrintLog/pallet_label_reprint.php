@@ -52,9 +52,8 @@
                 [
                     'type' => 'radio',
                     'label' => '',
-                    'default' => $printers['default'] ? $printers['default'] : '',
+                    'value' => $printers['default'] ? $printers['default'] : '',
                     'options' => $printers['printers'],
-
                 ]
             ); ?>
             <h4 class="tpad">Label Copies</h4>
@@ -73,7 +72,9 @@
                 'type' => 'hidden',
                 'value' => $refer,
             ]); ?>
-            <?php echo $this->Form->submit('Reprint'); ?>
+            <?php echo $this->Form->button('Reprint', [
+                'type' => 'submit',
+                'class' => 'print']); ?>
 
             <?=$this->Form->end(); ?>
         </div>

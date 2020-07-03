@@ -17,7 +17,7 @@ class PrintersFixture extends TestFixture
      */
     // phpcs:disable
     public $fields = [
-        'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
+        'id' => ['type' => 'integer', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'active' => ['type' => 'boolean', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'name' => ['type' => 'string', 'length' => 45, 'null' => true, 'default' => null, 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null],
         'options' => ['type' => 'string', 'length' => 100, 'null' => true, 'default' => null, 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null],
@@ -42,12 +42,25 @@ class PrintersFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
-                'active' => 1,
-                'name' => 'Lorem ipsum dolor sit amet',
-                'options' => 'Lorem ipsum dolor sit amet',
-                'queue_name' => 'Lorem ipsum dolor sit amet',
-                'set_as_default_on_these_actions' => 'Lorem ipsum dolor sit amet',
+                'id' => 6,
+                'active' => true,
+                'name' => 'PDF Printer',
+                'options' => '',
+                'queue_name' => 'PDF',
+                'set_as_default_on_these_actions' => 'Pallets::lookup
+Pallets::palletPrint
+PrintLog::bigNumber
+PrintLog::cartonPrint
+PrintLog::crossdockLabels
+PrintLog::customPrint
+PrintLog::glabelSampleLabels
+PrintLog::keepRefrigerated
+PrintLog::palletLabelReprint
+PrintLog::printCartonLabels
+PrintLog::sampleLabels
+PrintLog::shippingLabels
+PrintLog::shippingLabelsGeneric
+PrintLog::ssccLabel',
             ],
         ];
         parent::init();

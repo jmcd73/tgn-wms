@@ -13,8 +13,11 @@
 <?php $this->assign('tb_sidebar', '<ul class="nav flex-column">' . $this->fetch('tb_actions') . '</ul>'); ?>
 
 <div class="pallets view large-9 medium-8 columns content">
-    <h3><?= h($pallet->pl_ref) ?></h3>
-    <div class="table-responsive">
+    <div class="row">
+    <div class="col"><h3><?= h($pallet->pl_ref) ?></h3></div>
+    </div>
+    <div class="row">
+        <div class="col"> <div class="table-responsive">
         <table class="table table-striped">
 
             <tr>
@@ -65,18 +68,20 @@
                 </td>
             </tr>
 
-            <tr>
+        </table>
+    </div></div>
+        <div class="col">
+        <div class="table-responsive">
+        <table class="table table-striped">
+
+        <tr>
                 <th scope="row"><?= __('Product Type') ?></th>
                 <td><?= $pallet->has('product_type') ? $this->Html->link($pallet->product_type->name, ['controller' => 'ProductTypes', 'action' => 'view', $pallet->product_type->id]) : '' ?>
                 </td>
             </tr>
             <tr>
-                <th scope="row"><?= __('Qty per pallet') ?></th>
+                <th scope="row"><?= __('Qty on Pallet') ?></th>
                 <td><?= $this->Number->format($pallet->qty) ?></td>
-            </tr>
-            <tr>
-                <th scope="row"><?= __('Min Days Life') ?></th>
-                <td><?= $this->Number->format($pallet->min_days_life) ?></td>
             </tr>
             <tr>
                 <th scope="row"><?= __('Best before date') ?></th>
@@ -112,8 +117,14 @@
                 <th scope="row"><?= __('Ship Low Date') ?></th>
                 <td><?= $pallet->ship_low_date ? __('Yes') : __('No'); ?></td>
             </tr>
+           
         </table>
     </div>
+
+        </div>
+
+    </div>
+   
     <div class="related">
         <h4><?= __('Related Cartons') ?></h4>
         <?php if (!empty($pallet->cartons)) : ?>
@@ -121,8 +132,7 @@
                 <table class="table table-striped">
                     <tr>
                         <th scope="col"><?= __('Id') ?></th>
-                        <th scope="col"><?= __('Pallet Id') ?></th>
-                        <th scope="col"><?= __('Count') ?></th>
+                        <th scope="col"><?= __('# Cartons') ?></th>
                         <th scope="col"><?= __('Best Before') ?></th>
                         <th scope="col"><?= __('Production Date') ?></th>
                         <th scope="col"><?= __('Created') ?></th>
@@ -132,13 +142,11 @@
                     <?php foreach ($pallet->cartons as $cartons) : ?>
                         <tr>
                             <td><?= h($cartons->id) ?></td>
-                            <td><?= h($cartons->pallet_id) ?></td>
                             <td><?= h($cartons->count) ?></td>
                             <td><?= h($cartons->best_before) ?></td>
                             <td><?= h($cartons->production_date) ?></td>
                             <td><?= h($cartons->created) ?></td>
                             <td><?= h($cartons->modified) ?></td>
-                         
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Cartons', 'action' => 'view', $cartons->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
                             </td>

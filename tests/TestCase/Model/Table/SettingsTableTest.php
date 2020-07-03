@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
@@ -6,6 +7,7 @@ namespace App\Test\TestCase\Model\Table;
 use App\Model\Table\SettingsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Cake\ORM\Entity;
 
 /**
  * App\Model\Table\SettingsTable Test Case
@@ -70,5 +72,50 @@ class SettingsTableTest extends TestCase
     public function testBuildRules(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    public function testFindSettingByName() {
+
+        $query = $this->Settings->find('all')->where([ 'name' => 'EMAIL_PALLET_LABEL_TO'])->first();
+        $this->assertInstanceOf('Cake\Orm\Entity', $query);
+
+       // $result = $query->enableHydration(false)->toArray();
+
+      
+    }
+
+    public function testFindThreeSettings(): void
+    {
+        $query = $this->Settings->find('all', ['limit' => 3]);
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->enableHydration(false)->toArray();
+        
+        $expected = [
+            [
+                'id' => 3,
+              'setting_in_comment' =>    false,
+                'name' =>    'SSCC_REF',
+                'setting' =>    '149',
+                'comment' =>    'The next SSCC Reference number',
+            ],
+            [
+                'id' => 4,
+              'setting_in_comment' =>    false,
+                'name' =>    'SSCC_EXTENSION_DIGIT',
+                'setting' =>    '1',
+                'comment' =>    'SSCC extension digit',
+
+            ],
+            [
+                'id' => 5,
+              'setting_in_comment' =>    false,
+                'name' =>    'SSCC_COMPANY_PREFIX',
+                'setting' =>    '93529380',
+                'comment' =>    'Added a bogus prefix',
+
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 }

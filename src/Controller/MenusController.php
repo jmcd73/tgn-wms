@@ -150,11 +150,12 @@ class MenusController extends AppController
             $this->Flash->error('The category could not be moved up. Please, try again.');
         }
 
-        return $this->redirect($this->referer());
+        return $this->redirect($this->request->referer(false));
     }
 
     public function tree()
     {
+
         $menus = $this->Menus->find('threaded')
         ->orderAsc('lft');
 

@@ -14,7 +14,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+           
             <th scope="col"><?= $this->Paginator->sort('active') ?></th>
             <th scope="col"><?= $this->Paginator->sort('divider') ?></th>
             <th scope="col"><?= $this->Paginator->sort('admin_menu') ?></th>
@@ -33,7 +33,6 @@
     <tbody>
         <?php foreach ($menus as $menu) : ?>
         <tr>
-            <td><?= $this->Number->format($menu->id) ?></td>
             <td><?= $this->Html->activeIcon($menu->active); ?></td>
             <td><?= h($menu->divider) ?></td>
             <td><?= h($menu->admin_menu) ?></td>

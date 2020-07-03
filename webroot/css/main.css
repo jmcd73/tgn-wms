@@ -503,6 +503,18 @@ a.btn.pdf::before {
   content: "\f1c1\00a0";
 }
 
+a.nav-link.pdf::before {
+  font-family: "Font awesome 5 Free";
+  font-weight: 900;
+  content: "\f1c1\00a0";
+}
+
+a.nav-link.txt::before {
+  font-family: "Font awesome 5 Free";
+  font-weight: 900;
+  content: "\f15c\00a0";
+}
+
 a.btn.delete::before,
 button.cancel::before {
   font-family: "Font awesome 5 Free";
@@ -551,7 +563,9 @@ a.btn.calendar-week::before {
 }
 a.btn.reprint::before,
 a.btn.reprint::before,
-button.print::before {
+a.btn.print::before,
+button.print::before,
+input[type="submit"].print.btn::before {
   font-family: "Font awesome 5 Free";
   font-weight: 900;
   content: "\f02f\00a0";
@@ -774,6 +788,13 @@ button.move-down::before {
   content: "\f0d7";
 }
 
+
+a.go-back::before {
+  font-family: "Font awesome 5 Free";
+  font-weight: 900;
+  content: "\f0a5\00a0";
+}
+
 .card-body.open {
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
@@ -920,3 +941,7 @@ div.alert-danger::before {
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
 
+div.form-group.multicheckbox.is-invalid > div.invalid-feedback {
+  display: block;
+  font-size: .9rem;
+}

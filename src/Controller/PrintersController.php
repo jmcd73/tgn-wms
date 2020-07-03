@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
@@ -10,6 +11,7 @@ use Cake\Core\Configure;
  * Printers Controller
  *
  * @property \App\Model\Table\PrintersTable $Printers
+ * @property \App\Controller\Component\CtrlComponent $Ctrl
  *
  * @method \App\Model\Entity\Printer[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
@@ -61,12 +63,19 @@ class PrintersController extends AppController
     {
         $printer = $this->Printers->newEmptyEntity();
         if ($this->request->is('post')) {
-            $printer = $this->Printers->patchEntity($printer, $this->request->getData());
+
+            $data = $this->request->getData();
+            if (is_array($data['set_as_default_on_these_actions'])) {
+                $data['set_as_default_on_these_actions'] = implode("\n", $data['set_as_default_on_these_actions']);
+            }
+            $printer = $this->Printers->patchEntity($printer, $data);
             if ($this->Printers->save($printer)) {
+
                 $this->Flash->success(__('The printer has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
+            
             $this->Flash->error(__('The printer could not be saved. Please, try again.'));
         }
 
@@ -92,7 +101,9 @@ class PrintersController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->getData();
 
-            $data['set_as_default_on_these_actions'] = implode("\n", $data['set_as_default_on_these_actions']);
+            if (!empty($data['set_as_default_on_these_actions'])) {
+                $data['set_as_default_on_these_actions'] = implode("\n", $data['set_as_default_on_these_actions']);
+            }
 
             $printer = $this->Printers->patchEntity($printer, $data);
             if ($this->Printers->save($printer)) {
@@ -100,6 +111,7 @@ class PrintersController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             }
+
             $this->Flash->error(__('The printer could not be saved. Please, try again.'));
         }
 
@@ -124,9 +136,11 @@ class PrintersController extends AppController
         if ($this->Printers->delete($printer)) {
             $this->Flash->success(__('The printer has been deleted.'));
         } else {
-            $this->Flash->error(__('The printer could not be deleted. Please, try again.'));
+            $error = $this->Printers->flattenAndFormatValidationErrors($printer->getErrors());
+            $this->Flash->error(__('The printer could not be deleted. Please, try again. ' . $error), [ 'escape' => false ] );
         }
-
+        
         return $this->redirect(['action' => 'index']);
     }
 }
+
