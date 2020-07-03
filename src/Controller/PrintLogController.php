@@ -947,7 +947,7 @@ class PrintLogController extends AppController
             $labelCopiesList[$i] = $i . ' ' . $tag;
         }
 
-        $refer = $this->request->referer();
+        $refer = $this->request->referer(false);
 
         $inputDefaultCopies = $this->PrintLog->getSetting('SSCC_DEFAULT_LABEL_COPIES');
 
