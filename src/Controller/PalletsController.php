@@ -13,6 +13,7 @@ use App\Model\Table\SettingsTable;
 use App\Form\LookupSearchForm;
 use App\Form\OnhandSearchForm;
 use App\Form\PalletPrintForm;
+use App\Form\ShiftReportForm;
 use App\Lib\PrintLabels\PalletPrintResultTrait;
 use App\Lib\PrintLabels\PrintLabel;
 use App\Lib\Utility\Batch;
@@ -214,7 +215,7 @@ class PalletsController extends AppController
 
         $labelOutputPath = $this->getSetting('LABEL_OUTPUT_PATH');
 
-        $showLabelDownload = (bool)$lastPrintsCount;
+        $showLabelDownload = (bool) $lastPrintsCount;
 
         $this->set(
             compact(
@@ -590,19 +591,27 @@ class PalletsController extends AppController
      */
     public function shiftReport($url_date = null)
     {
+        $shiftReportForm = new ShiftReportForm();
+
         if ($this->request->is('POST')) {
-            $query_date = $this->request->getData('start_date');
+            $data = $this->request->getData();
 
-            if (!empty($url_date)) {
-                $query_date = $url_date;
+            if ($shiftReportForm->validate($data)) {
+
+                $query_date = $data['start_date'];
+
+                if (!empty($url_date)) {
+                    $query_date = $url_date;
+                }
+
+                $reports = $this->Pallets->shiftReport($query_date);
+
+                $this->set('reports', $reports['reports']);
+                $this->set('shift_date', $query_date);
+                $this->set('xml_shift_report', $reports['xml_shift_report']);
+            } else {
+                $this->Flash->error('Invalid data try again');
             }
-
-            $reports = $this->Pallets->shiftReport($query_date);
-            //$this->log(pr($reports));
-
-            $this->set('reports', $reports['reports']);
-            $this->set('shift_date', $query_date);
-            $this->set('xml_shift_report', $reports['xml_shift_report']);
         }
 
         $this->loadModel('Shifts');
@@ -617,6 +626,7 @@ class PalletsController extends AppController
             ]
         );
 
+        $this->set('shiftReportForm', $shiftReportForm);
         $this->set('shifts', $shifts);
         $this->set('_serialize', ['xml_shift_report']);
     }

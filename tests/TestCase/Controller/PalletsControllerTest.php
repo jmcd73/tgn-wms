@@ -10,6 +10,7 @@ use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Cake\Routing\Router;
 use App\Test\TestCase\Lib\Framework\TestFrameworkTrait;
+
 /**
  * App\Controller\PalletsController Test Case
  *
@@ -42,7 +43,8 @@ class PalletsControllerTest extends TestCase
         'app.Cartons',
         'app.Settings',
         'app.Help',
-        'app.Users'
+        'app.Users',
+        'app.Shifts'
     ];
 
     public function authMe($userId = 1)
@@ -53,7 +55,6 @@ class PalletsControllerTest extends TestCase
         $user = $users->get($userId);
 
         $this->session(['Auth' => $user]);
-        
     }
     /**
      * Test index method
@@ -128,7 +129,7 @@ class PalletsControllerTest extends TestCase
     }
 
 
-     /**
+    /**
      * Test add method
      *
      * @return void
@@ -142,7 +143,7 @@ class PalletsControllerTest extends TestCase
     }
 
 
-     /**
+    /**
      * Test add method
      *
      * @return void
@@ -152,12 +153,11 @@ class PalletsControllerTest extends TestCase
         $this->authMe();
 
         $this->get(['controller' => 'Pallets', 'action' => 'palletPrint']);
-        
+
         $this->assertResponseOk();
 
-        $this->assertStringContainsString('Select a product type from the actions on the left', (string)$this->_response->getBody());
+        $this->assertStringContainsString('Select a product type from the actions on the left', (string) $this->_response->getBody());
         $v = $this->viewVariable('viewVar');
-     
     }
 
 
@@ -183,17 +183,17 @@ class PalletsControllerTest extends TestCase
                 'left-refer' => '/pallets/pallet-print/3',
                 'formName' => 'left',
                 'left-item' => $itemId,
-                'left-production_line'=> 3,
+                'left-production_line' => 3,
                 'left-productType' => 3,
                 'left-part_pallet-left' => 0,
                 'left-batch_no' => '0183'
-            ]        
+            ]
         );
-        
-        
+
+
 
         $this->assertResponseOk();
-        $body = (string)$this->_response->getBody();
+        $body = (string) $this->_response->getBody();
 
         # has created label
         $this->assertStringContainsString('Pallet labels for', $body);
@@ -203,16 +203,15 @@ class PalletsControllerTest extends TestCase
 
         $fileName = $this->checkForPdfPrintOutput($this->outputDir, '.*\.pdf');
         $contents = $this->getContents($fileName);
-    
-        $this->assertContains($item->variant ,$contents);
-        $this->assertContains($item->code ,$contents);
-        $this->assertContains($item->brand ,$contents);
-        $this->assertContains($item->batch ,$contents);
 
+        $this->assertContains($item->variant, $contents);
+        $this->assertContains($item->code, $contents);
+        $this->assertContains($item->brand, $contents);
+        $this->assertContains($item->batch, $contents);
     }
 
 
-     /**
+    /**
      * Test add method
      *
      * @return void
@@ -220,22 +219,38 @@ class PalletsControllerTest extends TestCase
     public function testAuthenticatedPalletPrintWithProductType(): void
     {
         $this->authMe();
-        $this->get(['controller' => 'Pallets', 'action' => 'palletPrint',3 ]);
-        
+        $this->get(['controller' => 'Pallets', 'action' => 'palletPrint', 3]);
+
         $this->assertResponseOk();
-        $this->assertStringContainsString('Print Oil Pallet Labels', (string)$this->_response->getBody());
+        $this->assertStringContainsString('Print Oil Pallet Labels', (string) $this->_response->getBody());
     }
 
-         public function testLookupLimit()
-         {
-             $this->authMe(1);
-             $this->get([ 'controller' => 'Pallets', 'action' => 'Lookup', 
-             
-             '?' => [
-                 'limit' => 5
-             ]]);
+    public function testLookupLimit()
+    {
+        $this->authMe(1);
+        $this->get([
+            'controller' => 'Pallets', 'action' => 'Lookup',
 
-             $this->assertStringContainsString('showing 5 record(s)', (string) $this->_getBodyAsString());
-         }
+            '?' => [
+                'limit' => 5
+            ]
+        ]);
 
+        $this->assertStringContainsString('showing 5 record(s)', (string) $this->_getBodyAsString());
+    }
+
+
+    public function testShiftReportNullSubmit()
+    {
+        $this->authMe(1);
+        $this->enableCsrfToken();
+        $this->post(
+            ['controller' => 'Pallets', 'action' => 'shiftReport'],
+            [
+                'start_date' => null
+            ]
+        );
+
+        $this->assertResponseOk();
+    }
 }
