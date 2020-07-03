@@ -51,7 +51,9 @@ class ShipmentsController extends AppController
         $shipments = $this->paginate($this->Shipments);
         $productTypes = $this->Shipments->ProductTypes->find('list')->where(['active' => 1]);
 
-        $this->set(compact('shipments', 'productTypes'));
+        $showMixed = (bool) $this->getSetting("SHOW_ADD_MIXED");
+
+        $this->set(compact('shipments', 'productTypes', 'showMixed'));
     }
 
     /**
@@ -225,7 +227,9 @@ class ShipmentsController extends AppController
         $baseUrl = $this->request->getAttribute('webroot');
         $productTypes = $this->Shipments->ProductTypes->find('list');
 
-        $this->set(compact('js', 'css', 'baseUrl', 'productTypes', 'operation', 'productTypeOrId'));
+        $showMixed = (bool) $this->getSetting("SHOW_ADD_MIXED");
+
+        $this->set(compact('js', 'css', 'baseUrl', 'productTypes', 'operation', 'productTypeOrId'), 'showMixed');
     }
 
     /**
