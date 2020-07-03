@@ -41,21 +41,19 @@ class PalletsControllerTest extends TestCase
         'app.ProductTypes',
         'app.Cartons',
         'app.Settings',
-        'app.Help'
+        'app.Help',
+        'app.Users'
     ];
 
-    public function authMe() {
-          // Set session data
-          $this->session([
-            'Auth' => [
-                'User' => [
-                    'id' => 1,
-                    'username' => 'admin@example.com',
-                    // must be admin
-                    // other keys.
-                ]
-            ]
-        ]);
+    public function authMe($userId = 1)
+    {
+
+        $users = TableRegistry::get('Users');
+
+        $user = $users->get($userId);
+
+        $this->session(['Auth' => $user]);
+        
     }
     /**
      * Test index method
@@ -228,5 +226,16 @@ class PalletsControllerTest extends TestCase
         $this->assertStringContainsString('Print Oil Pallet Labels', (string)$this->_response->getBody());
     }
 
+         public function testLookupLimit()
+         {
+             $this->authMe(1);
+             $this->get([ 'controller' => 'Pallets', 'action' => 'Lookup', 
+             
+             '?' => [
+                 'limit' => 5
+             ]]);
+
+             $this->assertStringContainsString('showing 5 record(s)', (string) $this->_getBodyAsString());
+         }
 
 }

@@ -743,6 +743,7 @@ class PalletsTable extends Table
                 case 'page':
                 case 'sort':
                 case 'direction':
+                case 'limit':
                     break;
                 default:
 
