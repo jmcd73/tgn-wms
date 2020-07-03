@@ -163,8 +163,7 @@ class PalletsTable extends Table
         chmod($targetFullPath, 0666);
 
         $pallet->pallet_label_filename = $targetFileName;
-
-        tog('inside addPalletLabelFileName', $event->getResult(), $event->getName());
+        
     }
 
     public function getFileExtension($printContent)

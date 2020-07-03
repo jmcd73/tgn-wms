@@ -66,8 +66,6 @@ class CartonsTable extends Table
             $cartonRecord[$cartonField] = $pallet->get($palletField);
         }
 
-        tog("CR", $event->getResult(), $event->getName());
-
         $carton = $this->newEntity($cartonRecord);
 
         if (!$this->save($carton)) {
