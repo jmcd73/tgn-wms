@@ -7,6 +7,8 @@ namespace App\Test\TestCase\Controller;
 use App\Controller\HelpController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use App\Application;
+use Cake\ORM\TableRegistry;
 
 /**
  * App\Controller\HelpController Test Case
@@ -22,20 +24,14 @@ class HelpControllerTest extends TestCase
         parent::setUp();
     }
 
-    public function authMe()
+    public function authMe($userId)
     {
-        // Set session data
-        $this->session([
-            'Auth' => [
-                'User' => [
-                    'id' => 1,
-                    'username' => 'admin@example.com',
-                    // must be admin
-                    // other keys.
-                ]
-            ]
-        ]);
+        $users = TableRegistry::get('Users');
+        $user = $users->get($userId);
+        $this->session(['Auth' => $user]);
     }
+
+
 
     /**
      * Fixtures
@@ -55,7 +51,7 @@ class HelpControllerTest extends TestCase
      */
     public function testIndex(): void
     {
-        $this->authMe();
+        $this->authMe(2);
         $this->get(['controller' => 'Help', 'action' => 'index']);
         $this->assertResponseOk();
     }
@@ -67,7 +63,9 @@ class HelpControllerTest extends TestCase
      */
     public function testView(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->authMe(2);
+        $this->get(['controller' => 'Help', 'action' => 'view', 7]);
+        $this->assertResponseOk();
     }
 
     /**
@@ -75,16 +73,34 @@ class HelpControllerTest extends TestCase
      *
      * @return void
      */
-    public function testAdd(): void
+    public function testAdminUserAddOK(): void
     {
-        $this->authMe();
+        $this->authMe(1);
         $this->enableCsrfToken();
         //$this->disableErrorHandlerMiddleware();
-
         $this->get(['controller' => 'Help', 'action' => 'add']);
-       // $this->assertResponseOk(); 302 to auth
-       $this->assertRedirectContains('/hi/james');
-     
+        $this->assertResponseOk(); // 302 to auth
+    }
+
+
+    /**
+     * Test add method
+     *
+     * @return void
+     */
+    public function testUserAdd(): void
+    {
+        $this->authMe(2);
+        $this->enableCsrfToken();
+        //$this->disableErrorHandlerMiddleware();
+        $this->get(['controller' => 'Help', 'action' => 'add']);
+        $this->assertRedirectEquals([
+            'controller' => 'Users',
+            'action' => 'access-denied',
+            '?' => [
+                'redirect' => '/help/add'
+            ]
+        ]);
     }
 
     /**
@@ -94,7 +110,17 @@ class HelpControllerTest extends TestCase
      */
     public function testEdit(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->authMe(2);
+
+        $this->get(['controller' => 'Help', 'action' => 'edit', 7]);
+
+        $this->assertRedirectEquals([
+            'controller' => 'Users',
+            'action' => 'access-denied',
+            '?' => [
+                'redirect' => '/help/edit/7'
+            ]
+        ]);
     }
 
     /**
