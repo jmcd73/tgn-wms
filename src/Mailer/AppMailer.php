@@ -50,7 +50,7 @@ class AppMailer extends Mailer
             ->setTo($toAddresses)
             ->setEmailFormat('html') // html and text
             ->setAttachments([$label->getJobId() . '.pdf' => $pdfFile ])
-            ->setSubject(sprintf('Label - %s', $label->getJobId(), ))
+            ->setSubject(sprintf('Label - %s', $label->getJobId()))
             ->setViewVars(['content' => $emailBody ])
             ->viewBuilder()
             ->setTemplate('default');

@@ -84,7 +84,7 @@ class SettingsTableTest extends TestCase
       
     }
 
-    public function testFindThree(): void
+    public function testFindThreeSettings(): void
     {
         $query = $this->Settings->find('all', ['limit' => 3]);
         $this->assertInstanceOf('Cake\ORM\Query', $query);
@@ -95,8 +95,8 @@ class SettingsTableTest extends TestCase
                 'id' => 3,
               'setting_in_comment' =>    false,
                 'name' =>    'SSCC_REF',
-                'setting' =>    '619',
-                'comment' =>    'SSCC Reference number ',
+                'setting' =>    '149',
+                'comment' =>    'The next SSCC Reference number',
             ],
             [
                 'id' => 4,

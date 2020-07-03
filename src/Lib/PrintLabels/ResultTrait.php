@@ -21,7 +21,8 @@ trait ResultTrait
         array $printResult,
         Entity $printerDetails,
         PrintTemplate $printTemplate,
-        array $saveData
+        array $saveData,
+        $referer = null
     ) {
         if ($printResult['return_value'] === 0) {
            
@@ -36,7 +37,9 @@ trait ResultTrait
 
             $this->Flash->success($message, ['escape' => false]);
 
-            return $this->redirect(['action' => 'completed']);
+            $redirectTo = ! empty($referer) ? $referer : ['action' => 'completed'];
+
+            return $this->redirect($redirectTo);
             
         } else {
             $err = empty($printResult['stderr']) ? $printResult['return_value'] : $printResult['stderr'] ;

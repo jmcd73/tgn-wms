@@ -918,7 +918,8 @@ class PrintLogController extends AppController
                 $printResult,
                 $printerDetails,
                 $pallet->items->print_template->is_file_template ? $template->details : $template,
-                $saveData
+                $saveData,
+                $referer = $data['refer']
             );
         }
 

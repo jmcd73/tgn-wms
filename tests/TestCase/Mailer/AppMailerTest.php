@@ -6,6 +6,9 @@ namespace App\Test\TestCase\Mailer;
 use App\Mailer\AppMailer;
 use Cake\TestSuite\TestCase;
 use Cake\TestSuite\EmailTrait;
+use Cake\ORM\TableRegistry;
+use App\Lib\PrintLabels\Label;
+use Cake\Event\Event;
 
 /**
  * App\Mailer\AppMailer Test Case
@@ -21,20 +24,45 @@ class AppMailerTest extends TestCase
         $this->loadRoutes();
     }
 
+    protected $fixtures = [
+        'app.Pallets',
+        'app.Settings'
+    ];
 
     // in our WelcomeMailerTestCase class.
 public function testSendMail()
 {
-    $user = new User([
-        'name' => 'Alice Alittea',
-        'email' => 'alice@example.org',
-    ]);
-    $mailer = new WelcomeMailer();
-    $mailer->send('welcome', [$user]);
+    $appMailer = new AppMailer();
 
-    $this->assertMailSentTo($user->email);
-    $this->assertMailContainsText('Hi ' . $user->name);
-    $this->assertMailContainsText('Welcome to CakePHP!');
+    $label = $this->createStub(Label::class);
+    
+    $label->method('getPdfOutFile')->willReturn(__DIR__ .  DS . '20200703151125-palletPrint.pdf');
+
+    $label->method('getJobId')->willReturn("202007031510-testJobId");
+
+    $attachment = $label->getJobId() . '.pdf';
+
+    $toAddresses = [
+        'james@toggen.com.au' => 'James McDonald'
+    ];
+
+    $emailBody = 'the body of an email';
+
+    $subject = sprintf('Label - %s', $label->getJobId());
+
+    $appMailer->send('sendLabelPdfAttachment', [ $label, $toAddresses, $emailBody ]);
+
+    $this->assertMailSentTo(array_keys($toAddresses)[0]);
+
+    $this->assertMailContainsHtml($emailBody);
+
+    $this->assertMailContainsAttachment($attachment);
+
+    $this->assertMailSentWith($subject, 'subject');
+    
+    $this->assertMailCount(1);
+
+    $this->assertInstanceOf(Label::class, $label);
 }
 
     /**
