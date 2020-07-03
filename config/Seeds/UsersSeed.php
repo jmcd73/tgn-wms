@@ -29,7 +29,8 @@ class UsersSeed extends AbstractSeed
                 'timezone' => 'Australia/Melbourne',
                 'role' => 'admin',
                 'password' => 'admin',
-                'full_name' => "Example Admin"
+                'full_name' => "Example Admin",
+                'is_superuser' => 1
             ],
             [
                 'username' => 'user@example.com',

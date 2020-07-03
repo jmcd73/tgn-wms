@@ -77,7 +77,7 @@ class PalletsControllerTest extends TestCase
         ]]);
     }
 
-    public function testAddAuthenticated(): void
+    public function testIndexAuthenticated(): void
     {
         // Set session data
         $this->authMe();
@@ -104,7 +104,9 @@ class PalletsControllerTest extends TestCase
      */
     public function testAdd(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->authMe();
+        $this->get(['controller' => "Pallets", 'action' => 'add']);
+        $this->assertResponseOk();
     }
 
     /**

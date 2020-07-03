@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
@@ -16,6 +17,26 @@ class HelpControllerTest extends TestCase
 {
     use IntegrationTestTrait;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+    }
+
+    public function authMe()
+    {
+        // Set session data
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    'id' => 1,
+                    'username' => 'admin@example.com',
+                    // must be admin
+                    // other keys.
+                ]
+            ]
+        ]);
+    }
+
     /**
      * Fixtures
      *
@@ -23,6 +44,8 @@ class HelpControllerTest extends TestCase
      */
     protected $fixtures = [
         'app.Help',
+        'app.Users',
+        'app.Settings'
     ];
 
     /**
@@ -32,7 +55,9 @@ class HelpControllerTest extends TestCase
      */
     public function testIndex(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->authMe();
+        $this->get(['controller' => 'Help', 'action' => 'index']);
+        $this->assertResponseOk();
     }
 
     /**
@@ -52,7 +77,14 @@ class HelpControllerTest extends TestCase
      */
     public function testAdd(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->authMe();
+        $this->enableCsrfToken();
+        //$this->disableErrorHandlerMiddleware();
+
+        $this->get(['controller' => 'Help', 'action' => 'add']);
+       // $this->assertResponseOk(); 302 to auth
+       $this->assertRedirectContains('/hi/james');
+     
     }
 
     /**

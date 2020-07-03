@@ -12,6 +12,33 @@ $glabelsBatchBinary = file_exists('/.dockerenv') ? [
 $glabelsBatchBinary = ['/usr/local/bin/glabels-3-batch'];
 
 return [
+    'Users' => [
+        'admin_role' => 'admin',
+        'roles' => [
+            [
+                'slug' => 'admin',
+                'name' => 'Administrators',
+                'description' => 'Access to view, update and delete everything',
+            ],
+
+            [
+                'slug' => 'qa',
+                'name' => 'Quality Assurance',
+                'description' => 'QA Functions',
+            ],
+            [
+                'slug' => 'user',
+                'name' => 'User',
+                'description' => 'User can view and update most areas, some restrictions',
+            ],
+            [
+                'slug' => 'qty_editor',
+                'name' => 'Edit Pallet Quantities',
+                'description' => 'Limited to editing pallet qauntities',
+            ],
+        ],
+    ],
+
     // in Lib/Utility/Barcode
     'BATCH_FORMATS' => [
         'YDDDXX' => [
@@ -78,16 +105,7 @@ return [
         'limit' => 20,
         'maxLimit' => 30,
     ],
-    'LabelsRolesActions' => [
-        [
-            'roles' => ['qa'], // single value must be array
-            'actions' => ['editPallet', 'bulkStatusRemove', 'editPalletCartons'],
-        ],
-        [
-            'roles' => ['qty_editor'],
-            'actions' => ['editPallet'],
-        ],
-    ],
+
     // Pallets/onhand action page size
     // display this many in view
     'onhandPageSize' => 1000,
@@ -111,32 +129,6 @@ return [
             'value' => 8,
             'slug' => 'view_in_remove_status',
             'display' => 'List this status in Edit QA Status screen',
-        ],
-    ],
-    'Users' => [
-        'admin_role' => 'admin',
-        'roles' => [
-            [
-                'slug' => 'admin',
-                'name' => 'Administrators',
-                'description' => 'Access to view, update and delete everything',
-            ],
-
-            [
-                'slug' => 'qa',
-                'name' => 'Quality Assurance',
-                'description' => 'QA Functions',
-            ],
-            [
-                'slug' => 'user',
-                'name' => 'User',
-                'description' => 'User can view and update most areas, some restrictions',
-            ],
-            [
-                'slug' => 'qty_editor',
-                'name' => 'Edit Pallet Quantities',
-                'description' => 'Limited to editing pallet qauntities',
-            ],
         ],
     ],
     'navbar' => [

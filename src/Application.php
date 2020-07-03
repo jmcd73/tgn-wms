@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -86,8 +87,8 @@ class Application extends BaseApplication implements
          */
         if (Configure::read('debug')) {
             $this->addPlugin('DebugKit');
-           # Configure::write('DebugKit.ignoreAuthorization', true);
-	Configure::write('DebugKit.forceEnable', true);
+            # Configure::write('DebugKit.ignoreAuthorization', true);
+            Configure::write('DebugKit.forceEnable', true);
         }
         // Load more plugins here
     }
@@ -130,33 +131,33 @@ class Application extends BaseApplication implements
             ->add(new RoutingMiddleware($this))
             ->add(new EncryptedCookieMiddleware(['CookieAuth'], Security::getSalt()))
             ->add(new AuthenticationMiddleware($this))
-           ->add(
-               new AuthorizationMiddleware(
-                   $this,
-                   [
-                       'unauthorizedHandler' => [
-                           'className' => CakeRedirectHandler::class,
-                           'url' => [
-                               'controller' => 'Users',
-                               'action' => 'login',
-                           ],
-                           'queryParam' => 'redirect',
-                           'exceptions' => [
-                               MissingIdentityException::class,
-                               ForbiddenException::class,
-                           ],
-                           'customUrlMap' => [
-                               ForbiddenException::class => [
-                                   'controller' => 'Users',
-                                   'action' => 'accessDenied',
-                               ],
-                           ],
-                       ],
-                   ]
-               )
-           )
+            ->add(
+                new AuthorizationMiddleware(
+                    $this,
+                    [
+                        'unauthorizedHandler' => [
+                            'className' => CakeRedirectHandler::class,
+                            'url' => [
+                                'controller' => 'Users',
+                                'action' => 'login',
+                            ],
+                            'queryParam' => 'redirect',
+                            'exceptions' => [
+                                MissingIdentityException::class,
+                                ForbiddenException::class,
+                            ],
+                            'customUrlMap' => [
+                                ForbiddenException::class => [
+                                    'controller' => 'Users',
+                                    'action' => 'accessDenied',
+                                ],
+                            ],
+                        ],
+                    ]
+                )
+            )
             ->add(new RequestAuthorizationMiddleware())
-           // ->add($rbac)
+            // ->add($rbac)
             ->add($bodies);
         // Ensure routing middleware is added to the queue before CSRF protection middleware.
 
