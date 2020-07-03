@@ -61,7 +61,8 @@
    ```
    ./docker-run.sh
    ```
- 5. Login to the docker container
+
+5. Login to the docker container
 
    ```sh
    docker exec -ti ${WEB_DIR} /bin/bash
@@ -78,12 +79,11 @@
 
 
 
-8. Install the vendor files and support files for bootstrap-ui
-
+8. Install PHP Libraries and Populate Database
    Still in the docker container...
 
    ```sh
-   cd /var/www/test
+   cd /var/www/${WEB_DIR}
 
    # install the PHP dependencies
    composer install
@@ -92,7 +92,11 @@
    bin/cake migrations status
    bin/cake migrations migrate # creates the tables and updates
    bin/cake migrations seed # clears tables and loads sample data but without data in pallets, cartons and dispatch tables
+   ```
 
+9. Install UI resources
+
+   ```sh
    # install bootstrap-ui deps
    cd vendor/friendsofcake/bootstrap-ui/
 
