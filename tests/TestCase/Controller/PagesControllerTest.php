@@ -28,7 +28,10 @@ use Cake\TestSuite\TestCase;
 class PagesControllerTest extends TestCase
 {
     use IntegrationTestTrait;
-
+    public function setUp(): void
+    {
+        $this->markTestIncomplete();
+    }
     /**
      * testMultipleGet method
      *

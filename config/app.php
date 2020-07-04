@@ -247,6 +247,11 @@ return [
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],
+        'production' => [
+            'transport' => 'AWS_SES',
+            'from' => [ 'no-reply@ausfoodexports.com.au' => 'AFE Production' ],
+            'log' => true 
+        ]
     ],
 
     /*
@@ -312,6 +317,7 @@ return [
              */
             //'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
         ],
+      
 
         /*
          * The test connection is used during the test suite.

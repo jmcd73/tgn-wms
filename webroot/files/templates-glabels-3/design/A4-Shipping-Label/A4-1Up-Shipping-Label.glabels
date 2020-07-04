@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<Glabels-document xmlns="http://glabels.org/xmlns/3.0/">
+  <Template brand="PPS Shipping Labels 1 UP A4 100 Pack" part="PPS78167" size="A4" description="A4 Shipping Label">
+    <Meta category="user-defined"/>
+    <Label-rectangle id="0" width="199.6mm" height="289.1mm" round="0mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin size="3.18mm"/>
+      <Layout nx="1" ny="1" x0="5.20002mm" y0="3.95002mm" dx="199.6mm" dy="289.1mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="False">
+    <Object-text x="3.87515mm" y="35.0544mm" w="191.85mm" h="24.3417mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="66" font_weight="Regular" font_italic="False" line_spacing="1">
+        <Field name="4"/>
+      </Span>
+    </Object-text>
+    <Object-text x="3.74781mm" y="70.4779mm" w="192.1mm" h="136.174mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="50" font_weight="Regular" font_italic="False" line_spacing="1">
+        <Field name="2"/>
+      </Span>
+    </Object-text>
+    <Object-text x="3.3021mm" y="207.961mm" w="192.996mm" h="26.0004mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="50" font_weight="Regular" font_italic="False" line_spacing="1">
+        <Field name="3"/>
+      </Span>
+    </Object-text>
+    <Object-text x="2.09569mm" y="249.361mm" w="195.409mm" h="34.9307mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="80" font_weight="Regular" font_italic="False" line_spacing="1"><Field name="5"/> of <Field name="6"/></Span>
+    </Object-text>
+    <Object-line x="10mm" y="24.8mm" dx="179mm" dy="-0mm" line_width="0.352778mm" line_color="0x000000ff" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0"/>
+    <Object-text x="3.25684mm" y="7.47189mm" w="193.086mm" h="10.5833mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="30" font_weight="Regular" font_italic="False" line_spacing="1">{{COMPANY_NAME}}</Span>
+    </Object-text>
+  </Objects>
+  <Merge type="Text/Comma" src="/home/jm/sites/afewms/webroot/files/templates-glabels-3/design/A4-Shipping-Label/PrintTempFile-shippingLabels-comman-address.txt"/>
+  <Data/>
+</Glabels-document>

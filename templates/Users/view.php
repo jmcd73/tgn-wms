@@ -51,10 +51,6 @@
                 <td><?= h($user->full_name) ?></td>
             </tr>
             <tr>
-                <th scope="row"><?= __('Id') ?></th>
-                <td><?= $this->Number->format($user->id) ?></td>
-            </tr>
-            <tr>
                 <th scope="row"><?= __('Created') ?></th>
                 <td><?= h($user->created) ?></td>
             </tr>

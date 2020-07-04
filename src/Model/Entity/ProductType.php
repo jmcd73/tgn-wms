@@ -23,8 +23,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\InventoryStatus $inventory_status
  * @property \App\Model\Entity\Location[] $locations
  * @property \App\Model\Entity\Item[] $items
- * @property \App\Model\Entity\Label[] $labels
- * @property \App\Model\Entity\Pallet[] $pallets
+  * @property \App\Model\Entity\Pallet[] $pallets
  * @property \App\Model\Entity\ProductionLine[] $production_lines
  * @property \App\Model\Entity\Shift[] $shifts
  * @property \App\Model\Entity\Shipment[] $shipments
@@ -60,5 +59,6 @@ class ProductType extends Entity
         'shifts' => true,
         'shipments' => true,
         'batch_format' => true,
+        
     ];
 }

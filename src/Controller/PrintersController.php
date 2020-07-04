@@ -75,7 +75,7 @@ class PrintersController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             }
-            tog($printer->getErrors());
+            
             $this->Flash->error(__('The printer could not be saved. Please, try again.'));
         }
 
@@ -136,10 +136,11 @@ class PrintersController extends AppController
         if ($this->Printers->delete($printer)) {
             $this->Flash->success(__('The printer has been deleted.'));
         } else {
-            $error = $this->Printers->formatValidationErrors($printer->getErrors());
-            $this->Flash->error(__('The printer could not be deleted. Please, try again. ' . $error));
+            $error = $this->Printers->flattenAndFormatValidationErrors($printer->getErrors());
+            $this->Flash->error(__('The printer could not be deleted. Please, try again. ' . $error), [ 'escape' => false ] );
         }
-
+        
         return $this->redirect(['action' => 'index']);
     }
 }
+

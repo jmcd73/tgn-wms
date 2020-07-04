@@ -101,6 +101,8 @@ class Pallet extends Entity
         'product_type' => true,
         'cartons' => true,
         'user_id' => true,
+        'product_type_serial' => true,
+        'pallet_label_filename' => true
     ];
 
     protected function _getCodeDesc()

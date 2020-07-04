@@ -14,7 +14,7 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+       
         <th scope="col"><?= $this->Paginator->sort('controller_action') ?></th>
         <th scope="col"><?= $this->Paginator->sort('markdown_document') ?></th>
         <th scope="col" class="actions"><?= __('Actions') ?></th>
@@ -23,7 +23,6 @@
     <tbody>
         <?php foreach ($help as $help) : ?>
         <tr>
-            <td><?= $this->Number->format($help->id) ?></td>
             <td><?= h($help->controller_action) ?></td>
             <td><?= h($help->markdown_document) ?></td>
             <td class="actions">

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Lib\Utility;
@@ -9,6 +10,26 @@ class Barcode
     public $sscc = null;
 
     public $companyPrefixLength = 0;
+
+    public $companyPrefix = '';
+    public $serialNumber = '';
+    public $extensionDigit = 0;
+    public $checkDigit = null;
+
+    public function __construct($extensionDigit = null, $companyPrefix = null, $serialNumber = null)
+    {
+        if ($companyPrefix) {
+            $this->companyPrefix = $companyPrefix;
+            $this->$serialNumber = $serialNumber;
+            $this->extensionDigit = $extensionDigit;
+            $this->sscc = $this->generateSSCC($extensionDigit, $companyPrefix, $serialNumber);
+        }
+    }
+
+
+    public function getSscc(){
+        return $this->sscc;
+    }
 
     public function isValidBarcode($barcode)
     {
@@ -79,5 +100,71 @@ class Barcode
             substr($this->sscc, $this->companyPrefixLength + 1, $referenceNumberLength),
             substr($this->sscc, -1)
         );
+    }
+
+    /**
+     * Generate an SSCC number with check digit
+     *
+     * @return string
+     *                phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
+     */
+    public function generateSSCCWithCheckDigit($sscc)
+    {
+        return $sscc . $this->generateCheckDigit($sscc);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function generateSSCC($extensionDigit, $companyPrefix, $serialNumber)
+    {
+
+        $companyPrefixLength = strlen($companyPrefix);
+
+        $fmt = '%0' . (16 - $companyPrefixLength) . 'd';
+
+        $serialNumber = sprintf($fmt, $serialNumber);
+
+        $sscc = sprintf('%s%s%s', $extensionDigit, $companyPrefix, $serialNumber);
+
+        return $this->generateSSCCWithCheckDigit($sscc);
+    }
+
+
+
+    //phpcs:enable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
+
+    /**
+     * when fed a barcode number returns the GS1 checkdigit number
+     *
+     * @param  string $number barcode number
+     * @return string barcode number
+     */
+    public function generateCheckDigit($number)
+    {
+        $sum = 0;
+        $index = 0;
+        $cd = 0;
+        for ($i = strlen($number); $i > 0; $i--) {
+            $digit = substr($number, $i - 1, 1);
+            $index++;
+
+            $ret = $index % 2;
+            if ($ret == 0) {
+                $sum += $digit * 1;
+            } else {
+                $sum += $digit * 3;
+            }
+        }
+        $mod_sum = $sum % 10;
+        // if it exactly divide the checksum is 0
+        if ($mod_sum == 0) {
+            $cd = 0;
+        } else {
+            // go to the next multiple of 10 above and subtract
+            $cd = 10 - $mod_sum + $sum - $sum;
+        }
+
+        return $cd;
     }
 }

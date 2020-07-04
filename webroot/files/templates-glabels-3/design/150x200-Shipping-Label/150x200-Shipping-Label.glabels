@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<Glabels-document xmlns="http://glabels.org/xmlns/3.0/">
+  <Template brand="JMITS" part="150x200" size="Other" width="150mm" height="200mm" description="100x250">
+    <Meta category="user-defined"/>
+    <Label-rectangle id="0" width="150mm" height="200mm" round="3mm" x_waste="0mm" y_waste="0mm">
+      <Markup-margin size="3mm"/>
+      <Layout nx="1" ny="1" x0="0mm" y0="0mm" dx="150mm" dy="200mm"/>
+    </Label-rectangle>
+  </Template>
+  <Objects id="0" rotate="False">
+    <Object-text x="3.82573mm" y="24.3521mm" w="142.103mm" h="24.3417mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="60" font_weight="Regular" font_italic="False" line_spacing="1">
+        <Field name="4"/>
+      </Span>
+    </Object-text>
+    <Object-text x="2.32949mm" y="52.131mm" w="143.9mm" h="78.7289mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="40" font_weight="Regular" font_italic="False" line_spacing="1">
+        <Field name="2"/>
+      </Span>
+    </Object-text>
+    <Object-text x="5.77373mm" y="134.499mm" w="138.453mm" h="16.2278mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="40" font_weight="Regular" font_italic="False" line_spacing="1">
+        <Field name="3"/>
+      </Span>
+    </Object-text>
+    <Object-text x="4.44007mm" y="161.472mm" w="140.59mm" h="24.3417mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="80" font_weight="Regular" font_italic="False" line_spacing="1"><Field name="5"/> of <Field name="6"/></Span>
+    </Object-text>
+    <Object-line x="5.62731mm" y="21.7712mm" dx="137.3mm" dy="-0mm" line_width="0.352778mm" line_color="0x000000ff" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0"/>
+    <Object-text x="3.58523mm" y="6.76633mm" w="142.83mm" h="10.5833mm" justify="Center" valign="Top" auto_shrink="False" a0="1" a1="0" a2="0" a3="1" a4="0" a5="0">
+      <Span color="0x000000ff" font_family="Sans" font_size="26" font_weight="Regular" font_italic="False" line_spacing="1">{{COMPANY_NAME}}</Span>
+    </Object-text>
+  </Objects>
+  <Merge type="Text/Comma" src="/var/www/html/apf/glabels/shipping-labels/shipping-labels.csv"/>
+  <Data/>
+</Glabels-document>

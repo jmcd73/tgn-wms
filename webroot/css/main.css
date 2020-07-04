@@ -248,22 +248,7 @@ div.right-col {
          padding-top: 24px;*/
 }
 
-input[type="checkbox"] {
-  /* fix for chrome on windows super huge checkboxes */
-  /*    -webkit-appearance: none;
-          -moz-appearance: none;*/
-  height: 16px;
-  width: 16px;
-}
 
-div.checkbox input[type="checkbox"] {
-  /* fix for chrome on windows super huge checkboxes */
-  /*    -webkit-appearance: none;
-          -moz-appearance: none;*/
-  height: 16px;
-  width: 16px;
-  margin-top: 2px;
-}
 
 /*div.checkbox {
       line-height: 1.2em;
@@ -503,6 +488,37 @@ a.btn.pdf::before {
   content: "\f1c1\00a0";
 }
 
+a.btn.download::before {
+  font-family: "Font awesome 5 Free";
+  font-weight: 900;
+  content: "\f56d\00a0";
+}
+
+button.btn.search::before {
+  font-family: "Font awesome 5 Free";
+  font-weight: 900;
+  content: "\f002\00a0";
+}
+
+a.btn.download::before {
+  font-family: "Font awesome 5 Free";
+  font-weight: 900;
+  content: "\f56d\00a0";
+}
+
+
+a.nav-link.pdf::before {
+  font-family: "Font awesome 5 Free";
+  font-weight: 900;
+  content: "\f1c1\00a0";
+}
+
+a.nav-link.txt::before {
+  font-family: "Font awesome 5 Free";
+  font-weight: 900;
+  content: "\f15c\00a0";
+}
+
 a.btn.delete::before,
 button.cancel::before {
   font-family: "Font awesome 5 Free";
@@ -551,7 +567,9 @@ a.btn.calendar-week::before {
 }
 a.btn.reprint::before,
 a.btn.reprint::before,
-button.print::before {
+a.btn.print::before,
+button.print::before,
+input[type="submit"].print.btn::before {
   font-family: "Font awesome 5 Free";
   font-weight: 900;
   content: "\f02f\00a0";
@@ -774,6 +792,13 @@ button.move-down::before {
   content: "\f0d7";
 }
 
+
+a.go-back::before {
+  font-family: "Font awesome 5 Free";
+  font-weight: 900;
+  content: "\f0a5\00a0";
+}
+
 .card-body.open {
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
@@ -924,3 +949,30 @@ div.form-group.multicheckbox.is-invalid > div.invalid-feedback {
   display: block;
   font-size: .9rem;
 }
+
+input[type="checkbox"] { 
+  /* fix for chrome on windows super huge checkboxes */
+  /*    -webkit-appearance: none;
+          -moz-appearance: none;*/
+   height: 16px;
+  width: 16px;
+}
+
+div.checkbox input[type="checkbox"] { 
+  /* fix for chrome on windows super huge checkboxes */
+  /*    -webkit-appearance: none;
+          -moz-appearance: none;*/
+  height: 16px;
+  width: 16px;
+  margin-top: 2px;
+} 
+
+
+div.form-check input[type="checkbox"] { 
+  /* fix for chrome on windows super huge checkboxes */
+  /*    -webkit-appearance: none;
+          -moz-appearance: none;*/
+  height: 16px;
+  width: 16px;
+  margin-top: 1px;
+} 

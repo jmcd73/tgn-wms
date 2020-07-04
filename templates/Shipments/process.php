@@ -16,12 +16,11 @@
         ); ?>
     </li>
 
-<?php endforeach; ?>
-<li class="nav-item"><?= $this->Html->link(
-                            'Add Mixed',
-                            ['action' => 'process', 'add-shipment'],
-                            ['class' => 'nav-link'],
-                        ); ?></li>
+<?php endforeach; ?><?php if ($showMixed) : ?>
+    <li class="nav-item">
+        <?= $this->Html->link('Add Mixed', ['action' => 'process', 'add-shipment'], ['class' => 'nav-link']); ?>
+    </li>
+<?php endif; ?>
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', '<ul class="nav flex-column">' . $this->fetch('tb_actions') . '</ul>'); ?>
 

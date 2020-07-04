@@ -10,7 +10,8 @@ trait TestFrameworkTrait
 
     protected $outputDir = '';
 
-    public function __construct() {
+    public function setOutPutDir() {
+        
         $this->outputDir = '/var/www/' . getenv('WEB_DIR') . '/PDF';
     }
 
@@ -38,16 +39,20 @@ trait TestFrameworkTrait
     public function checkForPdfPrintOutput($outputDir, $filePattern)
     {
         $dir = new Folder($outputDir);
+
         $dateTimeStamp = date('YmdHi');
+
         $numChecks = 100;
+
         $i = 0;
+
         do {
             $files = $dir->find($dateTimeStamp . $filePattern);
 
             // if you get to 100 check exit or when you see the file
             $keepLooping = count($files) === 0 && $i++ < $numChecks;
             // pause .1 second
-            usleep(10000);
+            usleep(30000);
         } while ($keepLooping);
 
         // wait to write out file after seeing it

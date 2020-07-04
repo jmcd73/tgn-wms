@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
 use Cake\Http\ServerRequest;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
-use PhpParser\Node\Expr\Instanceof_;
+
 
 /**
  * Printers Model
@@ -49,13 +49,15 @@ class PrintersTable extends Table
         $this->setDisplayField('name');
         $this->addBehavior('TgnUtils');
         $this->setPrimaryKey('id');
-
+       
         $this->hasMany('Pallets', [
             'foreignKey' => 'printer_id',
         ]);
         $this->hasMany('ProductionLines', [
             'foreignKey' => 'printer_id',
         ]);
+
+
     }
 
     /**
@@ -200,8 +202,6 @@ class PrintersTable extends Table
          
         }
 
-       // tog($records, $value, $matches);
-     
         if(count($matches) > 0) {
             $msg = 'You need to remove ';
             foreach($matches as $match) {
@@ -211,9 +211,6 @@ class PrintersTable extends Table
             return $msg;
         }
 
-        tog("Got to return true");
-
         return true;
-
     }
 }

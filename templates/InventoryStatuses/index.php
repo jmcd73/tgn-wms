@@ -21,7 +21,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+           
             <th scope="col"><?= $this->Paginator->sort('perms') ?></th>
             <th scope="col"><?= $this->Paginator->sort('name') ?></th>
             <th scope="col"><?= $this->Paginator->sort('comment') ?></th>
@@ -32,7 +32,6 @@
     <tbody>
         <?php foreach ($inventoryStatuses as $inventoryStatus) : ?>
         <tr>
-            <td><?= $this->Number->format($inventoryStatus->id) ?></td>
             <td><?php
              echo $this->Form->control('perms', [
                  'multiple' => 'checkbox',

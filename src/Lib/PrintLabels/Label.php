@@ -4,16 +4,20 @@ namespace App\Lib\PrintLabels;
 
 use App\Lib\Exception\GlabelsException;
 use App\Lib\PrintLabels\Glabel\GlabelsProject;
+use App\Lib\Utility\SettingsTrait;
 use Cake\Core\Configure;
-use Cake\Filesystem\File;
+use Cake\Event\Event;
+use Cake\Event\EventManager;
 use Cake\I18n\FrozenDate;
+use SplFileObject;
+
 
 /**
  * Label base class
  */
 class Label
 {
-    use PrinterListTrait;
+    use PrinterListTrait, SettingsTrait;
 
     /**
      * When a multipage print contains the same content on each page
@@ -32,6 +36,7 @@ class Label
     public $printerQueue = '';
     public $options = '';
     public $action = '';
+
 
     /**
      * @var int $glabelPrintCopies
@@ -53,6 +58,7 @@ class Label
      * @var string
      */
     protected $outFile = 'output.pdf';
+
     /**
      * @var string
      */
@@ -68,11 +74,12 @@ class Label
     /**
      * @var string
      */
-    protected $jobId = '';
+    protected $jobId = null;
 
-    protected $reference = '';
+    protected $reference = null;
 
-    protected $glabelsBatch = '';
+    protected $glabelsBatch = null;
+
 
     /**
      *
@@ -82,26 +89,70 @@ class Label
 
     protected $glabelsBatchLibraryPath = '';
 
+    public $emailBodyFormat = '<strong>Batch: </strong> %s
+    <strong>Item: </strong>%s
+    <strong>Reference: </strong>%s
+    <strong>JobId: </strong>%s';
+
+    public function createEmailBody()
+    {
+        if (!empty($this->getItemCode())) {
+            return sprintf($this->emailBodyFormat, $this->getBatch(), $this->getItemCode(), $this->getReference(), $this->getJobId());
+        } else {
+            return '';
+        }
+    }
+
+    public function getGlabelsPrintContent()
+    {
+        return $this->printContent;
+    }
+
     public function __construct($action)
     {
+        /*   $mailer = new AppMailer();
+        EventManager::instance()->on($mailer);
+ */
         $this->glabelsBatchCommand = Configure::read('GLABELS_BATCH_BINARY');
         $this->glabelsBatchLibraryPath = Configure::read('GLABELS_LIBRARY_PATH');
         $this->action = $action;
         $this->setJobId($action);
         $this->setCwd(TMP);
+
+        
     }
 
-    public function getReference()
+    public function setItemCode($code)
+    {
+        $this->itemCode = $code;
+    }
+
+    public function getItemCode()
+    {
+        return $this->itemCode;
+    }
+
+    public function setBatch(string $batch)
+    {
+        $this->batch = $batch;
+    }
+
+    public function getBatch()
+    {
+        return $this->batch;
+    }
+
+    public function getReference(): string
     {
         return $this->reference;
     }
 
-    public function setReference($reference)
+    public function setReference($reference): void
     {
         $this->reference = $reference;
     }
 
-    public function getVariablePages()
+    public function getVariablePages(): bool
     {
         return $this->variablePages;
     }
@@ -147,7 +198,7 @@ class Label
         } else {
             throw new GlabelsException(
                 'value: ' . $value . ' does not exist in ' .
-                print_r($this->printContentArray, true)
+                    print_r($this->printContentArray, true)
             );
         }
     }
@@ -156,9 +207,10 @@ class Label
      * @param  string $template Template from config
      * @return void
      */
-    private function setGlabelsTemplate(GlabelsProject $template)
+    protected function setGlabelsTemplate(GlabelsProject $template)
     {
-        $this->glabelsTemplate = realpath($template->filePath);
+        $this->glabelsTemplate = $template;
+        $this->glabelsTemplateFullPath = realpath($template->filePath);
     }
 
     public function formatLocalDate($date)
@@ -182,7 +234,10 @@ class Label
     {
         return $this->glabelsTemplate;
     }
-
+    public function getGlabelsTemplateFullPath()
+    {
+        return $this->glabelsTemplateFullPath;
+    }
     /**
      * @return mixed
      */
@@ -339,23 +394,21 @@ class Label
     /**
      * send gLabels PDF to designated LPR printer
      *
-     * @param  string $printer Print queue name
+     * @param \App\Model\Entity\Printer $printer Print queue name
      * @return array  Array with stdout stderr cmd and return_value
      */
-    public function sendPdfToLpr($printer): array
+    public function sendPdfToLpr(\App\Model\Entity\Printer $printer): array
     {
         $jobId = $this->getJobId();
 
         $cmdArgs = [
             'lpr',
             '-P',
-            $printer,
+            $printer->queue_name,
             '-#',
             $this->glabelPrintCopies,
-            '-J',
-            $jobId,
             '-T',
-            $jobId,
+            $jobId
         ];
 
         $returnValue = $this->runProcess(
@@ -378,11 +431,11 @@ class Label
      * @param  array                                      $printerDetails Printer Information
      * @return array                                      Array holding the results of the lpr command
      */
-    public function glabelsBatchPrint(GlabelsProject $template, $printerDetails): array
+    public function glabelsBatchPrint($printer): array
     {
-        $this->setGlabelsTemplate($template);
+        $template = $this->getGlabelsTemplate();
 
-        if( $template->details->glabels_copies > 1 ) {
+        if ($template->details->glabels_copies > 1) {
             $this->glabelsCopies = $template->details->glabels_copies;
         }
 
@@ -398,7 +451,7 @@ class Label
                 // '-m', // crop marks
                 '-o',
                 $this->getPdfOutFile(),
-                $this->getGlabelsTemplate(),
+                $this->getGlabelsTemplateFullPath(),
             ]
         );
 
@@ -411,36 +464,31 @@ class Label
             $this->setPrintCopies(1);
         }
 
-        tog($cmdArgs);
         $results = $this->runProcess(
             $cmdArgs,
             $this->printContent
         );
-
-        tog($results);
 
         //cat merge.csv | glabels-3-batch -o /dev/stdout -i - 100x50sample.glabels | \
         // sed -n '/%PDF-1.5/,/%%EOF/p' | lpr -PPDF -J jobname
 
         if ($results['return_value'] !== 0) {
             return $results;
+        } else {
+
+            $this->setPrintContent(file_get_contents($this->getPdfOutFile()));
+
+            $to = $this->addressParse($this->getSetting('EMAIL_PALLET_LABEL_TO'));
+
+            if (!empty($to) && $template->details->send_email) {
+                $event = new Event('Label.Glabel.printSuccess', $this, ['toAddresses' => $to, 'emailBody' => $this->createEmailBody()]);
+                EventManager::instance()->dispatch($event);
+            }
+
+            unlink($this->getPdfOutFile());
         }
-        /*
-                $pdfPattern = '/(%PDF-1.5.*%%EOF)/s';
 
-                $this->log($results['stdout']);
-
-                preg_match($pdfPattern, $results['stdout'], $matches);
-         */
-        /**
-         * This grabs the PDF file out of the PDF
-         */
-
-        $this->setPrintContent(file_get_contents($this->getPdfOutFile()));
-
-        unlink($this->getPdfOutFile());
-
-        return $this->sendPdfToLpr($printerDetails);
+        return $this->sendPdfToLpr($printer);
     }
 
     /**
@@ -471,7 +519,7 @@ class Label
             $descriptorspec,
             $pipes,
             $this->getCwd(), //cwd orig TMP
-           $env
+            $env
         );
 
         // writing straight to stdin works
@@ -491,41 +539,23 @@ class Label
     }
 
     /**
-     * getPrintSettings function
-     * @param  string $printer           Printer name
-     * @param  string $actionOrReference Temporary file name
-     * @return array
-     */
-    public function getPrintSettings($printer, $actionOrReference = ''): array
-    {
-        return [
-            'name' => $printer['queue_name'],
-            'job' => $this->getJobId(),
-            'options' => $printer['options'],
-            'temp_file' => TMP . $actionOrReference . '_print.txt',
-        ];
-    }
-
-    /**
      * createTempFile
      * create a temporary file in TMP with the contents sent to the printer
      * @param  string $print_content  Print content
      * @param  array  $print_settings as an array
      * @return void
      */
-    public function createTempFile($print_content, $print_settings = [])
+    public function createTempFile($print_content): void
     {
-        if (isset($print_settings['temp_file'])) {
-            $tempFile = $print_settings['temp_file'];
-        } else {
-            $tempFile = TMP . 'PrintTempFile.txt';
-        }
+        $tempFile = TMP . sprintf('PrintTempFile-%s.txt', $this->action);
 
-        $print_file = new File($tempFile, true, 0644);
+        $print_file = new SplFileObject($tempFile, 'w');
 
-        $print_file->write($print_content);
+        $print_file->fwrite($print_content);
 
-        $print_file->close();
+        chmod($print_file->getRealPath(), 0666);
+
+        $print_file = null;
     }
 
     /**
@@ -537,16 +567,16 @@ class Label
      * @param  array  $print_settings Printer name, options, temp file, job name
      * @return array  Array holding the results of the lpr command
      */
-    public function sendPrint($print_content, $print_settings = [])
+    public function sendPrint($print_content, $printer)
     {
-        $this->createTempFile($print_content, $print_settings);
+        $this->createTempFile($print_content);
 
         $cmd = [
             '/usr/bin/lpr',
-            '-P', $print_settings['name'],
-            $print_settings['options'],
+            '-P', $printer->queue_name,
+            $printer->options,
             '-J',
-            $print_settings['job'],
+            $this->getJobId()
         ];
 
         /* return an array with all the necessary information */

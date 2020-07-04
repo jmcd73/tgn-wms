@@ -75,6 +75,7 @@ class AppController extends Controller
 
         $this->loadComponent('Authentication.Authentication');
         $this->loadComponent('Authorization.Authorization');
+        $this->loadModel('Menus');
     }
 
     public function beforeFilter(EventInterface $event)
@@ -91,12 +92,7 @@ class AppController extends Controller
             $isAdmin = $this->isAdmin($user);
 
             $this->set(compact('user'));
-            //} else {
-            //pr($result->getErrors());
-            //pr($result->getStatus());
         }
-
-       
 
         $menuTree = $this->getMenuTree();
 
@@ -141,9 +137,7 @@ class AppController extends Controller
 
     public function getMenuTree(): Query
     {
-        $menuTable = $this->getTableLocator()->get('Menus');
-
-        return $menuTable->find('threaded')
+        return $this->Menus->find('threaded')
             ->where([
                 'active' => 1,
             ])->orderAsc('lft');

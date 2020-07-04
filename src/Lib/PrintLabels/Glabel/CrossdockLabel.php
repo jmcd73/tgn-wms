@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace App\Lib\PrintLabels\Glabel;
 
-use App\Lib\PrintLabels\Interfaces\GlabelInterface;
+use App\Lib\PrintLabels\Interfaces\GlabelsInterface;
 use App\Lib\PrintLabels\Label;
 
-class CrossdockLabel extends Label implements GlabelInterface
+class CrossdockLabel extends Label implements GlabelsInterface
 {
     protected $variablePages = true;
 
@@ -15,13 +15,15 @@ class CrossdockLabel extends Label implements GlabelInterface
         parent::__construct($action);
     }
 
-    public function print($printerDetails, $glabelsProject)
+    public function print($printerDetails)
     {
-        return $this->glabelsBatchPrint($glabelsProject, $printerDetails['queue_name']);
+        return $this->glabelsBatchPrint($printerDetails);
     }
 
-    public function format($labelData)
+    public function format($glabelsProject, $labelData)
     {
+        $this->setGlabelsTemplate($glabelsProject);
+        
         $this->formatCrossdockLabelPrintLine($labelData);
 
         $this->setPrintContentArray($labelData);

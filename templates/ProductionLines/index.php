@@ -25,7 +25,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+           
             <th scope="col"><?= $this->Paginator->sort('active') ?></th>
             <th scope="col"><?= $this->Paginator->sort('printer_id') ?></th>
             <th scope="col"><?= $this->Paginator->sort('name') ?></th>
@@ -36,7 +36,6 @@
     <tbody>
         <?php foreach ($productionLines as $productionLine) : ?>
         <tr>
-            <td><?= $this->Number->format($productionLine->id) ?></td>
             <td><?= $this->Html->activeIcon($productionLine->active); ?></td>
             <td><?= $productionLine->has('printer') ? $this->Html->link($productionLine->printer->name, ['controller' => 'Printers', 'action' => 'view', $productionLine->printer->id]) : '' ?>
             </td>

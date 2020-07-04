@@ -35,8 +35,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\ProductType $product_type
  * @property \App\Model\Entity\PrintTemplate $print_template
  * @property \App\Model\Entity\Carton[] $cartons
- * @property \App\Model\Entity\Label[] $labels
- * @property \App\Model\Entity\Pallet[] $pallets
+  * @property \App\Model\Entity\Pallet[] $pallets
  */
 class Item extends Entity
 {

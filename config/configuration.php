@@ -9,7 +9,36 @@ $glabelsBatchBinary = file_exists('/.dockerenv') ? [
     '/usr/local/bin/glabels-batch-qt', '--',
 ];
 
+$glabelsBatchBinary = ['/usr/local/bin/glabels-3-batch'];
+
 return [
+    'Users' => [
+        'admin_role' => 'admin',
+        'roles' => [
+            [
+                'slug' => 'admin',
+                'name' => 'Administrators',
+                'description' => 'Access to view, update and delete everything',
+            ],
+
+            [
+                'slug' => 'qa',
+                'name' => 'Quality Assurance',
+                'description' => 'QA Functions',
+            ],
+            [
+                'slug' => 'user',
+                'name' => 'User',
+                'description' => 'User can view and update most areas, some restrictions',
+            ],
+            [
+                'slug' => 'qty_editor',
+                'name' => 'Edit Pallet Quantities',
+                'description' => 'Limited to editing pallet qauntities',
+            ],
+        ],
+    ],
+
     // in Lib/Utility/Barcode
     'BATCH_FORMATS' => [
         'YDDDXX' => [
@@ -19,12 +48,12 @@ return [
         ],
         'YDDD' => [
             'description' => "YDDD e.g. 2020 Jan 5 = 0005. Squeaky Gate",
-            ]
-        ],
+        ]
+    ],
     'ALLOWED_METHODS' => ['PUT', 'POST'],
     'ALLOWED_ORIGINS' => ['http://localhost:3000', 'http://localhost:8082'],
     'MAX_COPIES' => 100,
-    'GLABELS_LIBRARY_PATH' => '/usr/local/glabels-qt/usr/lib',
+    'GLABELS_LIBRARY_PATH' => '/usr/local/glabels-qt/usr/lib', // not needed for glabels-3-batch
     'GLABELS_BATCH_BINARY' => $glabelsBatchBinary,
     'timezones' => DateTimeZone::AUSTRALIA, // extras with a pipe | DateTimeZone::EUROPE,
     'dateFormat' => 'd/m/Y',
@@ -64,11 +93,11 @@ return [
                 'customPrint',
                 'customPrint',
                 'sampleLabels',
-                'ssccLabel', ],
-        ], ],
-    
+                'ssccLabel',
+            ],
+        ],
+    ],
     'applicationName' => $appName,
-    'labelMaxCopies' => 400,
     'App' => [
         'title' => 'Toggen',
     ],
@@ -76,16 +105,7 @@ return [
         'limit' => 20,
         'maxLimit' => 30,
     ],
-    'LabelsRolesActions' => [
-        [
-            'roles' => ['qa'], // single value must be array
-            'actions' => ['editPallet', 'bulkStatusRemove', 'editPalletCartons'],
-        ],
-        [
-            'roles' => ['qty_editor'],
-            'actions' => ['editPallet'],
-        ],
-    ],
+
     // Pallets/onhand action page size
     // display this many in view
     'onhandPageSize' => 1000,
@@ -103,37 +123,12 @@ return [
         [
             'value' => 4,
             'slug' => 'view_in_lookup_table',
-            'display' => 'Visble in Pallet Track (always select this)', ],
+            'display' => 'Visble in Pallet Track (always select this)',
+        ],
         [
             'value' => 8,
             'slug' => 'view_in_remove_status',
             'display' => 'List this status in Edit QA Status screen',
-        ],
-    ],
-    'Users' => [
-        'admin_role' => 'admin',
-        'roles' => [
-            [
-                'slug' => 'admin',
-                'name' => 'Administrators',
-                'description' => 'Access to view, update and delete everything',
-            ],
-
-            [
-                'slug' => 'qa',
-                'name' => 'Quality Assurance',
-                'description' => 'QA Functions',
-            ],
-            [
-                'slug' => 'user',
-                'name' => 'User',
-                'description' => 'User can view and update most areas, some restrictions',
-            ],
-            [
-                'slug' => 'qty_editor',
-                'name' => 'Edit Pallet Quantities',
-                'description' => 'Limited to editing pallet qauntities',
-            ],
         ],
     ],
     'navbar' => [

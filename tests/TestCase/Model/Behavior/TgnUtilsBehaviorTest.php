@@ -12,6 +12,9 @@ use Cake\TestSuite\TestCase;
  */
 class TgnUtilsBehaviorTest extends TestCase
 {
+
+    protected $fixtures = ['app.Settings', 'app.ProductTypes', 'app.Pallets'];
+
     /**
      * Test subject
      *
@@ -112,9 +115,16 @@ class TgnUtilsBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function testGetReferenceNumber(): void
+    public function testSsccGetReferenceNumber(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $reference = $this->TgnUtilsBehavior->getReferenceNumber('SSCC_REF','93529380');
+        $expected = '149';
+
+        $this->assertEquals($expected, $reference);
+
+        $nextRef = $this->TgnUtilsBehavior->getSetting('SSCC_REF');
+
+        $this->assertEquals(149, $nextRef);
     }
 
     /**
@@ -134,7 +144,16 @@ class TgnUtilsBehaviorTest extends TestCase
      */
     public function testCreatePalletRef(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $id = 3;
+        $productTypesTable = $this->TgnUtilsBehavior->getSettingsTable('ProductTypes');
+
+        $nextReference = $productTypesTable->get($id);
+
+        $nsn0 = $nextReference->next_serial_number;
+
+        $actual = $this->TgnUtilsBehavior->createPalletRef($id, $nsn0);
+
+        $this->assertEquals('A00000149', $actual);
     }
 
     /**
@@ -212,5 +231,67 @@ class TgnUtilsBehaviorTest extends TestCase
     public function testLog(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    public function testGetCommentSetting()
+    {
+        $expected = [
+            'James McDonald <james@toggen.com.au>'
+        ];
+        $setting = $this->TgnUtilsBehavior->getSetting('EMAIL_PALLET_LABEL_TO');
+      
+        $this->assertEquals($expected, $setting, "Should return an array");
+    }
+
+    public function testGetSettingTraitSetting()
+    {
+        $expected = 'files/templates-glabels-3';
+
+        $setting = $this->TgnUtilsBehavior->getSetting('TEMPLATE_ROOT');
+
+        $this->assertEquals($expected, $setting, "Should return " . $expected);
+    }
+
+
+    /**
+     * Test addressParse method
+     *
+     * @return void
+     */
+    public function testAddressParse(): void
+    {
+
+        $input = [
+            'James McDonald <james@toggen.com.au>',
+            'Lisa McDonald <lisa@toggen.com.au>'
+        ];
+
+        $expected = [
+            'james@toggen.com.au' => 'James McDonald' ,
+            'lisa@toggen.com.au' => 'Lisa McDonald'
+        ];
+        
+        
+        $actual = $this->TgnUtilsBehavior->addressParse($input);
+
+        $this->assertEquals($expected, $actual);
+
+    }
+
+
+       /**
+     * Test sendLabel method
+     *
+     * @return void
+     */
+    public function testEmptyEmail(): void
+    {
+        $input = [ '# bogus no email address' , 'anothernotanemail' ];
+        $expected = [];
+
+        $actual = $this->TgnUtilsBehavior->addressParse($input);
+
+        $this->assertEquals($expected, $actual);
+
     }
 }

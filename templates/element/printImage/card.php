@@ -1,9 +1,15 @@
 <?php ?>
 
-<div class="card mb-3" style="width: 18rem;">
+<div class="card mb-3">
     <div class="card-body">
-        <?= $this->Html->image($image, ['class' => 'img-fluid']); ?>
         <h5 class="card-title mt-3"><?= h($name); ?></h5>
-        <p class="card-text"><?= h($description); ?></p>
+        <h6 class="card-subtitle mb-2"><?= h($description); ?></h6>
+        <?php if(isset($filename) && !empty($filename)): ?>
+            <p class="card-text"><?= h($filename); ?></p>
+        <?php endif; ?>
+        <?= $this->Html->image($image, ['class' => 'img-fluid']); ?>
+        
+        
+       
     </div>
 </div>

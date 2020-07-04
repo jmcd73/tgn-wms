@@ -4,20 +4,26 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+
+use App\Mailer\AppMailer;
+use App\Model\Table\CartonsTable;
+use App\Model\Table\PalletsTable;
+use App\Model\Table\ProductTypesTable;
+use App\Model\Table\SettingsTable;
 use App\Form\LookupSearchForm;
 use App\Form\OnhandSearchForm;
 use App\Form\PalletPrintForm;
-use App\Lib\Exception\MissingConfigurationException;
-use App\Lib\PrintLabels\LabelFactory;
+use App\Form\ShiftReportForm;
 use App\Lib\PrintLabels\PalletPrintResultTrait;
+use App\Lib\PrintLabels\PrintLabel;
+use App\Lib\Utility\Batch;
 use Cake\Core\Configure;
+use Cake\Event\Event;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
-use Cake\I18n\FrozenTime;
-use Cake\Routing\Router;
 use Cake\Utility\Hash;
-use Cake\Utility\Inflector;
-use App\Lib\Utility\Batch;
+use App\Lib\Utility\Barcode;
+use Cake\I18n\Time;
 
 /**
  * Pallets Controller
@@ -30,6 +36,22 @@ use App\Lib\Utility\Batch;
 class PalletsController extends AppController
 {
     use PalletPrintResultTrait;
+
+    public function initialize(): void
+    {
+        parent::initialize();
+
+        $eventClasses = [
+            PrintLabel::class,
+            ProductTypesTable::class,
+            SettingsTable::class,
+            PalletsTable::class
+        ];
+
+        foreach ($eventClasses as $eventClass) {
+            $this->getEventManager()->on(new $eventClass);
+        }
+    }
 
     public function beforeFilter(EventInterface $event)
     {
@@ -62,8 +84,6 @@ class PalletsController extends AppController
             ],
         ]);
 
-        $isPrintDebugMode = Configure::read('pallet_print_debug');
-
         if (!$productTypeId) {
             $this->Flash->error('Select a product type from the actions on the left');
             $this->set(compact('productTypes'));
@@ -71,11 +91,6 @@ class PalletsController extends AppController
         }
 
         $productType = $this->Pallets->Items->ProductTypes->get($productTypeId);
-
-        // if the product_type has a default save location defined
-        // set location_id else return 0
-
-        $locationId = $productType['location_id'] > 0 ? $productType['location_id'] : 0;
 
         $productionLines = $this->Pallets->Items
             ->ProductTypes->ProductionLines->find(
@@ -87,9 +102,6 @@ class PalletsController extends AppController
                     ],
                 ]
             );
-
-        $inventoryStatusId = ($productType->inventory_status_id > 0)
-            ? $productType->inventory_status_id : 0;
 
         if ($this->request->is('post')) {
             $data = $this->request->getData();
@@ -105,138 +117,80 @@ class PalletsController extends AppController
                     $newData[$newKey] = $value;
                 }
 
-                $data = $newData;
+                $newData['user_id'] = $this->Authentication->getIdentity()->getIdentifier();
 
-                $productionLineId = $data['production_line'];
+                /* create a pallet entity for the pallets table but don't persist it yet */
 
-                $productionLine = $this->Pallets->Items
-                    ->ProductTypes->ProductionLines->get($productionLineId);
+                $pallet = $this->Pallets->createPalletEntity($newData);
 
-                $productionLineName = $productionLine['name'];
-
-                $printerId = $productionLine['printer_id'];
-                try {
-                    $printerDetails = $this->Pallets->Printers->get($printerId);
-                } catch (\Throwable $th) {
-
-                    throw new MissingConfigurationException(
-                        [
-                            'message' => 'Printer',
-                            'printer' => $printerId,
-                        ],
-                        404
-                    );
-                }
-
-                $sscc = $this->Pallets->generateSSCCWithCheckDigit();
-
-                $pallet_ref = $this->Pallets->createPalletRef($productTypeId);
-
-                $item_detail = $this->Pallets->Items->get($data['item'], [
-                    'contain' => [
-                        'PrintTemplates'
-                    ]
+                $item = $this->Pallets->Items->get($newData['item'], [
+                    'contain' =>
+                    ['PrintTemplates', 'ProductTypes']
                 ]);
 
-                $labelCopies = $this->Pallets->getLabelCopies($item_detail->pallet_label_copies);
+                $productionLine = $this->Pallets->ProductionLines->get($newData['production_line'], [
+                    'contain' => 'Printers'
+                ]);
 
-                $printTemplateId = $item_detail['pallet_template_id'];
+                if (!$pallet->hasErrors()) {
+                    $this->Flash->success($this->createMessage($pallet, $productionLine->printer), ['escape' => false]);
 
-                $qty = $data['qty'] ?? $item_detail->quantity;
+                    /* dispatch an event to the PrintLabel controller to 
+                     * print labels and sendEmail
+                     * */
+                    $event = new Event('PrintLabels.palletPrint', $pallet, [
+                        'item' => $item,
+                        'printer' => $productionLine->printer,
+                        'company' => $this->companyName,
+                        'action' => $this->request->getParam('action')
+                    ]);
 
-                $days_life = $item_detail['days_life'];
+                    $this->getEventManager()->dispatch($event);
 
-                $print_date = new FrozenTime();
+                    $printResult = $event->getResult()['printResult'];
 
-                $print_date_plus_days_life = $print_date->addDays($days_life);
+                    $labelClass = $event->getResult()['labelClass'];
 
-                $bestBeforeDates = $this->Pallets->formatLabelDates(
-                    $print_date_plus_days_life,
-                    [
-                        'bb_date' => 'Y-m-d',
-                        'bb_bc' => 'ymd',
-                        'bb_hr' => 'd/m/y',
-                    ]
-                );
+                    if ($printResult['return_value'] === 0) {
 
-                $palletData =
-                    [
-                        'item' => $item_detail['code'],
-                        'min_days_life' => $item_detail['min_days_life'],
-                        'description' => $item_detail['description'],
-                        'bb_date' => $bestBeforeDates['bb_date'],
-                        'item_id' => $data['item'],
-                        'batch' => $data['batch_no'],
-                        'qty' => $qty,
-                        'qty_previous' => 0,
-                        'pl_ref' => $pallet_ref,
-                        'gtin14' => $item_detail['trade_unit'],
-                        'sscc' => $sscc,
-                        'printer' => $printerDetails['name'],
-                        'printer_id' => $printerId,
-                        'print_date' => $print_date,
-                        'cooldown_date' => $print_date,
-                        'location_id' => $locationId,
-                        'shipment_id' => 0,
-                        'inventory_status_id' => $inventoryStatusId,
-                        'production_line' => $productionLineName,
-                        'production_line_id' => $productionLineId,
-                        'product_type_id' => $productType['id'],
-                        'user_id' => $this->Authentication->getIdentity()->getIdentifier(),
-                    ];
+                        /* if print is successful 
+                         * increment serial numbers 
+                         * persist pallet entity and
+                         * create a carton record
+                        */
+                        $events = [
+                            'Model.ProductTypes.incrementNextSerialNumber',
+                            'Model.Settings.incrementSsccRef',
+                        ];
 
-                $cabLabelData = [
-                    'companyName' => $this->companyName,
-                    'internalProductCode' => $item_detail['code'],
-                    'reference' => $pallet_ref,
-                    'sscc' => $sscc,
-                    'description' => $item_detail['description'],
-                    'gtin14' => $item_detail['trade_unit'],
-                    'quantity' => $qty,
-                    'bestBeforeHr' => $bestBeforeDates['bb_hr'],
-                    'bestBeforeBc' => $bestBeforeDates['bb_bc'],
-                    'batch' => $data['batch_no'],
-                    'numLabels' => $labelCopies,
-                    'ssccBarcode' => '[00]' . $sscc,
-                    'itemBarcode' => '[02]' . $item_detail['trade_unit'] .
-                        '[15]' . $bestBeforeDates['bb_bc'] . '[10]' .  $data['batch_no'] .
-                        '[37]' . $qty,
-                    'brand' =>  $item_detail['brand'],
-                    'variant' =>  $item_detail['variant'],
-                    'quantity_description' =>  $item_detail['quantity_description'],
-                ];
+                        foreach ($events as $eventName) {
+                            $evt =  new Event($eventName, $pallet);
+                            $this->getEventManager()->dispatch($evt);
+                        }
 
-                $this->loadModel('PrintLog');
+                        $palletEvents = [
+                            'Model.Pallets.addPalletLabelFilename',
+                            'Model.Pallets.persistPalletRecord'
+                        ];
 
-                if ($item_detail->print_template->is_file_template) {
+                        foreach ($palletEvents as $eventName) {
 
-                    $template = $this->PrintLog->getGlabelsProject(
-                        $item_detail->print_template->id
-                    );
-                    $printResult = LabelFactory::create($template->details->print_class, $this->request->getParam('action'))
-                        ->format($cabLabelData)
-                        ->print($printerDetails, $template);
+                            $evt = new Event(
+                                $eventName,
+                                $pallet,
+                                [
+                                    'labelClass' => $labelClass,
+                                    'labelOutputPath' => $this->getSetting('LABEL_OUTPUT_PATH')
+                                ]
+                            );
 
-                    $template = $template->details;
+                            $this->getEventManager()->dispatch($evt);
+                        }
+                    }
                 } else {
-
-                    $template = $item_detail->print_template;
-
-                    $printResult = LabelFactory::create($template->print_class, $this->request->getParam('action'))
-                        ->format($template, $cabLabelData)
-                        ->print($printerDetails);
+                    $errors = $this->Pallets->flattenAndFormatValidationErrors($pallet->getErrors());
+                    $this->Flash->error("Contact IT Support: " . $errors,  ['escape' => false]);
                 }
-
-                $isPrintDebugMode = Configure::read('pallet_print_debug');
-
-                $this->handleResult(
-                    $printResult,
-                    $printerDetails,
-                    $pallet_ref,
-                    $palletData,
-                    $isPrintDebugMode,
-                    $data['refer']
-                );
             } else {
                 $this->Flash->error('There was a problem submitting your form.');
                 $forms[$this->request->getData()['formName']]->setData($this->request->getData());
@@ -253,8 +207,24 @@ class PalletsController extends AppController
 
         $refer = $this->request->getPath();
 
+        $lastPrintsCount = (int) $this->getSetting('LABEL_DOWNLOAD_LIST');
+
+        $lastPrints = $this->Pallets->find()
+            ->select(['id', 'pallet_label_filename', 'pl_ref', 'item'])
+            ->where(['pallet_label_filename IS NOT NULL'])
+            ->order(['id' => 'DESC'])
+            ->limit($lastPrintsCount);
+
+        $labelOutputPath = $this->getSetting('LABEL_OUTPUT_PATH');
+
+        $showLabelDownload = (bool) $lastPrintsCount;
+
         $this->set(
             compact(
+                'lastPrints',
+                'showLabelDownload',
+                'lastPrintsCount',
+                'labelOutputPath',
                 'items',
                 'productionLines',
                 'productType',
@@ -376,7 +346,7 @@ class PalletsController extends AppController
         $referer = $this->request->referer($local = false);
         $host = $this->request->host();
         $scheme = $this->request->scheme();
-      
+
         if (preg_match('/^' . $scheme . ':\/\/' . $host . '/', $referer) === 1) {
             return $this->redirect($referer);
         }
@@ -552,7 +522,7 @@ class PalletsController extends AppController
 
                 return $this->redirect($this->request->getData()['referer']);
             } else {
-                $validationErrors = $this->Pallets->formatValidationErrors($patched->getErrors());
+                $validationErrors = $this->Pallets->flattenAndFormatValidationErrors($patched->getErrors());
                 $this->Flash->error(__('The  pallet data could not be saved. Please, try again.' . $validationErrors));
             }
         }
@@ -623,19 +593,27 @@ class PalletsController extends AppController
      */
     public function shiftReport($url_date = null)
     {
+        $shiftReportForm = new ShiftReportForm();
+
         if ($this->request->is('POST')) {
-            $query_date = $this->request->getData('start_date');
+            $data = $this->request->getData();
 
-            if (!empty($url_date)) {
-                $query_date = $url_date;
+            if ($shiftReportForm->validate($data)) {
+
+                $query_date = $data['start_date'];
+
+                if (!empty($url_date)) {
+                    $query_date = $url_date;
+                }
+
+                $reports = $this->Pallets->shiftReport($query_date);
+
+                $this->set('reports', $reports['reports']);
+                $this->set('shift_date', $query_date);
+                $this->set('xml_shift_report', $reports['xml_shift_report']);
+            } else {
+                $this->Flash->error('Invalid data try again');
             }
-
-            $reports = $this->Pallets->shiftReport($query_date);
-            //$this->log(pr($reports));
-
-            $this->set('reports', $reports['reports']);
-            $this->set('shift_date', $query_date);
-            $this->set('xml_shift_report', $reports['xml_shift_report']);
         }
 
         $this->loadModel('Shifts');
@@ -650,6 +628,7 @@ class PalletsController extends AppController
             ]
         );
 
+        $this->set('shiftReportForm', $shiftReportForm);
         $this->set('shifts', $shifts);
         $this->set('_serialize', ['xml_shift_report']);
     }
@@ -707,18 +686,12 @@ class PalletsController extends AppController
      */
     public function lookup()
     {
-        // $this->Authorization->skipAuthorization();
-
         $options = [];
 
         if (!empty($this->request->getQueryParams())) {
             $options = $this->Pallets->formatLookupActionConditions(
                 $this->request->getQueryParams()
             );
-
-            /*  $searchForm = $this->Pallets->formatLookupRequestData(
-                 $this->request->getQueryParams()
-             ); */
         }
 
         $searchForm = new LookupSearchForm();
@@ -1033,132 +1006,6 @@ class PalletsController extends AppController
     }
 
     /**
-     * view method
-     *
-     * @throws NotFoundException
-     * @param  string            $id ID of Pallet
-     * @return mixed
-     */
-    public function palletReprint($id = null)
-    {
-        $controller = $this->request->getParam('controller');
-        $action = $this->request->getParam('action');
-
-        $pallet = $this->Pallets->get(
-            $id,
-            [
-                'contain' => [
-                    'Items' => [
-                        'ProductTypes',
-                        'PrintTemplates',
-                    ],
-                ],
-            ]
-        );
-
-        $this->Pallets->getValidator()->add('printer_id', 'required', [
-            'rule' => 'notBlank',
-            'message' => 'Please select a printer',
-        ]);
-
-        if ($this->request->is(['post', 'put'])) {
-            $data = $this->request->getData();
-            $pallet_ref = $pallet->pl_ref;
-
-            if (!isset($pallet['items']['print_template']) || empty($pallet['items']['print_template'])) {
-                throw new MissingConfigurationException(__('Please configure a print template for item %s', $pallet['item']));
-            }
-
-            $replaceTokens = json_decode($pallet->items->print_template->replace_tokens);
-
-            // get the printer queue name
-            $printerId = $data['printer_id'];
-
-            $printerDetails = $this->Pallets->Printers->get($printerId);
-
-            $dateFormats = [
-                'bb_date' => 'Y-m-d',
-                'bb_bc' => 'ymd',
-                'bb_hr' => 'd/m/y',
-            ];
-
-            $bb_date = new FrozenTime($pallet['bb_date']);
-
-            $bestBeforeDates = $this->Pallets->formatLabelDates(
-                $bb_date,
-                $dateFormats
-            );
-
-            $cabLabelData = [
-                'companyName' => $this->companyName,
-                'internalProductCode' => $pallet['items']['code'],
-                'reference' => $pallet['pl_ref'],
-                'sscc' => $pallet['sscc'],
-                'description' => $pallet['items']['description'],
-                'gtin14' => $pallet['gtin14'],
-                'quantity' => $pallet['qty'],
-                'bestBeforeHr' => $bestBeforeDates['bb_hr'],
-                'bestBeforeBc' => $bestBeforeDates['bb_bc'],
-                'batch' => $pallet['batch'],
-                'numLabels' => $this->request->getData()['copies'],
-            ];
-
-            $isPrintDebugMode = Configure::read('pallet_print_debug');
-
-            $printResult = LabelFactory::create($pallet['items']['print_template']['print_class'], $action)
-                ->format($pallet['items']['print_template'], $cabLabelData)
-                ->print($printerDetails);
-
-            $this->handleResult(
-                $printResult,
-                $printerDetails,
-                $pallet_ref,
-                $pallet,
-                $isPrintDebugMode,
-                $this->request->referer(),
-                false
-            );
-        }
-
-        $printers = $this->Pallets->getLabelPrinters(
-            $controller . '::' . $action
-        );
-
-        // unset this as the default printer is configured
-        // for the reprint Controller/Action in Printers
-        unset($pallet['printer_id']);
-
-        $labelCopies = $this->Pallets->getLabelCopies($pallet->items->pallet_label_copies);
-
-        $tag = 'Pallet';
-
-        $labelCopiesList = [];
-
-        for ($i = 1; $i <= $labelCopies; $i++) {
-            if ($i > 1) {
-                $tag = Inflector::pluralize($tag);
-            } else {
-                $tag = Inflector::singularize($tag);
-            }
-            $labelCopiesList[$i] = $i . ' ' . $tag;
-        }
-
-        $refer = $this->request->referer(false);
-
-        $inputDefaultCopies = $this->getSetting('sscc_default_label_copies');
-
-        $this->set(
-            compact(
-                'labelCopiesList',
-                'pallet',
-                'printers',
-                'refer',
-                'inputDefaultCopies'
-            )
-        );
-    }
-
-    /**
      * viewPartPalletsCartons
      *
      * @return void
@@ -1240,64 +1087,17 @@ class PalletsController extends AppController
      */
     public function onhand()
     {
-        //$this->Pallet->Behaviors->load('Containable');
-
         $cooldown = $this->Pallets->getSetting('COOL_DOWN_HRS');
+
         $searchForm = new OnhandSearchForm();
 
-        /*  $this->Pallet->virtualFields['oncooldown'] = 'TIMESTAMPDIFF(HOUR, Pallet.cooldown_date, NOW()) < ' . $cooldown;
-         $this->Pallet->virtualFields['pl_age'] = 'TIMESTAMPDIFF(HOUR, Pallet.print_date, NOW())';
- */
+        $filter_value = $this->request->getQuery('filter_value');
 
-        if (!empty($this->request->getQuery('filter_value'))) {
-            $filter_value = $this->request->getQuery('filter_value');
-            //debug($this->passedArgs);
-
+        if ($filter_value) {
             $searchForm->setData($this->request->getQuery());
-
-            $lookup_field = 'item_id';
-
-            switch ($filter_value) {
-                case 'low_dated':
-                    $sqlValue = 1;
-                    $lookup_field = 'dont_ship';
-                    break;
-                case strpos($filter_value, 'product-type-') !== false:
-                    $sqlValue = str_replace('product-type-', '', $filter_value);
-                    $lookup_field = 'product_type_id';
-                    break;
-                default:
-                    $lookup_field = 'item_id';
-                    $sqlValue = $filter_value;
-                    break;
-            }
         }
 
-        $containSettings = [
-            'Shipments' => [
-                'fields' => [
-                    'id', 'shipper',
-                ],
-            ],
-            'InventoryStatuses' => [
-                'fields' => [
-                    'id', 'name',
-                ],
-            ],
-            'Items' => [
-                'fields' => ['id', 'code', 'description'],
-            ],
-            'Locations' => [
-                'fields' => ['id', 'location'],
-            ],
-            'Cartons'
-        ];
-
-        $options = $this->Pallets->getViewOptions($containSettings);
-
-        if (!empty($filter_value) && $lookup_field !== 'dont_ship') {
-            $options['conditions']['Pallets.' . $lookup_field] = $sqlValue;
-        }
+        [$pallets, $options] = $this->Pallets->buildOnHandQuery($filter_value);
 
         $limit = Configure::read('onhandPageSize');
 
@@ -1323,13 +1123,8 @@ class PalletsController extends AppController
             ],
         ];
 
-        $pallets = $this->Pallets->find('all', $options);
 
-        if (!empty($lookup_field) && $lookup_field == 'dont_ship') {
-            $pallets->having(['DATEDIFF(Pallets.bb_date, CURDATE()) < Pallets.min_days_life AND Pallets.shipment_id = 0']);
-        }
-
-        $pallets = $this->paginate($pallets);
+        $pallets  = $this->paginate($pallets);
 
         $pallet_count = $this->Pallets->find('all', $options)->count();
 
@@ -1361,5 +1156,82 @@ class PalletsController extends AppController
         }
 
         return $this->redirect($url);
+    }
+
+    public function sendFile($id)
+    {
+
+        $downloadFilePath = WWW_ROOT . $this->getSetting('LABEL_OUTPUT_PATH') . DS;
+
+        $pallet = $this->Pallets->get($id);
+
+        $response = $this->response->withFile(
+            $downloadFilePath . $pallet->pallet_label_filename,
+            ['download' => true, 'name' => $pallet->pallet_label_filename]
+        );
+
+        return $response;
+    }
+
+    public function export()
+    {
+        Configure::write('debug', false);
+
+        $filter_value = $this->request->getQuery('filter_value');
+
+        $header = [ 'Location', 'Status', 'Note', 'Item', 'Description', "Print Date", 'Best Before', "Age", "Ref", "Batch", "Qty", "Shipment",  "Low Date", 'Allow Ship', 'SSCC'];
+
+        $companyPrefix = $this->getSetting('SSCC_COMPANY_PREFIX');
+
+        $extract = [
+            function (array $row) {
+                return $row['location']['location'] ?? $row['location']['location'];
+            },
+            function (array $row) {
+                return $row['inventory_status']['name'] ?? $row['inventory_status']['name'];
+            },
+            'inventory_status_note',
+            'item',
+            'description',
+            'print_date',
+            'bb_date',
+            function ( array $row) {
+                $time = new Time($row['print_date']);
+                return $time->timeAgoInWords();
+            },
+            'pl_ref',
+            'batch',
+            'qty',
+            function (array $row) {
+                return $row['shipment']['shipper'] ?? $row['shipment']['shipper'];
+            },
+           
+            'dont_ship',
+            'ship_low_date',
+            
+            function (array $row) use ($companyPrefix) {
+                $barcode = new Barcode();
+                return  $barcode->ssccFormat($row['sscc'], $companyPrefix);
+            },
+        ];
+
+        [$pallets, $options] = $this->Pallets->buildOnHandQuery($filter_value);
+
+        $this->setResponse($this->getResponse()->withDownload('pallets.csv'));
+
+        // $header = $pallets->toArray()[0]->getVisible();
+
+
+        $this->set(compact('pallets'));
+
+        $this->viewBuilder()
+            ->setClassName('CsvView.Csv')
+            ->setOptions([
+                'serialize' => 'pallets',
+                'header' => $header,
+                'extract' => $extract,
+            ]);
+
+        // Configure::write('debug', true);
     }
 }

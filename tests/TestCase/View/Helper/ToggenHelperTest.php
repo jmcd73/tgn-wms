@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\View\Helper;
 
-use App\View\Helper\ToggenHelper;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 
@@ -12,6 +11,7 @@ use Cake\View\View;
  */
 class ToggenHelperTest extends TestCase
 {
+   
     /**
      * Test subject
      *
@@ -26,10 +26,17 @@ class ToggenHelperTest extends TestCase
      */
     public function setUp(): void
     {
+        $this->markTestIncomplete();
         parent::setUp();
         $view = new View();
-        $this->Toggen = new ToggenHelper($view);
+       
     }
+
+    public function testWouldBeGood()
+    {
+        $this->markTestIncomplete();
+    }
+
 
     /**
      * tearDown method
