@@ -35,14 +35,14 @@
     <tbody>
         <?php foreach ($cartons as $carton) : ?>
         <tr>
-            <td><?= $carton->has('pallet') ? $this->Html->link($carton->pallet->id, ['controller' => 'Pallets', 'action' => 'view', $carton->pallet->id]) : '' ?></td>
+            <td><?= $carton->has('pallet') ? $this->Html->link($carton->pallet->pl_ref, ['controller' => 'Pallets', 'action' => 'view', $carton->pallet->id]) : '' ?></td>
             <td><?= $this->Number->format($carton->count) ?></td>
             <td><?= h($carton->best_before) ?></td>
             <td><?= h($carton->production_date) ?></td>
-            <td><?= $carton->has('item') ? $this->Html->link($carton->item->id, ['controller' => 'Items', 'action' => 'view', $carton->item->id]) : '' ?></td>
+            <td><?= $carton->has('item') ? $this->Html->link($carton->item->code_desc, ['controller' => 'Items', 'action' => 'view', $carton->item->id]) : '' ?></td>
             <td><?= h($carton->created) ?></td>
             <td><?= h($carton->modified) ?></td>
-            <td><?= $carton->has('user') ? $this->Html->link($carton->user->id, ['controller' => 'Users', 'action' => 'view', $carton->user->id]) : '' ?></td>
+            <td><?= $carton->has('user') ? $this->Html->link($carton->user->full_name, ['controller' => 'Users', 'action' => 'view', $carton->user->id]) : '' ?></td>
             <td class="actions">
                 <?= $this->Html->link(__('View'), ['action' => 'view', $carton->id], ['title' => __('View'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
                 <?= $this->Html->link(__('Edit'), ['action' => 'edit', $carton->id], ['title' => __('Edit'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>

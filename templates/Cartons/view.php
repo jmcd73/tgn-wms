@@ -29,17 +29,18 @@
                 <td><?= $carton->has('pallet') ? $this->Html->link($carton->pallet->pl_ref, ['controller' => 'Pallets', 'action' => 'view', $carton->pallet->id]) : '' ?></td>
             </tr>
             <tr>
-                <th scope="row"><?= __('Count') ?></th>
+                <th scope="row"><?= __('Cartons') ?></th>
                 <td><?= $this->Number->format($carton->count) ?></td>
-            </tr>
-            <tr>
-                <th scope="row"><?= __('Best Before') ?></th>
-                <td><?= h($carton->best_before) ?></td>
             </tr>
             <tr>
                 <th scope="row"><?= __('Production Date') ?></th>
                 <td><?= h($carton->production_date) ?></td>
             </tr>
+            <tr>
+                <th scope="row"><?= __('Best Before') ?></th>
+                <td><?= h($carton->best_before) ?></td>
+            </tr>
+           
             <tr>
                 <th scope="row"><?= __('Created') ?></th>
                 <td><?= h($carton->created) ?></td>

@@ -27,10 +27,6 @@
                 <td><?= h($setting->setting) ?></td>
             </tr>
             <tr>
-                <th scope="row"><?= __('Id') ?></th>
-                <td><?= $this->Number->format($setting->id) ?></td>
-            </tr>
-            <tr>
                 <th scope="row"><?= __('Setting in comment') ?></th>
                 <td><?= $this->Html->activeIcon($setting->setting_in_comment) ?></td>
             </tr>
