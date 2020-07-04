@@ -22,6 +22,8 @@ use Cake\Event\Event;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Utility\Hash;
+use App\Lib\Utility\Barcode;
+use Cake\I18n\Time;
 
 /**
  * Pallets Controller
@@ -1085,64 +1087,17 @@ class PalletsController extends AppController
      */
     public function onhand()
     {
-        //$this->Pallet->Behaviors->load('Containable');
-
         $cooldown = $this->Pallets->getSetting('COOL_DOWN_HRS');
+
         $searchForm = new OnhandSearchForm();
 
-        /*  $this->Pallet->virtualFields['oncooldown'] = 'TIMESTAMPDIFF(HOUR, Pallet.cooldown_date, NOW()) < ' . $cooldown;
-         $this->Pallet->virtualFields['pl_age'] = 'TIMESTAMPDIFF(HOUR, Pallet.print_date, NOW())';
- */
+        $filter_value = $this->request->getQuery('filter_value');
 
-        if (!empty($this->request->getQuery('filter_value'))) {
-            $filter_value = $this->request->getQuery('filter_value');
-            //debug($this->passedArgs);
-
+        if ($filter_value) {
             $searchForm->setData($this->request->getQuery());
-
-            $lookup_field = 'item_id';
-
-            switch ($filter_value) {
-                case 'low_dated':
-                    $sqlValue = 1;
-                    $lookup_field = 'dont_ship';
-                    break;
-                case strpos($filter_value, 'product-type-') !== false:
-                    $sqlValue = str_replace('product-type-', '', $filter_value);
-                    $lookup_field = 'product_type_id';
-                    break;
-                default:
-                    $lookup_field = 'item_id';
-                    $sqlValue = $filter_value;
-                    break;
-            }
         }
 
-        $containSettings = [
-            'Shipments' => [
-                'fields' => [
-                    'id', 'shipper',
-                ],
-            ],
-            'InventoryStatuses' => [
-                'fields' => [
-                    'id', 'name',
-                ],
-            ],
-            'Items' => [
-                'fields' => ['id', 'code', 'description'],
-            ],
-            'Locations' => [
-                'fields' => ['id', 'location'],
-            ],
-            'Cartons'
-        ];
-
-        $options = $this->Pallets->getViewOptions($containSettings);
-
-        if (!empty($filter_value) && $lookup_field !== 'dont_ship') {
-            $options['conditions']['Pallets.' . $lookup_field] = $sqlValue;
-        }
+        [$pallets, $options] = $this->Pallets->buildOnHandQuery($filter_value);
 
         $limit = Configure::read('onhandPageSize');
 
@@ -1168,13 +1123,8 @@ class PalletsController extends AppController
             ],
         ];
 
-        $pallets = $this->Pallets->find('all', $options);
 
-        if (!empty($lookup_field) && $lookup_field == 'dont_ship') {
-            $pallets->having(['DATEDIFF(Pallets.bb_date, CURDATE()) < Pallets.min_days_life AND Pallets.shipment_id = 0']);
-        }
-
-        $pallets = $this->paginate($pallets);
+        $pallets  = $this->paginate($pallets);
 
         $pallet_count = $this->Pallets->find('all', $options)->count();
 
@@ -1221,5 +1171,67 @@ class PalletsController extends AppController
         );
 
         return $response;
+    }
+
+    public function export()
+    {
+        Configure::write('debug', false);
+
+        $filter_value = $this->request->getQuery('filter_value');
+
+        $header = [ 'Location', 'Status', 'Note', 'Item', 'Description', "Print Date", 'Best Before', "Age", "Ref", "Batch", "Qty", "Shipment",  "Low Date", 'Allow Ship', 'SSCC'];
+
+        $companyPrefix = $this->getSetting('SSCC_COMPANY_PREFIX');
+
+        $extract = [
+            function (array $row) {
+                return $row['location']['location'] ?? $row['location']['location'];
+            },
+            function (array $row) {
+                return $row['inventory_status']['name'] ?? $row['inventory_status']['name'];
+            },
+            'inventory_status_note',
+            'item',
+            'description',
+            'print_date',
+            'bb_date',
+            function ( array $row) {
+                $time = new Time($row['print_date']);
+                return $time->timeAgoInWords();
+            },
+            'pl_ref',
+            'batch',
+            'qty',
+            function (array $row) {
+                return $row['shipment']['shipper'] ?? $row['shipment']['shipper'];
+            },
+           
+            'dont_ship',
+            'ship_low_date',
+            
+            function (array $row) use ($companyPrefix) {
+                $barcode = new Barcode();
+                return  $barcode->ssccFormat($row['sscc'], $companyPrefix);
+            },
+        ];
+
+        [$pallets, $options] = $this->Pallets->buildOnHandQuery($filter_value);
+
+        $this->setResponse($this->getResponse()->withDownload('pallets.csv'));
+
+        // $header = $pallets->toArray()[0]->getVisible();
+
+
+        $this->set(compact('pallets'));
+
+        $this->viewBuilder()
+            ->setClassName('CsvView.Csv')
+            ->setOptions([
+                'serialize' => 'pallets',
+                'header' => $header,
+                'extract' => $extract,
+            ]);
+
+        // Configure::write('debug', true);
     }
 }

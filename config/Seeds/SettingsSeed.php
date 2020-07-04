@@ -39,7 +39,7 @@ class SettingsSeed extends AbstractSeed
                 'id' => 5,
                 'setting_in_comment' => false,
                 'name' => 'SSCC_COMPANY_PREFIX',
-                'setting' => '93529380',
+                'setting' => '99999999',
                 'comment' => 'Added a bogus prefix',
             ],
             [

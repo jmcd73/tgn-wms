@@ -157,15 +157,11 @@
 
 6. Test connection to CUPS and Apache
 
-   > [http://localhost:${CUPS_PORT}/](http://localhost:${CUPS_PORT}/)
+   > [https://localhost:${CUPS_PORT}/](https://localhost:${CUPS_PORT}/)
    >
-   > [http://localhost:${APACHE_PORT}/test](http://localhost:${APACHE_PORT}/test)
+   > [http://localhost:${APACHE_PORT}/${WEB_DIR}](http://localhost:${APACHE_PORT}/${WEB_DIR})
 
-   You should get the CUPS admin page for the first URL and a HTTP 500 ERROR for the second
-
-   Note that Google Chrome will refuse to connect to the https://localhost:${CUPS_PORT} page. So to add or remove printers you need to use Firefox or Safari
-
-
+   You should get a auth dialog for the CUPS URL and the login page for the Apache end point.
 
 12. At this point if the above instructions are correct you should be able to connect to [http://localhost:${APACHE_PORT}](http://localhost:${APACHE_PORT}) and get the login screen
 
@@ -173,6 +169,8 @@
 | ----------------- | -------- | --------------------------------------------------------------------------------------- |
 | admin@example.com | admin    | admin - Allowed to view, update and delete everything. Has access to Admin menu         |
 | user@example.com  | user     | user - Allowed to view everything and update / delete selected items. Admin menu hidden |
+| qty_editor@example.com  | qty_editor     | qty_editor - All user actions plus edit Best before and other restricted fields |
+| qa@example.com  | qa     | qad - All user actions plus QA functions and edit Best before and other restricted fields |
 
 ### Default root password for docker container
 

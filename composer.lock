@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a49d556ec02869016c47994ccb6c609a",
+    "content-hash": "77cbf2c5324e3cb1e93e5e79d668e8c3",
     "packages": [
         {
             "name": "aura/intl",
@@ -707,6 +707,80 @@
                 "source": "http://github.com/friendsofcake/bootstrap-ui"
             },
             "time": "2020-06-19T20:33:31+00:00"
+        },
+        {
+            "name": "friendsofcake/cakephp-csvview",
+            "version": "dev-cake-4.x",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FriendsOfCake/cakephp-csvview.git",
+                "reference": "6253f8987f4f55974048be7b14c3e5101ab9ac7b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FriendsOfCake/cakephp-csvview/zipball/6253f8987f4f55974048be7b14c3e5101ab9ac7b",
+                "reference": "6253f8987f4f55974048be7b14c3e5101ab9ac7b",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "^4.0"
+            },
+            "require-dev": {
+                "cakephp/cakephp-codesniffer": "^4.0",
+                "phpunit/phpunit": "~8.5.0"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "CsvView\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jose Diaz-Gonzalez",
+                    "email": "email@josediazgonzalez.com",
+                    "homepage": "https://josediazgonzalez.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "ADmad",
+                    "homepage": "https://github.com/admad",
+                    "role": "Contributor"
+                },
+                {
+                    "name": "Mark Scherer",
+                    "homepage": "https://github.com/dereuromark",
+                    "role": "Contributor"
+                },
+                {
+                    "name": "Joshua Paling",
+                    "homepage": "https://github.com/joshuapaling",
+                    "role": "Contributor"
+                },
+                {
+                    "name": "Gaurish Sharma",
+                    "homepage": "https://github.com/gaurish",
+                    "role": "Contributor"
+                },
+                {
+                    "name": "Gregory Gaskill",
+                    "homepage": "https://github.com/chronon",
+                    "role": "Contributor"
+                }
+            ],
+            "description": "A CSV View class for CakePHP",
+            "homepage": "https://github.com/friendsofcake/cakephp-csvview",
+            "keywords": [
+                "cakephp",
+                "csv",
+                "export",
+                "view"
+            ],
+            "time": "2020-05-16T05:59:10+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
@@ -6446,6 +6520,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "friendsofcake/bootstrap-ui": 20,
+        "friendsofcake/cakephp-csvview": 20,
         "psy/psysh": 0
     },
     "prefer-stable": true,

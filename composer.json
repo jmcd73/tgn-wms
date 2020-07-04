@@ -21,6 +21,7 @@
     "components/jquery": "^3.4",
     "erusev/parsedown": "^1.7",
     "friendsofcake/bootstrap-ui": "dev-cake-4-bs-4",
+    "friendsofcake/cakephp-csvview": "cake-4.x-dev",
     "mobiledetect/mobiledetectlib": "^2.8",
     "phpmailer/phpmailer": "^6.1",
     "tecnickcom/tcpdf": "^6.3"

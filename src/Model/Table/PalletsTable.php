@@ -1132,4 +1132,61 @@ class PalletsTable extends Table
 
         return $this->newEntity($palletData);
     }
+
+    public function buildOnHandQuery($filter_value) : array
+    {
+        if ($filter_value) {
+            
+            switch ($filter_value) {
+                case 'low_dated':
+                    $sqlValue = 1;
+                    $lookup_field = 'dont_ship';
+                    break;
+                case strpos($filter_value, 'product-type-') !== false:
+                    $sqlValue = str_replace('product-type-', '', $filter_value);
+                    $lookup_field = 'product_type_id';
+                    break;
+                default:
+                    $lookup_field = 'item_id';
+                    $sqlValue = $filter_value;
+                    break;
+            }
+        }
+
+        $containSettings = [
+            'Shipments' => [
+                'fields' => [
+                    'id', 'shipper',
+                ],
+            ],
+            'InventoryStatuses' => [
+                'fields' => [
+                    'id', 'name',
+                ],
+            ],
+            'Items' => [
+                'fields' => ['id', 'code', 'description'],
+            ],
+            'Locations' => [
+                'fields' => ['id', 'location'],
+            ],
+            'Cartons'
+        ];
+
+        $options = $this->getViewOptions($containSettings);
+
+        if (!empty($filter_value) && $lookup_field !== 'dont_ship') {
+            $options['conditions']['Pallets.' . $lookup_field] = $sqlValue;
+        }
+
+
+        $pallets = $this->find('all', $options);
+
+        if (!empty($lookup_field) && $lookup_field == 'dont_ship') {
+            $pallets->having(['DATEDIFF(Pallets.bb_date, CURDATE()) < Pallets.min_days_life AND Pallets.shipment_id = 0']);
+        }
+
+        return [ $pallets, $options ];
+    }
+
 }

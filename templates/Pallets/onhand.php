@@ -49,19 +49,29 @@ use App\View\Helper\ToggenHelper;
 </div>
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', $this->fetch('tb_actions')); ?>
+
 <div class="row">
     <div class="col">
-        <p class="h3"><?php echo __('Pallet Location Report'); ?>
+    <p class="h4"><?php echo __('Pallet Location Report'); ?>
             <small>
-
                 <?php echo $this->Html->badge($this->Paginator->counter('{{count}}')); ?> pallets
                 <?php if ($dont_ship_count) : ?>
                 <span> <?= $this->Html->badge($dont_ship_count, ['class' => 'danger']); ?> low dated
                 </span>
                 <?php endif; ?>
-
+                
             </small>
         </p>
+    </div>
+    <div class="col-1">
+        <?= $this->Html->link("Download", [ 'action' => "export", "?" => $this->request->getQuery()], [ 
+        'class' => 'btn btn-sm btn-link',
+        'title' => "Click to download the current view as a spreadsheet in CSV format"
+        ]); ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
         <table class="table table-striped">
             <thead>
                 <tr>

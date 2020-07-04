@@ -23,7 +23,6 @@
     <tbody>
         <?php foreach ($help as $help) : ?>
         <tr>
-            <td><?= $this->Number->format($help->id) ?></td>
             <td><?= h($help->controller_action) ?></td>
             <td><?= h($help->markdown_document) ?></td>
             <td class="actions">
