@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Migrations\AbstractSeed;
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\I18n\FrozenTime;
 
 /**
  * Users seed.
@@ -30,7 +31,7 @@ class UsersSeed extends AbstractSeed
                 'role' => 'admin',
                 'password' => 'admin',
                 'full_name' => "Example Admin",
-                'is_superuser' => 1
+                'is_superuser' => 1,
             ],
             [
                 'username' => 'user@example.com',
@@ -60,6 +61,8 @@ class UsersSeed extends AbstractSeed
 
         foreach($data as $k => $d) {
             $data[$k]['password'] =  (new DefaultPasswordHasher())->hash($d['password']);
+            $data[$k]['created'] = FrozenTime::now()->toDateTimeString();
+            $data[$k]['modified'] = FrozenTime::now()->toDateTimeString();
         }
 
         $table = $this->table('users');

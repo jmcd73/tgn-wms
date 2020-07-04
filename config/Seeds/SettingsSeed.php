@@ -46,7 +46,7 @@ class SettingsSeed extends AbstractSeed
                 'id' => 10,
                 'setting_in_comment' => false,
                 'name' => 'COMPANY_NAME',
-                'setting' => 'Australasian Food Exports Pty Ltd',
+                'setting' => 'The Toggen Partnership',
                 'comment' => 'This is used for the title attribute of pages and for anywhere the company name is needed (label headings)',
             ],
             [

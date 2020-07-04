@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use Migrations\AbstractSeed;
+use Cake\ORM\TableRegistry;
 
 /**
  * Pallets seed.
@@ -20,13 +21,32 @@ class PalletsSeed extends AbstractSeed
      */
     public function run()
     {
+
         $data = [];
 
         $table = $this->table('pallets');
 
+        $this->clearPdfOutpuDir();
         $table->truncate();
 
         $table->insert($data)->save();
     
+    }
+
+    public function clearPdfOutpuDir()
+    {
+        $settings = TableRegistry::getTableLocator()->get("Settings");
+
+        $setting = $settings->find()->where(['name' => 'LABEL_OUTPUT_PATH'])->first();
+
+        $outputDir = realpath(__DIR__ . '/../../webroot/' . $setting->setting);
+
+        foreach( new DirectoryIterator($outputDir) as $fileInfo ) {
+            if($fileInfo->isDot()) continue;
+            unlink($fileInfo->getPathname());
+        }
+
+
+        # code...
     }
 }
