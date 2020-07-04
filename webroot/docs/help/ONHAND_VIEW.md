@@ -7,7 +7,7 @@ Pallets that have been added to a shipment but not yet shipped appear with their
 If product has been marked as on HOLD, WAIT or other status this will appear along with any inventory status note added to the pallet
 
 ## Export View
-There is a download button to allow the current view to be exported to spreadsheet as CSV format
+There is a download link located on the top right of the table to allow the current view to be exported to spreadsheet as CSV format
 
 ## Filter by
 From the search form on the left select the filter criteria
