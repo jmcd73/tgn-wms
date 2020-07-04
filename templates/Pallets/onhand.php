@@ -21,12 +21,14 @@ use App\View\Helper\ToggenHelper;
     ]);
     echo $this->Form->control('filter_value', [
         'label' => false,
-
         'type' => 'select',
         'options' => $filter_values,
         'empty' => '(select)',
     ]);
-    echo $this->Form->submit('Search');
+    echo $this->Form->button('Search', [ 
+        'type' => 'submit',
+        'class' => 'btn search btn-primary'
+        ]);
     echo $this->Form->end(); ?>
     <h4 class="mt-4"><?= __('Colour Legend'); ?></h4>
     <div class="bg-danger alert" role="alert">
@@ -65,7 +67,7 @@ use App\View\Helper\ToggenHelper;
     </div>
     <div class="col-1">
         <?= $this->Html->link("Download", [ 'action' => "export", "?" => $this->request->getQuery()], [ 
-        'class' => 'btn btn-sm btn-link',
+        'class' => 'btn btn-sm btn-primary download',
         'title' => "Click to download the current view as a spreadsheet in CSV format"
         ]); ?>
     </div>
@@ -156,7 +158,7 @@ use App\View\Helper\ToggenHelper;
                                     $pallet->shipment->id,
                                 ],
                                 [
-                                    'class' => 'btn edit btn-xs',
+                                    'class' => 'btn edit btn-sm btn-link',
                                     'title' => 'Edit Shipment',
                                 ]
                             );
@@ -189,7 +191,7 @@ use App\View\Helper\ToggenHelper;
                                 ]),
                                 'data-toggle' => 'modal',
                                 'data-target' => '#edit-modal',
-                                'class' => 'btn edit btn-xs tgn-modal',
+                                'class' => 'btn edit btn-sm tgn-modal',
                                 'title' => 'Click here for popup edit options menu',
                             ]
                         );
