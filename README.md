@@ -24,10 +24,10 @@ This is a project that I have been working on for a number of years. Originally 
 - Numbering and coding
   - Batch numbers based on ordinal day of year YDDDBB (e.g Last digit of year 2020 eg 0 day of year 105 batch 22)
 - Printing
-  - gLabels-batch-qt printing (Uses latest Glabels)
+  - glabels-3-batch printing (Uses latest stable glabels-3.4.1)
   - GS1 Compliant SSCC labels to CAB Printers
   - Zebra and CAB Printer Command Language Printing
-  - Endpoints to serve Product Lists as JSON or XML for external systems
+- Endpoints to serve Product Lists as JSON or XML for external systems
 
 ## Open source technologies
 
@@ -41,7 +41,7 @@ This is a project that I have been working on for a number of years. Originally 
 - CUPS 2.2.x
 - CUPS-PDF
 - Supervisord
-- Glabels 3.99+
+- Glabels 3.4.1
 - TCPDF
 
 ### Application packages
