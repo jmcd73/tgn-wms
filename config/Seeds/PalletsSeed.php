@@ -39,13 +39,18 @@ class PalletsSeed extends AbstractSeed
 
         $setting = $settings->find()->where(['name' => 'LABEL_OUTPUT_PATH'])->first();
 
+        # returns false if it doesn't exist
+        # or path if does
         $outputDir = realpath(__DIR__ . '/../../webroot/' . $setting->setting);
 
-        foreach( new DirectoryIterator($outputDir) as $fileInfo ) {
-            if($fileInfo->isDot()) continue;
-            unlink($fileInfo->getPathname());
+        if($outputDir) {
+            foreach( new DirectoryIterator($outputDir) as $fileInfo ) {
+                if($fileInfo->isDot()) continue;
+                unlink($fileInfo->getPathname());
+            }    
+        } else {
+            throw new Exception("You need to create the " . $setting->setting . ' directory in webroot and make www-data owner');
         }
-
 
         # code...
     }

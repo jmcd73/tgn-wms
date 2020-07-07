@@ -1,11 +1,27 @@
-# Installing Toggen WMS to a Docker Test Environment
+# Installing Toggen WMS to a Docker Environment
 
 **Note:** PHP7.4 is required as some of the code makes use of new features from this version
 
-1. Create a database in MYSQL, create and grant a user access
+1. Create a database in MYSQL, create and grant a user access 
    ```sql
-   CREATE DATABASE tgnwmsdbc4;
-   GRANT ALL PRIVILEGES ON tgnwmsdbc4.* TO tgndbuser@localhost IDENTIFIED BY 'RandomCakeNameBoxPhoneNote';
+   SELECT @@version;
+   -- Instructions for v8.0.20 of mysql community server
+   CREATE DATABASE tgnwmsdb;
+   CREATE USER 'tgndbuser'@'localhost' IDENTIFIED BY 'RandomCakeNameBoxPhoneNote@2';
+   -- this allows access from the docker container without
+   -- too broad access from everywhere 'tgndbuser'@'%'
+   CREATE USER 'tgndbuser'@'172.17.0.%' IDENTIFIED BY 'RandomCakeNameBoxPhoneNote@2';
+   GRANT ALL ON tgnwmsdb.* TO 'tgndbuser'@'localhost','tgndbuser'@'172.17.0.%';
+   
+   FLUSH PRIVILEGES;
+   ```
+   Do the same for a test DB
+
+   ```sql
+   CREATE DATABASE tgnwmsdbtest;
+   CREATE USER 'tgndbtestuser'@'localhost' IDENTIFIED BY 'RandomCakeNameBoxPhoneNote@3';
+   CREATE USER 'tgndbtestuser'@'172.17.0.%' IDENTIFIED BY 'RandomCakeNameBoxPhoneNote@3';
+   GRANT ALL ON tgnwmsdbtest.* TO 'tgndbtestuser'@'localhost','tgndbtestuser'@'172.17.0.%';
    FLUSH PRIVILEGES;
    ```
 2. Clone this repo
@@ -19,33 +35,43 @@
    git submodule update --init --recursive
    ```
 
-7. Edit the `config/app_local.php` file to have the correct host, user, db, password parameters
+7. Edit the `config/app_local.php` file to have the correct host, user, db, password parameters, also add a test database and user for the test datasource
+   ```sh
+   cd config/
+   cp app_local.example.php app_local.php
+   ```
 
     ```php
 
         'Datasources' => [
             'default' => [
-                'host' => \$dbHost,
-                //'port' => 'non_standard_port_number',
+                'host' => '172.17.0.1',
+                // if in docker env and you are running the mysql 
+                // server on the host use ip route from the container
+                // to find the IP address of the host
+                // ip route
+                // default via 172.17.0.1 dev eth0
+                // 'port' => 'non_standard_port_number',
                 'username' => 'tgndbuser',
-                'password' => 'RandomCakeNameBoxPhoneNote',
-                'database' => 'tgnwmsdbc4',
+                'password' => 'RandomCakeNameBoxPhoneNote@2',
+                'database' => 'tgnwmsdb',
                 //'schema' => 'myapp',
                 //'url' => env('DATABASE_URL', null),
             ],
 
     ```
 
-4. Build docker image
+5. Build the docker image
+
    ```sh
    cd docker/
-   docker build -t tgn/tgn-wms-glabels:v25 .
    ```
-5. Run the container
 
    Create a `.docker-env` file in docker/ with the following contents
 
    ```sh
+   # BUILD options are dev or prod
+   BUILD=dev
    WEB_DIR=test
    CUPS_PORT=8632
    APACHE_PORT=8092
@@ -56,6 +82,10 @@
    CONTAINER_NAME=${WEB_DIR}
    ```
 
+4. Build docker image
+   ```sh
+   ./docker-build.sh
+   ```
    Run `docker-run.sh` to start the container
 
    ```
@@ -73,17 +103,23 @@
    cd /var/log/apache2/
    vim error.log
 
-   # cakephp 4 application error logs are in /var/www/logs
+   # cakephp 4 application 
+   # error logs are in /var/www/${WEB_DIR}/logs
 
    ```
-
-
 
 8. Install PHP Libraries and Populate Database
    Still in the docker container...
 
    ```sh
    cd /var/www/${WEB_DIR}
+
+   # make the PDF label output dir
+   # and give it the right perms to allow saving
+   # PalletSeed will fail if this directory does not
+   # exist
+   mkdir webroot/files/output
+   chown www-data:www-data webroot/files/output -R
 
    # install the PHP dependencies
    composer install
@@ -124,8 +160,9 @@
 
    ```sh
    # still in container
-   cd /var/www
-   root@d3ad0c48ca65:/var/www# bin/cake plugin assets copy
+   cd /var/www/${WEB_DIR}
+   root@d3ad0c48ca65:/var/www/tgnwms# bin/cake plugin loaded
+   root@d3ad0c48ca65:/var/www/tgnwms# bin/cake plugin assets copy
 
    For plugin: BootstrapUI
    -------------------------------------------------------------------------------
@@ -139,6 +176,7 @@
 
 10. Copy bootstrap, jquery and popper.js into webroot/bootstrap_u_i
 
+   I didn't do this seems that the asset copy above does the job as lo
     ```sh
     cd /var/www/test/vendor/friendsofcake/bootstrap-ui/node_modules/
     cp -rv bootstrap/dist/* /var/www/test/webroot/bootstrap_u_i/
