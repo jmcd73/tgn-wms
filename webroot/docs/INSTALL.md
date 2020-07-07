@@ -137,6 +137,12 @@
    bin/cake migrations status
    bin/cake migrations migrate # creates the tables and updates
    bin/cake migrations seed # clears tables and loads sample data but without data in pallets, cartons and dispatch tables
+
+   # run the same for test db
+   bin/cake migrations status -c test
+   bin/cake migrations migrate -c test
+   bin/cake migrations seed -c test
+
    ```
 
 9. Copy don't symlink the assets for plugins to the webroot.
