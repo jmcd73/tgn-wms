@@ -42,7 +42,7 @@ trait SettingsTrait
     {
 
         if ($setting->setting_in_comment) {
-            $setting = explode("\r\n", $setting->comment);
+            $setting = explode(PHP_EOL, $setting->comment);
             $setting = array_values(array_filter($setting, function ($line) {
                 return !preg_match('/(^\s*#|^$)/', $line);
             }));

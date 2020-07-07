@@ -95,7 +95,7 @@ class SettingsTableTest extends TestCase
                 'id' => 3,
               'setting_in_comment' =>    false,
                 'name' =>    'SSCC_REF',
-                'setting' =>    '149',
+                'setting' =>    '21',
                 'comment' =>    'The next SSCC Reference number',
             ],
             [
@@ -110,7 +110,7 @@ class SettingsTableTest extends TestCase
                 'id' => 5,
               'setting_in_comment' =>    false,
                 'name' =>    'SSCC_COMPANY_PREFIX',
-                'setting' =>    '93529380',
+                'setting' =>    '99999999',
                 'comment' =>    'Added a bogus prefix',
 
             ],

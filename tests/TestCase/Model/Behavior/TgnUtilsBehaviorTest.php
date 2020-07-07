@@ -118,13 +118,9 @@ class TgnUtilsBehaviorTest extends TestCase
     public function testSsccGetReferenceNumber(): void
     {
         $reference = $this->TgnUtilsBehavior->getReferenceNumber('SSCC_REF','93529380');
-        $expected = '149';
+        $expected = '21';
 
         $this->assertEquals($expected, $reference);
-
-        $nextRef = $this->TgnUtilsBehavior->getSetting('SSCC_REF');
-
-        $this->assertEquals(149, $nextRef);
     }
 
     /**
