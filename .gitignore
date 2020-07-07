@@ -42,3 +42,4 @@ vendors/
 .viminfo
 .vscode/settings.json
 webroot/files/output
+dev/table-test.html
