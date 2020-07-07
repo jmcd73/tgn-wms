@@ -25,6 +25,7 @@
    FLUSH PRIVILEGES;
    ```
 2. Clone this repo
+
    ```sh
    mkdir ~/sites
    cd ~/sites
@@ -41,25 +42,30 @@
    cp app_local.example.php app_local.php
    ```
 
-    ```php
+   The host IP value can change depending on where you are running your MySQL server 
+   If the MySQL Server is you docker host find the IP address of the host from within the container
+   use the output of `ip route`
+   
+   ```sh
+   ip route
+   default via 172.17.0.1 dev eth0
+   ```
 
-        'Datasources' => [
-            'default' => [
-                'host' => '172.17.0.1',
-                // if in docker env and you are running the mysql 
-                // server on the host use ip route from the container
-                // to find the IP address of the host
-                // ip route
-                // default via 172.17.0.1 dev eth0
-                // 'port' => 'non_standard_port_number',
-                'username' => 'tgndbuser',
-                'password' => 'RandomCakeNameBoxPhoneNote@2',
-                'database' => 'tgnwmsdb',
-                //'schema' => 'myapp',
-                //'url' => env('DATABASE_URL', null),
-            ],
+   
 
-    ```
+   ```php
+   // config/app_local.php
+   'Datasources' => [
+      'default' => [
+            'host' => '172.17.0.1',
+            'username' => 'tgndbuser',
+            'password' => 'RandomCakeNameBoxPhoneNote@2',
+            'database' => 'tgnwmsdb',
+            //'schema' => 'myapp',
+            //'url' => env('DATABASE_URL', null),
+      ],
+
+   ```
 
 5. Build the docker image
 
@@ -70,7 +76,7 @@
    Create a `.docker-env` file in docker/ with the following contents
 
    ```sh
-   # BUILD options are dev or prod
+   # BUILD options are dev or prod (prod doesn't have xdebug and other dev libraries)
    BUILD=dev
    WEB_DIR=test
    CUPS_PORT=8632
@@ -82,11 +88,14 @@
    CONTAINER_NAME=${WEB_DIR}
    ```
 
-4. Build docker image
+4. Build docker image and run it
+   This will build a Ubuntu 20.04 image and compile glabels-3.4.1 to include zint barcode needed for GS1 labels
+   
    ```sh
    ./docker-build.sh
    ```
-   Run `docker-run.sh` to start the container
+   
+   Run `docker-run.sh` to start the container. You will be prompted to change the root password 
 
    ```
    ./docker-run.sh
@@ -108,7 +117,7 @@
 
    ```
 
-8. Install PHP Libraries and Populate Database
+8. Install PHP Libraries and populate the database
    Still in the docker container...
 
    ```sh
@@ -130,7 +139,42 @@
    bin/cake migrations seed # clears tables and loads sample data but without data in pallets, cartons and dispatch tables
    ```
 
-9. Install UI resources
+9. Copy don't symlink the assets for plugins to the webroot.
+
+   using symlinks breaks if you try to switch out of docker and run `bin/cake server`
+
+   ```sh
+   # still in container
+   cd /var/www/${WEB_DIR}
+   root@d3ad0c48ca65:/var/www/tgnwms# bin/cake plugin loaded
+   bin/cake plugin loaded
+   Authentication
+   Authorization
+   Bake
+   BootstrapUI
+   Cake/TwigView
+   CakeDC/Auth
+   DebugKit
+   Migrations
+
+   root@d3ad0c48ca65:/var/www/tgnwms# bin/cake plugin assets copy
+
+   For plugin: BootstrapUI
+   -------------------------------------------------------------------------------
+
+   For plugin: DebugKit
+   -------------------------------------------------------------------------------
+
+   Done
+
+   ```
+
+10. Install UI resources
+
+   Copy bootstrap, jquery and popper.js into webroot/bootstrap_u_i
+
+   ***This step is not needed as the assets are already in webroot/ and are checked out 
+   by  the clone***
 
    ```sh
    # install bootstrap-ui deps
@@ -154,29 +198,7 @@
    npm i jquery@3.4.1
    ```
 
-9) Copy don't symlink the assets for plugins to the webroot.
 
-   using symlinks breaks if you try to switch out of docker and run `bin/cake server`
-
-   ```sh
-   # still in container
-   cd /var/www/${WEB_DIR}
-   root@d3ad0c48ca65:/var/www/tgnwms# bin/cake plugin loaded
-   root@d3ad0c48ca65:/var/www/tgnwms# bin/cake plugin assets copy
-
-   For plugin: BootstrapUI
-   -------------------------------------------------------------------------------
-
-   For plugin: DebugKit
-   -------------------------------------------------------------------------------
-
-   Done
-
-   ```
-
-10. Copy bootstrap, jquery and popper.js into webroot/bootstrap_u_i
-
-   I didn't do this seems that the asset copy above does the job as lo
     ```sh
     cd /var/www/test/vendor/friendsofcake/bootstrap-ui/node_modules/
     cp -rv bootstrap/dist/* /var/www/test/webroot/bootstrap_u_i/
@@ -187,11 +209,19 @@
 11. Install htaccess files
 
     ```sh
-    cd /var/www
+    cd /var/www/${WEB_DIR}
     cp htaccess.txt .htaccess
     cd webroot/
     cp htaccess.txt .htaccess
     ```
+
+12. Run tests
+   In container 
+
+   ```sh
+   cd /var/www/${WEB_DIR}
+   vendor/bin/phpunit
+   ```
 
 6. Test connection to CUPS and Apache
 
@@ -212,7 +242,9 @@
 
 ### Default root password for docker container
 
-The default **root** password for the docker container is defined in the Dockerfile as `HeartMindSoul`. You will need this if when you add printers via CUPS.
+The default **root** password for the docker container is defined in the Dockerfile as `HeartMindSoul` or whatever you set it to when starting the container with `docker-run.sh`
+
+You will need the root password when you add printers via CUPS.
 
 - Sample labels
 - A PDF Printer that outputs to /var/www/PDF
