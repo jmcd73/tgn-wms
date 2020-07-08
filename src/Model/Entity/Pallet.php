@@ -26,7 +26,7 @@ use Cake\ORM\Entity;
  * @property string $sscc
  * @property string $batch
  * @property int|null $printer_id
- * @property \Cake\I18n\FrozenTime $print_date
+ * @property \Cake\I18n\FrozenTime $production_date
  * @property \Cake\I18n\FrozenTime|null $cooldown_date
  * @property int $min_days_life
  * @property int $location_id
@@ -81,7 +81,7 @@ class Pallet extends Entity
         'batch' => true,
         'printer' => true,
         'printer_id' => true,
-        'print_date' => true,
+        'production_date' => true,
         'cooldown_date' => true,
         'min_days_life' => true,
         'production_line' => true,

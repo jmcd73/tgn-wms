@@ -27,7 +27,7 @@
                     </th>
                     <th><?php echo $this->Paginator->sort('qty'); ?></th>
                     <th><?php echo $this->Paginator->sort('quantity', 'Full PL Qty'); ?></th>
-                    <th><?php echo $this->Paginator->sort('print_date'); ?></th>
+                    <th><?php echo $this->Paginator->sort('production_date'); ?></th>
                     <th><?php echo $this->Paginator->sort('bb_date', 'Best before'); ?></th>
                     <th><?php echo $this->Paginator->sort('shipment_id'); ?></th>
                     <th class="actions"><?php echo __('Actions'); ?></th>
@@ -62,7 +62,7 @@
                         <?php echo h($pallet['items']['quantity']); ?>
                     </td>
 
-                    <td><?php echo h($pallet['print_date']); ?></td>
+                    <td><?php echo h($pallet['production_date']); ?></td>
                     <td><?php echo h($pallet['bb_date']); ?></td>
                     <td><?= $pallet->has('shipment') ? $pallet->shipment->shipper : ''; ?></td>
                     <td class="actions">

@@ -749,7 +749,7 @@ class PrintLogController extends AppController
             );
 
             $cabLabelData = [
-                'printDate' => $pallet['print_date'],
+                'printDate' => $pallet['production_date'],
                 'companyName' => $this->companyName,
                 'internalProductCode' => $pallet['items']['code'],
                 'reference' => $pallet['pl_ref'],
@@ -874,7 +874,7 @@ class PrintLogController extends AppController
             $bestBeforeDates = $this->PrintLog->formatLabelDates($bb_date);
 
             $cabLabelData = [
-                'printDate' => $pallet->print_date,
+                'printDate' => $pallet->production_date,
                 'companyName' => $this->companyName,
                 'internalProductCode' => $pallet->items->code,
                 'reference' => $pallet->pl_ref,

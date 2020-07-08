@@ -56,10 +56,10 @@ echo $this->Form->control(
                     echo $this->Form->control(
                         'bb_date',
                         [
-                            'label' => false,
+                            'label' => 'Best Before',
+                            'type' => 'date',
                             'placeholder' => 'Best Before',
                             'id' => 'bb_date',
-                            'inline' => true,
                         ]
                     );
 
@@ -106,11 +106,11 @@ echo $this->Form->control(
                         ]
                     );
                     echo $this->Form->control(
-                        'print_date',
+                        'production_date',
                         [
-                            'id' => 'print_date',
+                            'id' => 'production_date',
                             'class' => 'mb-3',
-                            'label' => false,
+                            'label' => "Production Date",
                             'placeholder' => 'Manuf. Date',
                         ]
                     );
@@ -168,7 +168,7 @@ echo $this->Form->control(
                     <th><?php echo $this->Paginator->sort('qty'); ?></th>
                     <th><?php echo $this->Paginator->sort('pl_ref'); ?></th>
                     <th><?php echo $this->Paginator->sort('batch'); ?></th>
-                    <th><?php echo $this->Paginator->sort('print_date'); ?></th>
+                    <th><?php echo $this->Paginator->sort('production_date'); ?></th>
                     <th><?php echo $this->Paginator->sort('inventory_status_id'); ?></th>
                     <th><?php echo $this->Paginator->sort('location_id'); ?></th>
                     <th><?php echo $this->Paginator->sort('shipment_id'); ?></th>
@@ -191,7 +191,7 @@ echo $this->Form->control(
                     <td><?php echo h($pallet['qty']); ?></td>
                     <td><?php echo h($pallet['pl_ref']); ?></td>
                     <td><?php echo h($pallet['batch']); ?></td>
-                    <td><?php echo h($pallet['print_date']->i18nFormat(null, $user->timezone)); ?></td>
+                    <td><?php echo h($pallet['production_date']->i18nFormat(null, $user->timezone)); ?></td>
                     <td><?= $pallet->has('inventory_status') ? h($pallet->inventory_status->name) : ''; ?></td>
                     <td><?= $pallet->has('location') ? h($pallet->location->location) : ''; ?></td>
                     <td><?= $pallet->has('shipment') ?
@@ -205,7 +205,12 @@ echo $this->Form->control(
                               ) : '';
                             ?></td>
                     <td class="actions">
-                        <?php echo $this->Html->link(
+                        <?= $this->Html->link('Edit', [ 
+                            'controller' => 'Pallets', 'action' => 'modifyPallet',$pallet['id']],
+                            ['class' => 'btn edit btn-sm mb-1 btn-secondary']
+                            
+                            ) ;?>
+                       <!--  <?php echo $this->Html->link(
                                 __('Edit'),
                                 '#',
                                 [
@@ -227,7 +232,7 @@ echo $this->Form->control(
                                 ]
                             );
                             ?>
-                        <?php echo $this->Html->link(__('View'), ['action' => 'view', $pallet['id']], ['class' => 'btn btn-secondary btn-sm mb-1 view  mb-1 btn-sm']); ?>
+                        --> <?php echo $this->Html->link(__('View'), ['action' => 'view', $pallet['id']], ['class' => 'btn btn-secondary btn-sm mb-1 view  mb-1 btn-sm']); ?>
                         <?php echo $this->Html->link(__('Reprint'), ['controller' => 'PrintLog', 'action' => 'palletLabelReprint', $pallet['id']], ['class' => 'btn  mb-1  btn-secondary reprint btn-sm']); ?>
                        <!--  <?php if ($isAdmin) : ?>
                         <?php echo $this->Html->link(__('Glabels Reprint'), [

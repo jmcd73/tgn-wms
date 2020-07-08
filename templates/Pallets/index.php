@@ -59,7 +59,7 @@
             <th scope="col"><?= $this->Paginator->sort('sscc') ?></th>
             <th scope="col"><?= $this->Paginator->sort('batch') ?></th>
             <th scope="col"><?= $this->Paginator->sort('printer_id') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('print_date') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('production_date') ?></th>
             <th scope="col"><?= $this->Paginator->sort('cooldown_date') ?></th>
             <th scope="col"><?= $this->Paginator->sort('min_days_life') ?></th>
             <th scope="col"><?= $this->Paginator->sort('location_id') ?></th>
@@ -94,7 +94,7 @@
             <td><?= h($pallet->batch) ?></td>
             <td><?=  $this->Html->link($pallet->printer, ['controller' => 'Printers', 'action' => 'view', $pallet->printer_id]) ?>
             </td>
-            <td><?= h($pallet->print_date) ?></td>
+            <td><?= h($pallet->production_date) ?></td>
             <td><?= h($pallet->cooldown_date) ?></td>
             <td><?= $this->Number->format($pallet->min_days_life) ?></td>
             <td><?= $pallet->has('location') ? $this->Html->link($pallet->location->id, ['controller' => 'Locations', 'action' => 'view', $pallet->location->id]) : '' ?>

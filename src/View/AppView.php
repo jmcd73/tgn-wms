@@ -65,7 +65,7 @@ class AppView extends View
         $this->initializeUI($uiOptions);
 
         $this->loadHelper('Html', ['className' => 'App\View\Helper\HtmlHelper']);
-        $this->loadHelper('Form', ['className' => 'BootstrapUI.Form']);
+        $this->loadHelper('Form', ['className' => 'App\View\Helper\FormHelper']);
         $this->loadHelper('Flash', ['className' => 'App\View\Helper\FlashHelper']);
         $this->loadHelper('Paginator', ['className' => 'BootstrapUI.Paginator']);
         $this->loadHelper('Authentication.Identity');

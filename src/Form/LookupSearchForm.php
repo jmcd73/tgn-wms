@@ -26,7 +26,7 @@ class LookupSearchForm extends Form
             'pl_ref' => ['type' => 'string'],
             'batch' => ['type' => 'string'],
             'inventory_status_id' => ['type' => 'integer'],
-            'print_date' => ['type' => 'date'],
+            'production_date' => ['type' => 'date'],
             'location_id' => ['type' => 'integer'],
             'shipment_id' => ['type' => 'integer'],
         ]);

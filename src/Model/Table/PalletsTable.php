@@ -22,7 +22,7 @@ use Cake\Validation\Validator;
 use App\Lib\Utility\Barcode;
 use App\Model\Entity\Pallet;
 use Cake\Event\EventManager;
-
+use Cake\I18n\FrozenDate;
 
 /**
  * Pallets Model
@@ -114,6 +114,8 @@ class PalletsTable extends Table
     {
         return [
             'Model.afterSave' => 'afterSave',
+            'Model.beforeSave' => 'beforeSave',
+            'Model.Pallets.updateBestBeforeAndProductionDate' => 'updateBestBeforeAndProductionDate',
             'Model.Pallets.persistPalletRecord' => 'persistPalletRecord',
             'Model.Pallets.addPalletLabelFilename' => 'addPalletLabelFilename'
         ];
@@ -140,6 +142,68 @@ class PalletsTable extends Table
     }
 
 
+    public function beforeSave(Event $event, EntityInterface $entity, $options = [])
+    {
+        /*  if (!$entity->isNew() && $entity instanceof Pallet) {
+            $cartons = $entity->has('cartons') ? $entity->cartons : false;
+            if ($cartons) {
+
+                $production_date = new FrozenTime($entity->production_date);
+
+                $cartonProdDate = Hash::reduce($cartons, '{n}', [$this, 'returnOldestDate']);
+                if ($cartonProdDate) {
+
+                    $productionDate = explode(' ', $cartonProdDate)[0] . ' ' . explode(' ', $production_date)[1];
+
+                    $saveDate = new FrozenTime($productionDate);
+
+                    $entity->production_date = $saveDate;
+                }
+            }
+        } */
+    }
+
+    public function updateBestBeforeAndProductionDate($event, $id)
+    {
+        $pallet = $this->get($id, [
+            'contain' => ['Cartons']
+        ]);
+
+
+        if ($pallet->has('cartons')) {
+
+            $production_date = new FrozenTime($pallet->production_date);
+
+            $oldestProdDate = Hash::reduce($pallet->cartons, '{n}.production_date', [$this, 'returnOldestDate']);
+            $oldestBBDate = Hash::reduce($pallet->cartons, '{n}.best_before', [$this, 'returnOldestDate']);
+
+            if ($oldestProdDate) {
+                $productionDate = explode(' ', $oldestProdDate->toDateTimeString())[0] . ' ' . explode(' ', $production_date->toDateTimeString())[1];
+                $saveDate = new FrozenTime($productionDate);
+                $pallet->production_date = $saveDate;
+                
+            }
+
+            if($oldestBBDate) {
+                $pallet->bb_date = $oldestBBDate;
+            }
+
+            $this->save($pallet);
+        }
+    }
+    public function returnOldestDate($store, $date)
+    {
+        if (empty($date)) {
+            return;
+        }
+
+        if ($store) {
+            return $store < $date ? $store : $date;
+        }
+
+        return $date;
+    }
+
     public function persistPalletRecord(Event $event)
     {
         $this->save($event->getSubject());
@@ -163,7 +227,6 @@ class PalletsTable extends Table
         chmod($targetFullPath, 0666);
 
         $pallet->pallet_label_filename = $targetFileName;
-        
     }
 
     public function getFileExtension($printContent)
@@ -271,9 +334,9 @@ class PalletsTable extends Table
             ->notEmptyString('printer');
 
         $validator
-            ->dateTime('print_date')
-            ->requirePresence('print_date', 'create')
-            ->notEmptyDateTime('print_date');
+            ->dateTime('production_date')
+            ->requirePresence('production_date', 'create')
+            ->notEmptyDateTime('production_date');
 
         $validator
             ->dateTime('cooldown_date')
@@ -655,7 +718,7 @@ class PalletsTable extends Table
                 'Items.code',
                 'Pallets.pl_ref',
                 'Pallets.bb_date',
-                'Pallets.print_date',
+                'Pallets.production_date',
                 'Locations.location',
                 'Shipments.shipper',
                 'Shipments.shipped',
@@ -687,8 +750,8 @@ class PalletsTable extends Table
                     ],
                     'OR' => [
                         [
-                            'Pallets.print_date >=' => $startDateTime,
-                            'Pallets.print_date <=' => $endDateTime,
+                            'Pallets.production_date >=' => $startDateTime,
+                            'Pallets.production_date <=' => $endDateTime,
                         ],
                         [
                             'Pallets.qty_modified >=' => $startDateTime,
@@ -735,7 +798,7 @@ class PalletsTable extends Table
                 case 'item_id_select':
                     $options[] = ['item' => $searchValue];
                     break;
-                case 'print_date':
+                case 'production_date':
                     $options[] = [$searchKey . ' LIKE ' => $searchValue . '%'];
                     break;
                     // skip standard search keys because they are
@@ -791,7 +854,7 @@ class PalletsTable extends Table
         $options = [
             'fields' => [
                 'DISTINCT(Pallet.batch) as batch',
-                'Pallet.print_date',
+                'Pallet.production_date',
             ],
             'conditions' => [
                 'Pallet.batch LIKE' => '%' . $term . '%',
@@ -804,7 +867,7 @@ class PalletsTable extends Table
 
         $query = $this->find();
 
-        $batches = $query->distinct(['batch'])->select(['batch', 'print_date'])
+        $batches = $query->distinct(['batch'])->select(['batch', 'production_date'])
             ->where(['batch LIKE' => '%' . $term . '%'])->toArray();
         // $this->log(print_r($batches, true));
         $batches = Hash::map($batches, '{n}', [$this, 'formatBatch']);
@@ -818,7 +881,7 @@ class PalletsTable extends Table
      */
     public function formatBatch($data)
     {
-        $date = Date::parse($data['print_date']);
+        $date = Date::parse($data['production_date']);
 
         return [
             'value' => $data['batch'],
@@ -1097,11 +1160,11 @@ class PalletsTable extends Table
 
         $days_life = $item_detail->days_life;
 
-        $print_date = new FrozenTime();
+        $production_date = new FrozenTime();
 
-        $print_date_plus_days_life = $print_date->addDays($days_life);
+        $production_date_plus_days_life = $production_date->addDays($days_life);
 
-        $bestBeforeDates = $this->formatLabelDates($print_date_plus_days_life);
+        $bestBeforeDates = $this->formatLabelDates($production_date_plus_days_life);
 
         $palletData =
             [
@@ -1118,8 +1181,8 @@ class PalletsTable extends Table
                 'sscc' => $sscc,
                 'printer' => $printer['name'],
                 'printer_id' => $productionLine->printer_id,
-                'print_date' => $print_date,
-                'cooldown_date' => $print_date,
+                'production_date' => $production_date,
+                'cooldown_date' => $production_date,
                 'location_id' => $locationId,
                 'shipment_id' => 0,
                 'inventory_status_id' => $inventoryStatusId,

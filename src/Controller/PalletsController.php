@@ -1059,7 +1059,7 @@ class PalletsController extends AppController
                         ],
                     ],
                 ],
-            ])->orderDesc('Pallets.print_date');
+            ])->orderDesc('Pallets.production_date');
 
         // This behavior implements paginate and paginateCount
         // because the default paginateCount will not work with the HAVING clause
@@ -1087,7 +1087,7 @@ class PalletsController extends AppController
         $searchForm = new OnhandSearchForm();
 
         /*  $this->Pallet->virtualFields['oncooldown'] = 'TIMESTAMPDIFF(HOUR, Pallet.cooldown_date, NOW()) < ' . $cooldown;
-         $this->Pallet->virtualFields['pl_age'] = 'TIMESTAMPDIFF(HOUR, Pallet.print_date, NOW())';
+         $this->Pallet->virtualFields['pl_age'] = 'TIMESTAMPDIFF(HOUR, Pallet.production_date, NOW())';
  */
 
         if (!empty($this->request->getQuery('filter_value'))) {
@@ -1150,7 +1150,7 @@ class PalletsController extends AppController
                 'item_id',
                 'description',
                 'pl_ref',
-                'print_date',
+                'production_date',
                 'bb_date',
                 'batch',
                 'qty',
@@ -1218,4 +1218,119 @@ class PalletsController extends AppController
 
         return $response;
     }
+
+
+     /**
+     * @param  int   $id Supply ID of pallet
+     * @return mixed
+     */
+    public function modifyPallet($id = null)
+    {
+
+        $user = $this->Authentication->getIdentity();
+
+        $pallet = $this->Pallets->get($id, [
+            'contain' => [
+                'Locations',
+                'Cartons',
+                'Items',
+                'Shipments'
+            ],
+        ]);
+
+        if (isset($pallet['shipment']['shipped']) && (bool)$pallet['shipment']['shipped']) {
+            $this->Flash->error('Cannot modify a pallet that is already shipped');
+
+            return $this->redirect($this->request->referer(false));
+        }
+
+        if ($this->request->is(['post', 'put'])) {
+
+            $data = $this->request->getData();
+
+            [ $total, $result ] = $this->Pallets->Cartons->processCartons($data['cartons'], $user);
+            
+            unset ($data['cartons']);
+
+            $pallet = $this->Pallets->get($id);
+            
+            $pallet->qty = $total;  
+
+            $patched = $this->Pallets->patchEntity($pallet,$data);
+
+            if ($this->Pallets->save($patched)) {
+                $this->Flash->success(__('The pallet data has been saved.'));
+
+                $event = new Event('Model.Pallets.updateBestBeforeAndProductionDate', $pallet, [ 'id' => $id]);
+                $this->getEventManager()->dispatch($event);
+
+                return $this->redirect($this->request->getData()['referer']);
+            } else {
+                $validationErrors = $this->Pallets->flattenAndFormatValidationErrors($patched->getErrors());
+                $this->Flash->error(__('The  pallet data could not be saved. Please, try again.' . $validationErrors));
+            }
+        }
+
+        $cartons = $pallet['cartons'];
+
+        array_push($cartons, [
+            'count' => '',
+            'best_before' => '',
+            'pallet_id' => $id,
+            'item_id' => $pallet->item_id
+        ]);
+
+        $pallet['cartons'] = $cartons;
+
+        $pallet->qty_before = $pallet->qty;
+
+        $item_data = $this->Pallets->Items->get($pallet->item_id, ['contain' => []]);
+
+        $item_qty = $item_data['quantity'];
+
+        $inventory_statuses = $this->Pallets->InventoryStatuses->find('list');
+
+        $productType = $this->Pallets->getProductType($id);
+
+        $productTypeId = isset($productType['id'])
+            ? $productType['id'] : 0;
+
+        $availableLocations = $this->Pallets->getAvailableLocations('available', $productTypeId);
+        
+        $locationsCombined = $availableLocations;
+
+        if ($pallet->has('location')) {
+            $currentLocation = [
+                $pallet['location']['id'] => $pallet['location']['location'],
+            ];
+
+            $locationsCombined = $locationsCombined + $currentLocation;
+        }
+
+        asort($locationsCombined, SORT_NATURAL);
+
+        $locations = $locationsCombined;
+
+        //$pallet->qty_user_id = $this->Auth->user()['id'];
+
+        $pallet->product_type_id = $item_data['id'];
+
+        $referer = $this->request->referer(false);
+        //$restricted = $this->isAuthorized($this->Auth->user()) ? false : true;
+        $restricted = false;
+        $user = $this->Authentication->getIdentity();
+
+        $this->set(
+            compact(
+                'item_qty',
+                'user',
+                'locations',
+                'referer',
+                'pallet',
+                'inventory_statuses',
+                'restricted'
+            )
+        );
+    }
+
 }

@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
 use Cake\Core\Exception\Exception;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
+use Cake\Utility\Hash;
 
 /**
  * Cartons Model
@@ -53,7 +54,7 @@ class CartonsTable extends Table
 
         $fields = [
             'qty' => 'count',
-            'print_date' => 'production_date',
+            'production_date' => 'production_date',
             'bb_date' => 'best_before',
             'id' => 'pallet_id',
             'user_id' => 'user_id',
@@ -145,5 +146,66 @@ class CartonsTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
 
         return $rules;
+    }
+
+    public function processCartons($cartonData, $user)
+    {
+        $update = array_filter($cartonData, function ($item) {
+            return $item['count'] > 0 && $item['production_date'];
+        });
+
+        $delete = array_filter($cartonData, function ($item) {
+            return $item['count'] == 0 && $item['id'] > 0;
+        });
+        
+        $total = array_sum(Hash::extract($update, '{n}.count'));
+
+        $deleteIds = Hash::extract($delete, '{n}.id');
+        $updateIds = Hash::extract($update, '{n}.id');
+
+        $deleteOK = false;
+        $updateOK = false;
+
+        if ($deleteIds) {
+            if (
+                $this->deleteAll(
+                    [
+                        'Carton.id IN' => $deleteIds,
+                    ]
+                )
+            ) {
+                $deleteOK = true;
+            } else {
+                $this->Flash->error('Delete Error');
+            };
+        }
+
+        if ($update) {
+            $entities = $this->find()->where(['id IN' => $updateIds]);
+            foreach($update as $k => $v) {
+                $update[$k]['user_id'] = $user->get('id');
+            }
+            $patched = $this->patchEntities($entities, $update);
+
+            foreach ($patched as $p) {
+                tog(print_r($p->getErrors(), true));
+            }
+          
+            if ($this->saveMany($patched)) {
+                $updateOK = true;
+            } else {
+                $validationErrors = $this->validationErrors;
+                $errorText = $this->flattenAndFormatValidationErrors($validationErrors);
+                if ($errorText) {
+                    $msg = __('<strong>Update Error: </strong> %s', $errorText);
+                } else {
+                    $msg = '<strong>Update Error</strong>';
+                }
+
+                $this->Flash->error($msg);
+            };
+        }
+
+        return [ $total, $update && $updateOK || $deleteIds && $deleteOK ];
     }
 }

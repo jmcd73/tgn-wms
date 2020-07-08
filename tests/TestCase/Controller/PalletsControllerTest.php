@@ -228,7 +228,7 @@ class PalletsControllerTest extends TestCase
 
          public function testLookupLimit()
          {
-             $this->authMe(1);
+             $this->authMe();
              $this->get([ 'controller' => 'Pallets', 'action' => 'Lookup', 
              
              '?' => [

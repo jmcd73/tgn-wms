@@ -56,7 +56,7 @@
             echo $this->Form->control('batch');
             echo $this->Form->control('printer');
             echo $this->Form->control('printer_id', ['options' => $printers, 'empty' => true]);
-            echo $this->Form->control('print_date');
+            echo $this->Form->control('production_date');
             echo $this->Form->control('cooldown_date', ['empty' => true]);
             echo $this->Form->control('min_days_life');
             echo $this->Form->control('production_line');

@@ -107,7 +107,7 @@ echo $this->Form->end();
                         <td><?php echo $carton['pallet']['description']; ?></td>
                         <td><?php echo $carton['pallet']['pl_ref']; ?></td>
                         <td><?php echo $carton['count']; ?></td>
-                        <td><?php echo $carton['pallet']['print_date']; ?></td>
+                        <td><?php echo $carton['pallet']['production_date']; ?></td>
                         <td><?php echo $carton['production_date']; ?></td>
                         <td><?php echo $carton['best_before']; ?></td>
                         <td><?php echo $this->Html->link(

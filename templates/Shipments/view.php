@@ -86,7 +86,7 @@
                             <td><?= h($pallets->pl_ref) ?></td>
                             <td><?= h($pallets->sscc) ?></td>
                             <td><?= h($pallets->batch) ?></td>
-                            <td><?= h($pallets->print_date) ?></td>
+                            <td><?= h($pallets->production_date) ?></td>
                             <td><?= $pallets->has('location') ? $pallets->location->location: '' ?></td>
                             <td><?= h($pallets->inventory_status_note) ?></td>
                             <td><?= h($pallets->created) ?></td>
