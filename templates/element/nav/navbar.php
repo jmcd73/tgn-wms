@@ -8,7 +8,7 @@ use Cake\Core\Configure;
         $this->Html->image(Configure::read('navbar.brand.img'), [
             'class' => 'brand-image',
         ]),
-        $this->Url->build('/'),
+        $this->Url->build('/', [ 'fullBase' => true]),
         [
             'escape' => false,
             'class' => 'navbar-brand col-md-2'
