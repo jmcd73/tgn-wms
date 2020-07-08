@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Form;
 
 use App\Form\ShiftReportForm;
-
 use Cake\TestSuite\TestCase;
 
 /**
