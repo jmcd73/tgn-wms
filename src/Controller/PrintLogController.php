@@ -22,7 +22,9 @@ use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 use App\Lib\PrintLabels\Glabel\ShippingLabelGeneric;
-
+use Cake\Event\Event;
+use App\Lib\PrintLabels\PrintLabel;
+use App\Model\Table\PalletsTable;
 
 /**
  * PrintLog Controller
@@ -38,6 +40,13 @@ class PrintLogController extends AppController
     public function initialize(): void
     {
         parent::initialize();
+
+        $printLabel = new PrintLabel();
+        $palletTable = new PalletsTable();
+
+        $this->getEventManager()->on($printLabel);
+
+        $this->getEventManager()->on($palletTable);
 
         $this->getEventManager()->on($this->PrintLog);
     }
@@ -873,52 +882,49 @@ class PrintLogController extends AppController
 
             $bestBeforeDates = $this->PrintLog->formatLabelDates($bb_date);
 
-            $cabLabelData = [
-                'printDate' => $pallet->production_date,
+            $event = new Event('PrintLabels.palletPrint', $pallet, [
+                'item' => $pallet->items,
+                'printer' => $printerDetails,
                 'companyName' => $this->companyName,
-                'internalProductCode' => $pallet->items->code,
-                'reference' => $pallet->pl_ref,
-                'sscc' => $pallet->sscc,
-                'description' => $pallet->items->description,
-                'gtin14' => $pallet->gtin14,
-                'quantity' => $pallet->qty,
-                'bestBeforeHr' => $bestBeforeDates['bb_hr'],
-                'bestBeforeBc' => $bestBeforeDates['bb_bc'],
-                'batch' => $pallet->batch,
-                'numLabels' => $data['copies'],
-                'ssccBarcode' => '[00]' . $pallet->sscc,
-                'itemBarcode' => '[02]' . $pallet->gtin14 .
-                    '[15]' . $bestBeforeDates['bb_bc'] . '[10]' . $pallet->batch .
-                    '[37]' . $pallet->qty,
-                'brand' =>  $pallet->items->brand,
-                'variant' =>  $pallet->items->variant,
-                'quantity_description' =>  $pallet->items->quantity_description,
+                'action' => $this->request->getParam('action')
+            ]);
+
+            $this->getEventManager()->dispatch($event);
+            
+            $printResult = $event->getResult()['printResult'];
+
+            $labelClass =  $event->getResult()['labelClass'];
+        
+            if($printResult['return_value'] === 0 ){
+
+            
+              
+            $palletEvents = [
+                'Model.Pallets.addPalletLabelFilename',
+                'Model.Pallets.persistPalletRecord'
             ];
 
-            $saveData = $this->PrintLog->formatPrintLogData(
-                $controllerAction,
-                $cabLabelData
-            );
+            foreach ($palletEvents as $eventName) {
 
-            $isPrintDebugMode = Configure::read('pallet_print_debug');
+                $evt = new Event(
+                    $eventName,
+                    $pallet,
+                    [
+                        'labelClass' => $labelClass,
+                        'labelOutputPath' => $this->getSetting('LABEL_OUTPUT_PATH')
+                    ]
+                );
 
-
-            $template = $this->PrintLog->getTemplate(
-                $pallet->items->print_template->id
-            );
-
-
-            $printResult = LabelFactory::create($template->print_class, $this->request->getParam('action'))
-                ->format($template, $cabLabelData)
-                ->print($printerDetails);
-
+                $this->getEventManager()->dispatch($evt);
+            }
+        }
 
 
             $this->handlePrintResult(
                 $printResult,
                 $printerDetails,
-                $pallet->items->print_template->is_file_template ? $template->details : $template,
-                $saveData,
+                $pallet->items->print_template,
+                [ 'controller_action' => $controllerAction, 'print_data' =>  json_encode($labelClass->getPrintContentArray()) ],
                 $referer = $data['refer']
             );
         }

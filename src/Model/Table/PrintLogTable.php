@@ -45,6 +45,7 @@ class PrintLogTable extends Table
     public function savePrintRecord(Event $event ) {
         $newEntity = $this->newEntity((array) $event->getSubject());
         $savedEntity = $this->save($newEntity);
+        tog("PL", $newEntity->getErrors());
     }
 
 
