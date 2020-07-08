@@ -229,7 +229,7 @@ class ShipmentsController extends AppController
 
         $showMixed = (bool) $this->getSetting("SHOW_ADD_MIXED");
 
-        $this->set(compact('js', 'css', 'baseUrl', 'productTypes', 'operation', 'productTypeOrId'), 'showMixed');
+        $this->set(compact('js', 'css', 'baseUrl', 'productTypes', 'operation', 'productTypeOrId', 'showMixed'));
     }
 
     /**

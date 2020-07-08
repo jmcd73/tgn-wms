@@ -102,7 +102,8 @@ class Pallet extends Entity
         'cartons' => true,
         'user_id' => true,
         'product_type_serial' => true,
-        'pallet_label_filename' => true
+        'pallet_label_filename' => true,
+        'production_date' => true
     ];
 
     protected function _getCodeDesc()
@@ -122,4 +123,5 @@ class Pallet extends Entity
     {
         return $this->dont_ship && !$this->ship_low_date;
     }
+
 }
