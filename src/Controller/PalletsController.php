@@ -700,6 +700,9 @@ class PalletsController extends AppController
             ],
             'limit' => Configure::read('PalletsLookup.limit'),
             'maxLimit' => Configure::read('PalletsLookup.maxLimit'),
+            'order' => [
+                'id' => 'DESC'
+            ]
         ];
 
         $pallets = $this->paginate();
