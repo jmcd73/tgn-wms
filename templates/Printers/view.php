@@ -109,7 +109,7 @@
                     <td><?= h($pallets->batch) ?></td>
                     <td><?= h($pallets->printer) ?></td>
                     <td><?= h($pallets->printer_id) ?></td>
-                    <td><?= h($pallets->print_date) ?></td>
+                    <td><?= h($pallets->production_date) ?></td>
                     <td><?= h($pallets->cooldown_date) ?></td>
                     <td><?= h($pallets->min_days_life) ?></td>
                     <td><?= h($pallets->production_line) ?></td>

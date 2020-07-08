@@ -248,6 +248,14 @@ div.right-col {
          padding-top: 24px;*/
 }
 
+input[type="checkbox"] {
+  /* fix for chrome on windows super huge checkboxes */
+  /*    -webkit-appearance: none;
+          -moz-appearance: none;*/
+  height: 16px;
+  width: 16px;
+  margin-top: 1px;
+}
 
 
 /*div.checkbox {

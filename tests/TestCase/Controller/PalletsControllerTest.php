@@ -239,7 +239,6 @@ class PalletsControllerTest extends TestCase
         $this->assertStringContainsString('showing 5 record(s)', (string) $this->_getBodyAsString());
     }
 
-
     public function testShiftReportNullSubmit()
     {
         $this->authMe(1);

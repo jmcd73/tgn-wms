@@ -90,7 +90,7 @@
 
             <tr>
                 <th scope="row"><?= __('Production Date') ?></th>
-                <td><?= h($pallet->print_date) ?></td>
+                <td><?= h($pallet->production_date) ?></td>
             </tr>
             <tr>
                 <th scope="row"><?= __('Inventory Status') ?></th>

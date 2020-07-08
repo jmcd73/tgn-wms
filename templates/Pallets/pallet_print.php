@@ -44,7 +44,8 @@ $this->Html->script(
                         $this->Html->link(
                             $lastPrint->item . ' - ' . $lastPrint->pl_ref,
                             ['action' => 'sendFile', $lastPrint->id],
-                            ['class' => 'nav-link ' . $ext ]
+                            [   'target' => '_blank',
+                                'class' => 'nav-link ' . $ext ]
                         ),
                         ['class' => 'nav-item']
                     ); ?>

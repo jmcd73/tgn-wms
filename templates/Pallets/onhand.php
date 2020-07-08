@@ -80,7 +80,7 @@ use App\View\Helper\ToggenHelper;
                     <th><?php echo $this->Paginator->sort('location_id'); ?></th>
                     <th><?php echo $this->Paginator->sort('item_id'); ?></th>   
                     <th><?php echo $this->Paginator->sort('pl_ref'); ?></th>
-                    <th><?php echo $this->Paginator->sort('print_date'); ?></th>
+                    <th><?php echo $this->Paginator->sort('production_date'); ?></th>
                     <th>Pl age</th>
                     <th><?php echo $this->Paginator->sort('bb_date', 'Best before'); ?></th>
                     <th><?php echo $this->Paginator->sort('batch'); ?></th>
@@ -134,11 +134,11 @@ use App\View\Helper\ToggenHelper;
                     <td <?= $classString; ?>>
                         <?php echo $this->Html->tag(
                             'span',
-                            h($pallet['print_date']->i18nFormat(null, $user->timezone)),
+                            h($pallet['production_date']->i18nFormat(null, $user->timezone)),
                             ['title' => 'Cooldown date: ' . h($pallet['cooldown_date']->i18nFormat(null, $user->timezone)), 'style' => 'cursor: crosshair;']
                         ); ?></td>
                     <td <?= $classString; ?>>
-                        <?php echo h($this->Time->timeAgoInWords($pallet['print_date'])); ?></td>
+                        <?php echo h($this->Time->timeAgoInWords($pallet['production_date'])); ?></td>
                     <td <?= $classString; ?>>
                         <?php echo h($pallet['bb_date']->i18nFormat(null, $user->timezone)); ?>
                     </td>
@@ -174,7 +174,12 @@ use App\View\Helper\ToggenHelper;
                         <?php endif; ?>
                     </td>
                     <td <?php echo $this->Html->buildClass([$cls, 'actions']); ?>>
-                        <?php echo $this->Html->link(
+                    <?= $this->Html->link('Edit', [ 
+                            'controller' => 'Pallets', 'action' => 'modifyPallet',$pallet['id']],
+                            ['class' => 'btn edit btn-sm mb-1']
+                            
+                            ) ;?>
+                      <!--   <?php echo $this->Html->link(
                             __('Edit'),
                             '#',
                             [
@@ -195,7 +200,7 @@ use App\View\Helper\ToggenHelper;
                                 'title' => 'Click here for popup edit options menu',
                             ]
                         );
-                        ?>
+                        ?> -->
                     </td>
                 </tr>
                 <?php endforeach; ?>

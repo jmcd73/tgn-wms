@@ -78,9 +78,20 @@ use Cake\Core\Configure;
         <?= $this->Form->control('location_id', [
             'empty' => '(select)',
         ]); ?>
+
+        <?php
+        echo $this->Form->control('production_date', [
+            'dateFormat' => 'DMY',
+            'label' => "Production Date",
+            'help' =>  $user->canResult('bestBeforeEdit', $pallet)->getReason(),
+            $user->can('bestBeforeEdit', $pallet) ? null : $disabled
+        ]);
+        ?>
+
         <?php
         echo $this->Form->control('bb_date', [
             'dateFormat' => 'DMY',
+            'label' => "Best Before Date",
             'help' =>  $user->canResult('bestBeforeEdit', $pallet)->getReason(),
             $user->can('bestBeforeEdit', $pallet) ? null : $disabled
         ]);

@@ -38,7 +38,7 @@
                 </dd>
                 <dt class="col-sm-4"><?=__('Print Date'); ?></dt>
                 <dd class="col-sm-8">
-                    <?=h($pallet['print_date']); ?>
+                    <?=h($pallet['production_date']); ?>
                 </dd>
             </dl>
         </div>

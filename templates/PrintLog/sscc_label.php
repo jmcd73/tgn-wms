@@ -50,7 +50,7 @@
             </dd>
             <dt class="col-sm-3"><?= __('Print Date'); ?></dt>
             <dd class="col-sm-9">
-                <?= h($pallet['print_date']); ?>
+                <?= h($pallet['production_date']); ?>
 
             </dd>
 

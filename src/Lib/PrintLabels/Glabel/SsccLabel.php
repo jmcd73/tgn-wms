@@ -44,6 +44,7 @@ class SsccLabel extends Label implements GlabelsInterface
         'QUANTITY_DESCRIPTION' => 'quantity_description',
     ];
 
+
     public function __construct($action)
     {
         parent::__construct($action);
@@ -52,6 +53,7 @@ class SsccLabel extends Label implements GlabelsInterface
     public function print($printer)
     {
         return $this->glabelsBatchPrint($printer);
+        
     }
 
     public function format($template, $labelData)

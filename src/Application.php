@@ -71,6 +71,7 @@ class Application extends BaseApplication implements
     {
         // Call parent to load bootstrap from files.
         parent::bootstrap();
+        
         $this->addPlugin('BootstrapUI');
 
         $this->addPlugin(\CakeDC\Auth\Plugin::class, ['bootstrap' => false]);

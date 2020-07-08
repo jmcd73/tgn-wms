@@ -103,6 +103,10 @@ class Label
         }
     }
 
+    public function getPrintContent()
+    {
+        return $this->printContent;
+    }
     public function getGlabelsPrintContent()
     {
         return $this->printContent;
@@ -185,6 +189,11 @@ class Label
     public function setPrintContentArray($printArray)
     {
         $this->printContentArray = $printArray;
+    }
+
+    public function getPrintContentArray()
+    {
+        return $this->printContentArray;
     }
 
     /**

@@ -32,7 +32,7 @@ trait UIViewTrait
 
         $helpers = [
             //'Html' => ['className' => 'BootstrapUI.Html'],
-            'Form' => ['className' => 'BootstrapUI.Form'],
+            //'Form' => ['className' => 'BootstrapUI.Form'],
             //'Flash' => ['className' => 'BootstrapUI.Flash'],
             'Paginator' => ['className' => 'BootstrapUI.Paginator'],
             'Breadcrumbs' => ['className' => 'BootstrapUI.Breadcrumbs'],

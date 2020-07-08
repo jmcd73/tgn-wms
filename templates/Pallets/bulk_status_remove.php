@@ -61,7 +61,7 @@ echo $this->Html->script(
                     <th><?php echo $this->Paginator->sort('qty'); ?></th>
                     <th><?php echo $this->Paginator->sort('pl_ref'); ?></th>
                     <th><?php echo $this->Paginator->sort('batch'); ?></th>
-                    <th><?php echo $this->Paginator->sort('print_date'); ?></th>
+                    <th><?php echo $this->Paginator->sort('production_date'); ?></th>
                     <th><?php echo $this->Paginator->sort('location_id'); ?></th>
                     <th><?php echo $this->Paginator->sort('inventory_status_id', 'Status'); ?></th>
                     <th><?php echo $this->Paginator->sort('inventory_status_note'); ?></th>
@@ -79,7 +79,7 @@ echo $this->Html->script(
                     <td><?php echo h($pallet['qty']); ?></td>
                     <td><?php echo h($pallet['pl_ref']); ?></td>
                     <td><?php echo h($pallet['batch']); ?></td>
-                    <td><?php echo h($pallet['print_date']); ?></td>
+                    <td><?php echo h($pallet['production_date']); ?></td>
                     <td><?= $pallet->has('location') ? h($pallet['location']['location']) : ''; ?></td>
                     <td><?= $pallet->has('inventory_status') ? h($pallet['inventory_status']['name']) : ''; ?></td>
                     <td><?php echo h($pallet['inventory_status_note']); ?></td>
