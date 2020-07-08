@@ -1132,4 +1132,10 @@ class PalletsTable extends Table
 
         return $this->newEntity($palletData);
     }
+
+    public function checkFileExists($outputPath, $fileName): bool
+    {
+        $fullPath = WWW_ROOT . $outputPath . DS . $fileName;
+        return file_exists($fullPath);
+    }
 }
