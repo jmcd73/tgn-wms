@@ -23,8 +23,10 @@ class CartonsSeed extends AbstractSeed
         $data = [];
 
         $table = $this->table('cartons');
-      
-        $table->insert($data)->save();
+        
         $table->truncate();
+        
+        $table->insert($data)->save();
+
     }
 }
