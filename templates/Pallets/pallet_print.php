@@ -133,7 +133,8 @@ $this->Html->script(
 
                                         'label' => 'Batch No.' . $this->Html->tag('span',  'Example <strong>' . $exampleBatchNo . '</strong>', ['class' => 'secondary-text']),
                                         'class' => 'batch',
-                                        'escape' => false
+                                        'escape' => false,
+                                        'autocomplete' => 'off',
 
                                     ]
                                 ); ?>
