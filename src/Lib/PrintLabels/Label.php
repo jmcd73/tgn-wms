@@ -37,7 +37,8 @@ class Label
     public $options = '';
     public $action = '';
 
-
+    protected $itemCode = '';
+    
     /**
      * @var int $glabelPrintCopies
      */

@@ -4,8 +4,11 @@ declare(strict_types=1);
 namespace App\Lib\PrintLabels;
 
 use App\Model\Entity\PrintTemplate;
+use Cake\Core\InstanceConfigTrait;
+use Cake\View\StringTemplateTrait;
 use Cake\ORM\Entity;
 use Cake\Event\Event;
+
 
 /**
  * trait ResultTrait
@@ -19,11 +22,8 @@ trait ResultTrait
 {
     private function handlePrintResult(
         array $printResult,
-        Entity $printerDetails,
-        PrintTemplate $printTemplate,
         array $saveData,
-        $referer = null,
-        $pallet = null
+        $config = []
     ) {
         if ($printResult['return_value'] === 0) {
            
@@ -31,25 +31,21 @@ trait ResultTrait
             $this->{$this->modelClass}->getEventManager()->dispatch($event);
 
             $message = __(
-                'Sent pallet label <strong>{0}</strong> using <strong>{1}</strong> template to printer <strong>{2}</strong>',
-                $pallet->pl_ref,
-                $printTemplate->name,
-                $printerDetails['name'],
+                $config['success']['template'],
+                $config['success']['values']
             );
 
             $this->Flash->success($message, ['escape' => false]);
 
-            $redirectTo = ! empty($referer) ? $referer : ['action' => 'completed'];
+            $redirectTo = ! empty($config['referer']) ? $config['referer'] : ['action' => 'completed'];
 
             return $this->redirect($redirectTo);
             
         } else {
-            $err = empty($printResult['stderr']) ? $printResult['return_value'] : $printResult['stderr'] ;
+           
             $message = __(
-                'Failed sending <strong>{0}</strong> to printer <strong>{1}</strong> - <strong>{2}</strong>',
-                $printTemplate['name'],
-                $printerDetails['name'],
-                $err
+                $config['error']['template'],
+                $config['error']['values']
             );
 
             $this->Flash->error($message, ['escape' => false]);
