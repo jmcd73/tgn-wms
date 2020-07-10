@@ -367,11 +367,6 @@ input[type="checkbox"] {
   margin-bottom: 30px;
 }
 
-@media only screen and (max-width: 992px) and (min-width: 771px) {
-  body {
-    margin-top: 120px;
-  }
-}
 
 .tt-query {
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
