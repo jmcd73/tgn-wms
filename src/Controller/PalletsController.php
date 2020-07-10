@@ -1114,6 +1114,7 @@ class PalletsController extends AppController
             'limit' => $limit,
             'maxLimit' => $limit,
             'sortWhitelist' => [
+                'id',
                 'location_id',
                 'item_id',
                 'description',
@@ -1126,9 +1127,7 @@ class PalletsController extends AppController
                 'inventory_status_id',
             ],
             'order' => [
-                'Pallets.item' => 'ASC',
-                // oldest first
-                'Pallets.pl_ref' => 'ASC',
+                'id' => 'DESC',            
             ],
         ];
 
