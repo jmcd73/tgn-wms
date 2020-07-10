@@ -1,5 +1,4 @@
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
-
 <div class="row">
     <div class="col">
         <h3><?php echo __('Pallets'); ?></h3>
@@ -34,70 +33,69 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($pallets as $pallet): ?>
-                <tr>
-                    <td><?php echo h($pallet['pl_ref']); ?></td>
-                    <td><?php echo h($pallet['items']['code']); ?></td>
-                    <td><?php echo h($pallet['description']); ?></td>
-                    <td><?= $pallet->has('inventory_status') ? $pallet->inventory_status->name : ''; ?></td>
-                    <td style="padding-left: 0px; padding-right: 0px; padding-top: 0px; padding-bottom: 0px;">
-                        <table class="cartons table small table-striped"
-                            style="margin-bottom: 0px; background-color: inherit;">
-                            <tbody>
-                                <?php foreach ($pallet['cartons'] as $carton):?>
-                                <tr>
-                                    <td><?= h($carton['production_date']); ?></td>
-                                    <td><?= h($carton['best_before']); ?></td>
-                                    <td><?= $carton['count']; ?></td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                <?php foreach ($pallets as $pallet) : ?>
+                    <tr>
+                        <td><?php echo h($pallet['pl_ref']); ?></td>
+                        <td><?php echo h($pallet['items']['code']); ?></td>
+                        <td><?php echo h($pallet['description']); ?></td>
+                        <td><?= $pallet->has('inventory_status') ? $pallet->inventory_status->name : ''; ?></td>
+                        <td style="padding-left: 0px; padding-right: 0px; padding-top: 0px; padding-bottom: 0px;">
+                            <table class="cartons table small table-striped" style="margin-bottom: 0px; background-color: inherit;">
+                                <tbody>
+                                    <?php foreach ($pallet['cartons'] as $carton) : ?>
+                                        <tr>
+                                            <td><?= h($carton['production_date']); ?></td>
+                                            <td><?= h($carton['best_before']); ?></td>
+                                            <td><?= $carton['count']; ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
 
-                    </td>
-                    <td>
-                        <?php echo h($pallet['qty']); ?>
-                    </td>
-                    <td>
-                        <?php echo h($pallet['items']['quantity']); ?>
-                    </td>
+                        </td>
+                        <td>
+                            <?php echo h($pallet['qty']); ?>
+                        </td>
+                        <td>
+                            <?php echo h($pallet['items']['quantity']); ?>
+                        </td>
 
-                    <td><?php echo h($pallet['production_date']); ?></td>
-                    <td><?php echo h($pallet['bb_date']); ?></td>
-                    <td><?= $pallet->has('shipment') ? $pallet->shipment->shipper : ''; ?></td>
-                    <td class="actions">
-                        <?=
-                    $this->Html->link(
-                        __('View'),
-                        [
-                            'action' => 'view',
-                            $pallet['id'],
-                        ],
-                        [
-                            'class' => 'btn btn-link btn-xs view',
-                        ]
-                    ); ?>
-                        <?=
-                    $this->Html->link(
-                        __('Edit'),
-                        [
-                            'controller' => 'Cartons',
-                            'action' => 'editPalletCartons',
-                            $pallet['id'],
-                        ],
-                        [
-                            'class' => 'btn btn-link btn-xs edit',
-                        ]
-                    ); ?>
-                    </td>
-                </tr>
+                        <td><?php echo h($pallet['production_date']); ?></td>
+                        <td><?php echo h($pallet['bb_date']); ?></td>
+                        <td><?= $pallet->has('shipment') ? $pallet->shipment->shipper : ''; ?></td>
+                        <td class="actions">
+                            <?=
+                                $this->Html->link(
+                                    __('View'),
+                                    [
+                                        'action' => 'view',
+                                        $pallet['id'],
+                                    ],
+                                    [
+                                        'class' => 'btn btn-link btn-xs view',
+                                    ]
+                                ); ?>
+                            <?=
+                                $this->Html->link(
+                                    __('Edit'),
+                                    [
+                                        'controller' => 'Pallets',
+                                        'action' => 'modifyPallet',
+                                        $pallet['id'],
+                                    ],
+                                    [
+                                        'class' => 'btn btn-link btn-xs edit',
+                                    ]
+                                ); ?>
+                        </td>
+                    </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
         <p>
             <?php echo $this->Paginator->counter(
-                        'Page {{page}} of {{pages}}, showing {{current}} records out of {{count}} total, starting on record {{start}}, ending on {{end}}'
-                    ); ?>
+                'Page {{page}} of {{pages}}, showing {{current}} records out of {{count}} total, starting on record {{start}}, ending on {{end}}'
+            ); ?>
         </p>
         <div class="pagination pagination-large">
             <ul class="pagination">
@@ -107,7 +105,7 @@
                 echo $this->Paginator->numbers(['separator' => '', 'currentTag' => 'a', 'currentClass' => 'active', 'tag' => 'li', 'first' => 1, 'ellipsis' => null]);
                 echo $this->Paginator->next(__('next') . ' &rsaquo;', ['escape' => false, 'tag' => 'li'], null, ['tag' => 'li', 'class' => 'disabled', 'disabledTag' => 'a']);
                 echo $this->Paginator->last('last &raquo;', ['escape' => false, 'tag' => 'li']);
-            ?>
+                ?>
             </ul>
         </div>
     </div>
