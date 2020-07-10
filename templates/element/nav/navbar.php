@@ -81,7 +81,7 @@ use Cake\Utility\Inflector;
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?= h($user->get('full_name')); ?>
+                        <?= $this->Html->icon('user'); ?>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                       
@@ -89,19 +89,19 @@ use Cake\Utility\Inflector;
                               <div class="col">
                                   <dl class="mt-3">
                                       <dt>
-                                          Login
+                                          <?= __('Login'); ?>
                                       </dt>
                                       <dd><?= h($user->get('username')); ?></dd>
                                   </dl>
                                   <dl>
                                       <dt>
-                                          Full name
+                                      <?= __('Full Name'); ?>
                                       </dt>
                                       <dd><?= h($user->get('full_name')); ?></dd>
                                   </dl>
                                   <dl>
-                                      <dt>
-                                          Role
+                                      <dt>    
+                                          <?= __('Role'); ?>
                                       </dt>
                                       <dd><?= h(Inflector::humanize($user->get('role'))); ?></dd>
                                   </dl>

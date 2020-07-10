@@ -66,10 +66,10 @@ $this->Html->script(
             </h3>
         </div>
     </div>
-    <div class="row">
+    <div class="row w100">
         <?php foreach ($forms  as $key => $palletForm) : ?>
             <?php $formName = $key; ?>
-            <div class="col-lg-5 col-md-6 col-sm-12">
+            <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12">
                 <div class="card mb-4 mb-sm-4 mb-md-0">
                     <div class="card-body">
                         <?php echo $this->Form->create(

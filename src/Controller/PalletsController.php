@@ -1179,15 +1179,22 @@ class PalletsController extends AppController
         $downloadFilePath = WWW_ROOT . $outputPath . DS;
 
         $pallet = $this->Pallets->get($id);
+        
         $filename = $pallet->pallet_label_filename;
 
+        $fullPath = $downloadFilePath . $pallet->pallet_label_filename;
+
+        if (!$this->Pallets->checkFileExists($outputPath, $filename)) {
+            $this->Flash->error('Label not available for download. Please Reprint to make one available');
+            return $this->redirect(['controller' => 'PrintLog', 'action' => 'palletLabelReprint', $id]);
+        }
 
         if ($download === false) {
             $response = $response->withHeader('Content-Disposition', "inline; filename=" . $filename);
         }
 
         $response = $response->withFile(
-            $downloadFilePath . $pallet->pallet_label_filename,
+            $fullPath,
             ['download' => $download, 'name' =>  $filename]
         );
 
@@ -1370,7 +1377,8 @@ class PalletsController extends AppController
                     $user->get('username'),
                     Configure::read('contact.company'),
                     Configure::read('contact.phone')
-                ), ['escape' => false]
+                ),
+                ['escape' => false]
             );
         }
 
@@ -1385,5 +1393,15 @@ class PalletsController extends AppController
                 'restricted'
             )
         );
+    }
+
+    public function missingLabel()
+    {   
+        $id = $this->request->getQueryParams()['id'];
+        $pallet = $this->Pallets->get($id);
+
+        $this->set(compact('id', 'pallet'));
+
+        
     }
 }

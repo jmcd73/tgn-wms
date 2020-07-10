@@ -883,7 +883,8 @@ class PrintLogController extends AppController
                 $printerDetails,
                 $pallet->items->print_template,
                 ['controller_action' => $controllerAction, 'print_data' =>  json_encode($labelClass->getPrintContentArray())],
-                $referer = $data['refer']
+                $referer = $data['refer'],
+                $pallet
             );
         }
 

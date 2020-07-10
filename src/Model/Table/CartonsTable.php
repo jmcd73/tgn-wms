@@ -103,6 +103,8 @@ class CartonsTable extends Table
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
         ]);
+
+      
     }
 
     /**
@@ -131,6 +133,7 @@ class CartonsTable extends Table
 
         return $validator;
     }
+    
 
     /**
      * Returns a rules checker object that will be used for validating

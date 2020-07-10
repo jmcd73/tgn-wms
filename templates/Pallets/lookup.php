@@ -206,53 +206,30 @@ echo $this->Form->end();
                                 ?></td>
                             <td class="actions">
                             <?= $this->Html->link(
-                                    'Label',
+                                    __('Edit'),
+                                    [
+                                        'controller' => 'Pallets', 'action' => 'modifyPallet', $pallet['id']
+                                    ],
+                                    [   'title' => 'Edit status, batch, quantity, cartons, dates',
+                                        'class' => 'btn edit btn-sm mb-1 btn-warning']
+                                ); ?>
+                                <?= $this->Html->link(
+                                    __('Label'),
                                     [
                                         'controller' => 'Pallets', 'action' => 'sendFile', $pallet['id'], '?' => [
                                             'download' => 0
                                         ]
                                     ],
                                     [
+                                        'title' => "Click to download a pallet label",
                                         'target' => '_blank',
-                                        'class' => 'btn pallet-label btn-sm mb-1 btn-secondary']
+                                        'class' => 'btn label btn-sm mb-1 btn-secondary'
+                                    ]
                                 ); ?>
-                                <?= $this->Html->link(
-                                    'Edit',
-                                    [
-                                        'controller' => 'Pallets', 'action' => 'modifyPallet', $pallet['id']
-                                    ],
-                                    ['class' => 'btn edit btn-sm mb-1 btn-secondary']
-                                ); ?>
-                                <!--  <?php echo $this->Html->link(
-                                            __('Edit'),
-                                            '#',
-                                            [
-                                                'data-palletId' => $pallet['id'],
-                                                'data-codeDesc' => $pallet['code_desc'],
-                                                'data-editPalletCartons' => $this->Url->build([
-                                                    'controller' => 'Cartons',
-                                                    'action' => 'editPalletCartons',
-                                                    $pallet['id'],
-                                                ]),
-                                                'data-moveOrEdit' => $this->Url->build([
-                                                    'action' => 'editPallet',
-                                                    $pallet['id'],
-                                                ]),
-                                                'data-toggle' => 'modal',
-                                                'data-target' => '#edit-modal',
-                                                'class' => 'btn edit btn-sm mb-1 btn-secondary tgn-modal',
-                                                'title' => 'Click here for popup edit options menu',
-                                            ]
-                                        );
-                                        ?>
-                        --> <?php echo $this->Html->link(__('View'), ['action' => 'view', $pallet['id']], ['class' => 'btn btn-info btn-sm mb-1 view  mb-1 btn-sm']); ?>
+                              
+                                <?php echo $this->Html->link(__('View'), ['action' => 'view', $pallet['id']], ['class' => 'btn btn-info btn-sm mb-1 view  mb-1 btn-sm']); ?>
                                 <?php echo $this->Html->link(__('Reprint'), ['controller' => 'PrintLog', 'action' => 'palletLabelReprint', $pallet['id']], ['class' => 'btn  mb-1  btn-secondary reprint btn-sm']); ?>
-                                <!--  <?php if ($isAdmin) : ?>
-                        <?php echo $this->Html->link(__('Glabels Reprint'), [
-                                                'controller' => 'PrintLabels',
-                                                'action' => 'ssccLabel', $pallet['id'],
-                                            ], ['class' => 'btn reprint btn-secondary btn-sm']); ?>
-                        <?php endif; ?> -->
+
                             </td>
                         </tr>
                     <?php endforeach; ?>

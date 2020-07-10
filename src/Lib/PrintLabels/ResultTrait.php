@@ -22,7 +22,8 @@ trait ResultTrait
         Entity $printerDetails,
         PrintTemplate $printTemplate,
         array $saveData,
-        $referer = null
+        $referer = null,
+        $pallet = null
     ) {
         if ($printResult['return_value'] === 0) {
            
@@ -30,7 +31,8 @@ trait ResultTrait
             $this->{$this->modelClass}->getEventManager()->dispatch($event);
 
             $message = __(
-                'Sent <strong>{0}</strong> to printer <strong>{1}</strong>',
+                'Sent pallet label <strong>{0}</strong> using <strong>{1}</strong> template to printer <strong>{2}</strong>',
+                $pallet->pl_ref,
                 $printTemplate->name,
                 $printerDetails['name'],
             );

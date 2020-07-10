@@ -1,4 +1,5 @@
 <?php
+
 use App\View\Helper\ToggenHelper;
 
 ?>
@@ -25,10 +26,10 @@ use App\View\Helper\ToggenHelper;
         'options' => $filter_values,
         'empty' => '(select)',
     ]);
-    echo $this->Form->button('Search', [ 
+    echo $this->Form->button('Search', [
         'type' => 'submit',
         'class' => 'btn search btn-primary'
-        ]);
+    ]);
     echo $this->Form->end(); ?>
     <h4 class="mt-4"><?= __('Colour Legend'); ?></h4>
     <div class="bg-danger alert" role="alert">
@@ -46,7 +47,7 @@ use App\View\Helper\ToggenHelper;
     </div>
     <div class="bg-secondary alert">
         <?= $this->Html->icon('calendar-plus'); ?>
-              <span class="label label-primary">Mixed date pallet</span>
+        <span class="label label-primary">Mixed date pallet</span>
     </div>
 </div>
 <?php $this->end(); ?>
@@ -54,21 +55,22 @@ use App\View\Helper\ToggenHelper;
 
 <div class="row">
     <div class="col">
-    <p class="h4"><?php echo __('Pallet Location Report'); ?>
+        <p class="h4"><?php echo __('Pallet Location Report'); ?>
             <small>
                 <?php echo $this->Html->badge($this->Paginator->counter('{{count}}')); ?> pallets
                 <?php if ($dont_ship_count) : ?>
-                <span> <?= $this->Html->badge($dont_ship_count, ['class' => 'danger']); ?> low dated
-                </span>
+                    <span> <?= $this->Html->badge($dont_ship_count, ['class' => 'danger']); ?> low dated
+                    </span>
                 <?php endif; ?>
-                
+
             </small>
         </p>
     </div>
+
     <div class="col-1">
-        <?= $this->Html->link("Download", [ 'action' => "export", "?" => $this->request->getQuery()], [ 
-        'class' => 'btn btn-sm btn-primary download',
-        'title' => "Click to download the current view as a spreadsheet in CSV format"
+        <?= $this->Html->link("Download", ['action' => "export", "?" => $this->request->getQuery()], [
+            'class' => 'btn btn-sm btn-primary download',
+            'title' => "Click to download the current view as a spreadsheet in CSV format"
         ]); ?>
     </div>
 </div>
@@ -78,7 +80,7 @@ use App\View\Helper\ToggenHelper;
             <thead>
                 <tr>
                     <th><?php echo $this->Paginator->sort('location_id'); ?></th>
-                    <th><?php echo $this->Paginator->sort('item_id'); ?></th>   
+                    <th><?php echo $this->Paginator->sort('item_id'); ?></th>
                     <th><?php echo $this->Paginator->sort('pl_ref'); ?></th>
                     <th><?php echo $this->Paginator->sort('production_date'); ?></th>
                     <th>Pl age</th>
@@ -92,133 +94,126 @@ use App\View\Helper\ToggenHelper;
             </thead>
             <tbody>
                 <?php foreach ($pallets as $pallet) : ?>
-                <?php
+                    <?php
                     if ($pallet['oncooldown']) {
                         $cls = 'bg-info';
                     } elseif ($pallet['ship_low_date']) {
                         $cls = 'bg-warning';
                     } elseif ($pallet['dont_ship']) {
                         $cls = 'bg-danger';
-
-                    } elseif ( count($pallet['cartons']) > 1 ) {
+                    } elseif (count($pallet['cartons']) > 1) {
                         $cls = 'bg-secondary';
                     } else {
                         $cls = '';
                     }
                     $classString = $this->Html->buildClass($cls);
-                ?>
-                <tr>
-                    <td <?= $classString; ?>>
-                        <?php if($pallet->has('location')): ?>
-                        <?php echo $this->Html->tag('a', '', [
-                            'id' => $pallet['pl_ref'],
-                            'class' => 'anchor', ]);
-                            echo $this->Html->link(
+                    ?>
+                    <tr>
+                        <td <?= $classString; ?>>
+                            <?php if ($pallet->has('location')) : ?>
+                                <?php echo $this->Html->tag('a', '', [
+                                    'id' => $pallet['pl_ref'],
+                                    'class' => 'anchor',
+                                ]);
+                                echo $this->Html->link(
                                     h($pallet['location']['location']),
+                                    [
+                                        'action' => 'move',
+                                        $pallet['id'],
+                                    ],
+                                    [
+                                        'title' => 'Click here to move this pallet',
+                                    ]
+                                );
+                                ?>
+                            <?php else : ?>
+                                Missing Location
+                            <?php endif; ?>
+                        </td>
+                        <td <?= $classString; ?>><?= h($pallet->code_desc); ?></td>
+                        <td <?= $classString; ?>>
+                            <?php echo h($pallet['pl_ref']); ?>
+                        </td>
+                        <td <?= $classString; ?>>
+                            <?php echo $this->Html->tag(
+                                'span',
+                                h($pallet['production_date']->i18nFormat(null, $user->timezone)),
+                                ['title' => 'Cooldown date: ' . h($pallet['cooldown_date']->i18nFormat(null, $user->timezone)), 'style' => 'cursor: crosshair;']
+                            ); ?></td>
+                        <td <?= $classString; ?>>
+                            <?php echo h($this->Time->timeAgoInWords($pallet['production_date'])); ?></td>
+                        <td <?= $classString; ?>>
+                            <?php echo h($pallet['bb_date']->i18nFormat(null, $user->timezone)); ?>
+                        </td>
+                        <td <?= $classString; ?>>
+                            <?php echo h($pallet['batch']); ?></td>
+                        <td <?= $classString; ?>>
+                            <?php echo h($pallet['qty']); ?>
+                        </td>
+                        <td <?= $classString; ?>>
+                            <?php if ($pallet->has('shipment')) {
+                                echo $this->Html->link(
+                                    $pallet->shipment->shipper,
+                                    [
+                                        'controller' => 'shipments',
+                                        'action' => 'process',
+                                        'edit-shipment',
+                                        $pallet->shipment->id,
+                                    ],
+                                    [
+                                        'class' => 'btn edit btn-sm btn-link',
+                                        'title' => 'Edit Shipment',
+                                    ]
+                                );
+                            };
+                            ?></td>
+
+                        <td <?= $classString; ?>>
+                            <?= $pallet->has('inventory_status') ? h($pallet->inventory_status->name) : ''; ?>
+                            <?php if (!empty($pallet['inventory_status_note'])) : ?>
+                                <p class="x-small" title="<?php echo $pallet['inventory_status_note']; ?>">
+                                    <?php echo $this->Text->truncate($pallet['inventory_status_note'], 14); ?>
+                                </p>
+                            <?php endif; ?>
+                        </td>
+                        <td <?php echo $this->Html->buildClass([$cls, 'actions']); ?>>
+                            <?= $this->Html->link(
+                                'Edit',
                                 [
-                                    'action' => 'move',
-                                    $pallet['id'], ],
+                                    'controller' => 'Pallets', 'action' => 'modifyPallet', $pallet['id']
+                                ],
+                                ['class' => 'btn edit btn-sm mb-1']
+
+                            ); ?>
+
+                            <?= $this->Html->link(
+                                'Label',
                                 [
-                                    'title' => 'Click here to move this pallet',
-                                ]
-                            );
-                        ?>
-                        <?php else: ?>
-                            Missing Location 
-                        <?php endif; ?>
-                    </td>
-                    <td <?= $classString; ?>><?=  h($pallet->code_desc); ?></td>
-                    <td <?= $classString; ?>>
-                        <?php echo h($pallet['pl_ref']); ?>
-                    </td>
-                    <td <?= $classString; ?>>
-                        <?php echo $this->Html->tag(
-                            'span',
-                            h($pallet['production_date']->i18nFormat(null, $user->timezone)),
-                            ['title' => 'Cooldown date: ' . h($pallet['cooldown_date']->i18nFormat(null, $user->timezone)), 'style' => 'cursor: crosshair;']
-                        ); ?></td>
-                    <td <?= $classString; ?>>
-                        <?php echo h($this->Time->timeAgoInWords($pallet['production_date'])); ?></td>
-                    <td <?= $classString; ?>>
-                        <?php echo h($pallet['bb_date']->i18nFormat(null, $user->timezone)); ?>
-                    </td>
-                    <td <?= $classString; ?>>
-                        <?php echo h($pallet['batch']); ?></td>
-                    <td <?= $classString; ?>>
-                        <?php echo h($pallet['qty']); ?>
-                    </td>
-                    <td <?= $classString; ?>>
-                        <?php if ($pallet->has('shipment')) {
-                            echo $this->Html->link(
-                                $pallet->shipment->shipper,
-                                [
-                                    'controller' => 'shipments',
-                                    'action' => 'process',
-                                    'edit-shipment',
-                                    $pallet->shipment->id,
+                                    'controller' => 'Pallets', 'action' => 'sendFile', $pallet['id'] , '?' => ['download' => 0 ]
                                 ],
                                 [
-                                    'class' => 'btn edit btn-sm btn-link',
-                                    'title' => 'Edit Shipment',
-                                ]
-                            );
-                        };
-                        ?></td>
+                                    'target' => '_blank',
+                                    'class' => 'btn label btn-sm mb-1']
 
-                    <td <?= $classString; ?>>
-                        <?= $pallet->has('inventory_status') ? h($pallet->inventory_status->name) : ''; ?>
-                        <?php if (!empty($pallet['inventory_status_note'])): ?>
-                        <p class="x-small" title="<?php echo $pallet['inventory_status_note']; ?>">
-                            <?php echo $this->Text->truncate($pallet['inventory_status_note'], 14); ?>
-                        </p>
-                        <?php endif; ?>
-                    </td>
-                    <td <?php echo $this->Html->buildClass([$cls, 'actions']); ?>>
-                    <?= $this->Html->link('Edit', [ 
-                            'controller' => 'Pallets', 'action' => 'modifyPallet',$pallet['id']],
-                            ['class' => 'btn edit btn-sm mb-1']
-                            
-                            ) ;?>
-                      <!--   <?php echo $this->Html->link(
-                            __('Edit'),
-                            '#',
-                            [
-                                'data-palletId' => $pallet['id'],
-                                'data-codeDesc' => $pallet['code_desc'],
-                                'data-editPalletCartons' => $this->Url->build([
-                                    'controller' => 'Cartons',
-                                    'action' => 'editPalletCartons',
-                                    $pallet['id'],
-                                ]),
-                                'data-moveOrEdit' => $this->Url->build([
-                                    'action' => 'editPallet',
-                                    $pallet['id'],
-                                ]),
-                                'data-toggle' => 'modal',
-                                'data-target' => '#edit-modal',
-                                'class' => 'btn edit btn-sm tgn-modal',
-                                'title' => 'Click here for popup edit options menu',
-                            ]
-                        );
-                        ?> -->
-                    </td>
-                </tr>
+                            ); ?>
+                        </td>
+                    </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
         <p>
             <?php
-                echo $this->Paginator->counter('Page {{page}} of {{pages}}, showing {{current}} records out of {{count}} total, starting on record {{start}}, ending on {{end}}');
+            echo $this->Paginator->counter('Page {{page}} of {{pages}}, showing {{current}} records out of {{count}} total, starting on record {{start}}, ending on {{end}}');
             ?>
         </p>
         <div class="pagination pagination-large">
             <ul class="pagination">
                 <?php
-                    echo $this->Paginator->first('&laquo; first', ['escape' => false, 'tag' => 'li']);
-                    echo $this->Paginator->prev('&lsaquo; ' . __('previous'), ['escape' => false, 'tag' => 'li'], null, ['tag' => 'li', 'class' => 'disabled', 'disabledTag' => 'a']);
-                    echo $this->Paginator->numbers(['separator' => '', 'currentTag' => 'a', 'currentClass' => 'active', 'tag' => 'li', 'first' => 1, 'ellipsis' => null]);
-                    echo $this->Paginator->next(__('next') . ' &rsaquo;', ['escape' => false, 'tag' => 'li'], null, ['tag' => 'li', 'class' => 'disabled', 'disabledTag' => 'a']);
-                    echo $this->Paginator->last('last &raquo;', ['escape' => false, 'tag' => 'li']);
+                echo $this->Paginator->first('&laquo; first', ['escape' => false, 'tag' => 'li']);
+                echo $this->Paginator->prev('&lsaquo; ' . __('previous'), ['escape' => false, 'tag' => 'li'], null, ['tag' => 'li', 'class' => 'disabled', 'disabledTag' => 'a']);
+                echo $this->Paginator->numbers(['separator' => '', 'currentTag' => 'a', 'currentClass' => 'active', 'tag' => 'li', 'first' => 1, 'ellipsis' => null]);
+                echo $this->Paginator->next(__('next') . ' &rsaquo;', ['escape' => false, 'tag' => 'li'], null, ['tag' => 'li', 'class' => 'disabled', 'disabledTag' => 'a']);
+                echo $this->Paginator->last('last &raquo;', ['escape' => false, 'tag' => 'li']);
                 ?>
             </ul>
         </div>

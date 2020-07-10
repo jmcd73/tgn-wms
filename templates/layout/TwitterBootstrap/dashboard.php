@@ -18,8 +18,7 @@ $this->start('tb_body_start');
     <?= $this->element('nav/navbar'); ?>
     <div class="container-fluid">
         <div class="row">
-            <nav class="col-md-2 col-sm-12 d-md-block bg-light">
-              
+            <nav class="col-sm-12 col-md-4 col-lg-4 col-xl-2 d-md-block bg-light">
                 <div class="sidebar-sticky h-auto mb-2">
                     <?php if( !empty($helpPage)): ?>
                         <ul class="nav flex-column">
@@ -29,7 +28,7 @@ $this->start('tb_body_start');
                     <?= $this->fetch('tb_sidebar') ?>
                 </div>
             </nav>
-            <main role="main" class="col-md-9 col-sm-12 ml-sm-auto col-lg-10 pt-3 px-4">
+            <main role="main" class="col-sm-12 col-md-8 col-lg-8 col-xl-10 pt-3 px-4">
                 <?php
                 /**
                  * Default `flash` block.

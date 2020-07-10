@@ -497,6 +497,12 @@ a.btn.pallet-label::before {
   content: "\f482\00a0";
 }
 
+a.btn.label::before {
+  font-family: "Font awesome 5 Free";
+  font-weight: 900;
+  content: "\f02b\00a0";
+}
+
 
 a.btn.download::before {
   font-family: "Font awesome 5 Free";

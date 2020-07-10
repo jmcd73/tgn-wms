@@ -7,6 +7,6 @@ trait PalletExistsTrait {
     public function checkFileExists($outputPath, $fileName): bool
     {
         $fullPath = WWW_ROOT . $outputPath . DS . $fileName;
-        return file_exists($fullPath);
+        return is_file($fullPath);
     }
 }

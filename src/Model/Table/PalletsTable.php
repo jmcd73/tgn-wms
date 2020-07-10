@@ -114,12 +114,17 @@ class PalletsTable extends Table
         $printLog = new PrintLogTable();
         
         $this->getEventManager()->on($printLabel);
-
+        
         $this->getEventManager()->on($this);
 
         $this->getEventManager()->on($printLog);
 
-        $this->getEventManager()->on(new CartonsTable());
+        //$this->getEventManager()->on('Model.Cartons.addCartonRecord', [ $this->Cartons, 'addCartonRecord']);
+
+        $cartonsTable = new CartonsTable();
+
+        $this->getEventManager()->on($cartonsTable);
+       
     }
 
 
@@ -150,7 +155,8 @@ class PalletsTable extends Table
             $evt = new Event('Model.Cartons.addCartonRecord', $entity);
             $this->getEventManager()->dispatch($evt);
 
-            # stop event firing twice because for some reason it comes through twice
+            # only fire 'Model.Cartons.addCartonRecord' once
+            # for some reason it comes through twice
             $this->getEventManager()->off('Model.Cartons.addCartonRecord');
         }
     }
