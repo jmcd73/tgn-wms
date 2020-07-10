@@ -41,14 +41,7 @@ class PrintLogController extends AppController
     {
         parent::initialize();
 
-        $printLabel = new PrintLabel();
-        $palletTable = new PalletsTable();
-
-        $this->getEventManager()->on($printLabel);
-
-        $this->getEventManager()->on($palletTable);
-
-        $this->getEventManager()->on($this->PrintLog);
+     
     }
 
     /**
@@ -842,6 +835,8 @@ class PrintLogController extends AppController
     {
         $controllerAction = $this->getControllerAction();
 
+        $companyName = $this->PrintLog->getSetting('COMPANY_NAME');
+
         $palletTable = TableRegistry::get('Pallets');
 
         if ($id === null) {
@@ -871,60 +866,23 @@ class PrintLogController extends AppController
                 throw new MissingConfigurationException(__('Please configure a print template for item {0}', $pallet->item));
             }
 
-            $replaceTokens = json_decode($pallet->items->print_template->replace_tokens);
-
             // get the printer queue name
             $printerId = $data['printer_id'];
 
             $printerDetails = $palletTable->getLabelPrinterById($printerId);
 
-            $bb_date = new FrozenTime($pallet->bb_date);
-
-            $bestBeforeDates = $this->PrintLog->formatLabelDates($bb_date);
-
-            $event = new Event('PrintLabels.palletPrint', $pallet, [
-                'item' => $pallet->items,
-                'printer' => $printerDetails,
-                'companyName' => $this->companyName,
-                'action' => $this->request->getParam('action')
-            ]);
-
-            $this->getEventManager()->dispatch($event);
-            
-            $printResult = $event->getResult()['printResult'];
-
-            $labelClass =  $event->getResult()['labelClass'];
-        
-            if($printResult['return_value'] === 0 ){
-
-            
-              
-            $palletEvents = [
-                'Model.Pallets.addPalletLabelFilename',
-                'Model.Pallets.persistPalletRecord'
-            ];
-
-            foreach ($palletEvents as $eventName) {
-
-                $evt = new Event(
-                    $eventName,
-                    $pallet,
-                    [
-                        'labelClass' => $labelClass,
-                        'labelOutputPath' => $this->getSetting('LABEL_OUTPUT_PATH')
-                    ]
-                );
-
-                $this->getEventManager()->dispatch($evt);
-            }
-        }
-
+            [$printResult, $labelClass] = $palletTable->reprintLabel(
+                $pallet->id,
+                $printerDetails,
+                $companyName,
+                $this->request->getParam('action')
+            );
 
             $this->handlePrintResult(
                 $printResult,
                 $printerDetails,
                 $pallet->items->print_template,
-                [ 'controller_action' => $controllerAction, 'print_data' =>  json_encode($labelClass->getPrintContentArray()) ],
+                ['controller_action' => $controllerAction, 'print_data' =>  json_encode($labelClass->getPrintContentArray())],
                 $referer = $data['refer']
             );
         }

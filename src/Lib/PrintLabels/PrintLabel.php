@@ -61,7 +61,7 @@ class PrintLabel implements EventListenerInterface
 
         $labelClass = LabelFactory::create($printClass, $action)
             ->format($template, $cabLabelData);
-
+        
         $printResult = $labelClass->print($printer, $template);
 
         return compact('printResult' , 'labelClass'); 

@@ -124,4 +124,8 @@ class Pallet extends Entity
         return $this->dont_ship && !$this->ship_low_date;
     }
 
+    protected function _getLabelExists()
+    {
+        
+    }
 }

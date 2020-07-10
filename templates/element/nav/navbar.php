@@ -1,6 +1,7 @@
 <?php
 
 use Cake\Core\Configure;
+use Cake\Utility\Inflector;
 
 ?>
 <nav class="navbar navbar-dark navbar-expand-lg sticky-top bg-dark flex-md-nowrap p-0">
@@ -8,7 +9,7 @@ use Cake\Core\Configure;
         $this->Html->image(Configure::read('navbar.brand.img'), [
             'class' => 'brand-image',
         ]),
-        $this->Url->build('/', [ 'fullBase' => true]),
+        $this->Url->build('/', ['fullBase' => true]),
         [
             'escape' => false,
             'class' => 'navbar-brand col-md-2'
@@ -77,10 +78,42 @@ use Cake\Core\Configure;
 
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0 mr-4">
             <?php if (isset($user)) : ?>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <?= h($user->get('full_name')); ?>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      
+                   
+                              <div class="col">
+                                  <dl class="mt-3">
+                                      <dt>
+                                          Login
+                                      </dt>
+                                      <dd><?= h($user->get('username')); ?></dd>
+                                  </dl>
+                                  <dl>
+                                      <dt>
+                                          Full name
+                                      </dt>
+                                      <dd><?= h($user->get('full_name')); ?></dd>
+                                  </dl>
+                                  <dl>
+                                      <dt>
+                                          Role
+                                      </dt>
+                                      <dd><?= h(Inflector::humanize($user->get('role'))); ?></dd>
+                                  </dl>
+                              </div>
+                
+
+                    </div>
+                </li>
                 <li class="nav-item">
                     <?php
                     echo  $this->Html->link(
-                        $user->get('full_name') . ' ' . $this->Html->icon('sign-out-alt'),
+                        __('Sign out') . ' ' . $this->Html->icon('sign-out-alt'),
                         ['controller' => 'users', 'action' => 'logout'],
                         [
                             'title' => 'Logout',
@@ -88,7 +121,9 @@ use Cake\Core\Configure;
                         ]
                     ); ?>
                 </li>
+
             <?php endif; ?>
+
             <li class="nav-item"><?=
                                         $this->Html->link(
                                             'Help ' . $this->Html->icon('question-circle'),

@@ -497,6 +497,10 @@ class Label
             unlink($this->getPdfOutFile());
         }
 
+        if(is_null($printer)) {
+            return $results;
+        }
+    
         return $this->sendPdfToLpr($printer);
     }
 

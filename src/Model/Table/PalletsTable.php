@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Lib\PrintLabels\PrintLabel;
 use App\Lib\Exception\MissingConfigurationException;
 use App\Model\Table\CartonsTable;
 use App\Model\Table\Traits\UpdateCounterCacheTrait;
 use Cake\Core\Exception\Exception;
 use Cake\Datasource\EntityInterface;
+use App\Lib\Utility\PalletExistsTrait;
 use Cake\Event\Event;
 use Cake\I18n\Date;
 use Cake\I18n\FrozenTime;
@@ -55,7 +57,7 @@ use Cake\I18n\FrozenDate;
  */
 class PalletsTable extends Table
 {
-    use UpdateCounterCacheTrait;
+    use UpdateCounterCacheTrait, PalletExistsTrait;
 
 
     /**
@@ -106,6 +108,17 @@ class PalletsTable extends Table
             'foreignKey' => 'pallet_id',
         ]);
 
+
+        $printLabel = new PrintLabel();
+       
+        $printLog = new PrintLogTable();
+        
+        $this->getEventManager()->on($printLabel);
+
+        $this->getEventManager()->on($this);
+
+        $this->getEventManager()->on($printLog);
+
         $this->getEventManager()->on(new CartonsTable());
     }
 
@@ -133,11 +146,12 @@ class PalletsTable extends Table
     {
 
         if ($entity->isNew() && $entity instanceof Pallet && $event->getSubject() instanceof PalletsTable) {
+           
             $evt = new Event('Model.Cartons.addCartonRecord', $entity);
             $this->getEventManager()->dispatch($evt);
 
             # stop event firing twice because for some reason it comes through twice
-            //$this->getEventManager()->off('Model.Cartons.addCartonRecord');
+            $this->getEventManager()->off('Model.Cartons.addCartonRecord');
         }
     }
 
@@ -1252,9 +1266,49 @@ class PalletsTable extends Table
         return [ $pallets, $options ];
     }
 
-    public function checkFileExists($outputPath, $fileName): bool
+    public function reprintLabel($palletId, $printer, $companyName, $action)
     {
-        $fullPath = WWW_ROOT . $outputPath . DS . $fileName;
-        return file_exists($fullPath);
+
+        $pallet = $this->get($palletId, [ 'contain' => [
+            "Items",
+            'Items.PrintTemplates'
+            ]
+        ]);
+
+        $event = new Event('PrintLabels.palletPrint', $pallet, [
+            'item' => $pallet->items,
+            'printer' => $printer,
+            'companyName' => $companyName,
+            'action' => $action
+        ]);
+
+        $this->getEventManager()->dispatch($event);
+
+        $printResult = $event->getResult()['printResult'];
+
+        $labelClass =  $event->getResult()['labelClass'];
+
+        if ($printResult['return_value'] === 0) {
+            $palletEvents = [
+                'Model.Pallets.addPalletLabelFilename',
+                'Model.Pallets.persistPalletRecord'
+            ];
+
+            foreach ($palletEvents as $eventName) {
+
+                $evt = new Event(
+                    $eventName,
+                    $pallet,
+                    [
+                        'labelClass' => $labelClass,
+                        'labelOutputPath' => $this->getSetting('LABEL_OUTPUT_PATH')
+                    ]
+                );
+
+                $this->getEventManager()->dispatch($evt);
+            }
+        }
+
+        return [ $printResult, $labelClass ];
     }
 }

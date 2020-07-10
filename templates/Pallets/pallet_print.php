@@ -30,22 +30,24 @@ $this->Html->script(
         </li>
     <?php endforeach; ?>
 </ul>
-<?php if (isset($lastPrints) && ! $lastPrints->isEmpty() && $showLabelDownload) : ?>
+<?php if (isset($lastPrints) && !$lastPrints->isEmpty() && $showLabelDownload) : ?>
     <div class="card mt-4">
         <div class="card-body">
             <h5 class="car-title"><?php echo __('Download Labels'); ?></h5>
             <p class="card-text"><?php echo __('{0} most recent', $lastPrintsCount); ?></p>
             <ul class="nav flex-column">
                 <?php foreach ($lastPrints as $lastPrint) : ?>
-                <?php $parts = explode('.', $lastPrint->pallet_label_filename); 
-                $ext = end($parts); ?>
+                    <?php $parts = explode('.', $lastPrint->pallet_label_filename);
+                    $ext = end($parts); ?>
                     <?= $this->Html->tag(
                         'li',
                         $this->Html->link(
                             $lastPrint->item . ' - ' . $lastPrint->pl_ref,
-                            ['action' => 'sendFile', $lastPrint->id],
-                            [   'target' => '_blank',
-                                'class' => 'nav-link ' . $ext ]
+                            ['action' => 'sendFile', $lastPrint->id , '?' => ['download' => 0]],
+                            [
+                                'target' => '_blank',
+                                'class' => 'nav-link ' . $ext
+                            ]
                         ),
                         ['class' => 'nav-item']
                     ); ?>
@@ -130,12 +132,10 @@ $this->Html->script(
                                 <?php echo $this->Form->control(
                                     $formName . '-batch_no',
                                     [
-
                                         'label' => 'Batch No.' . $this->Html->tag('span',  'Example <strong>' . $exampleBatchNo . '</strong>', ['class' => 'secondary-text']),
                                         'class' => 'batch',
                                         'escape' => false,
                                         'autocomplete' => 'off',
-
                                     ]
                                 ); ?>
 

@@ -24,9 +24,9 @@ class PalletPolicy implements BeforePolicyInterface
      */
     
     public function before(?IdentityInterface $user, $pallet, $action) {
-    
-        return $user->is_superuser ? new Result(true): null;
+        return $user->role === 'admin' || $user->is_superuser ? true : null;
     }
+
     public function canCreate(IdentityInterface $user, Pallet $pallet)
     {
        
@@ -34,6 +34,7 @@ class PalletPolicy implements BeforePolicyInterface
 
     public function canBestBeforeEdit(IdentityInterface $user, Pallet $pallet)
     {
+        
         $canBestBeforeEdit = Configure::read('canBestBeforeEdit');
      
         if(in_array($user->username, $canBestBeforeEdit['users'] )) {

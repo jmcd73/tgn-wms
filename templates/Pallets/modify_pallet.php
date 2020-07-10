@@ -100,7 +100,12 @@ $this->Html->script(
 
                     </div>
                 </div>
-                <?php echo $this->Form->submit(); ?>
+                <?php echo $this->Form->button('Save', [ 
+                     'name' => 'submit-action',
+                    'class' => 'btn save btn-sm', 'type' => 'submit' , 'value' => 'submit']); ?>
+                <?php echo $this->Form->button("Save & Reprint Label", [ 
+                     'name' => 'submit-action',
+                    'class' => 'btn btn-sm print', 'type' => 'submit' , 'value' => 'submit-and-reprint']); ?>
             </div>
 
 
@@ -171,7 +176,12 @@ $this->Html->script(
                     </div>
                     <?php $key++; ?>
                 <?php endforeach; ?>
-                <?php echo $this->Form->submit(); ?>
+                <?php echo $this->Form->button('Save', [ 
+                    'name' => 'submit-action',
+                    'class' => 'btn save btn-sm', 'type' => 'submit' , 'value' => 'submit']); ?>
+                <?php echo $this->Form->button("Save & Reprint Label", [ 
+                     'name' => 'submit-action',
+                    'class' => 'btn btn-sm print', 'type' => 'submit' , 'value' => 'submit-and-reprint']); ?>
             </div>
         </div>
     </div>

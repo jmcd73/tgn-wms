@@ -216,7 +216,7 @@ class PalletsController extends AppController
             ->select(['id', 'pallet_label_filename', 'pl_ref', 'item'])
             ->where(['pallet_label_filename IS NOT NULL'])
             ->order(['id' => 'DESC'])
-            ->limit($lastPrintsCount)->filter( function($pallet)  use ($labelOutputPath) {
+            ->limit($lastPrintsCount)->filter(function ($pallet)  use ($labelOutputPath) {
                 return $this->Pallets->checkFileExists($labelOutputPath, $pallet->pallet_label_filename);
             });
 
@@ -1169,14 +1169,26 @@ class PalletsController extends AppController
 
     public function sendFile($id)
     {
+        $downloadParam = $this->request->getQuery('download');
 
-        $downloadFilePath = WWW_ROOT . $this->getSetting('LABEL_OUTPUT_PATH') . DS;
+        $download = is_null($downloadParam) || (int) $downloadParam === 1  ? true : false;
+
+        $response = $this->response;
+
+        $outputPath = $this->getSetting('LABEL_OUTPUT_PATH');
+        $downloadFilePath = WWW_ROOT . $outputPath . DS;
 
         $pallet = $this->Pallets->get($id);
+        $filename = $pallet->pallet_label_filename;
 
-        $response = $this->response->withFile(
+
+        if ($download === false) {
+            $response = $response->withHeader('Content-Disposition', "inline; filename=" . $filename);
+        }
+
+        $response = $response->withFile(
             $downloadFilePath . $pallet->pallet_label_filename,
-            ['download' => true, 'name' => $pallet->pallet_label_filename]
+            ['download' => $download, 'name' =>  $filename]
         );
 
         return $response;
@@ -1188,7 +1200,7 @@ class PalletsController extends AppController
 
         $filter_value = $this->request->getQuery('filter_value');
 
-        $header = [ 'Location', 'Status', 'Note', 'Item', 'Description', "Print Date", 'Best Before', "Age", "Ref", "Batch", "Qty", "Shipment",  "Low Date", 'Allow Ship', 'SSCC'];
+        $header = ['Location', 'Status', 'Note', 'Item', 'Description', "Print Date", 'Best Before', "Age", "Ref", "Batch", "Qty", "Shipment",  "Low Date", 'Allow Ship', 'SSCC'];
 
         $companyPrefix = $this->getSetting('SSCC_COMPANY_PREFIX');
 
@@ -1204,7 +1216,7 @@ class PalletsController extends AppController
             'description',
             'print_date',
             'bb_date',
-            function ( array $row) {
+            function (array $row) {
                 $time = new Time($row['print_date']);
                 return $time->timeAgoInWords();
             },
@@ -1214,10 +1226,10 @@ class PalletsController extends AppController
             function (array $row) {
                 return $row['shipment']['shipper'] ?? $row['shipment']['shipper'];
             },
-           
+
             'dont_ship',
             'ship_low_date',
-            
+
             function (array $row) use ($companyPrefix) {
                 $barcode = new Barcode();
                 return  $barcode->ssccFormat($row['sscc'], $companyPrefix);
@@ -1244,7 +1256,7 @@ class PalletsController extends AppController
         // Configure::write('debug', true);
     }
 
-     /**
+    /**
      * @param  int   $id Supply ID of pallet
      * @return mixed
      */
@@ -1262,31 +1274,38 @@ class PalletsController extends AppController
             ],
         ]);
 
-        if (isset($pallet['shipment']['shipped']) && (bool)$pallet['shipment']['shipped']) {
+        if (isset($pallet['shipment']['shipped']) && (bool) $pallet['shipment']['shipped']) {
             $this->Flash->error('Cannot modify a pallet that is already shipped');
-
             return $this->redirect($this->request->referer(false));
         }
 
-        if ($this->request->is(['post', 'put'])) {
+        if ($this->request->is(['post', 'put']) && $user->can('bestBeforeEdit', $pallet)) {
+
 
             $data = $this->request->getData();
 
-            [ $total, $result ] = $this->Pallets->Cartons->processCartons($data['cartons'], $user);
-            
-            unset ($data['cartons']);
+            [$total, $result] = $this->Pallets->Cartons->processCartons($data['cartons'], $user);
+
+            unset($data['cartons']);
 
             $pallet = $this->Pallets->get($id);
-            
-            $pallet->qty = $total;  
 
-            $patched = $this->Pallets->patchEntity($pallet,$data);
+            $pallet->qty = $total;
+
+            $patched = $this->Pallets->patchEntity($pallet, $data);
 
             if ($this->Pallets->save($patched)) {
                 $this->Flash->success(__('The pallet data has been saved.'));
 
-                $event = new Event('Model.Pallets.updateBestBeforeAndProductionDate', $pallet, [ 'id' => $id]);
+                $event = new Event('Model.Pallets.updateBestBeforeAndProductionDate', $pallet, ['id' => $id]);
                 $this->getEventManager()->dispatch($event);
+
+                if ($data['submit-action'] === 'submit-and-reprint') {
+                    $companyName = $this->getSetting("COMPANY_NAME");
+                    $action = $this->request->getParam('action');
+
+                    $this->Pallets->reprintLabel($id, null, $companyName, $action);
+                }
 
                 return $this->redirect($this->request->getData()['referer']);
             } else {
@@ -1320,7 +1339,7 @@ class PalletsController extends AppController
             ? $productType['id'] : 0;
 
         $availableLocations = $this->Pallets->getAvailableLocations('available', $productTypeId);
-        
+
         $locationsCombined = $availableLocations;
 
         if ($pallet->has('location')) {
@@ -1340,9 +1359,20 @@ class PalletsController extends AppController
         $pallet->product_type_id = $item_data['id'];
 
         $referer = $this->request->referer(false);
-        //$restricted = $this->isAuthorized($this->Auth->user()) ? false : true;
+
         $restricted = false;
         $user = $this->Authentication->getIdentity();
+
+        if (!$user->can('bestBeforeEdit', $pallet)) {
+            $this->Flash->error(
+                __(
+                    "<strong>{0}</strong> doesn't have edit access. Please contact <strong>{1}</strong> on <strong>{2}</strong> for assistance",
+                    $user->get('username'),
+                    Configure::read('contact.company'),
+                    Configure::read('contact.phone')
+                ), ['escape' => false]
+            );
+        }
 
         $this->set(
             compact(
@@ -1356,5 +1386,4 @@ class PalletsController extends AppController
             )
         );
     }
-
 }
