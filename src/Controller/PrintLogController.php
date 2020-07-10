@@ -40,8 +40,6 @@ class PrintLogController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-
-     
     }
 
     /**
@@ -284,11 +282,20 @@ class PrintLogController extends AppController
                     ->format($template, $glabelsData)
                     ->print($printerDetails);
 
+
                 $this->handlePrintResult(
                     $printResult,
-                    $printerDetails,
-                    $template->details,
-                    $saveData
+                    $saveData,
+                    [
+                        'error' => [
+                            'template' => 'Error sending <strong>{0}</strong> to <strong>{1}</strong> printer',
+                            'values' => [$template->details->name, $printerDetails->name]
+                        ],
+                        'success' => [
+                            'template' => 'Successfully sent <strong>{0}</strong> to <strong>{1}</strong> printer',
+                            'values' => [$template->details->name, $printerDetails->name, $printResult['stderr']]
+                        ]
+                    ]
                 );
             } else {
                 $this->Flash->error('Invalid data');
@@ -341,9 +348,17 @@ class PrintLogController extends AppController
 
                 $this->handlePrintResult(
                     $printResult,
-                    $printerDetails,
-                    $template->details,
-                    $saveData
+                    $saveData,
+                    [
+                        'error' => [
+                            'template' => 'Error sending <strong>{0}</strong> to <strong>{1}</strong> printer',
+                            'values' => [$template->details->name, $printerDetails->name]
+                        ],
+                        'success' => [
+                            'template' => 'Successfully sent <strong>{0}</strong> to <strong>{1}</strong> printer',
+                            'values' => [$template->details->name, $printerDetails->name, $printResult['stderr']]
+                        ]
+                    ]
                 );
             } else {
                 $this->Flash->error('no way');
@@ -402,12 +417,20 @@ class PrintLogController extends AppController
                     ->format($template, $glabelsData)
                     ->print($printerDetails);
 
-                $this->handlePrintResult(
-                    $printResult,
-                    $printerDetails,
-                    $template->details,
-                    $saveData
-                );
+                    $this->handlePrintResult(
+                        $printResult,
+                        $saveData,
+                        [
+                            'error' => [
+                                    'template' => 'Error sending <strong>{0}</strong> to <strong>{1}</strong> printer',
+                                    'values' => [ $template->details->name, $printerDetails->name ] 
+                            ], 
+                            'success' => [
+                                'template' => 'Successfully sent <strong>{0}</strong> to <strong>{1}</strong> printer',
+                                'values' => [ $template->details->name, $printerDetails->name, $printResult['stderr'] ] 
+                            ]
+                        ]
+                    );
             } else {
                 $this->Flash->error('Invalid data');
             }
@@ -455,13 +478,21 @@ class PrintLogController extends AppController
                 $printResult = LabelFactory::create($template->details->print_class, $this->request->getParam('action'))
                     ->format($template, $glabelsData)
                     ->print($printerDetails);
-
-                $this->handlePrintResult(
-                    $printResult,
-                    $printerDetails,
-                    $template->details,
-                    $saveData
-                );
+               
+                    $this->handlePrintResult(
+                        $printResult,
+                        $saveData,
+                        [
+                            'error' => [
+                                    'template' => 'Error sending <strong>{0}</strong> to <strong>{1}</strong> printer',
+                                    'values' => [ $template->details->name, $printerDetails->name ] 
+                            ], 
+                            'success' => [
+                                'template' => 'Successfully sent <strong>{0}</strong> to <strong>{1}</strong> printer',
+                                'values' => [ $template->details->name, $printerDetails->name, $printResult['stderr'] ] 
+                            ]
+                        ]
+                    );
             } else {
                 $this->Flash->error('Invalid data');
             }
@@ -510,12 +541,20 @@ class PrintLogController extends AppController
                         $printerDetails
                     );
 
-                $this->handlePrintResult(
-                    $printResult,
-                    $printerDetails,
-                    $template->details,
-                    $saveData
-                );
+                    $this->handlePrintResult(
+                        $printResult,
+                        $saveData,
+                        [
+                            'error' => [
+                                    'template' => 'Error sending <strong>{0}</strong> to <strong>{1}</strong> printer',
+                                    'values' => [ $template->details->name, $printerDetails->name ] 
+                            ], 
+                            'success' => [
+                                'template' => 'Successfully sent <strong>{0}</strong> to <strong>{1}</strong> printer',
+                                'values' => [ $template->details->name, $printerDetails->name, $printResult['stderr'] ] 
+                            ]
+                        ]
+                    );
             } else {
                 $this->Flash->error('Invalid data');
             }
@@ -575,12 +614,20 @@ class PrintLogController extends AppController
                 ->format($printTemplate, $formData)
                 ->print($printerDetails);
 
-            $this->handlePrintResult(
-                $printResult,
-                $printerDetails,
-                $printTemplate,
-                $saveData
-            );
+                $this->handlePrintResult(
+                    $printResult,
+                    $saveData,
+                    [
+                        'error' => [
+                                'template' => 'Error sending <strong>{0}</strong> to <strong>{1}</strong> printer',
+                                'values' => [ $template->details->name, $printerDetails->name ] 
+                        ], 
+                        'success' => [
+                            'template' => 'Successfully sent <strong>{0}</strong> to <strong>{1}</strong> printer',
+                            'values' => [ $template->details->name, $printerDetails->name, $printResult['stderr'] ] 
+                        ]
+                    ]
+                );
         }
 
         $this->set(compact('printer', 'printerId', 'exampleImage', 'glabelsRoot', 'printTemplate'));
@@ -618,12 +665,20 @@ class PrintLogController extends AppController
                         $printerDetails
                     );
 
-                $this->handlePrintResult(
-                    $printResult,
-                    $printerDetails,
-                    $template->details,
-                    $saveData
-                );
+                    $this->handlePrintResult(
+                        $printResult,
+                        $saveData,
+                        [
+                            'error' => [
+                                    'template' => 'Error sending <strong>{0}</strong> to <strong>{1}</strong> printer',
+                                    'values' => [ $template->details->name, $printerDetails->name ] 
+                            ], 
+                            'success' => [
+                                'template' => 'Successfully sent <strong>{0}</strong> to <strong>{1}</strong> printer',
+                                'values' => [ $template->details->name, $printerDetails->name, $printResult['stderr'] ] 
+                            ]
+                        ]
+                    );
             } else {
                 $this->Flash->error('Invalid data!');
                 $form->setData($this->request->getData());
@@ -682,12 +737,20 @@ class PrintLogController extends AppController
                     ->format($template, $glabelsData)
                     ->print($printerDetails);
 
-                $this->handlePrintResult(
-                    $printResult,
-                    $printerDetails,
-                    $template->details,
-                    $saveData
-                );
+                    $this->handlePrintResult(
+                        $printResult,
+                        $saveData,
+                        [
+                            'error' => [
+                                    'template' => 'Error sending <strong>{0}</strong> to <strong>{1}</strong> printer',
+                                    'values' => [ $template->details->name, $printerDetails->name ] 
+                            ], 
+                            'success' => [
+                                'template' => 'Successfully sent <strong>{0}</strong> to <strong>{1}</strong> printer',
+                                'values' => [ $template->details->name, $printerDetails->name, $printResult['stderr'] ] 
+                            ]
+                        ]
+                    );
             } else {
                 $this->Flash->error('Invalid data');
             }
@@ -784,12 +847,20 @@ class PrintLogController extends AppController
                 ->format($template, $cabLabelData)
                 ->print($printerDetails);
 
-            $this->handlePrintResult(
-                $printResult,
-                $printerDetails,
-                $template->details,
-                $saveData
-            );
+                $this->handlePrintResult(
+                    $printResult,
+                    $saveData,
+                    [
+                        'error' => [
+                                'template' => 'Error sending <strong>{0}</strong> to <strong>{1}</strong> printer',
+                                'values' => [ $template->details->name, $printerDetails->name ] 
+                        ], 
+                        'success' => [
+                            'template' => 'Successfully sent <strong>{0}</strong> to <strong>{1}</strong> printer',
+                            'values' => [ $template->details->name, $printerDetails->name, $printResult['stderr'] ] 
+                        ]
+                    ]
+                );
         }
 
         $printers = $palletTable->getLabelPrinters(
@@ -880,11 +951,18 @@ class PrintLogController extends AppController
 
             $this->handlePrintResult(
                 $printResult,
-                $printerDetails,
-                $pallet->items->print_template,
                 ['controller_action' => $controllerAction, 'print_data' =>  json_encode($labelClass->getPrintContentArray())],
-                $referer = $data['refer'],
-                $pallet
+                [
+                    'referer' => $data['refer'],
+                    'error' => [
+                        'template' => 'Failed sending pallet <strong>{0}</strong> using template <strong>{1}</strong> to <strong>{2}</strong> printer. Error: <strong>{3}</strong>',
+                            'values' => [ $pallet->pl_ref, $pallet->items->print_template->name, $printerDetails->name,$printResult['stderr']] 
+                    ], 
+                    'success' => [
+                        'template' => 'Successfully sent pallet <strong>{0}</strong> using template <strong>{1}</strong> to <strong>{2}</strong>.',
+                        'values' => [ $pallet->pl_ref,  $pallet->items->print_template->name, $printerDetails->name] 
+                    ]
+                ]
             );
         }
 
