@@ -4,11 +4,25 @@ namespace App\Test\TestCase\Lib\Framework;
 
 use Cake\Filesystem\File;
 use Cake\Filesystem\Folder;
+use Cake\ORM\TableRegistry;
 
 trait TestFrameworkTrait
 {
 
+
     protected $outputDir = '';
+
+
+
+    public function authMe($userId = 1)
+    {
+
+        $users = TableRegistry::get('Users');
+
+        $user = $users->get($userId);
+
+        $this->session(['Auth' => $user]);
+    }
 
     public function setOutPutDir() {
         

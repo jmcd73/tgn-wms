@@ -47,15 +47,6 @@ class PalletsControllerTest extends TestCase
         'app.Shifts'
     ];
 
-    public function authMe($userId = 1)
-    {
-
-        $users = TableRegistry::get('Users');
-
-        $user = $users->get($userId);
-
-        $this->session(['Auth' => $user]);
-    }
     /**
      * Test index method
      *

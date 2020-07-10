@@ -360,7 +360,7 @@ A *NUM_LABELS*
                 'text_template' => '',
                 'file_template' => '100x50-Keep-Refrigerated.glabels',
                 'active' => true,
-                'is_file_template' => false,
+                'is_file_template' => true,
                 'created' => '2019-07-01 17:40:11',
                 'glabels_copies' => null,
                 'modified' => '2020-06-29 15:50:52',
