@@ -81,15 +81,13 @@ use Cake\Utility\Inflector;
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <?= $this->Html->icon('user'); ?>
+                        <?= $this->Html->icon('user'); ?> <?= h($user->get('full_name')); ?>
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      
-                   
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">                  
                               <div class="col">
                                   <dl class="mt-3">
                                       <dt>
-                                          <?= __('Login'); ?>
+                                          <?= __('Login Email'); ?>
                                       </dt>
                                       <dd><?= h($user->get('username')); ?></dd>
                                   </dl>
