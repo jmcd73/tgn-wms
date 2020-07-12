@@ -49,7 +49,8 @@
             <td class="actions">
                 <?php
                                 echo $this->Form->create(null, [
-                                    'style' => 'width: 120px;',
+                                    'class' => 'menu',
+                                    'align' => 'inline',
                                     'url' => [
                                         'action' => 'move',
                                         $menu->id,
@@ -57,12 +58,14 @@
                                 ]);
                                 echo $this->Form->control('amount', [
                                     'label' => false,
+                                    'class' => 'mb-1 form-control form-control-sm',
+                                    'title' => "Move menu up or down by one or enter a number to move multiple steps",
                                     'prepend' => $this->Form->button(
                                         '',
                                         [
                                             'type' => 'submit',
                                             'name' => 'moveUp',
-                                            'class' => 'move-up',
+                                            'class' => 'mb-1 btn btn-secondary move-up btn-sm',
                                         ]
                                     ),
                                     'append' => $this->Form->button(
@@ -70,14 +73,14 @@
                                         [
                                             'type' => 'submit',
                                             'name' => 'moveDown',
-                                            'class' => 'move-down',
+                                            'class' => 'mb-1 move-down btn btn-secondary btn-sm',
                                         ]
                                     ),
                                 ]);
                                 echo $this->Form->end();
                             ?>
-                <?= $this->Html->link(__('View'), ['action' => 'view', $menu->id], ['title' => __('View'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
-                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $menu->id], ['title' => __('Edit'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
+                <?= $this->Html->link(__('View'), ['action' => 'view', $menu->id], ['title' => __('View'), 'class' => 'mb-1 btn btn-secondary btn-sm']) ?>
+                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $menu->id], ['title' => __('Edit'), 'class' => 'mb-1 btn btn-secondary btn-sm']) ?>
                 <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $menu->id], ['confirm' => __('Are you sure you want to delete # {0}?', $menu->id), 'title' => __('Delete'), 'class' => 'btn btn-danger btn-sm mb-1']) ?>
             </td>
         </tr>
