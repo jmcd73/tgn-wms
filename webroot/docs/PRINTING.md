@@ -1,8 +1,9 @@
 # Printing
-## Development environment print setup
-There is a default CUPS-PDF printer defined and it will output to a PDF folder located on the same level as the app and vendor folders
 
-![CUPS PDF Output Folder](images/cups-pdf-output.png)
+These instructions may be out of date but provide some direction of general setup
+
+## Development environment print setup
+There is a default CUPS-PDF printer defined and it will output to a PDF folder located in `/var/www/${WEB_DIR}/PDF`
 
 ## Adding printers
 To add printers is a two step process
@@ -10,7 +11,7 @@ To add printers is a two step process
     1. For the docker environment to find the URL of the CUPS admin page goto Admin => Printers and view the **Note:**
 
     ![CUPS URL](images/cups_url.png)
-
+    
     1. Download and install printer drivers if needed
     1. Queue name
     1. socket or network url. Usually it will be something like `socket://10.77.81.22:9100`
@@ -63,15 +64,15 @@ These are the Controller Action combinations that have print screens attached to
 |------------|--------|-------------|
 | PalletsController | pallet_print | CAB Printer Language Pallet Label Print |
 | PalletsController | reprint | CAB Reprint Pallet Labels |
-| PrintPalletsController | carton_print | CAB 100x50 Carton Labels |
-| PrintPalletsController | crossdock_labels | gLabels 150x200 Labels |
-| PrintPalletsController | shipping_labels | gLabels 150x200 Labels |
-| PrintPalletsController | shipping_labels_generic | gLabels 150x200 |
-| PrintPalletsController | keep_refrigerated | gLabels 100x50 Fixed Text Keep Refrigerated |
-| PrintPalletsController | glabel_sample_labels | gLabels 100x50 Product Sample Labels |
-| PrintPalletsController | big_number | Zebra Printer Language 100x200 Labels |
-| PrintPalletsController | custom_print | gLabels 100x50 assorted label prints |
-| PrintPalletsController | sample_labels | gLabels 100x50 company logo with product details |
+| PrintLogController | carton_print | CAB 100x50 Carton Labels |
+| PrintLogController | crossdock_labels | gLabels 150x200 Labels |
+| PrintLogController | shipping_labels | gLabels 150x200 Labels |
+| PrintLogController | shipping_labels_generic | gLabels 150x200 |
+| PrintLogController | keep_refrigerated | gLabels 100x50 Fixed Text Keep Refrigerated |
+| PrintLogController | glabel_sample_labels | gLabels 100x50 Product Sample Labels |
+| PrintLogController | big_number | Zebra Printer Language 100x200 Labels |
+| PrintLogController | custom_print | gLabels 100x50 assorted label prints |
+| PrintLogController | sample_labels | gLabels 100x50 company logo with product details |
 
 
 

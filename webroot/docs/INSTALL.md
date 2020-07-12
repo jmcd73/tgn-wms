@@ -180,7 +180,7 @@
    Copy bootstrap, jquery and popper.js into webroot/bootstrap_u_i
 
    ***This step is not needed as the assets are already in webroot/ and are checked out 
-   by  the clone***
+   by doing the git clone operation above***
 
    ```sh
    # install bootstrap-ui deps

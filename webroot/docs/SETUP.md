@@ -167,16 +167,19 @@
 
 1) ### Printers
 
-   Printers need to be defined in Cups before being configured in `Admin => Printers`
-   Goto `http://<yourhost>:{CUPS_PORT}` (631 or if in docker environment whatever you set CUPS_PORT to)
-   Add remote printers in CUPS
-   Return to the Admin => Printers screen and you should be able to select the CUPS configured print queue
-   Give the printer a friendly name if using the default PDF queue
+   A default CUPS-PDF printer is available in the docker environment the queue name is PDF and it outputs to /var/www/${WEB_DIR}/PDF
 
-   - **Name** - `PDF Printer`
-   - **Options** - Leave this blank for PDF if you are printing to a CAB or Zebra printer then the command language files need to reach the printer without having been put through a filter so set this to `-o raw`
-   - **Queue name** - This is the result of the application doing an lpstat and is a list of the CUPS print queues select `PDF` or whichever printer you have configured
-   - **Set as default for these actions** - Here you will see a list of CakePHP Controllers and actions if you wish this printer to be the default printer for a specify Controller::action then check the box next to it. For a list of the currently configure Controller::actions that may require a default to be set see [PRINTING.md](PRINTING.md#application-print-controller-action-list)
+   #### Adding Printers
+   1. Define a printer in Cups
+       - Goto `http://<yourhost>:{CUPS_PORT}` (631 or if in docker environment whatever you set CUPS_PORT to)
+       - Add any printers you want to print labels to in CUPS
+   2. Make it available to print labels to in `Admin => Printers`
+       - Give the printer a friendly name if using the default PDF queue
+       - **Name** `PDF Printer`
+       - **Options** Leave this blank for PDF. 
+          - **Important** If you are printing to a **CAB** or **Zebra** printer then text commands that you send to them need to reach the printer without having been put through a filter so set options to `-o raw`
+       - **Queue name** - This is the result of the application doing an lpstat and is a list of the CUPS print queues select `PDF` or whichever printer you have configured
+       - **Set as default for these actions** - Here you will see a list of CakePHP Controllers and actions if you wish this printer to be the default printer for a specify Controller::action then check the box next to it. For a list of the currently configure Controller::actions that may require a default to be set see [PRINTING.md](PRINTING.md#application-print-controller-action-list)
 
 1) ### Production Lines
 
