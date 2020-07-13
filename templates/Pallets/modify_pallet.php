@@ -20,7 +20,7 @@ $this->Html->script(
 <?php echo $this->Form->hidden('id'); ?>
 <?php echo $this->Form->hidden('referer', ['value' => $referer]); ?>
 <div class="row">
-    <div class="col-4">
+    <div class="col-sm-12 col-lg-4">
         <div class="card">
             <div class="card-body">
                 <h3>Change status or location</h3>
@@ -46,7 +46,7 @@ $this->Html->script(
                                     $user->can('bestBeforeEdit', $pallet) ? null : $disabled
                                 ]
                             ); ?>
-                 
+
                         <?=
                             $this->Form->control(
                                 'inventory_status_id',
@@ -79,7 +79,7 @@ $this->Html->script(
                                 ]
                             );
                         ?>
-                
+
                         <?= $this->Form->control('location_id', [
                             'label' => "Move to",
                             'empty' => '(select)',
@@ -100,18 +100,15 @@ $this->Html->script(
 
                     </div>
                 </div>
-            
-                <?php echo $this->Form->button(__("Save"), [ 
-                     'name' => 'submit-action',
-                    'class' => 'btn btn-sm btn-primary save', 'type' => 'submit' , 'value' => 'submit-and-reprint']); ?>
+                <?php echo $this->Form->button(__("Save"), [
+                    'name' => 'submit-action',
+                    'class' => 'btn btn-sm btn-primary save', 'type' => 'submit', 'value' => 'submit-and-reprint'
+                ]); ?>
             </div>
-
-
         </div>
-       
     </div>
-    <div class="col">
-    <div class="card">
+    <div class="col mt-lg-0 mt-4 mt-lg-0">
+        <div class="card">
             <div class="card-body">
                 <h3>Change cartons or dates</h3>
 
@@ -174,9 +171,10 @@ $this->Html->script(
                     </div>
                     <?php $key++; ?>
                 <?php endforeach; ?>
-                <?php echo $this->Form->button(__("Save"), [ 
-                     'name' => 'submit-action',
-                    'class' => 'btn btn-sm btn-primary save', 'type' => 'submit' , 'value' => 'submit-and-reprint']); ?>
+                <?php echo $this->Form->button(__("Save"), [
+                    'name' => 'submit-action',
+                    'class' => 'btn btn-sm btn-primary save', 'type' => 'submit', 'value' => 'submit-and-reprint'
+                ]); ?>
             </div>
         </div>
     </div>

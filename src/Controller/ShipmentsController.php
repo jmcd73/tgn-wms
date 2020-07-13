@@ -145,7 +145,7 @@ class ShipmentsController extends AppController
             ), ['escape' => false]);
         } else {
             $errors = $this->Shipments->flattenAndFormatValidationErrors($shipment->getErrors());
-            $this->Flash->error($errors);
+            $this->Flash->error($errors, ['escape' => false]);
         }
 
         return $this->redirect(['action' => 'index']);
