@@ -128,6 +128,14 @@ return [
                 return !$request->is(['PUT', 'POST']);
             },
         ],
+
+        [
+            // user role cannot delete or edit add 
+            'role' => [ 'user', 'qty_editor', 'qa' ],
+            'controller' => ['Shipments'],
+            // allow shipment delete
+            'action' => ['delete'],
+        ],
         [
             // user role cannot delete or edit add 
             'role' => [ 'user', 'qty_editor', 'qa' ],
