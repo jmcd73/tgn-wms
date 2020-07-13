@@ -7,10 +7,12 @@
 ?>
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 
+<?php if($user->role === 'admin'):?>
 <?php $this->start('tb_actions'); ?>
 <li><?= $this->Html->link(__('List Pallets'), ['action' => 'index'], ['class' => 'nav-link']) ?> </li>
 <?php $this->end(); ?>
 <?php $this->assign('tb_sidebar', '<ul class="nav flex-column">' . $this->fetch('tb_actions') . '</ul>'); ?>
+<?php endif; ?>
 
 <div class="pallets view large-9 medium-8 columns content">
     <div class="row">
@@ -137,7 +139,6 @@
                         <th scope="col"><?= __('Production Date') ?></th>
                         <th scope="col"><?= __('Created') ?></th>
                         <th scope="col"><?= __('Modified') ?></th>
-                        <th scope="col" class="actions"><?= __('Actions') ?></th>
                     </tr>
                     <?php foreach ($pallet->cartons as $cartons) : ?>
                         <tr>
@@ -147,9 +148,6 @@
                             <td><?= h($cartons->production_date) ?></td>
                             <td><?= h($cartons->created) ?></td>
                             <td><?= h($cartons->modified) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Cartons', 'action' => 'view', $cartons->id], ['class' => 'btn btn-secondary btn-sm mb-1']) ?>
-                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </table>

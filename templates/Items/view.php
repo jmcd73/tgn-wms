@@ -7,34 +7,34 @@
 ?>
 <?php $this->extend('/layout/TwitterBootstrap/dashboard'); ?>
 
-<?php $this->start('tb_actions'); ?>
-<li><?= $this->Html->link(__('Edit Item'), ['action' => 'edit', $item->id], ['class' => 'nav-link']) ?></li>
-<li><?= $this->Form->postLink(__('Delete Item'), ['action' => 'delete', $item->id], ['confirm' => __('Are you sure you want to delete # {0}?', $item->id), 'class' => 'nav-link']) ?>
-</li>
-<li><?= $this->Html->link(__('List Items'), ['action' => 'index'], ['class' => 'nav-link']) ?> </li>
-<li><?= $this->Html->link(__('New Item'), ['action' => 'add'], ['class' => 'nav-link']) ?> </li>
-<li><?= $this->Html->link(__('List Pack Sizes'), ['controller' => 'PackSizes', 'action' => 'index'], ['class' => 'nav-link']) ?>
-</li>
-<li><?= $this->Html->link(__('New Pack Size'), ['controller' => 'PackSizes', 'action' => 'add'], ['class' => 'nav-link']) ?>
-</li>
-<li><?= $this->Html->link(__('List Product Types'), ['controller' => 'ProductTypes', 'action' => 'index'], ['class' => 'nav-link']) ?>
-</li>
-<li><?= $this->Html->link(__('New Product Type'), ['controller' => 'ProductTypes', 'action' => 'add'], ['class' => 'nav-link']) ?>
-</li>
-<li><?= $this->Html->link(__('List Print Templates'), ['controller' => 'PrintTemplates', 'action' => 'index'], ['class' => 'nav-link']) ?>
-</li>
-<li><?= $this->Html->link(__('New Print Template'), ['controller' => 'PrintTemplates', 'action' => 'add'], ['class' => 'nav-link']) ?>
-</li>
-<li><?= $this->Html->link(__('List Cartons'), ['controller' => 'Cartons', 'action' => 'index'], ['class' => 'nav-link']) ?>
-</li>
-<li><?= $this->Html->link(__('New Carton'), ['controller' => 'Cartons', 'action' => 'add'], ['class' => 'nav-link']) ?>
-</li>
-<li><?= $this->Html->link(__('List Pallets'), ['controller' => 'Pallets', 'action' => 'index'], ['class' => 'nav-link']) ?>
-</li>
-
-<?php $this->end(); ?>
-<?php $this->assign('tb_sidebar', '<ul class="nav flex-column">' . $this->fetch('tb_actions') . '</ul>'); ?>
-
+<?php if ($user->role === 'admin') : ?>
+    <?php $this->start('tb_actions'); ?>
+    <li><?= $this->Html->link(__('Edit Item'), ['action' => 'edit', $item->id], ['class' => 'nav-link']) ?></li>
+    <li><?= $this->Form->postLink(__('Delete Item'), ['action' => 'delete', $item->id], ['confirm' => __('Are you sure you want to delete # {0}?', $item->id), 'class' => 'nav-link']) ?>
+    </li>
+    <li><?= $this->Html->link(__('List Items'), ['action' => 'index'], ['class' => 'nav-link']) ?> </li>
+    <li><?= $this->Html->link(__('New Item'), ['action' => 'add'], ['class' => 'nav-link']) ?> </li>
+    <li><?= $this->Html->link(__('List Pack Sizes'), ['controller' => 'PackSizes', 'action' => 'index'], ['class' => 'nav-link']) ?>
+    </li>
+    <li><?= $this->Html->link(__('New Pack Size'), ['controller' => 'PackSizes', 'action' => 'add'], ['class' => 'nav-link']) ?>
+    </li>
+    <li><?= $this->Html->link(__('List Product Types'), ['controller' => 'ProductTypes', 'action' => 'index'], ['class' => 'nav-link']) ?>
+    </li>
+    <li><?= $this->Html->link(__('New Product Type'), ['controller' => 'ProductTypes', 'action' => 'add'], ['class' => 'nav-link']) ?>
+    </li>
+    <li><?= $this->Html->link(__('List Print Templates'), ['controller' => 'PrintTemplates', 'action' => 'index'], ['class' => 'nav-link']) ?>
+    </li>
+    <li><?= $this->Html->link(__('New Print Template'), ['controller' => 'PrintTemplates', 'action' => 'add'], ['class' => 'nav-link']) ?>
+    </li>
+    <li><?= $this->Html->link(__('List Cartons'), ['controller' => 'Cartons', 'action' => 'index'], ['class' => 'nav-link']) ?>
+    </li>
+    <li><?= $this->Html->link(__('New Carton'), ['controller' => 'Cartons', 'action' => 'add'], ['class' => 'nav-link']) ?>
+    </li>
+    <li><?= $this->Html->link(__('List Pallets'), ['controller' => 'Pallets', 'action' => 'index'], ['class' => 'nav-link']) ?>
+    </li>
+    <?php $this->end(); ?>
+    <?php $this->assign('tb_sidebar', '<ul class="nav flex-column">' . $this->fetch('tb_actions') . '</ul>'); ?>
+<?php endif; ?>
 
 <div class="row">
     <div class="col">
