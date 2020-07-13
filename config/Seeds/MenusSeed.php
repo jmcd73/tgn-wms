@@ -296,19 +296,19 @@ class MenusSeed extends AbstractSeed
             ],
             [
                 'id' => 99,
-                'active' => false,
+                'active' => true,
                 'divider' => false,
                 'admin_menu' => false,
-                'name' => 'Custom Labels',
-                'description' => 'Print a range of custom labels',
-                'url' => null,
+                'name' => 'Pallet Label with Date',
+                'description' => 'Print a label and select the production date',
+                'url' => '',
                 'title' => 'Print custom labels - for short or sample runs',
                 'parent_id' => 9,
-                'lft' => 16,
-                'rght' => 17,
-                'modified' => '2015-10-21 10:04:51',
+                'lft' => 18,
+                'rght' => 19,
+                'modified' => '2020-07-13 20:48:52',
                 'created' => '2015-10-21 10:04:51',
-                'bs_url' => '',
+                'bs_url' => 'Pallets::palletPrintWithProductionDate',
                 'extra_args' => '',
             ],
             [
@@ -627,8 +627,8 @@ class MenusSeed extends AbstractSeed
                 'url' => '',
                 'title' => 'Pallet Print',
                 'parent_id' => 9,
-                'lft' => 18,
-                'rght' => 19,
+                'lft' => 16,
+                'rght' => 17,
                 'modified' => '2020-06-21 19:02:53',
                 'created' => '2019-10-12 21:41:15',
                 'bs_url' => 'Pallets::palletPrint',
@@ -737,7 +737,7 @@ class MenusSeed extends AbstractSeed
                 'extra_args' => '',
             ],
         ];
-
+        
         $table = $this->table('menus');
 
         $table->truncate();
