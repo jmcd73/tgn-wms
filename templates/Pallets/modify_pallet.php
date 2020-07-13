@@ -103,7 +103,7 @@ $this->Html->script(
             
                 <?php echo $this->Form->button(__("Save"), [ 
                      'name' => 'submit-action',
-                    'class' => 'btn btn-sm save', 'type' => 'submit' , 'value' => 'submit-and-reprint']); ?>
+                    'class' => 'btn btn-sm btn-primary save', 'type' => 'submit' , 'value' => 'submit-and-reprint']); ?>
             </div>
 
 
@@ -176,7 +176,7 @@ $this->Html->script(
                 <?php endforeach; ?>
                 <?php echo $this->Form->button(__("Save"), [ 
                      'name' => 'submit-action',
-                    'class' => 'btn btn-sm save', 'type' => 'submit' , 'value' => 'submit-and-reprint']); ?>
+                    'class' => 'btn btn-sm btn-primary save', 'type' => 'submit' , 'value' => 'submit-and-reprint']); ?>
             </div>
         </div>
     </div>
