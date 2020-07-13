@@ -36,6 +36,7 @@ use Cake\Utility\Hash;
  * @method \App\Model\Entity\Carton[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin \App\Model\Behavior\TgnUtilsBehavior
  */
 class CartonsTable extends Table
 {
@@ -72,8 +73,8 @@ class CartonsTable extends Table
      
 
         if (!$this->save($carton)) {
-
-            throw new Exception('Could not save Carton record triggered by Model.Pallets.afterSave method');
+            $errors  = $this->flattenAndFormatValidationErrors($carton->getErrors());
+            throw new Exception(__('Could not save Carton record triggered by Model.Pallets.afterSave method {0}', $errors));
         }
     }
 
