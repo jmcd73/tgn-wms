@@ -1293,7 +1293,8 @@ class PalletsController extends AppController
             [$total, $result] = $this->Pallets->Cartons->processCartons($data['cartons'], $user);
 
             if($result) {
-                $this->Flash->error($result, ['escape' => false]);
+                $pallet->setErrors($result);
+                $this->Flash->error("Failed to update Carton records", ['escape' => false]);
             } else {
                 unset($data['cartons']);
 

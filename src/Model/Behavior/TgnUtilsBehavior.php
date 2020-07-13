@@ -261,6 +261,24 @@ class TgnUtilsBehavior extends Behavior
     }
     
 
+     /**
+     * @param array $validationErrors The Validation Errors from an entity
+     * @return string
+     */
+    public function formatForSetErrors(array $validationErrors = []): array
+    {
+        // get Validation errors and append them into a string
+
+       $flattened = Hash::flatten($validationErrors);
+       $errors = [];
+        foreach ($flattened as $key => $error) {
+            [$field, $rule] = explode(".", $key);
+            $errors[$field] = $error;
+       }
+       
+       return $errors;
+    }
+
     /**
      * getViewPermNumber returns the perm number when given the text
      * make globally available to all models

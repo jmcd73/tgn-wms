@@ -150,8 +150,13 @@ class CartonsTable extends Table
         $rules->add($rules->existsIn(['item_id'], 'Items'));
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->isUnique(
-            ['pallet_id', 'production_date'],
+            ['production_date', 'pallet_id'],
             'Cannot have two carton records with the same production date on this pallet'
+        ));
+
+        $rules->add($rules->isUnique(
+            ['best_before', 'pallet_id'],
+            'Cannot have two carton records with the same best before date on this pallet'
         ));
 
         return $rules;
@@ -160,7 +165,6 @@ class CartonsTable extends Table
     public function processCartons($cartonData, $user)
     {
         $errorText = false;
-        
         $update = array_filter($cartonData, function ($item) {
             return $item['count'] > 0 && $item['production_date'];
         });
@@ -208,7 +212,7 @@ class CartonsTable extends Table
                     $validationErrors = array_merge($validationErrors, $v->getErrors());
                 }
                 
-                $errorText = $this->flattenAndFormatValidationErrors($validationErrors);
+                $errorText = $this->formatForSetErrors($validationErrors);
               
             };
         }
