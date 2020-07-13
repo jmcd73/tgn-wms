@@ -67,7 +67,7 @@
                 </tr>
                 <tr>
                     <th scope="row"><?= __('Pack Size') ?></th>
-                    <td><?= $item->has('pack_size') ? $this->Html->link($item->pack_size->id, ['controller' => 'PackSizes', 'action' => 'view', $item->pack_size->id]) : '' ?>
+                    <td><?= $item->has('pack_size') ? $this->Html->link($item->pack_size->pack_size, ['controller' => 'PackSizes', 'action' => 'view', $item->pack_size->id]) : '' ?>
                     </td>
                 </tr>
                 <tr>
