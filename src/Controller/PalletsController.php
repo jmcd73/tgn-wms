@@ -1292,32 +1292,37 @@ class PalletsController extends AppController
 
             [$total, $result] = $this->Pallets->Cartons->processCartons($data['cartons'], $user);
 
-            unset($data['cartons']);
-
-            $pallet = $this->Pallets->get($id);
-
-            $pallet->qty = $total;
-
-            $patched = $this->Pallets->patchEntity($pallet, $data);
-
-            if ($this->Pallets->save($patched)) {
-                $this->Flash->success(__('The pallet data has been saved.'));
-
-                $event = new Event('Model.Pallets.updateBestBeforeAndProductionDate', $pallet, ['id' => $id]);
-                $this->getEventManager()->dispatch($event);
-
-                if ($data['submit-action'] === 'submit-and-reprint') {
-                    $companyName = $this->getSetting("COMPANY_NAME");
-                    $action = $this->request->getParam('action');
-
-                    $this->Pallets->reprintLabel($id, null, $companyName, $action);
-                }
-
-                return $this->redirect($this->request->getData()['referer']);
+            if($result) {
+                $this->Flash->error($result, ['escape' => false]);
             } else {
-                $validationErrors = $this->Pallets->flattenAndFormatValidationErrors($patched->getErrors());
-                $this->Flash->error(__('The  pallet data could not be saved. Please, try again.' . $validationErrors));
+                unset($data['cartons']);
+
+                $pallet->qty = $total;
+    
+                $patched = $this->Pallets->patchEntity($pallet, $data);
+    
+                if ($this->Pallets->save($patched)) {
+                    $this->Flash->success(__('The pallet data has been saved.'));
+    
+                    $event = new Event('Model.Pallets.updateBestBeforeAndProductionDate', $pallet, ['id' => $id]);
+                    $this->getEventManager()->dispatch($event);
+    
+                    if ($data['submit-action'] === 'submit-and-reprint') {
+                        $companyName = $this->getSetting("COMPANY_NAME");
+                        $action = $this->request->getParam('action');
+    
+                        $this->Pallets->reprintLabel($id, null, $companyName, $action);
+                    }
+    
+                    return $this->redirect($this->request->getData()['referer']);
+                    
+                } else {
+                    $validationErrors = $this->Pallets->flattenAndFormatValidationErrors($patched->getErrors());
+                    $this->Flash->error(__('The  pallet data could not be saved. Please, try again.' . $validationErrors));
+                }
             }
+
+           
         }
 
         $cartons = $pallet['cartons'];

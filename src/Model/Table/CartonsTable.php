@@ -92,6 +92,8 @@ class CartonsTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('TgnUtils');
+
         $this->addBehavior('Timestamp');
 
         $this->belongsTo('Pallets', [
@@ -147,12 +149,18 @@ class CartonsTable extends Table
         $rules->add($rules->existsIn(['pallet_id'], 'Pallets'));
         $rules->add($rules->existsIn(['item_id'], 'Items'));
         $rules->add($rules->existsIn(['user_id'], 'Users'));
+        $rules->add($rules->isUnique(
+            ['pallet_id', 'production_date'],
+            'Cannot have two carton records with the same production date on this pallet'
+        ));
 
         return $rules;
     }
 
     public function processCartons($cartonData, $user)
     {
+        $errorText = false;
+        
         $update = array_filter($cartonData, function ($item) {
             return $item['count'] > 0 && $item['production_date'];
         });
@@ -189,26 +197,22 @@ class CartonsTable extends Table
                 $update[$k]['user_id'] = $user->get('id');
             }
             $patched = $this->patchEntities($entities, $update);
-
-            foreach ($patched as $p) {
-                tog(print_r($p->getErrors(), true));
-            }
-          
+        
             if ($this->saveMany($patched)) {
                 $updateOK = true;
             } else {
-                $validationErrors = $this->validationErrors;
-                $errorText = $this->flattenAndFormatValidationErrors($validationErrors);
-                if ($errorText) {
-                    $msg = __('<strong>Update Error: </strong> %s', $errorText);
-                } else {
-                    $msg = '<strong>Update Error</strong>';
-                }
+                $validationErrors = [];
 
-                $this->Flash->error($msg);
+                foreach($patched as $k => $v) {
+                    tog('v', $v);
+                    $validationErrors = array_merge($validationErrors, $v->getErrors());
+                }
+                
+                $errorText = $this->flattenAndFormatValidationErrors($validationErrors);
+              
             };
         }
 
-        return [ $total, $update && $updateOK || $deleteIds && $deleteOK ];
+        return [ $total, $errorText ];
     }
 }
