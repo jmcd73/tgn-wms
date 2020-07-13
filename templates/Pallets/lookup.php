@@ -143,6 +143,7 @@ echo $this->Form->button('Reset', [
     'class' => 'mt-3 btn btn-secondary',
     'type' => 'reset',
     'id' => 'resetButton',
+    'onClick' => "clearForm(this.form);",
     'label' => false,
 ]);
 echo $this->Form->end();

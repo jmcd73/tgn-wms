@@ -91,3 +91,29 @@ $(function () {
     source: batchCodes,
   });
 });
+
+function clearForm(form) {
+  elements = form.elements;
+
+  for (i = 0; i < elements.length; i++) {
+    switch (elements[i].name) {
+      case "inventory_status_id":
+      case "bb_date":
+      case "production_date":
+      case "location_id":
+      case "shipment_id":
+        elements[i].value = '';
+        break;
+      default:
+        // do nothing
+        break;
+    }
+
+  }
+
+  // clear typeaheads
+
+  setTimeout(function () {
+    $('.typeahead').typeahead('val', '');
+  }, 100);
+}
