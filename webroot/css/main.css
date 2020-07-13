@@ -568,7 +568,7 @@ a.btn.save::before,
 button.btn.save::before {
   font-family: "Font awesome 5 Free";
   font-weight: 900;
-  content: "\f00c\00a0";
+  content: "\f0c7\00a0";
 }
 
 a.btn.cancel::before {
@@ -1000,3 +1000,14 @@ div.form-check input[type="checkbox"] {
 form.menu div.form-group {
   width: 90px;
 }
+
+.mixed-pallet-stripe {
+  color: white;
+background: repeating-linear-gradient(
+  135deg,
+  #606dbc,
+  #606dbc 10px,
+  #465298 10px,
+  #465298 20px
+)
+};

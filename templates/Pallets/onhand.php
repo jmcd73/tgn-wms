@@ -45,7 +45,7 @@ use App\View\Helper\ToggenHelper;
         On cooldown
         <span class="label label-primary"><?php echo $cooldown; ?> hours</span>
     </div>
-    <div class="bg-secondary alert">
+    <div class="mixed-pallet-stripe alert">
         <?= $this->Html->icon('calendar-plus'); ?>
         <span class="label label-primary">Mixed date pallet</span>
     </div>
@@ -102,14 +102,14 @@ use App\View\Helper\ToggenHelper;
                     } elseif ($pallet['dont_ship']) {
                         $cls = 'bg-danger';
                     } elseif (count($pallet['cartons']) > 1) {
-                        $cls = 'bg-secondary';
+                        $cls = 'mixed-pallet-stripe';
                     } else {
                         $cls = '';
                     }
                     $classString = $this->Html->buildClass($cls);
                     ?>
-                    <tr>
-                        <td <?= $classString; ?>>
+                    <tr <?= $classString; ?>>
+                        <td>
                             <?php if ($pallet->has('location')) : ?>
                                 <?php echo $this->Html->tag('a', '', [
                                     'id' => $pallet['pl_ref'],
@@ -130,27 +130,27 @@ use App\View\Helper\ToggenHelper;
                                 Missing Location
                             <?php endif; ?>
                         </td>
-                        <td <?= $classString; ?>><?= h($pallet->code_desc); ?></td>
-                        <td <?= $classString; ?>>
+                        <td><?= h($pallet->code_desc); ?></td>
+                        <td>
                             <?php echo h($pallet['pl_ref']); ?>
                         </td>
-                        <td <?= $classString; ?>>
+                        <td>
                             <?php echo $this->Html->tag(
                                 'span',
                                 h($pallet['production_date']->i18nFormat(null, $user->timezone)),
                                 ['title' => 'Cooldown date: ' . h($pallet['cooldown_date']->i18nFormat(null, $user->timezone)), 'style' => 'cursor: crosshair;']
                             ); ?></td>
-                        <td <?= $classString; ?>>
+                        <td>
                             <?php echo h($this->Time->timeAgoInWords($pallet['production_date'])); ?></td>
-                        <td <?= $classString; ?>>
+                        <td>
                             <?php echo h($pallet['bb_date']->i18nFormat(null, $user->timezone)); ?>
                         </td>
-                        <td <?= $classString; ?>>
+                        <td>
                             <?php echo h($pallet['batch']); ?></td>
-                        <td <?= $classString; ?>>
+                        <td>
                             <?php echo h($pallet['qty']); ?>
                         </td>
-                        <td <?= $classString; ?>>
+                        <td>
                             <?php if ($pallet->has('shipment')) {
                                 echo $this->Html->link(
                                     $pallet->shipment->shipper,
@@ -168,7 +168,7 @@ use App\View\Helper\ToggenHelper;
                             };
                             ?></td>
 
-                        <td <?= $classString; ?>>
+                        <td>
                             <?= $pallet->has('inventory_status') ? h($pallet->inventory_status->name) : ''; ?>
                             <?php if (!empty($pallet['inventory_status_note'])) : ?>
                                 <p class="x-small" title="<?php echo $pallet['inventory_status_note']; ?>">
@@ -176,13 +176,13 @@ use App\View\Helper\ToggenHelper;
                                 </p>
                             <?php endif; ?>
                         </td>
-                        <td <?php echo $this->Html->buildClass([$cls, 'actions']); ?>>
+                        <td  class="actions" >
                             <?= $this->Html->link(
                                 'Edit',
                                 [
                                     'controller' => 'Pallets', 'action' => 'modifyPallet', $pallet['id']
                                 ],
-                                ['class' => 'btn edit btn-sm mb-1']
+                                ['class' => 'btn edit btn-sm btn-warning mb-1']
 
                             ); ?>
 
@@ -193,7 +193,7 @@ use App\View\Helper\ToggenHelper;
                                 ],
                                 [
                                     'target' => '_blank',
-                                    'class' => 'btn label btn-sm mb-1']
+                                    'class' => 'btn label btn-secondary btn-sm mb-1']
 
                             ); ?>
                         </td>
