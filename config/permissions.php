@@ -133,7 +133,7 @@ return [
             'role' => [ 'user', 'qty_editor', 'qa' ],
             'controller' => ['PrintLog', 'Pallets', 'Items', 'Cartons', 'Shipments'],
             // allow all actions except these by prepending * to action
-            '*action' => ['add', 'edit'],
+            '*action' => ['add', 'edit', 'newItemFromCopy'],
         ],
     ],
 ];
