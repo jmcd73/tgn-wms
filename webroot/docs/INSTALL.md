@@ -3,6 +3,8 @@
 **Note:** PHP7.4 is required as some of the code makes use of new features from this version
 
 1. Create a database in MYSQL, create and grant a user access 
+   If you are wondering what character set and collation to use choose utf8mb4 and utf8mb4_general_ci
+   If you are going to print labels that have &beta; (Beta) or other fancy characters in them that endure a database dump and reload then this is required
    ```sql
    SELECT @@version;
    -- Instructions for v8.0.20 of mysql community server
