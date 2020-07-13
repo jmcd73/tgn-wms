@@ -120,7 +120,7 @@ return [
             ],
         ],
         [
-            'role' => [ 'user', 'qty_editor' ],
+            'role' => [ 'user' ],
             'controller' => ['Pallets'],
             'action' => ['bulkStatusRemove'],
             'allowed' => function ($userEntity, $role, $request) {
