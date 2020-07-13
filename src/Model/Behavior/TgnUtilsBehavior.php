@@ -17,6 +17,7 @@ use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use App\Lib\Utility\SettingsTrait;
 use App\Lib\Utility\FormatDateTrait;
+use Cake\ORM\Locator\LocatorAwareTrait;
 
 /**
  * TgnUtils behavior
@@ -25,7 +26,7 @@ class TgnUtilsBehavior extends Behavior
 {
     use LogTrait;
     use SettingsTrait;
-    use FormatDateTrait;
+    use FormatDateTrait, LocatorAwareTrait;
     
     /**
      * Default configuration.
@@ -160,7 +161,9 @@ class TgnUtilsBehavior extends Behavior
      */
     public function getLabelPrinters($controllerAction)
     {
-        $printerModel = TableRegistry::get('Printers');
+        $printerModel = $this->getTableLocator()->get("Printers");
+        
+        //TableRegistry::get('Printers');
 
         $labelPrinters = $printerModel->find(
             'all',
@@ -208,7 +211,7 @@ class TgnUtilsBehavior extends Behavior
      */
     public function getLabelPrinterById($printerId)
     {
-        $printerModel = TableRegistry::get('Printers');
+        $printerModel = $this->getTableLocator()->get('Printers');
 
         return $printerModel->get($printerId);
     }
