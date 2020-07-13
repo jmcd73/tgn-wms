@@ -64,6 +64,7 @@ $(function () {
     qty_div.hide(400);
 
     part_pallet = $(this).closest("form").find('input[type="checkbox"]');
+
     part_pallet.prop("checked", false);
   });
 
@@ -71,7 +72,7 @@ $(function () {
   $('input.production-date[type="checkbox"]').change(function () {
     checked = $(this).prop("checked");
     input = $(this).closest('div.input-group').find('input.production-date[type="date"]');
-   
+
     if (checked) {
       input.attr('disabled', false);
     } else {
@@ -136,12 +137,16 @@ function setFormValuesFromCookies(form) {
     .find(":input:visible")
     .each(function () {
       control_name = $(this).prop("name");
-      //console.log(control_name);
-      if (control_name) {
-        control_name_pt =
-          productTypeId + "-" + formNameVal + "-" + control_name;
-        //console.log(control_name_pt);
-        $(this).val($.cookie(control_name_pt));
+      control_name_pt =
+        productTypeId + "-" + formNameVal + "-" + control_name;
+
+      switch (control_name) {
+        case formNameVal + '-' + 'item':
+        case formNameVal + '-' + 'production_line':
+          $(this).val($.cookie(control_name_pt));
+          break;
+        default:
+          break;
       }
     });
 }

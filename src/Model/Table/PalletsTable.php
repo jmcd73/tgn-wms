@@ -25,6 +25,7 @@ use App\Lib\Utility\Barcode;
 use App\Model\Entity\Pallet;
 use Cake\Event\EventManager;
 use Cake\I18n\FrozenDate;
+use Cake\ORM\Locator\LocatorAwareTrait;
 
 /**
  * Pallets Model
@@ -51,13 +52,14 @@ use Cake\I18n\FrozenDate;
  * @method \App\Model\Entity\Pallet[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
  * @method \App\Model\Entity\Pallet[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\Pallet[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
- *
+ * 
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  * @mixin \Cake\ORM\Behavior\CounterCacheBehavior
+ * @mixin \App\Model\Behavior\TgnUtilsBehavior
  */
 class PalletsTable extends Table
 {
-    use UpdateCounterCacheTrait, PalletExistsTrait;
+    use UpdateCounterCacheTrait, PalletExistsTrait, LocatorAwareTrait;
 
 
     /**
@@ -110,11 +112,11 @@ class PalletsTable extends Table
 
 
         $printLabel = new PrintLabel();
-       
+
         $printLog = new PrintLogTable();
-        
+
         $this->getEventManager()->on($printLabel);
-        
+
         $this->getEventManager()->on($this);
 
         $this->getEventManager()->on($printLog);
@@ -124,7 +126,6 @@ class PalletsTable extends Table
         $cartonsTable = new CartonsTable();
 
         $this->getEventManager()->on($cartonsTable);
-       
     }
 
 
@@ -151,7 +152,7 @@ class PalletsTable extends Table
     {
 
         if ($entity->isNew() && $entity instanceof Pallet && $event->getSubject() instanceof PalletsTable) {
-           
+
             $evt = new Event('Model.Cartons.addCartonRecord', $entity);
             $this->getEventManager()->dispatch($evt);
 
@@ -201,10 +202,9 @@ class PalletsTable extends Table
                 $productionDate = explode(' ', $oldestProdDate->toDateTimeString())[0] . ' ' . explode(' ', $production_date->toDateTimeString())[1];
                 $saveDate = new FrozenTime($productionDate);
                 $pallet->production_date = $saveDate;
-                
             }
 
-            if($oldestBBDate) {
+            if ($oldestBBDate) {
                 $pallet->bb_date = $oldestBBDate;
             }
 
@@ -516,7 +516,7 @@ class PalletsTable extends Table
      */
     public function shiftReport($queryDate = null)
     {
-        $shift_model = TableRegistry::getTableLocator()->get('Shifts');
+        $shift_model = $this->getTableLocator()->get('Shifts');
 
         $shifts = $shift_model->find('all', [
             'conditions' => [
@@ -1144,6 +1144,7 @@ class PalletsTable extends Table
 
         $locationId = $productType->location_id > 0 ? $productType->location_id : 0;
 
+
         $inventoryStatusId = ($productType->inventory_status_id > 0)
             ? $productType->inventory_status_id : 0;
 
@@ -1182,6 +1183,10 @@ class PalletsTable extends Table
 
         $production_date = new FrozenTime();
 
+        if (isset($data['production_date']) && is_numeric(strtotime($data['production_date']))) {
+            $production_date = new FrozenTime($data['production_date'] . ' ' . explode(' ', $production_date->toDateTimeString())[1]);
+        }
+
         $production_date_plus_days_life = $production_date->addDays($days_life);
 
         $bestBeforeDates = $this->formatLabelDates($production_date_plus_days_life);
@@ -1216,10 +1221,10 @@ class PalletsTable extends Table
         return $this->newEntity($palletData);
     }
 
-    public function buildOnHandQuery($filter_value) : array
+    public function buildOnHandQuery($filter_value): array
     {
         if ($filter_value) {
-            
+
             switch ($filter_value) {
                 case 'low_dated':
                     $sqlValue = 1;
@@ -1269,17 +1274,16 @@ class PalletsTable extends Table
             $pallets->having(['DATEDIFF(Pallets.bb_date, CURDATE()) < Pallets.min_days_life AND Pallets.shipment_id = 0']);
         }
 
-        return [ $pallets, $options ];
+        return [$pallets, $options];
     }
 
     public function reprintLabel($palletId, $printer, $companyName, $action)
     {
 
-        $pallet = $this->get($palletId, [ 'contain' => [
+        $pallet = $this->get($palletId, ['contain' => [
             "Items",
             'Items.PrintTemplates'
-            ]
-        ]);
+        ]]);
 
         $event = new Event('PrintLabels.palletPrint', $pallet, [
             'item' => $pallet->items,
@@ -1315,6 +1319,6 @@ class PalletsTable extends Table
             }
         }
 
-        return [ $printResult, $labelClass ];
+        return [$printResult, $labelClass];
     }
 }
