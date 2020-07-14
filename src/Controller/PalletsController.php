@@ -243,6 +243,188 @@ class PalletsController extends AppController
     }
 
 
+    // $this->Security->setConfig('unlockedActions', ['edit']);
+
+    /**
+     * Print a new pallet label
+     *
+     * @param int ProductTypeId $productTypeId Product Type ID
+     *
+     * @return mixed
+     */
+    public function palletPrintWithProductionDate($productTypeId = null)
+    {
+        $forms = [];
+
+        foreach (['left', 'right'] as $form) {
+            $forms[$form] = (new PalletPrintForm())->setFormName($form);
+        }
+
+        $productTypes = $this->Pallets->Items->ProductTypes->find('list', [
+            'conditions' => [
+                'ProductTypes.active' => 1,
+            ],
+        ]);
+
+        if (!$productTypeId) {
+            $this->Flash->error('Select a product type from the actions on the left');
+            $this->set(compact('productTypes'));
+            return;
+        }
+
+        $productType = $this->Pallets->Items->ProductTypes->get($productTypeId);
+
+        $productionLines = $this->Pallets->Items
+            ->ProductTypes->ProductionLines->find(
+                'list',
+                [
+                    'conditions' => [
+                        'product_type_id' => $productTypeId,
+                        'active' => 1,
+                    ],
+                ]
+            );
+
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+
+            $formName = $data['formName'];
+
+            if ($forms[$formName]->validate($data)) {
+
+                $newData = [];
+
+                foreach ($data as $key => $value) {
+                    $newKey = str_replace($formName . '-', '', $key);
+                    $newData[$newKey] = $value;
+                }
+
+                $newData['user_id'] = $this->Authentication->getIdentity()->getIdentifier();
+
+                /* create a pallet entity for the pallets table but don't persist it yet */
+
+                $pallet = $this->Pallets->createPalletEntity($newData);
+
+                $item = $this->Pallets->Items->get($newData['item'], [
+                    'contain' =>
+                    ['PrintTemplates', 'ProductTypes']
+                ]);
+
+                $productionLine = $this->Pallets->ProductionLines->get($newData['production_line'], [
+                    'contain' => 'Printers'
+                ]);
+
+                if (!$pallet->hasErrors()) {
+                    $this->Flash->success($this->createMessage($pallet, $productionLine->printer), ['escape' => false]);
+
+                    /* dispatch an event to the PrintLabel controller to 
+                     * print labels and sendEmail
+                     * */
+                    $event = new Event('PrintLabels.palletPrint', $pallet, [
+                        'item' => $item,
+                        'printer' => $productionLine->printer,
+                        'company' => $this->companyName,
+                        'action' => $this->request->getParam('action')
+                    ]);
+
+                    $this->getEventManager()->dispatch($event);
+
+                    $printResult = $event->getResult()['printResult'];
+
+                    $labelClass = $event->getResult()['labelClass'];
+
+                    if ($printResult['return_value'] === 0) {
+
+                        /* if print is successful 
+                         * increment serial numbers 
+                         * persist pallet entity and
+                         * create a carton record
+                        */
+
+                        $events = [
+                            'Model.ProductTypes.incrementNextSerialNumber',
+                            'Model.Settings.incrementSsccRef',
+                        ];
+
+                        foreach ($events as $eventName) {
+                            $evt =  new Event($eventName, $pallet);
+                            $this->getEventManager()->dispatch($evt);
+                        }
+
+                        $palletEvents = [
+                            'Model.Pallets.addPalletLabelFilename',
+                            'Model.Pallets.persistPalletRecord'
+                        ];
+
+                        foreach ($palletEvents as $eventName) {
+
+                            $evt = new Event(
+                                $eventName,
+                                $pallet,
+                                [
+                                    'labelClass' => $labelClass,
+                                    'labelOutputPath' => $this->getSetting('LABEL_OUTPUT_PATH')
+                                ]
+                            );
+
+                            $this->getEventManager()->dispatch($evt);
+                        }
+
+                        return $this->redirect([ 'controller' => 'Pallets', 'action' => 'palletPrintWithProductionDate', $productTypeId]);
+                    }
+                } else {
+                    $errors = $this->Pallets->flattenAndFormatValidationErrors($pallet->getErrors());
+                    $this->Flash->error("Contact IT Support: " . $errors,  ['escape' => false]);
+                }
+            } else {
+                $this->Flash->error('There was a problem submitting your form.');
+               // $forms[$this->request->getData()['formName']]->setData($this->request->getData());
+                $forms[$this->request->getData()['formName']]->setErrors(
+                    $forms[$this->request->getData()['formName']]->getErrors()
+                );
+            }
+        } 
+        // end of post check
+        // populate form
+
+        $items = $this->Pallets->Items->getPalletPrintItems($productTypeId);
+
+        $exampleBatchNo = (new Batch)->getBatchNumbers($productType['batch_format']);
+
+        $refer = $this->request->getPath();
+
+        $labelOutputPath = $this->getSetting('LABEL_OUTPUT_PATH');
+
+        $lastPrintsCount = (int) $this->getSetting('LABEL_DOWNLOAD_LIST');
+
+        $lastPrints = $this->Pallets->find()
+            ->select(['id', 'pallet_label_filename', 'pl_ref', 'item'])
+            ->where(['pallet_label_filename IS NOT NULL'])
+            ->order(['id' => 'DESC'])
+            ->limit($lastPrintsCount)->filter(function ($pallet)  use ($labelOutputPath) {
+                return $this->Pallets->checkFileExists($labelOutputPath, $pallet->pallet_label_filename);
+            });
+
+        $showLabelDownload = (bool) $lastPrintsCount;
+
+        $this->set(
+            compact(
+                'lastPrints',
+                'showLabelDownload',
+                'lastPrintsCount',
+                'labelOutputPath',
+                'items',
+                'productionLines',
+                'productType',
+                'productTypes',
+                'refer',
+                'forms',
+                'exampleBatchNo'
+            )
+        );
+    }
+
+
     /**
      * Index method
      *
@@ -1127,7 +1309,7 @@ class PalletsController extends AppController
                 'inventory_status_id',
             ],
             'order' => [
-                'id' => 'DESC',            
+                'id' => 'DESC',
             ],
         ];
 
@@ -1178,7 +1360,7 @@ class PalletsController extends AppController
         $downloadFilePath = WWW_ROOT . $outputPath . DS;
 
         $pallet = $this->Pallets->get($id);
-        
+
         $filename = $pallet->pallet_label_filename;
 
         $fullPath = $downloadFilePath . $pallet->pallet_label_filename;
@@ -1292,38 +1474,35 @@ class PalletsController extends AppController
 
             [$total, $result] = $this->Pallets->Cartons->processCartons($data['cartons'], $user);
 
-            if($result) {
+            if ($result) {
                 $pallet->setErrors($result);
                 $this->Flash->error("Failed to update Carton records", ['escape' => false]);
             } else {
                 unset($data['cartons']);
 
                 $pallet->qty = $total;
-    
+
                 $patched = $this->Pallets->patchEntity($pallet, $data);
-    
+
                 if ($this->Pallets->save($patched)) {
                     $this->Flash->success(__('The pallet data has been saved.'));
-    
+
                     $event = new Event('Model.Pallets.updateBestBeforeAndProductionDate', $pallet, ['id' => $id]);
                     $this->getEventManager()->dispatch($event);
-    
+
                     if ($data['submit-action'] === 'submit-and-reprint') {
                         $companyName = $this->getSetting("COMPANY_NAME");
                         $action = $this->request->getParam('action');
-    
+
                         $this->Pallets->reprintLabel($id, null, $companyName, $action);
                     }
-    
+
                     return $this->redirect($this->request->getData()['referer']);
-                    
                 } else {
                     $validationErrors = $this->Pallets->flattenAndFormatValidationErrors($patched->getErrors());
                     $this->Flash->error(__('The  pallet data could not be saved. Please, try again.' . $validationErrors));
                 }
             }
-
-           
         }
 
         $cartons = $pallet['cartons'];
@@ -1401,12 +1580,10 @@ class PalletsController extends AppController
     }
 
     public function missingLabel()
-    {   
+    {
         $id = $this->request->getQueryParams()['id'];
         $pallet = $this->Pallets->get($id);
 
         $this->set(compact('id', 'pallet'));
-
-        
     }
 }

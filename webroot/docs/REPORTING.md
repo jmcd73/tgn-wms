@@ -14,7 +14,7 @@ data[Label][start_date][month]:10
 data[Label][start_date][year]:2019
 ```
 
-**Docker environment report endpoint:** `http://localhost:8085/Labels/formatReport`
+**Docker environment report endpoint:** `http://localhost:8085/Pallets/shiftReport`
 
 ## Postman
 ![Post Example](images/postman.png)

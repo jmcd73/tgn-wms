@@ -25,7 +25,8 @@ class PalletPrintForm extends Form
     {
         return $schema->addField($this->prependFormName('batch_no'), 'string')
         ->addField($this->prependFormName('item'), 'string')
-        ->addField($this->prependFormName('production_line'), 'string');
+        ->addField($this->prependFormName('production_line'), 'string')
+        ->addField($this->prependFormName('production_date'), 'date');
     }
 
     public function prependFormName($fieldName) : string
@@ -68,8 +69,10 @@ class PalletPrintForm extends Form
         ->notEmptyString($this->prependFormName('item'), 'Please select an Item')
         ->scalar($this->prependFormName('production_line'), 'Please select a production line')
         ->requirePresence($this->prependFormName('production_line'), 'Please select a production line')
-        ->notEmptyString($this->prependFormName('production_line'), 'Please select a production line');
-
+        ->notEmptyString($this->prependFormName('production_line'), 'Please select a production line')
+        ->notEmptyDate($this->prependFormName('production_date'), 'Please add a date');
+    
+      
         return $validator;
     }
 

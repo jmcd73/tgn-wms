@@ -39,16 +39,18 @@ class Batch {
 
     }
 
-    public function YDDDXX($settings) {
+    public function YDDDXX($settings, $batchNo): string
+    {
 
         //for ($i = $settings['start']; $i <= $settings['end']; $i++) {
         //    $batch_nos[$batch_prefix . sprintf('%02d', $i)] = $batch_prefix . ' - ' . sprintf('%02d', $i);
         //}
 
-        return $this->getYDDD() . sprintf('%02d', 1);
+        return $this->getYDDD() . sprintf('%02d', $batchNo);
     }
 
-    public function getYDDD() {
+    public function getYDDD(): string
+    {
         $now = FrozenTime::now();
         return substr((string) $now->year, 3) . sprintf('%03d', $now->dayOfYear + 1);
     }

@@ -13,7 +13,7 @@ if (in_array($origin, $allowedOrigins)) {
 
 |  Controllers &nbsp; &nbsp;  | Action            | Usage |
 | :--------- | ----------------- | ----- |
-| Items      | product_list      | Not sure if still in use but some of the remote systems queried for a product list in the past
+| Items      | productList      | Not sure if still in use but some of the remote systems queried for a product list in the past
 | Labels     | multiEdit         | In use with the pickStock react app      |
 | Labels     | edit              |       |
 | Shipment   | destinationLookup &nbsp; &nbsp; |       |

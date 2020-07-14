@@ -5,7 +5,7 @@ use Cake\Utility\Inflector;
 $this->Html->script(
     [
         'jquery.cookie',
-        'pallet-print',
+        'pallet-print-with-production-date',
     ],
     [
         'inline' => false,
@@ -24,7 +24,7 @@ $this->Html->script(
         $linkActive = (isset($productType) && is_numeric($productType->id) && $productType->id === $key) ? 'active' : ''; ?>
         <li class="nav-item">
             <?php echo $this->Html->link($pt, [
-                'action' => 'palletPrint',
+                'action' => 'palletPrintWithProductionDate',
                 $key,
             ], ['class' => 'nav-link ' . $linkActive]); ?>
         </li>
@@ -114,6 +114,7 @@ $this->Html->script(
                         <?php echo $this->Form->control($formName . '-part_pallet-' . $key, [
                             'label' => 'Part Pallet',
                             'type' => 'checkbox',
+                            'class' => 'part-pallet',
                             'data-queryurl' => $this->Url->build(['controller' => 'items', 'action' => 'product']),
                         ]); ?>
                         <?php echo $this->Form->control(
@@ -138,7 +139,20 @@ $this->Html->script(
                                         'autocomplete' => 'off',
                                     ]
                                 ); ?>
-
+                            </div>
+                            <div class="col">
+                                <?php echo $this->Form->control(
+                                    $formName . '-production_date',
+                                    [
+                                        
+                                        'type' =>  'date',
+                                        'label' => 'Production Date' .  $this->Html->tag('span',  'Select production date', ['class' => 'secondary-text']),
+                                        'class' => 'production-date',
+                                        'escape' => false,
+                                    
+                                        'autocomplete' => 'off',
+                                    ]
+                                ); ?>
                             </div>
                         </div>
 
@@ -147,7 +161,6 @@ $this->Html->script(
                             [
                                 'class' => 'frm-print print btn btn-primary btn-lg col ' . $key,
                                 'type' => 'button',
-                                'accesskey  ' => substr($formName,0,1),
                                 'data-formName' => $formName,
                                 'data-toggle' => 'modal',
                                 'data-target' => '#dialog',
