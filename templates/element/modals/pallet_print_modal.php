@@ -19,7 +19,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <button type="button" class="btn btn-primary print modal-print">
+                        <button type="button" accesskey="p" class="btn btn-primary print modal-print">
                             Print
                         </button>
                     </div>

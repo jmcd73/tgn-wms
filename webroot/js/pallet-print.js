@@ -49,6 +49,12 @@ $(function () {
         .on("click", function () {
           $("#" + formName).submit();
         });
+
+      
+
+    }).on('shown.bs.modal', function(){
+      console.log("shown");
+      $('button.modal-print').focus();
     });
 
   // when item number select changes
@@ -71,7 +77,7 @@ $(function () {
   $('input.production-date[type="checkbox"]').change(function () {
     checked = $(this).prop("checked");
     input = $(this).closest('div.input-group').find('input.production-date[type="date"]');
-   
+
     if (checked) {
       input.attr('disabled', false);
     } else {

@@ -147,6 +147,7 @@ $this->Html->script(
                             [
                                 'class' => 'frm-print print btn btn-primary btn-lg col ' . $key,
                                 'type' => 'button',
+                                'accesskey  ' => substr($formName,0,1),
                                 'data-formName' => $formName,
                                 'data-toggle' => 'modal',
                                 'data-target' => '#dialog',
