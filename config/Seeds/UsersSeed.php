@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Migrations\AbstractSeed;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\I18n\FrozenTime;
+use Cake\Core\Configure;
 
 /**
  * Users seed.
@@ -23,6 +24,24 @@ class UsersSeed extends AbstractSeed
      */
     public function run()
     {
+        // set passwords for the individual dev users in 
+        // config/app_local.php
+        // 
+        // 'devPasswords' => [
+        //     '<role>' => '<password>',
+        // ]
+        // 
+        // .e.g. 
+        // 
+        // 'devPasswords' => [
+        //     'admin' => 'pw1',
+        //     'user' => 'pw2',
+        //     'qa' => 'pw3',
+        //     'qty_editor' => 'pw4'
+        // ],
+        // 
+        $devPasswords = Configure::read('devPasswords');
+
         $data = [
             [
                 'username' => 'admin@example.com',
@@ -60,7 +79,7 @@ class UsersSeed extends AbstractSeed
         ];
 
         foreach($data as $k => $d) {
-            $data[$k]['password'] =  (new DefaultPasswordHasher())->hash($d['password']);
+            $data[$k]['password'] =  (new DefaultPasswordHasher())->hash($devPasswords[$d['role']]);
             $data[$k]['created'] = FrozenTime::now()->toDateTimeString();
             $data[$k]['modified'] = FrozenTime::now()->toDateTimeString();
         }

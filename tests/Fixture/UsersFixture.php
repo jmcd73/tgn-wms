@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
+use Authentication\PasswordHasher\DefaultPasswordHasher;
+use Cake\Core\Configure;
 
 /**
  * UsersFixture
@@ -43,12 +45,17 @@ class UsersFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->records = [
+
+        // put role /password into config/app_local.php
+        // devPasswords => [ 'admin' => 'pw1', 'user' => 'pw2' ]
+        $devPasswords = Configure::read('devPasswords');
+
+        $data = [
             [
                 'id' => 1,
                 'active' => true,
                 'username' => 'admin@example.com',
-                'password' => '$2y$10$0LTVyQjuSHxcnjRcddsXDOUvToKeXbVR3BsxVhXio8o9IsCpqRlOa',
+                'password' => '',
                 'role' => 'admin',
                 'created' => null,
                 'modified' => null,
@@ -60,7 +67,7 @@ class UsersFixture extends TestFixture
                 'id' => 2,
                 'active' => true,
                 'username' => 'user@example.com',
-                'password' => '$2y$10$K224qsnNHCoolaXVEkZU/.uPzX/YF3rmL2YG2RWrk2x1vC80LiwsK',
+                'password' => '',
                 'role' => 'user',
                 'created' => null,
                 'modified' => null,
@@ -72,7 +79,7 @@ class UsersFixture extends TestFixture
                 'id' => 3,
                 'active' => true,
                 'username' => 'qa@example.com',
-                'password' => '$2y$10$Jfo4mQBWINe35ZyzPCl/Be4KZrSzh.F5j02h3mRZuBkZiQ9a32tdy',
+                'password' => '',
                 'role' => 'qa',
                 'created' => null,
                 'modified' => null,
@@ -84,7 +91,7 @@ class UsersFixture extends TestFixture
                 'id' => 4,
                 'active' => true,
                 'username' => 'qty_editor@example.com',
-                'password' => '$2y$10$42ZXuk5O34w84xL7GeKCq.RwjlYKMNgjby7pLmzYc3N8CWiHxmYJu',
+                'password' => '',
                 'role' => 'qty_editor',
                 'created' => null,
                 'modified' => null,
@@ -93,6 +100,13 @@ class UsersFixture extends TestFixture
                 'is_superuser' => null,
             ],
         ];
+       
+        foreach( $data as $k => $v ) {
+            $data[$k]['password'] = (new DefaultPasswordHasher())->hash($devPasswords[$v['role']]);
+        }
+        
+        $this->records = $data;
+
         parent::init();
     }
 }
