@@ -2,9 +2,15 @@
 
 **Note:** PHP7.4 is required as some of the code makes use of new features from this version
 
-1. Create a database in MYSQL, create and grant a user access 
-   If you are wondering what character set and collation to use choose utf8mb4 and utf8mb4_general_ci
-   If you are going to print labels that have &beta; (Beta) or other fancy characters in them that endure a database dump and reload then this is required
+1. Create a database in MYSQL, create and grant a user access
+   
+   
+   | Character Set | Collation |
+   |---------------|-----------|
+   | utf8mb4 | utf8mb4_general_ci |
+
+   If you are going to print labels that have &beta; (Beta) or other fancy characters in them that endures a database dump and reload then utf8mb4 is required
+
    ```sql
    SELECT @@version;
    -- Instructions for v8.0.20 of mysql community server
@@ -38,7 +44,7 @@
    git submodule update --init --recursive
    ```
 
-7. Edit the `config/app_local.php` file to have the correct host, user, db, password parameters, also add a test database and user for the test datasource
+3. Edit the `config/app_local.php` file to have the correct host, user, db, password parameters, also add a test database and user for the test datasource
    ```sh
    cd config/
    cp app_local.example.php app_local.php
@@ -69,7 +75,7 @@
 
    ```
 
-5. Build the docker image
+4. Build the docker image
 
    ```sh
    cd docker/
@@ -90,7 +96,7 @@
    CONTAINER_NAME=${WEB_DIR}
    ```
 
-4. Build docker image and run it
+5. Build docker image and run it
    This will build a Ubuntu 20.04 image and compile glabels-3.4.1 to include zint barcode needed for GS1 labels
    
    ```sh
@@ -103,7 +109,7 @@
    ./docker-run.sh
    ```
 
-5. Login to the docker container
+6. Login to the docker container
 
    ```sh
    docker exec -ti ${WEB_DIR} /bin/bash
@@ -119,7 +125,7 @@
 
    ```
 
-8. Install PHP Libraries and populate the database
+7. Install PHP Libraries and populate the database
    Still in the docker container...
 
    ```sh
@@ -147,7 +153,7 @@
 
    ```
 
-9. Copy don't symlink the assets for plugins to the webroot.
+8. Copy don't symlink the assets for plugins to the webroot.
 
    using symlinks breaks if you try to switch out of docker and run `bin/cake server`
 
@@ -177,7 +183,7 @@
 
    ```
 
-10. Install UI resources
+9.  Install UI resources
 
    Copy bootstrap, jquery and popper.js into webroot/bootstrap_u_i
 

@@ -11,13 +11,14 @@ This is a project that I have been working on for a number of years. Originally 
 
 ## Features
 
-- Product database for item data (GTIN13/14 barcode, weights, qauntity)
+- Product database for item data (GTIN13/14 barcode, weights, qauntity) that can be used on labels
 - Locations, Inventory Status, Pack sizes
 - Very simple warehousing
-  - Can be configured so pallets 'move' directly to a default location or use simple put-away to a selectable location
+  - Can be configured so pallets 'moved' directly to a default location or use simple put-away to a selectable location
   - Minimum days life calculation so old product isn't sent out unless QA unholds it
-  - Dispatch PDF Pick slips
+  - Dispatch PDF shipment picking slip documents and ability to mark shipments as shipped
   - Location usage / free space screen
+  - Part and mixed date pallets (currently only one item code per pallet)
 - Inventory statuses WAIT HOLD etc for QA and screen to apply bulk status changes
 - Settings table to manage Company Name, GS1 company prefix
 - Configure multiple product types, production lines & printers
@@ -27,17 +28,19 @@ This is a project that I have been working on for a number of years. Originally 
   - glabels-3-batch printing (Uses latest stable glabels-3.4.1)
   - GS1 Compliant SSCC labels to CAB Printers
   - Zebra and CAB Printer Command Language Printing
+- Download or email labels as PDF (Cake Mailer)
+- Filter and export stock on hand to CSV download
 - Endpoints to serve Product Lists as JSON or XML for external systems
 
 ## Open source technologies
 
 ### Docker development environment
 
-- PHP7.4
-- Apache 2.4
+- PHP7.4+
+- Apache 2.4+
 - MySQL or MariaDB
 - CakePHP 4.x Framework
-- Ubuntu 18.04 LTS
+- Ubuntu 20.04 LTS
 - CUPS 2.2.x
 - CUPS-PDF
 - Supervisord

@@ -62,7 +62,7 @@ These are the Controller Action combinations that have print screens attached to
 
 | Controller | Action | Description |
 |------------|--------|-------------|
-| PalletsController | pallet_print | CAB Printer Language Pallet Label Print |
+| PalletsController | palletPrint | CAB Printer Language Pallet Label Print |
 | PalletsController | reprint | CAB Reprint Pallet Labels |
 | PrintLogController | carton_print | CAB 100x50 Carton Labels |
 | PrintLogController | crossdock_labels | gLabels 150x200 Labels |
