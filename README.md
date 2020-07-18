@@ -1,4 +1,4 @@
-# Toggen WMS
+# Toggen WMS - CakePHP 2
 This is a project that I have been working on for a number of years.
 
 It was orginally coded for, and is still used in a production food manufacturing environment
