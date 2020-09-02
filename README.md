@@ -1,7 +1,7 @@
 # Toggen WMS
 
 ## A simple web app to print pallet labels and ship pallets
-Toggen WMS uses open source components to provide simple pallet and label printing and QA and dispatch workflow
+Toggen WMS uses open source components to provide simple pallet and label printing, Quality Assurance functions and dispatch workflow
 
 ## Overview
 This is a project that I have been working on for a number of years. Originally written in CakePHP 2.x it has now been updated to CakePHP 4+ making use of many of the new features of this version including:
