@@ -44,11 +44,11 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
-        $user = $this->Users->get($id, [
+        $viewUser = $this->Users->get($id, [
             'contain' => ['Cartons'],
         ]);
 
-        $this->set('user', $user);
+        $this->set('viewUser', $viewUser);
     }
 
     /**
@@ -58,10 +58,10 @@ class UsersController extends AppController
      */
     public function add()
     {
-        $user = $this->Users->newEmptyEntity();
+        $newUser = $this->Users->newEmptyEntity();
         if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
-            if ($this->Users->save($user)) {
+            $newUser = $this->Users->patchEntity($newUser, $this->request->getData());
+            if ($this->Users->save($newUser)) {
                 $this->Flash->success(__('The user has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -73,7 +73,7 @@ class UsersController extends AppController
         $timezones = array_combine($timezones, $timezones);
 
         $roles = $this->Users->roleList(Configure::read('Users.roles'));
-        $this->set(compact('user', 'timezones', 'roles'));
+        $this->set(compact('newUser', 'timezones', 'roles'));
     }
 
     /**
@@ -85,12 +85,12 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
-        $user = $this->Users->get($id, [
+        $editUser = $this->Users->get($id, [
             'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
-            if ($this->Users->save($user)) {
+            $eidtUser = $this->Users->patchEntity($editUser, $this->request->getData());
+            if ($this->Users->save($editUser)) {
                 $this->Flash->success(__('The user has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -103,7 +103,7 @@ class UsersController extends AppController
 
         $timezones = array_combine($timezones, $timezones);
         $roles = $this->Users->roleList(Configure::read('Users.roles'));
-        $this->set(compact('user', 'timezones', 'roles'));
+        $this->set(compact('editUser', 'timezones', 'roles'));
     }
 
     /**
