@@ -1,7 +1,7 @@
 # Toggen WMS
 
 ## A simple web app to print pallet labels and ship pallets
-Toggen WMS uses open source components to provide simple pallet and label printing and QA and dispatch workflow
+Toggen WMS uses open source components to provide simple pallet and label printing, Quality Assurance functions and dispatch workflow
 
 ## Overview
 This is a project that I have been working on for a number of years. Originally written in CakePHP 2.x it has now been updated to CakePHP 4+ making use of many of the new features of this version including:
@@ -41,7 +41,7 @@ This is a project that I have been working on for a number of years. Originally 
 - MySQL or MariaDB
 - CakePHP 4.x Framework
 - Ubuntu 20.04 LTS
-- CUPS 2.2.x
+- CUPS 2.3.1
 - CUPS-PDF
 - Supervisord
 - Glabels 3.4.1
@@ -51,7 +51,7 @@ This is a project that I have been working on for a number of years. Originally 
 
 - [CakePHP 4](https://cakephp.org/)
 - [TCPDF](https://tcpdf.org/)
-- Bootstrap v4
+- Bootstrap v4+
 - [FriendsOfCake/bootstrap-ui](https://github.com/FriendsOfCake/bootstrap-ui/tree/cake-4-bs-4)
 - [CakeDC/auth](https://github.com/CakeDC/auth)
 - ReactJS Embedded in CakePHP Views
