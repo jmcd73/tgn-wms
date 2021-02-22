@@ -27,8 +27,9 @@
             echo $this->Form->control('username', [
                 'autocomplete' => 'off',
             ]);
-            echo $this->Form->control('password', [
+            echo $this->Form->control('updatePassword', [
                 'autocomplete' => 'new-password',
+                'type' => 'password'
             ]);
             echo $this->Form->control('role');
             echo $this->Form->control('full_name');
