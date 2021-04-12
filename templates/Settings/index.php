@@ -15,10 +15,9 @@
 <table class="table table-striped">
     <thead>
         <tr>
-           
+
             <th scope="col"><?= $this->Paginator->sort('name') ?></th>
             <th scope="col"><?= $this->Paginator->sort('setting') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('setting_in_comment') ?></th>
             <th scope="col"><?= $this->Paginator->sort('comment') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>
@@ -28,13 +27,8 @@
             <tr>
                 <td><?= h($setting->name) ?></td>
                 <td><?= h($setting->setting) ?></td>
-                <td><?= $this->Html->activeIcon($setting->setting_in_comment) ?></td>
-                <td><?php if ($setting->setting_in_comment) : ?>
-                        <pre><?= h($setting->comment) ?></pre>
-                    <?php else : ?>
-                        <?= h($setting->comment); ?>
-                    <?php endif; ?>
-                </td>
+
+                <td><?= h($setting->comment) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $setting->id], ['title' => __('View'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $setting->id], ['title' => __('Edit'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>

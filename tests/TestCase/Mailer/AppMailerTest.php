@@ -113,11 +113,11 @@ public function testSendMail()
     }
 
     /**
-     * Test getSettingFormatted method
+     * Test stripCommentsFromSetting method
      *
      * @return void
      */
-    public function testGetSettingFormatted(): void
+    public function teststripCommentsFromSetting(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

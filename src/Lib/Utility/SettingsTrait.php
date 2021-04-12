@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace App\Lib\Utility;
 
 use App\Lib\Exception\MissingConfigurationException;
-use Cake\ORM\TableRegistry;
+use Cake\Log\LogTrait;
+use Cake\ORM\Locator\LocatorAwareTrait;
+
 
 trait SettingsTrait
 {
-
+    use LocatorAwareTrait, LogTrait;
 
     public function getSettingsTable($tableName = 'Settings')
     {
-        return TableRegistry::getTableLocator()->get($tableName);
+        return $this->getTableLocator()->get($tableName);
     }
 
     /**
@@ -22,33 +24,36 @@ trait SettingsTrait
      */
     public function getSetting($settingName)
     {
-        try {
+       try {
             $setting = $this->getSettingsTable()->find()->where(['name' => $settingName])->firstOrFail();
-        } catch (\Throwable $th) {
-            throw new MissingConfigurationException('Setting missing ' . $settingName);
-        }
+       } catch (\Throwable $th) {
+           throw new MissingConfigurationException('Setting missing ' . $settingName);
+       }
 
         $this->settingId = $setting->id;
 
-        return $this->getSettingFormatted($setting);
+        return $this->stripCommentsFromSetting($setting);
     }
 
+  
     /**
-     * 
-     * @param mixed $setting 
-     * @return mixed 
+     * stripCommentsFromSetting
+     *
+     * @param  mixed $setting
+     * @return void
      */
-    public function getSettingFormatted($setting)
+    public function stripCommentsFromSetting($setting)
     {
+        $setting = $setting->setting;
 
-        if ($setting->setting_in_comment) {
-            $setting = explode(PHP_EOL, $setting->comment);
+         if (strstr($setting, PHP_EOL)) {
+            $setting = explode(PHP_EOL, $setting);
             $setting = array_values(array_filter($setting, function ($line) {
                 return !preg_match('/(^\s*#|^$)/', $line);
             }));
-        } else {
-            $setting = $setting->setting;
+            $setting = implode("\n", $setting);
         }
+
         return $setting;
     }
 
@@ -60,10 +65,12 @@ trait SettingsTrait
      * @param array $addresses 
      * @return array 
      */
-    public function addressParse(array $addresses): array
+    public function addressParse($addresses): array
     {
 
         $add = [];
+        $addresses = explode("\n", $addresses);
+        
         foreach ($addresses as $addressLine) {
             $add = array_merge($add, mailparse_rfc822_parse_addresses($addressLine));
         }

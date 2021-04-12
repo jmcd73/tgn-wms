@@ -26,10 +26,6 @@
                 <th scope="row"><?= __('Setting') ?></th>
                 <td><?= h($setting->setting) ?></td>
             </tr>
-            <tr>
-                <th scope="row"><?= __('Setting in comment') ?></th>
-                <td><?= $this->Html->activeIcon($setting->setting_in_comment) ?></td>
-            </tr>
         </table>
     </div>
     <div class="row">
