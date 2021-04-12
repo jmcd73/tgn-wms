@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\PrintersTable;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -39,8 +39,8 @@ class PrintersTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('Printers') ? [] : ['className' => PrintersTable::class];
-        $this->Printers = TableRegistry::getTableLocator()->get('Printers', $config);
+        $config = $this->getTableLocator()->exists('Printers') ? [] : ['className' => PrintersTable::class];
+        $this->Printers = $this->getTableLocator()->get('Printers', $config);
     }
 
     /**

@@ -1,14 +1,16 @@
 <?php
 declare(strict_types=1);
 
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Migrations\AbstractSeed;
-use Cake\ORM\TableRegistry;
 
 /**
  * Pallets seed.
  */
 class PalletsSeed extends AbstractSeed
 {
+    use LocatorAwareTrait;
+
     /**
      * Run Method.
      *
@@ -35,7 +37,7 @@ class PalletsSeed extends AbstractSeed
 
     public function clearPdfOutpuDir()
     {
-        $settings = TableRegistry::getTableLocator()->get("Settings");
+        $settings = $this->getTableLocator()->get("Settings");
 
         $setting = $settings->find()->where(['name' => 'LABEL_OUTPUT_PATH'])->first();
 

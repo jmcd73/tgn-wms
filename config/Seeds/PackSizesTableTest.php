@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\PackSizesTable;
 use Cake\ORM\Locator\LocatorAwareTrait;
+
 use Cake\TestSuite\TestCase;
 
 /**
@@ -38,8 +39,8 @@ class PackSizesTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->getTableLocator()->exists('PackSizes') ? [] : ['className' => PackSizesTable::class];
-        $this->PackSizes = $this->getTableLocator()->getTableLocator()->get('PackSizes', $config);
+        $config = $this->getTableLocator()->exists('PackSizes') ? [] : ['className' => PackSizesTable::class];
+        $this->PackSizes = $this->getTableLocator()->get('PackSizes', $config);
     }
 
     /**

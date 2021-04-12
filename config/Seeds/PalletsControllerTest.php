@@ -6,10 +6,11 @@ namespace App\Test\TestCase\Controller;
 
 use App\Controller\PalletsController;
 use Cake\ORM\Locator\LocatorAwareTrait;
-use Cake\TestSuite\IntegrationTestTrait;
+
 use Cake\TestSuite\TestCase;
 use Cake\Routing\Router;
 use App\Test\TestCase\Lib\Framework\TestFrameworkTrait;
+use Cake\TestSuite\IntegrationTestTrait;
 
 /**
  * App\Controller\PalletsController Test Case
@@ -18,7 +19,8 @@ use App\Test\TestCase\Lib\Framework\TestFrameworkTrait;
  */
 class PalletsControllerTest extends TestCase
 {
-    use IntegrationTestTrait, TestFrameworkTrait;
+    use IntegrationTestTrait;
+    use TestFrameworkTrait;
     use LocatorAwareTrait;
     
     public function setUp(): void
@@ -62,6 +64,7 @@ class PalletsControllerTest extends TestCase
     {
         // No session data set.
         $this->get('/pallets/index');
+
         //debug(Router::url(null, true));
         $this->assertRedirectEquals(['controller' => 'Users', 'action' => 'login', '?' => [
             "redirect" => '/pallets/index'

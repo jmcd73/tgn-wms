@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\PackSizesTable;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -12,6 +12,7 @@ use Cake\TestSuite\TestCase;
  */
 class PackSizesTableTest extends TestCase
 {
+    use LocatorAwareTrait;
     /**
      * Test subject
      *
@@ -37,8 +38,8 @@ class PackSizesTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('PackSizes') ? [] : ['className' => PackSizesTable::class];
-        $this->PackSizes = TableRegistry::getTableLocator()->get('PackSizes', $config);
+        $config = $this->getTableLocator()->exists('PackSizes') ? [] : ['className' => PackSizesTable::class];
+        $this->PackSizes = $this->getTableLocator()->get('PackSizes', $config);
     }
 
     /**

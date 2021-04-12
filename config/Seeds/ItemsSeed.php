@@ -5,12 +5,15 @@ use Migrations\AbstractSeed;
 use Faker\Factory;
 use App\Lib\Utility\Barcode;
 use Bezhanov\Faker\ProviderCollectionHelper;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
+
 /**
  * Items seed.
  */
 class ItemsSeed extends AbstractSeed
 {
+
+    use LocatorAwareTrait;
     /**
      * Run Method.
      *
@@ -157,7 +160,7 @@ class ItemsSeed extends AbstractSeed
         $faker = Factory::create();
         ProviderCollectionHelper::addAllProvidersTo($faker);
 
-        $packSizes = TableRegistry::get('PackSizes')->find()->select(['id'])->extract('id')->toArray();
+        $packSizes = $this->getTableLocator()->get('PackSizes')->find()->select(['id'])->extract('id')->toArray();
 
        
 

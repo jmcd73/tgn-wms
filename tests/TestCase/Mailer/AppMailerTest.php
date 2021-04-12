@@ -6,7 +6,7 @@ namespace App\Test\TestCase\Mailer;
 use App\Mailer\AppMailer;
 use Cake\TestSuite\TestCase;
 use Cake\TestSuite\EmailTrait;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use App\Lib\PrintLabels\Label;
 use Cake\Event\Event;
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\MenusTable;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -36,8 +36,8 @@ class MenusTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('Menus') ? [] : ['className' => MenusTable::class];
-        $this->Menus = TableRegistry::getTableLocator()->get('Menus', $config);
+        $config = $this->getTableLocator()->exists('Menus') ? [] : ['className' => MenusTable::class];
+        $this->Menus = $this->getTableLocator()->get('Menus', $config);
     }
 
     /**

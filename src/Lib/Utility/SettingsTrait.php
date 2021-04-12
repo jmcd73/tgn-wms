@@ -45,12 +45,14 @@ trait SettingsTrait
     public function stripCommentsFromSetting($setting)
     {
         $setting = $setting->setting;
+        tog($setting);
+         if (strstr($setting, PHP_EOL) !== false) {
 
-         if (strstr($setting, PHP_EOL)) {
             $setting = explode(PHP_EOL, $setting);
             $setting = array_values(array_filter($setting, function ($line) {
                 return !preg_match('/(^\s*#|^$)/', $line);
             }));
+
             $setting = implode("\n", $setting);
         }
 

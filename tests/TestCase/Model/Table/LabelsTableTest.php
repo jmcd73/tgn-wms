@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\LabelsTable;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -43,8 +43,8 @@ class LabelsTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('Labels') ? [] : ['className' => LabelsTable::class];
-        $this->Labels = TableRegistry::getTableLocator()->get('Labels', $config);
+        $config = $this->getTableLocator()->exists('Labels') ? [] : ['className' => LabelsTable::class];
+        $this->Labels = $this->getTableLocator()->get('Labels', $config);
     }
 
     /**

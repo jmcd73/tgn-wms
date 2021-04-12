@@ -40,7 +40,7 @@
         'action' => ['edit', 'delete'],
         'allowed' => function(array $user, $role, Request $request) {
             $postId = Hash::get($request->params, 'pass.0');
-            $post = TableRegistry::getTableLocator()->get('Posts')->get($postId);
+            $post = $this->getTableLocator()->get('Posts')->get($postId);
             $userId = $user['id'] ?? null;
             if (!empty($post->user_id) && !empty($userId)) {
                 return $post->user_id === $userId;

@@ -103,22 +103,26 @@ use Cake\Utility\Inflector;
                                       </dt>
                                       <dd><?= h(Inflector::humanize($user->get('role'))); ?></dd>
                                   </dl>
+
+                                  <dl>
+                                     
+                                      <dd>   <?php echo  $this->Html->link(
+                        __('Sign out') . ' ' . $this->Html->icon('sign-out-alt'),
+                        ['controller' => 'users', 'action' => 'logout'],
+                        [
+                            'title' => 'Logout',
+                            'escape' => false, 'class' => '',
+                        ]
+                    ); ?></dd>
+                                  </dl>
+
+                               
                               </div>
                 
 
                     </div>
                 </li>
-                <li class="nav-item">
-                    <?php
-                    echo  $this->Html->link(
-                        __('Sign out') . ' ' . $this->Html->icon('sign-out-alt'),
-                        ['controller' => 'users', 'action' => 'logout'],
-                        [
-                            'title' => 'Logout',
-                            'escape' => false, 'class' => 'nav-link',
-                        ]
-                    ); ?>
-                </li>
+              
 
             <?php endif; ?>
 

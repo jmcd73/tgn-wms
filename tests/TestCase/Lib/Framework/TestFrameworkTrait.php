@@ -4,7 +4,7 @@ namespace App\Test\TestCase\Lib\Framework;
 
 use Cake\Filesystem\File;
 use Cake\Filesystem\Folder;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 
 trait TestFrameworkTrait
 {
@@ -17,7 +17,7 @@ trait TestFrameworkTrait
     public function authMe($userId = 1)
     {
 
-        $users = TableRegistry::get('Users');
+        $users = $this->getTableLocator()->get('Users');
 
         $user = $users->get($userId);
 

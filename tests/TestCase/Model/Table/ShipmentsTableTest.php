@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\ShipmentsTable;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -38,8 +38,8 @@ class ShipmentsTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('Shipments') ? [] : ['className' => ShipmentsTable::class];
-        $this->Shipments = TableRegistry::getTableLocator()->get('Shipments', $config);
+        $config = $this->getTableLocator()->exists('Shipments') ? [] : ['className' => ShipmentsTable::class];
+        $this->Shipments = $this->getTableLocator()->get('Shipments', $config);
     }
 
     /**

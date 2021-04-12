@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\SettingsTable;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
 use Cake\ORM\Entity;
 
@@ -38,8 +38,8 @@ class SettingsTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('Settings') ? [] : ['className' => SettingsTable::class];
-        $this->Settings = TableRegistry::getTableLocator()->get('Settings', $config);
+        $config = $this->getTableLocator()->exists('Settings') ? [] : ['className' => SettingsTable::class];
+        $this->Settings = $this->getTableLocator()->get('Settings', $config);
     }
 
     /**
@@ -93,14 +93,12 @@ class SettingsTableTest extends TestCase
         $expected = [
             [
                 'id' => 3,
-              'setting_in_comment' =>    false,
                 'name' =>    'SSCC_REF',
-                'setting' =>    '21',
-                'comment' =>    'The next SSCC Reference number',
+                'setting' =>    '302',
+                'comment' =>    'SSCC Reference number',
             ],
             [
                 'id' => 4,
-              'setting_in_comment' =>    false,
                 'name' =>    'SSCC_EXTENSION_DIGIT',
                 'setting' =>    '1',
                 'comment' =>    'SSCC extension digit',
@@ -108,7 +106,6 @@ class SettingsTableTest extends TestCase
             ],
             [
                 'id' => 5,
-              'setting_in_comment' =>    false,
                 'name' =>    'SSCC_COMPANY_PREFIX',
                 'setting' =>    '99999999',
                 'comment' =>    'Added a bogus prefix',

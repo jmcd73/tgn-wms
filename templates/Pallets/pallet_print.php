@@ -114,6 +114,7 @@ $this->Html->script(
                         <?php echo $this->Form->control($formName . '-part_pallet-' . $key, [
                             'label' => 'Part Pallet',
                             'type' => 'checkbox',
+                            'class' => 'part-pallet',
                             'data-queryurl' => $this->Url->build(['controller' => 'items', 'action' => 'product']),
                         ]); ?>
                         <?php echo $this->Form->control(

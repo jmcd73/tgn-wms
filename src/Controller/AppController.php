@@ -21,8 +21,9 @@ use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Database\Query;
 use Cake\Event\EventInterface;
-use Cake\ORM\TableRegistry;
+
 use App\Lib\Utility\SettingsTrait;
+use Cake\ORM\Locator\LocatorAwareTrait;
 
 /**
  * Application Controller
@@ -35,6 +36,7 @@ use App\Lib\Utility\SettingsTrait;
 class AppController extends Controller
 {
 
+    use LocatorAwareTrait;
     use SettingsTrait;
 
     public $companyName = '';
@@ -103,7 +105,7 @@ class AppController extends Controller
         $controllerAction = $this->getControllerAction();
 
         if ($this->allowGetHelpPage($controllerAction)) {
-            $helpTable = TableRegistry::get('Help');
+            $helpTable = $this->getTableLocator()->get('Help');
 
             $this->set(
                 'helpPage',

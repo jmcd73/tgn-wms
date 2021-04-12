@@ -89,7 +89,7 @@ $(function () {
   // part pallet checkbox
   $('input.part-pallet[type="checkbox"]').change(function () {
     checked = $(this).prop("checked");
-
+    console.log("checked part  pallet checkbox")
     itemselect = $(this).closest("form").find("select.form-control.item");
 
     item_id = itemselect.val();

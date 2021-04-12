@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\ProductTypesTable;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -44,8 +44,8 @@ class ProductTypesTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('ProductTypes') ? [] : ['className' => ProductTypesTable::class];
-        $this->ProductTypes = TableRegistry::getTableLocator()->get('ProductTypes', $config);
+        $config = $this->getTableLocator()->exists('ProductTypes') ? [] : ['className' => ProductTypesTable::class];
+        $this->ProductTypes = $this->getTableLocator()->get('ProductTypes', $config);
     }
 
     /**

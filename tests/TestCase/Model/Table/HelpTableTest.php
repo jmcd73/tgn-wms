@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\HelpTable;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -36,8 +36,8 @@ class HelpTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('Help') ? [] : ['className' => HelpTable::class];
-        $this->Help = TableRegistry::getTableLocator()->get('Help', $config);
+        $config = $this->getTableLocator()->exists('Help') ? [] : ['className' => HelpTable::class];
+        $this->Help = $this->getTableLocator()->get('Help', $config);
     }
 
     /**

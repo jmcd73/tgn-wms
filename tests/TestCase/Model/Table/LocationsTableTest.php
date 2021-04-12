@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\LocationsTable;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -39,8 +39,8 @@ class LocationsTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('Locations') ? [] : ['className' => LocationsTable::class];
-        $this->Locations = TableRegistry::getTableLocator()->get('Locations', $config);
+        $config = $this->getTableLocator()->exists('Locations') ? [] : ['className' => LocationsTable::class];
+        $this->Locations = $this->getTableLocator()->get('Locations', $config);
     }
 
     /**
