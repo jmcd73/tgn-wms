@@ -249,7 +249,7 @@ return [
         ],
         'production' => [
             'transport' => 'AWS_SES',
-            'from' => [ 'no-reply@ausfoodexports.com.au' => 'AFE Production' ],
+            'from' => [ 'no-reply@toggen.com.au' => 'Toggen Production' ],
             'log' => true 
         ]
     ],
