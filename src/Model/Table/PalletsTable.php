@@ -18,14 +18,13 @@ use Cake\ORM\Entity;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 use App\Lib\Utility\Barcode;
 use App\Model\Entity\Pallet;
 use Cake\Event\EventManager;
 use Cake\I18n\FrozenDate;
-use Cake\ORM\Locator\LocatorAwareTrait;
 
 /**
  * Pallets Model

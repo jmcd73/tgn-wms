@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -8,6 +9,9 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 use Cake\Event\Event;
+use Cake\Event\EventInterface;
+use ArrayObject;
+use Cake\Log\LogTrait;
 
 /**
  * Settings Model
@@ -28,16 +32,30 @@ use Cake\Event\Event;
  */
 class SettingsTable extends Table
 {
+    use LogTrait;
+
     public function implementedEvents(): array
     {
-        return [ 
+        return [
             'Model.Settings.incrementSsccRef' => 'incrementSsccRef'
-        ];
+        ] + parent::implementedEvents();
     }
+
+        // Trim blank lines from setting field
+        public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options)
+        {
+    
+            foreach ($data as $key => $value) {
+                if (is_string($value)) {
+                    $data[$key] = trim($value);
+                }
+            }
+        }
+    
 
     public function incrementSsccRef(Event $event)
     {
-        $settingRecord = $this->find()->where(['name' => 'SSCC_REF' ])->first();
+        $settingRecord = $this->find()->where(['name' => 'SSCC_REF'])->first();
 
         $settingRecord->setting = ++$settingRecord->setting;
 
@@ -80,7 +98,6 @@ class SettingsTable extends Table
 
         $validator
             ->scalar('setting')
-            ->maxLength('setting', 50)
             ->requirePresence('setting', 'create')
             ->notEmptyString('setting');
 

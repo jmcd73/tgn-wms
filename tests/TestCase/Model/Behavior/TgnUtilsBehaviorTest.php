@@ -4,7 +4,8 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Behavior;
 
 use App\Model\Behavior\TgnUtilsBehavior;
-use Cake\ORM\TableRegistry;
+use Cake\Log\LogTrait;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -13,6 +14,8 @@ use Cake\TestSuite\TestCase;
 class TgnUtilsBehaviorTest extends TestCase
 {
 
+    use LocatorAwareTrait, LogTrait;
+    
     protected $fixtures = ['app.Settings', 'app.ProductTypes', 'app.Pallets'];
 
     /**
@@ -33,7 +36,7 @@ class TgnUtilsBehaviorTest extends TestCase
     {
         parent::setUp();
 
-        $table = TableRegistry::getTableLocator()->get($this->table);
+        $table = $this->getTableLocator()->get($this->table);
 
         $this->TgnUtilsBehavior = new TgnUtilsBehavior($table);
     }
@@ -66,16 +69,6 @@ class TgnUtilsBehaviorTest extends TestCase
      * @return void
      */
     public function testGetSettingsTable(): void
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test getSetting method
-     *
-     * @return void
-     */
-    public function testGetSetting(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
@@ -118,7 +111,7 @@ class TgnUtilsBehaviorTest extends TestCase
     public function testSsccGetReferenceNumber(): void
     {
         $reference = $this->TgnUtilsBehavior->getReferenceNumber('SSCC_REF','93529380');
-        $expected = '21';
+        $expected = '302';
 
         $this->assertEquals($expected, $reference);
     }
@@ -229,14 +222,14 @@ class TgnUtilsBehaviorTest extends TestCase
         $this->markTestIncomplete('Not implemented yet.');
     }
 
-    public function testGetCommentSetting()
+    public function testGetSetting()
     {
-        $expected = [
-            'James McDonald <james@toggen.com.au>'
-        ];
+        $expected = 'James McDonald <james@toggen.com.au>' . "\n";
+        $expected .= 'Lisa McDonald <lisa@toggen.com.au>';
+
         $setting = $this->TgnUtilsBehavior->getSetting('EMAIL_PALLET_LABEL_TO');
-      
-        $this->assertEquals($expected, $setting, "Should return an array");
+        tog("test", $setting);
+        $this->assertEquals($expected, $setting, "Should return a string");
     }
 
     public function testGetSettingTraitSetting()
@@ -257,10 +250,8 @@ class TgnUtilsBehaviorTest extends TestCase
     public function testAddressParse(): void
     {
 
-        $input = [
-            'James McDonald <james@toggen.com.au>',
-            'Lisa McDonald <lisa@toggen.com.au>'
-        ];
+        $input = "James McDonald <james@toggen.com.au>\nLisa McDonald <lisa@toggen.com.au>";
+    
 
         $expected = [
             'james@toggen.com.au' => 'James McDonald' ,
@@ -282,7 +273,8 @@ class TgnUtilsBehaviorTest extends TestCase
      */
     public function testEmptyEmail(): void
     {
-        $input = [ '# bogus no email address' , 'anothernotanemail' ];
+        $input = '# bogus no email address' ;
+        $input .= 'anothernotanemail';
         $expected = [];
 
         $actual = $this->TgnUtilsBehavior->addressParse($input);

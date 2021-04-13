@@ -6,7 +6,7 @@ namespace App\Test\TestCase\Mailer;
 use App\Mailer\AppMailer;
 use Cake\TestSuite\TestCase;
 use Cake\TestSuite\EmailTrait;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use App\Lib\PrintLabels\Label;
 use Cake\Event\Event;
 
@@ -113,11 +113,11 @@ public function testSendMail()
     }
 
     /**
-     * Test getSettingFormatted method
+     * Test stripCommentsFromSetting method
      *
      * @return void
      */
-    public function testGetSettingFormatted(): void
+    public function teststripCommentsFromSetting(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

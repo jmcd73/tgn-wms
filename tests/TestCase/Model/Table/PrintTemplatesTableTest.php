@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\PrintTemplatesTable;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -37,8 +37,8 @@ class PrintTemplatesTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('PrintTemplates') ? [] : ['className' => PrintTemplatesTable::class];
-        $this->PrintTemplates = TableRegistry::getTableLocator()->get('PrintTemplates', $config);
+        $config = $this->getTableLocator()->exists('PrintTemplates') ? [] : ['className' => PrintTemplatesTable::class];
+        $this->PrintTemplates = $this->getTableLocator()->get('PrintTemplates', $config);
     }
 
     /**

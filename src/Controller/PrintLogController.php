@@ -19,7 +19,7 @@ use App\Lib\PrintLabels\Template;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 use Cake\I18n\FrozenTime;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\Utility\Inflector;
 use App\Lib\PrintLabels\Glabel\ShippingLabelGeneric;
 use Cake\Event\Event;
@@ -183,7 +183,7 @@ class PrintLogController extends AppController
         if ($this->request->is(['POST', 'PUT'])) {
             $data = $this->request->getData();
 
-            $itemsTable = TableRegistry::get('Items');
+            $itemsTable = $this->getTableLocator()->get('Items');
 
             $printTemplate = $itemsTable->find()
                 ->where([
@@ -231,7 +231,7 @@ class PrintLogController extends AppController
             $controllerAction
         );
 
-        $printTemplate = TableRegistry::get('PrintTemplates')->find()->where([
+        $printTemplate = $this->getTableLocator()->get('PrintTemplates')->find()->where([
             'controller_action' => $controllerAction,
             'active' => 1,
         ])->first();
@@ -582,7 +582,7 @@ class PrintLogController extends AppController
 
         $printer = $printers['printers'][$printerId];
 
-        $printTemplatesTable = TableRegistry::get('PrintTemplates');
+        $printTemplatesTable = $this->getTableLocator()->get('PrintTemplates');
 
         $printTemplate = $printTemplatesTable->find()
             ->where(
@@ -763,7 +763,7 @@ class PrintLogController extends AppController
     {
         $controllerAction = $this->getControllerAction();
 
-        $palletTable = TableRegistry::get('Pallets');
+        $palletTable = $this->getTableLocator()->get('Pallets');
 
         if ($id === null) {
             return $this->redirect($this->request->referer(false));
@@ -908,7 +908,7 @@ class PrintLogController extends AppController
 
         $companyName = $this->PrintLog->getSetting('COMPANY_NAME');
 
-        $palletTable = TableRegistry::get('Pallets');
+        $palletTable = $this->getTableLocator()->get('Pallets');
 
         if ($id === null) {
             return $this->redirect($this->request->referer(false));

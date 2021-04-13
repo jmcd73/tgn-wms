@@ -12,18 +12,19 @@ use \Cake\I18n\FrozenTime;
 use Cake\I18n\Time;
 use Cake\Log\LogTrait;
 use Cake\ORM\Behavior;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use App\Lib\Utility\SettingsTrait;
 use App\Lib\Utility\FormatDateTrait;
-use Cake\ORM\Locator\LocatorAwareTrait;
+
 
 /**
  * TgnUtils behavior
  */
 class TgnUtilsBehavior extends Behavior
 {
+    
     use LogTrait;
     use SettingsTrait;
     use FormatDateTrait, LocatorAwareTrait;
@@ -163,7 +164,7 @@ class TgnUtilsBehavior extends Behavior
     {
         $printerModel = $this->getTableLocator()->get("Printers");
         
-        //TableRegistry::get('Printers');
+        //$this->get('Printers');
 
         $labelPrinters = $printerModel->find(
             'all',

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\PrintLabelsTable;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -36,8 +36,8 @@ class PrintLabelsTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('PrintLabels') ? [] : ['className' => PrintLabelsTable::class];
-        $this->PrintLabels = TableRegistry::getTableLocator()->get('PrintLabels', $config);
+        $config = $this->getTableLocator()->exists('PrintLabels') ? [] : ['className' => PrintLabelsTable::class];
+        $this->PrintLabels = $this->getTableLocator()->get('PrintLabels', $config);
     }
 
     /**

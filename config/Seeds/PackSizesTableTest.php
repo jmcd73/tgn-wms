@@ -3,21 +3,23 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\LabelsTable;
+use App\Model\Table\PackSizesTable;
 use Cake\ORM\Locator\LocatorAwareTrait;
+
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\LabelsTable Test Case
+ * App\Model\Table\PackSizesTable Test Case
  */
-class LabelsTableTest extends TestCase
+class PackSizesTableTest extends TestCase
 {
+    use LocatorAwareTrait;
     /**
      * Test subject
      *
-     * @var \App\Model\Table\LabelsTable
+     * @var \App\Model\Table\PackSizesTable
      */
-    protected $Labels;
+    protected $PackSizes;
 
     /**
      * Fixtures
@@ -25,14 +27,8 @@ class LabelsTableTest extends TestCase
      * @var array
      */
     protected $fixtures = [
-        'app.Labels',
-        'app.ProductionLines',
+        'app.PackSizes',
         'app.Items',
-        'app.Printers',
-        'app.Locations',
-        'app.Shipments',
-        'app.InventoryStatuses',
-        'app.ProductTypes',
     ];
 
     /**
@@ -43,8 +39,8 @@ class LabelsTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Labels') ? [] : ['className' => LabelsTable::class];
-        $this->Labels = $this->getTableLocator()->get('Labels', $config);
+        $config = $this->getTableLocator()->exists('PackSizes') ? [] : ['className' => PackSizesTable::class];
+        $this->PackSizes = $this->getTableLocator()->get('PackSizes', $config);
     }
 
     /**
@@ -54,7 +50,7 @@ class LabelsTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Labels);
+        unset($this->PackSizes);
 
         parent::tearDown();
     }
@@ -65,16 +61,6 @@ class LabelsTableTest extends TestCase
      * @return void
      */
     public function testValidationDefault(): void
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     */
-    public function testBuildRules(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

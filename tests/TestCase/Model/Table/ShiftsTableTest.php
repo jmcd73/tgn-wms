@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\ShiftsTable;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -37,8 +37,8 @@ class ShiftsTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('Shifts') ? [] : ['className' => ShiftsTable::class];
-        $this->Shifts = TableRegistry::getTableLocator()->get('Shifts', $config);
+        $config = $this->getTableLocator()->exists('Shifts') ? [] : ['className' => ShiftsTable::class];
+        $this->Shifts = $this->getTableLocator()->get('Shifts', $config);
     }
 
     /**

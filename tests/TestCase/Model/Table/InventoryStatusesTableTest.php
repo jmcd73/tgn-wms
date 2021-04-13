@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\InventoryStatusesTable;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -39,8 +39,8 @@ class InventoryStatusesTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('InventoryStatuses') ? [] : ['className' => InventoryStatusesTable::class];
-        $this->InventoryStatuses = TableRegistry::getTableLocator()->get('InventoryStatuses', $config);
+        $config = $this->getTableLocator()->exists('InventoryStatuses') ? [] : ['className' => InventoryStatusesTable::class];
+        $this->InventoryStatuses = $this->getTableLocator()->get('InventoryStatuses', $config);
     }
 
     /**

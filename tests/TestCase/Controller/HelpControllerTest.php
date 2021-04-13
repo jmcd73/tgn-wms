@@ -8,7 +8,7 @@ use App\Controller\HelpController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use App\Application;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 
 /**
  * App\Controller\HelpController Test Case
@@ -26,7 +26,7 @@ class HelpControllerTest extends TestCase
 
     public function authMe($userId)
     {
-        $users = TableRegistry::get('Users');
+        $users = $this->getTableLocator()->get('Users');
         $user = $users->get($userId);
         $this->session(['Auth' => $user]);
     }

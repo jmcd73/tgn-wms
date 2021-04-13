@@ -4,11 +4,12 @@ declare(strict_types=1);
 namespace App\View\Helper;
 
 use App\Lib\Utility\Barcode;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\View\View;
 
 class HtmlHelper extends \BootstrapUI\View\Helper\HtmlHelper
 {
+    use LocatorAwareTrait;
     public function __construct(View $View, array $config = [])
     {
         parent::__construct($View, $config);
@@ -38,7 +39,7 @@ class HtmlHelper extends \BootstrapUI\View\Helper\HtmlHelper
      */
     public function sscc($sscc)
     {
-        $companyPrefix = TableRegistry::get('Settings')->getCompanyPrefix();
+        $companyPrefix = $this->getTableLocator()->get('Settings')->getCompanyPrefix();
 
         return (new Barcode())->ssccFormat($sscc, $companyPrefix);
     }

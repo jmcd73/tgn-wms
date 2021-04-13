@@ -9,7 +9,7 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use Cake\Validation\Validator;
@@ -35,6 +35,8 @@ use Cake\Validation\Validator;
  */
 class PrintLogTable extends Table
 {
+
+    use LocatorAwareTrait;
 
     public function implementedEvents(): array
     {
@@ -110,7 +112,7 @@ class PrintLogTable extends Table
             $options['controller_action'] = $controllerActionOrId;
         }
         
-        $template = TableRegistry::get('PrintTemplates')->find()
+        $template = $this->getTableLocator()->get('PrintTemplates')->find()
             ->where($options)->first();
 
             if($template->is_file_template) {
