@@ -26,9 +26,9 @@
         <?php foreach ($settings as $setting) : ?>
             <tr>
                 <td><?= h($setting->name) ?></td>
-                <td><?= h($setting->setting) ?></td>
+                <td><?= str_replace("\n", "<br/>",  h($setting->setting)) ?></td>
 
-                <td><?= h($setting->comment) ?></td>
+                <td><?=str_replace("\n", "<br/>",  h($setting->comment)) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $setting->id], ['title' => __('View'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $setting->id], ['title' => __('Edit'), 'class' => 'btn btn-secondary btn-sm mb-1']) ?>

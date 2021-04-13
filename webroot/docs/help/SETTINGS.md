@@ -2,6 +2,46 @@
 
 The settings table contains a number of crucial settings it can be queried from all models and controllers (see examples below).
 
+## How to use
+
+Settings use a unique name and then a setting and a comment. 
+
+
+For example
+
+**name:** 
+
+```
+EMAIL_PALLET_LABEL_TO
+```
+
+**setting:** 
+```
+James McDonald <james@toggen.com.au>
+# Format example: 
+# FirstName LastName <email@example.com> 
+# To disable send put a # at the start of the line
+# Greg Fry <greg@multibevco.com.au>
+# Lisa McDonald <lisa@toggen.com.au>
+```
+
+**comment:** 
+```
+Email address to send pallet labels to to. Add or remove the leading # to enable or disable an email address
+```
+
+
+The setting field, and comment field can be single or multi-line. Settings have leading and trail whitespace trimmed before they are saved
+
+```
+# This is a comment in the setting field
+
+# comments and blank lines inside the setting field are stripped
+James McDonald <james@toggen.com.au>
+```
+
+
+
 ### Information about settings
 
 * **SSCC_REF** - The SSCC reference number increments by 1 for every call to pallet_print action. Setting this to 0 the next SSCC number will be
@@ -16,12 +56,18 @@ The settings table contains a number of crucial settings it can be queried from 
 
 #### Accessing settings via PHP
 
-Use the App\Lib\Utility\SettingsTrait to query settings
+Use the `use App\Lib\Utility\SettingsTrait;` to query settings
 
 ```php
-# if the setting is in the Setting field
-$this->getSetting('DOCUMENTATION_ROOT');
-or
-# with model included
+use App\Lib\Utility\SettingsTrait;
+class {
+
+    use SettingsTrait;
+    # if the SettingsTrait is used 
+    $this->getSetting('DOCUMENTATION_ROOT');
+
+}
+
+# in a controller with model 
 $this->Pallet->getSetting('setting_name');
 ```
