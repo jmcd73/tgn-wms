@@ -24,18 +24,18 @@ trait SettingsTrait
      */
     public function getSetting($settingName)
     {
-       try {
+        try {
             $setting = $this->getSettingsTable()->find()->where(['name' => $settingName])->firstOrFail();
-       } catch (\Throwable $th) {
-           throw new MissingConfigurationException('Setting missing ' . $settingName);
-       }
+        } catch (\Throwable $th) {
+            throw new MissingConfigurationException('Setting missing ' . $settingName);
+        }
 
         $this->settingId = $setting->id;
 
         return $this->stripCommentsFromSetting($setting);
     }
 
-  
+
     /**
      * stripCommentsFromSetting
      *
@@ -45,8 +45,8 @@ trait SettingsTrait
     public function stripCommentsFromSetting($setting)
     {
         $setting = $setting->setting;
-        tog($setting);
-         if (strstr($setting, PHP_EOL) !== false) {
+
+        if (strstr($setting, PHP_EOL) !== false) {
 
             $setting = explode(PHP_EOL, $setting);
             $setting = array_values(array_filter($setting, function ($line) {
@@ -72,7 +72,7 @@ trait SettingsTrait
 
         $add = [];
         $addresses = explode("\n", $addresses);
-        
+
         foreach ($addresses as $addressLine) {
             $add = array_merge($add, mailparse_rfc822_parse_addresses($addressLine));
         }

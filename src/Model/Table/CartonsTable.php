@@ -43,9 +43,9 @@ class CartonsTable extends Table
 
     public function implementedEvents(): array
     {
-            return [
-                'Model.Cartons.addCartonRecord' => 'addCartonRecord'
-            ];
+        return [
+            'Model.Cartons.addCartonRecord' => 'addCartonRecord'
+        ];
     }
 
     public function addCartonRecord(Event $event)
@@ -70,7 +70,7 @@ class CartonsTable extends Table
 
         $carton = $this->newEntity($cartonRecord);
 
-     
+
 
         if (!$this->save($carton)) {
             $errors  = $this->flattenAndFormatValidationErrors($carton->getErrors());
@@ -106,8 +106,6 @@ class CartonsTable extends Table
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
         ]);
-
-      
     }
 
     /**
@@ -136,7 +134,7 @@ class CartonsTable extends Table
 
         return $validator;
     }
-    
+
 
     /**
      * Returns a rules checker object that will be used for validating
@@ -173,7 +171,7 @@ class CartonsTable extends Table
         $delete = array_filter($cartonData, function ($item) {
             return $item['count'] == 0 && $item['id'] > 0;
         });
-        
+
         $total = array_sum(Hash::extract($update, '{n}.count'));
 
         $deleteIds = Hash::extract($delete, '{n}.id');
@@ -198,26 +196,24 @@ class CartonsTable extends Table
 
         if ($update) {
             $entities = $this->find()->where(['id IN' => $updateIds]);
-            foreach($update as $k => $v) {
+            foreach ($update as $k => $v) {
                 $update[$k]['user_id'] = $user->get('id');
             }
             $patched = $this->patchEntities($entities, $update);
-        
+
             if ($this->saveMany($patched)) {
                 $updateOK = true;
             } else {
                 $validationErrors = [];
 
-                foreach($patched as $k => $v) {
-                    tog('v', $v);
+                foreach ($patched as $k => $v) {
                     $validationErrors = array_merge($validationErrors, $v->getErrors());
                 }
-                
+
                 $errorText = $this->formatForSetErrors($validationErrors);
-              
             };
         }
 
-        return [ $total, $errorText ];
+        return [$total, $errorText];
     }
 }

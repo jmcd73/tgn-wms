@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Behavior;
@@ -15,7 +16,7 @@ class TgnUtilsBehaviorTest extends TestCase
 {
 
     use LocatorAwareTrait, LogTrait;
-    
+
     protected $fixtures = ['app.Settings', 'app.ProductTypes', 'app.Pallets'];
 
     /**
@@ -110,7 +111,7 @@ class TgnUtilsBehaviorTest extends TestCase
      */
     public function testSsccGetReferenceNumber(): void
     {
-        $reference = $this->TgnUtilsBehavior->getReferenceNumber('SSCC_REF','93529380');
+        $reference = $this->TgnUtilsBehavior->getReferenceNumber('SSCC_REF', '93529380');
         $expected = '302';
 
         $this->assertEquals($expected, $reference);
@@ -228,7 +229,7 @@ class TgnUtilsBehaviorTest extends TestCase
         $expected .= 'Lisa McDonald <lisa@toggen.com.au>';
 
         $setting = $this->TgnUtilsBehavior->getSetting('EMAIL_PALLET_LABEL_TO');
-        tog("test", $setting);
+
         $this->assertEquals($expected, $setting, "Should return a string");
     }
 
@@ -251,35 +252,33 @@ class TgnUtilsBehaviorTest extends TestCase
     {
 
         $input = "James McDonald <james@toggen.com.au>\nLisa McDonald <lisa@toggen.com.au>";
-    
+
 
         $expected = [
-            'james@toggen.com.au' => 'James McDonald' ,
+            'james@toggen.com.au' => 'James McDonald',
             'lisa@toggen.com.au' => 'Lisa McDonald'
         ];
-        
-        
+
+
         $actual = $this->TgnUtilsBehavior->addressParse($input);
 
         $this->assertEquals($expected, $actual);
-
     }
 
 
-       /**
+    /**
      * Test sendLabel method
      *
      * @return void
      */
     public function testEmptyEmail(): void
     {
-        $input = '# bogus no email address' ;
+        $input = '# bogus no email address';
         $input .= 'anothernotanemail';
         $expected = [];
 
         $actual = $this->TgnUtilsBehavior->addressParse($input);
 
         $this->assertEquals($expected, $actual);
-
     }
 }
