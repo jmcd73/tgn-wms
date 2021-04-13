@@ -1,12 +1,12 @@
 <?php
 /*
  * Local configuration file to provide any overrides to your app.php configuration.
- * Copy and save this file as app_local.php and make changes as required.
+         * Copy and save this file as app_local.php and make changes as required.
  * Note: It is not recommended to commit files with credentials such as app_local.php
  * into source code version control.
  */
 
-$dbHost = file_exists('/.dockerenv') ? 'host.docker.internal' : 'localhost';
+$dbHost = file_exists('/.dockerenv') ? '172.17.0.1' : 'localhost';
 
 return [
     'Session' => [
@@ -14,6 +14,15 @@ return [
     ],
     'App' => [
         'title' => 'Toggen WMS',
+    ],
+    // admin passwords if you use the seeds to create framework data
+
+    'devPasswords' => [
+        // role / password
+        'admin' => 'admin',
+        'user' => 'user',
+        'qa' => 'qa',
+        'qty_editor' => 'qty_editor'
     ],
     /*
      * Debug Level:
@@ -24,6 +33,7 @@ return [
      * Development Mode:
      * true: Errors and warnings shown.
      */
+    // true for dev false for prod
     'debug' => filter_var(env('DEBUG', true), FILTER_VALIDATE_BOOLEAN),
 
     /*
@@ -34,7 +44,7 @@ return [
      *   You should treat it as extremely sensitive data.
      */
     'Security' => [
-        'salt' => env('SECURITY_SALT', '__SALT__'),
+        'salt' => env('SECURITY_SALT', 'replace this'),
     ],
 
     /*
@@ -53,10 +63,9 @@ return [
              */
             //'port' => 'non_standard_port_number',
 
-            'username' => 'my_app',
-            'password' => 'secret',
-
-            'database' => 'my_app',
+            'username' => 'your_db_user',
+            'password' => 'your_db_pass',
+            'database' => 'your_db',
             /**
              * If not using the default 'public' schema with the PostgreSQL driver
              * set it here.
@@ -66,7 +75,7 @@ return [
             /**
              * You can use a DSN string to set the entire configuration
              */
-            'url' => env('DATABASE_URL', null),
+            // 'url' => env('DATABASE_URL', null),
         ],
 
         /*
@@ -75,9 +84,9 @@ return [
         'test' => [
             'host' => $dbHost,
             //'port' => 'non_standard_port_number',
-            'username' => 'my_app',
-            'password' => 'secret',
-            'database' => 'test_myapp',
+            'username' => 'your_test_db_user',
+            'password' => 'your_test_db_pass',
+            'database' => 'your_test_db',
             //'schema' => 'myapp',
         ],
     ],
@@ -98,5 +107,15 @@ return [
             'client' => null,
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
         ],
+        'AWS_SES' => [
+            'className' => 'Smtp',
+            'host' => 'email-smtp.ap-southeast-2.amazonaws.com',
+            'port' => 587, // this is very important to be 587!! 
+            'timeout' => 30,
+            'username' => 'USERNAME',
+            'password' => 'AWS_SES_KEY',
+            'tls' => true, // this is also very important!!
+            'log' => true
+        ]
     ],
 ];
